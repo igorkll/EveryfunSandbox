@@ -19,7 +19,7 @@ var current_jump = false
 var current_jump_budget = 0
 
 func _ready():
-	position = (Vector3) (0, 0, 0)
+	position = (Vector3) (0, 2, 0)
 		
 func _physics_process(delta):
 	var direction = Vector3.ZERO	

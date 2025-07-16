@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=9 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Script" uid="uid://csa4tycdt2mx2" path="res://world.gd" id="1_aqk2v"]
 [ext_resource type="Script" uid="uid://bhh8jwjpyw0w6" path="res://player.gd" id="1_f3sb7"]
@@ -24,10 +24,6 @@ ssil_enabled = true
 sdfgi_enabled = true
 glow_enabled = true
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_gv5m4"]
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
 [node name="world" type="Node3D"]
@@ -39,15 +35,6 @@ environment = SubResource("Environment_gv5m4")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.836688, 0.54768, 0, -0.54768, 0.836688, 0, 0, 0)
 shadow_enabled = true
-
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(300, 0, 0, 0, 300, 0, 0, 0, 300, -0.362152, -199.497, 0.615845)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_gv5m4")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-mesh = SubResource("BoxMesh_gv5m4")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.77039, 1.44316, 3.31592)
