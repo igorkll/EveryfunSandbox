@@ -1,8 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=11 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Script" uid="uid://bhh8jwjpyw0w6" path="res://player.gd" id="1_f3sb7"]
+[ext_resource type="Texture2D" uid="uid://df0snomqqnjws" path="res://skybox.jpg" id="1_fj7yv"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_f3sb7"]
+panorama = ExtResource("1_fj7yv")
+energy_multiplier = 2.66
 
 [sub_resource type="Sky" id="Sky_fj7yv"]
 sky_material = SubResource("PanoramaSkyMaterial_f3sb7")
@@ -16,7 +19,6 @@ ssao_enabled = true
 ssil_enabled = true
 sdfgi_enabled = true
 glow_enabled = true
-fog_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
 
