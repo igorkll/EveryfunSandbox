@@ -69,3 +69,7 @@ shape = SubResource("CapsuleShape3D_gv5m4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.553927, 0)
 fov = 80.0
 script = ExtResource("3_tlwt5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.992663, 0.0754967, -0.0944513, 0, 0.781128, 0.624371, 0.120917, -0.619789, 0.775397, 0, -0.0157592, 0)
+shadow_enabled = true

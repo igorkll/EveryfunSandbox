@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+var sprint_mul = 2
+
 var move_acceleration = 75
 var fall_acceleration = 60
 var jump_acceleration = 80
@@ -16,6 +18,12 @@ var current_jump_budget = 0
 
 func _physics_process(delta):
 	var direction = Vector3.ZERO
+
+	var _max_move_velocity = max_move_velocity
+	var _move_acceleration = move_acceleration
+	if Input.is_action_pressed("move_sprint"):
+		_max_move_velocity *= sprint_mul
+		_move_acceleration *= sprint_mul
 
 	if Input.is_action_pressed("move_right"):
 		direction.x += 1
@@ -48,8 +56,8 @@ func _physics_process(delta):
 	move_direction.y = 0
 	move_direction = move_direction.normalized()
 
-	velocity.x += move_direction.x * move_acceleration * delta
-	velocity.z += move_direction.z * move_acceleration * delta
+	velocity.x += move_direction.x * _move_acceleration * delta
+	velocity.z += move_direction.z * _move_acceleration * delta
 
 	if current_jump:
 		velocity.y += jump_acceleration * delta
@@ -57,8 +65,8 @@ func _physics_process(delta):
 		velocity.y -= fall_acceleration * delta
 		
 	var velocity2d = Vector2 (velocity.x, velocity.z);
-	if velocity2d.length() > max_move_velocity:
-		velocity2d = velocity2d.normalized() * max_move_velocity
+	if velocity2d.length() > _max_move_velocity:
+		velocity2d = velocity2d.normalized() * _max_move_velocity
 		velocity.x = velocity2d.x
 		velocity.z = velocity2d.y
 		
