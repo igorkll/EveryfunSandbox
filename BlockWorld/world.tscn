@@ -1,9 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=10 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Script" uid="uid://bhh8jwjpyw0w6" path="res://player.gd" id="1_f3sb7"]
 
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_f3sb7"]
+
+[sub_resource type="Sky" id="Sky_fj7yv"]
+sky_material = SubResource("PanoramaSkyMaterial_f3sb7")
+
 [sub_resource type="Environment" id="Environment_gv5m4"]
+background_mode = 2
 background_color = Color(0, 0.137255, 0.211765, 1)
+sky = SubResource("Sky_fj7yv")
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+fog_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
 
