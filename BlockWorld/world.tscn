@@ -8,3 +8,7 @@ background_color = Color(0, 0.137255, 0.211765, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gv5m4")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.816636, 0.348557)
+fov = 80.0
