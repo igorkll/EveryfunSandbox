@@ -1,44 +1,37 @@
 extends CharacterBody3D
 
-# Настройки движения
-var speed = 5.0
-var jump_speed = 10.0
-var gravity = -9.8
-var velocity = Vector3()
+# How fast the player moves in meters per second.
+@export var speed = 14
+# The downward acceleration when in the air, in meters per second squared.
+@export var fall_acceleration = 75
 
-# Флаг для проверки, на земле ли игрок
-var is_on_ground = false
+var target_velocity = Vector3.ZERO
+
 
 func _physics_process(delta):
-	# Проверка, на земле ли игрок
-	is_on_ground = is_on_floor()
+	var direction = Vector3.ZERO
 
-	# Обработка ввода для движения
-	var direction = Vector3()
+	if Input.is_action_pressed("move_right"):
+		direction.x += 1
+	if Input.is_action_pressed("move_left"):
+		direction.x -= 1
+	if Input.is_action_pressed("move_back"):
+		direction.z += 1
+	if Input.is_action_pressed("move_forward"):
+		direction.z -= 1
 
-	if Input.is_action_pressed("ui_up"):  # Вперед
-		direction += -transform.basis.z
-	if Input.is_action_pressed("ui_down"):  # Назад
-		direction += transform.basis.z
-	if Input.is_action_pressed("ui_left"):  # Влево
-		direction += -transform.basis.x
-	if Input.is_action_pressed("ui_right"):  # Вправо
-		direction += transform.basis.x
+	if direction != Vector3.ZERO:
+		direction = direction.normalized()
+		$CameraPivot.look_at(position + direction, Vector3.UP)
 
-	direction = direction.normalized()  # Нормализуем вектор направления
+	# Ground Velocity
+	target_velocity.x = direction.x * speed
+	target_velocity.z = direction.z * speed
 
-	# Применение скорости движения
-	velocity.x = direction.x * speed
-	velocity.z = direction.z * speed
+	# Vertical Velocity
+	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
+		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
 
-	# Применение гравитации
-	if is_on_ground:
-		velocity.y = 0  # Сбрасываем вертикальную скорость при касании земли
-		if Input.is_action_just_pressed("ui_accept"):  # Прыжок
-			velocity.y = jump_speed
-
-	# Применение гравитации
-	velocity.y += gravity * delta
-
-	# Движение игрока
-	velocity = move_and_slide(velocity, Vector3.UP)
+	# Moving the Character
+	velocity = target_velocity
+	move_and_slide()
