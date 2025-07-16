@@ -20,11 +20,9 @@ var current_jump_budget = 0
 
 func _ready():
 	position = (Vector3) (0, 0, 0)
-	for i in range(500):
-		lib.spawnBlock(get_tree().root, (Vector3) (0, i, 0))
-
+		
 func _physics_process(delta):
-	var direction = Vector3.ZERO
+	var direction = Vector3.ZERO	
 
 	var _max_move_velocity = max_move_velocity
 	var _move_acceleration = move_acceleration

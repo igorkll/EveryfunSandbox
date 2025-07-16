@@ -1,5 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=11 format=3 uid="uid://bw0m6x1agdhve"]
 
+[ext_resource type="Script" uid="uid://csa4tycdt2mx2" path="res://world.gd" id="1_aqk2v"]
 [ext_resource type="Script" uid="uid://bhh8jwjpyw0w6" path="res://player.gd" id="1_f3sb7"]
 [ext_resource type="Texture2D" uid="uid://df0snomqqnjws" path="res://skybox.jpg" id="1_fj7yv"]
 [ext_resource type="Script" uid="uid://clpri4gnvvt6s" path="res://camera.gd" id="3_tlwt5"]
@@ -27,13 +28,10 @@ glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_gv5m4"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_f3sb7"]
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
 [node name="world" type="Node3D"]
+script = ExtResource("1_aqk2v")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gv5m4")
@@ -50,16 +48,6 @@ shape = SubResource("BoxShape3D_gv5m4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("BoxMesh_gv5m4")
-
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000553608, 3.27364, -5.84623)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
-shape = SubResource("BoxShape3D_f3sb7")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00129402, -0.00219321, 0.0026089)
-mesh = SubResource("BoxMesh_f3sb7")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.77039, 1.44316, 3.31592)
