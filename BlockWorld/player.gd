@@ -22,10 +22,6 @@ func _physics_process(delta):
 	if Input.is_action_pressed("move_forward"):
 		direction.z -= 1
 
-	if direction != Vector3.ZERO:
-		direction = direction.normalized()
-		# $CameraPivot.look_at(position + direction, Vector3.UP)
-
 	# Ground Velocity
 	target_velocity.x = direction.x * speed
 	target_velocity.z = direction.z * speed
@@ -42,3 +38,4 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		$Camera.rotate(Vector3.UP, -event.relative.x * 0.002)
 		$Camera.rotate_object_local(Vector3.RIGHT, -event.relative.y * 0.002)
+		$Camera.rotation_degrees.z = clamp($Camera.rotation_degrees.z, -90, 90)
