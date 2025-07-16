@@ -1,8 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=6 format=3 uid="uid://bw0m6x1agdhve"]
 
 [sub_resource type="Environment" id="Environment_gv5m4"]
 background_mode = 1
 background_color = Color(0, 0.137255, 0.211765, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gv5m4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gv5m4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f3sb7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_f3sb7"]
 
 [node name="world" type="Node3D"]
 
@@ -10,5 +18,25 @@ background_color = Color(0, 0.137255, 0.211765, 1)
 environment = SubResource("Environment_gv5m4")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.816636, 0.348557)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.58652, 3.07378)
 fov = 80.0
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00403118, -0.00973797, -0.00127268)
+shape = SubResource("BoxShape3D_gv5m4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(3.10656, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_gv5m4")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.26828, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_f3sb7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00129402, -0.00219321, 0.0026089)
+mesh = SubResource("BoxMesh_f3sb7")
