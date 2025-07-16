@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+var lib = preload("res://lib.gd")
+
 var sprint_mul = 2
 
 var move_acceleration = 75
@@ -15,6 +17,11 @@ var jump_budget = 0.15
 
 var current_jump = false
 var current_jump_budget = 0
+
+func _ready():
+	position = (Vector3) (0, 0, 0)
+	for i in range(500):
+		lib.spawnBlock(get_tree().root, (Vector3) (0, i, 0))
 
 func _physics_process(delta):
 	var direction = Vector3.ZERO
