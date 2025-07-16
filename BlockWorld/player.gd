@@ -1,7 +1,8 @@
 extends CharacterBody3D
 
-@export var speed = 10
-@export var fall_acceleration = 75
+var move_acceleration = 2
+var fall_acceleration = 75
+var jump_acceleration = 10
 
 func _physics_process(delta):
 	var direction = Vector3.ZERO
@@ -20,8 +21,11 @@ func _physics_process(delta):
 	var camera_right = camera_basis.x.normalized()
 	var move_direction = (camera_direction * direction.z + camera_right * direction.x).normalized()
 
-	velocity.x = move_direction.x * speed
-	velocity.z = move_direction.z * speed
+	if Input.is_action_pressed("move_jump"):
+		velocity.y += jump_acceleration
+
+	velocity.x += move_direction.x * move_acceleration
+	velocity.z += move_direction.z * move_acceleration
 
 	if not is_on_floor():
 		velocity.y = velocity.y - (fall_acceleration * delta)
