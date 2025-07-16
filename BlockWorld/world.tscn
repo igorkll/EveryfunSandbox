@@ -14,7 +14,9 @@ sky_material = SubResource("PanoramaSkyMaterial_f3sb7")
 [sub_resource type="Environment" id="Environment_gv5m4"]
 background_mode = 2
 background_color = Color(0, 0.137255, 0.211765, 1)
+background_energy_multiplier = 0.2
 sky = SubResource("Sky_fj7yv")
+tonemap_exposure = 1.94
 ssr_enabled = true
 ssao_enabled = true
 ssil_enabled = true
@@ -37,7 +39,7 @@ glow_enabled = true
 environment = SubResource("Environment_gv5m4")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
-transform = Transform3D(0.992663, 0.075497, -0.0944517, 0, 0.781128, 0.624371, 0.120917, -0.619789, 0.775397, 0, -0.0157592, 0)
+transform = Transform3D(1, 0, 0, 0, 0.836688, 0.54768, 0, -0.54768, 0.836688, 0, 0, 0)
 shadow_enabled = true
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
