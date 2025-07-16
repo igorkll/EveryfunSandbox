@@ -7,9 +7,6 @@ extends CharacterBody3D
 
 var target_velocity = Vector3.ZERO
 
-func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
 func _physics_process(delta):
 	var direction = Vector3.ZERO
 
@@ -33,10 +30,3 @@ func _physics_process(delta):
 	# Moving the Character
 	velocity = target_velocity
 	move_and_slide()
-
-func _input(event):
-	if event is InputEventMouseMotion:
-		$Camera.rotate(Vector3.UP, -event.relative.x * 0.002)
-		$Camera.rotate_object_local(Vector3.RIGHT, -event.relative.y * 0.002)
-		$Camera.rotation_degrees.x = clamp($Camera.rotation_degrees.x, -85, 85)
-		$Camera.rotation_degrees.z = 0
