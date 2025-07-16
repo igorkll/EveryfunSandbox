@@ -1,11 +1,7 @@
 extends CharacterBody3D
 
-# How fast the player moves in meters per second.
-@export var speed = 14
-# The downward acceleration when in the air, in meters per second squared.
+@export var speed = 10
 @export var fall_acceleration = 75
-
-var target_velocity = Vector3.ZERO
 
 func _physics_process(delta):
 	var direction = Vector3.ZERO
@@ -15,18 +11,19 @@ func _physics_process(delta):
 	if Input.is_action_pressed("move_left"):
 		direction.x -= 1
 	if Input.is_action_pressed("move_back"):
-		direction.z += 1
-	if Input.is_action_pressed("move_forward"):
 		direction.z -= 1
+	if Input.is_action_pressed("move_forward"):
+		direction.z += 1
+		
+	var camera_basis = $Camera.global_transform.basis
+	var camera_direction = -camera_basis.z.normalized()
+	var camera_right = camera_basis.x.normalized()
+	var move_direction = (camera_direction * direction.z + camera_right * direction.x).normalized()
 
-	# Ground Velocity
-	target_velocity.x = direction.x * speed
-	target_velocity.z = direction.z * speed
+	velocity.x = move_direction.x * speed
+	velocity.z = move_direction.z * speed
 
-	# Vertical Velocity
-	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
-		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
+	if not is_on_floor():
+		velocity.y = velocity.y - (fall_acceleration * delta)
 
-	# Moving the Character
-	velocity = target_velocity
 	move_and_slide()
