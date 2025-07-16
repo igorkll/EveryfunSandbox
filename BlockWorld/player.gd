@@ -38,4 +38,5 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		$Camera.rotate(Vector3.UP, -event.relative.x * 0.002)
 		$Camera.rotate_object_local(Vector3.RIGHT, -event.relative.y * 0.002)
-		$Camera.rotation_degrees.z = clamp($Camera.rotation_degrees.z, -90, 90)
+		$Camera.rotation_degrees.x = clamp($Camera.rotation_degrees.x, -85, 85)
+		$Camera.rotation_degrees.z = 0
