@@ -64,8 +64,6 @@ script = ExtResource("1_f3sb7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00568438, 0.00694084, 0.00512743)
 shape = SubResource("CapsuleShape3D_gv5m4")
 
-[node name="CameraPivot" type="Marker3D" parent="Player"]
+[node name="Camera" type="Camera3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.553927, 0)
-
-[node name="Camera3D" type="Camera3D" parent="Player/CameraPivot"]
 fov = 80.0
