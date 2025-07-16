@@ -1,15 +1,18 @@
 extends CharacterBody3D
 
 var move_acceleration = 75
-var fall_acceleration = 75
-var jump_acceleration = 10
+var fall_acceleration = 60
+var jump_acceleration = 80
 
 var max_fall_velocity = 200
-var max_move_velocity = 5
+var max_move_velocity = 6
 
-var velocity_down = 0.00001
+var velocity_down = 0.0005
+var jump_budget = 0.15
 
-var jump = false
+
+var current_jump = false
+var current_jump_budget = 0
 
 func _physics_process(delta):
 	var direction = Vector3.ZERO
@@ -22,20 +25,33 @@ func _physics_process(delta):
 		direction.z -= 1
 	if Input.is_action_pressed("move_forward"):
 		direction.z += 1
-	if Input.is_action_just_pressed("move_jump"):
-		jump = true
+		
+	if Input.is_action_pressed("move_jump") && is_on_floor():
+		if not current_jump:
+			current_jump_budget = jump_budget
+		current_jump = true
+		
+	if current_jump:
+		current_jump_budget -= delta
+		if current_jump_budget < 0:
+			current_jump = false
+			current_jump_budget = 0
+	
 	if Input.is_action_just_released("move_jump"):
-		jump = false
+		current_jump = false
+		current_jump_budget = 0
 		
 	var camera_basis = $Camera.global_transform.basis
 	var camera_direction = -camera_basis.z.normalized()
 	var camera_right = camera_basis.x.normalized()
 	var move_direction = (camera_direction * direction.z + camera_right * direction.x).normalized()
+	move_direction.y = 0
+	move_direction = move_direction.normalized()
 
 	velocity.x += move_direction.x * move_acceleration * delta
 	velocity.z += move_direction.z * move_acceleration * delta
 
-	if jump:
+	if current_jump:
 		velocity.y += jump_acceleration * delta
 	elif not is_on_floor():
 		velocity.y -= fall_acceleration * delta

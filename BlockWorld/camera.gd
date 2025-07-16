@@ -12,7 +12,7 @@ func _input(event):
 		var pitch = event.relative.y * sensitivity
 		
 		# Prevents looking up/down too far
-		pitch = clamp(pitch, -90 - _total_pitch, 90 - _total_pitch)
+		pitch = clamp(pitch, -89 - _total_pitch, 89 - _total_pitch)
 		_total_pitch += pitch
 	
 		rotate_y(deg_to_rad(-yaw))
