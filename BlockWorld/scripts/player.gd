@@ -13,6 +13,13 @@ var jump_budget = 0.05
 var current_jump = false
 var current_jump_budget = 0
 
+func raycast():
+	var raycast = $RayCast
+	raycast.global_transform.origin = $Camera.global_transform.origin
+	raycast.target_position = -$Camera.global_transform.basis.z * 4
+	raycast.force_raycast_update()
+	return raycast
+
 func _ready():
 	position = (Vector3) (0, 2, 0)
 		
@@ -48,14 +55,18 @@ func _physics_process(delta):
 		current_jump_budget = 0
 		
 	if Input.is_action_just_released("grab"):
-		var raycast = $RayCast
-		raycast.global_transform.origin = $Camera.global_transform.origin
-		raycast.target_position = -$Camera.global_transform.basis.z * 4
-		raycast.force_raycast_update()
+		var raycast = raycast()
 		if raycast.is_colliding():
 			var collided_object = raycast.get_collider()
 			if blockManager.isBlock(collided_object):
-				blockManager.destroyBlock(collided_object)
+				blockManager.destroy(collided_object)
+				
+	if Input.is_action_just_released("use"):
+		var raycast = raycast()
+		if raycast.is_colliding():
+			var collided_object = raycast.get_collider()
+			if blockManager.isBlock(collided_object):
+				blockManager.interact(collided_object)
 	
 	var camera_basis = $Camera.global_transform.basis
 	var camera_direction = -camera_basis.z.normalized()

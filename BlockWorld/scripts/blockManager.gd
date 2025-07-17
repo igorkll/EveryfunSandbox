@@ -5,7 +5,7 @@ static var block_mesh
 func _ready():
 	block_mesh = BoxMesh.new()
 
-static func spawnBlock(world, position, dynamic, blockscript):
+static func spawn(world, position, dynamic, blockscript):
 	var body
 	if dynamic:
 		body = RigidBody3D.new()
@@ -41,9 +41,12 @@ static func spawnBlock(world, position, dynamic, blockscript):
 	world.add_child(body)
 	return body
 
-static func destroyBlock(blockobject):
+static func destroy(blockobject):
 	blockobject.queue_free()
-	pass
+	
+static func interact(blockobject):
+	if "_game_interact" in blockobject:
+		blockobject._game_interact()
 
 static func isBlock(blockobject):
 	return blockobject is RigidBody3D || blockobject is StaticBody3D

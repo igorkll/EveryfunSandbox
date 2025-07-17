@@ -12,3 +12,7 @@ func _ready():
 
 func _physics_process(delta):
 	pass
+
+func _game_interact():
+	if rigid_body:
+		rigid_body.apply_impulse(Vector3(0, 100, 0))
