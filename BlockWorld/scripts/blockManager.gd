@@ -45,8 +45,8 @@ static func destroy(blockobject):
 	blockobject.queue_free()
 	
 static func interact(blockobject):
-	if "_game_interact" in blockobject:
-		blockobject._game_interact()
+	if "__interact" in blockobject:
+		blockobject.__interact()
 
 static func isBlock(blockobject):
 	return blockobject is RigidBody3D || blockobject is StaticBody3D
