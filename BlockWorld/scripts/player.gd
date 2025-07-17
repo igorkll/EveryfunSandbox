@@ -50,7 +50,7 @@ func _physics_process(delta):
 	if Input.is_action_just_released("grab"):
 		var raycast = $RayCast
 		raycast.global_transform.origin = $Camera.global_transform.origin
-		raycast.	target_position = -$Camera.global_transform.basis.z * 100
+		raycast.target_position = -$Camera.global_transform.basis.z * 4
 		raycast.force_raycast_update()
 		if raycast.is_colliding():
 			var collided_object = raycast.get_collider()
