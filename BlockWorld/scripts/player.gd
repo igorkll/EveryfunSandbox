@@ -54,7 +54,8 @@ func _physics_process(delta):
 		raycast.force_raycast_update()
 		if raycast.is_colliding():
 			var collided_object = raycast.get_collider()
-			game.destroyBlock(collided_object)
+			if blockManager.isBlock(collided_object):
+				blockManager.destroyBlock(collided_object)
 	
 	var camera_basis = $Camera.global_transform.basis
 	var camera_direction = -camera_basis.z.normalized()

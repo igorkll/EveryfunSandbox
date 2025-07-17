@@ -44,3 +44,7 @@ static func spawnBlock(world, position, dynamic, blockscript):
 static func destroyBlock(blockobject):
 	blockobject.queue_free()
 	pass
+
+static func isBlock(blockobject):
+	return blockobject is RigidBody3D || blockobject is StaticBody3D
+	
