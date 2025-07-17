@@ -1,7 +1,6 @@
 extends Node
 
-static var texture = preload("res://blocks/grass/texture.png")
-static var shader = preload("res://shaders/6block.gdshader")
+static var texture = preload("res://blocks/pig/texture.png")
 
 var rigid_body: RigidBody3D
 
