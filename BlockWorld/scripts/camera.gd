@@ -11,7 +11,6 @@ func _input(event):
 		var yaw = event.relative.x * sensitivity
 		var pitch = event.relative.y * sensitivity
 		
-		# Prevents looking up/down too far
 		pitch = clamp(pitch, -89 - _total_pitch, 89 - _total_pitch)
 		_total_pitch += pitch
 	

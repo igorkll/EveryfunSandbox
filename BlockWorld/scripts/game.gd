@@ -1,6 +1,6 @@
 extends Node
 
-static func placeBlock(world, position):
+static func placeBlock(world, position, block):
 	var body = StaticBody3D.new()
 	body.position = position
 	
@@ -15,7 +15,7 @@ static func placeBlock(world, position):
 	body.add_child(mesh_instance)
 	
 	var material = StandardMaterial3D.new()
-	material.albedo_texture = preload("res://textures/sky.hdr")
+	material.albedo_texture = block.texture
 	mesh_instance.material_override = material
 	
 	world.add_child(body)
