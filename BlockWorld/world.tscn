@@ -24,7 +24,7 @@ glow_enabled = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
-[node name="world" type="Node3D"]
+[node name="Main" type="Node3D"]
 script = ExtResource("1_aqk2v")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -47,3 +47,5 @@ shape = SubResource("CapsuleShape3D_gv5m4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.553927, 0)
 fov = 80.0
 script = ExtResource("3_tlwt5")
+
+[node name="World" type="Node3D" parent="."]
