@@ -11,5 +11,4 @@ func _ready():
 		rigid_body = obj as RigidBody3D
 
 func _physics_process(delta):
-	if rigid_body:
-		rigid_body.apply_impulse(Vector3(0, 0.15, 0))
+	pass
