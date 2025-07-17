@@ -2,27 +2,21 @@
 
 [ext_resource type="Script" uid="uid://csa4tycdt2mx2" path="res://scripts/world.gd" id="1_aqk2v"]
 [ext_resource type="Script" uid="uid://bhh8jwjpyw0w6" path="res://scripts/player.gd" id="1_f3sb7"]
-[ext_resource type="Texture2D" uid="uid://df0snomqqnjws" path="res://textures/skybox.jpg" id="1_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
 [ext_resource type="Script" uid="uid://clpri4gnvvt6s" path="res://scripts/camera.gd" id="3_tlwt5"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_f3sb7"]
-panorama = ExtResource("1_fj7yv")
-energy_multiplier = 2.66
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tlwt5"]
+panorama = ExtResource("2_aqk2v")
 
 [sub_resource type="Sky" id="Sky_fj7yv"]
-sky_material = SubResource("PanoramaSkyMaterial_f3sb7")
+sky_material = SubResource("PanoramaSkyMaterial_tlwt5")
 
 [sub_resource type="Environment" id="Environment_gv5m4"]
 background_mode = 2
 background_color = Color(0, 0.137255, 0.211765, 1)
-background_energy_multiplier = 0.2
 sky = SubResource("Sky_fj7yv")
-tonemap_exposure = 2.34
-ssr_enabled = true
-ssao_enabled = true
-ssil_enabled = true
-sdfgi_enabled = true
-glow_enabled = true
+ambient_light_source = 1
+reflected_light_source = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
@@ -33,7 +27,7 @@ script = ExtResource("1_aqk2v")
 environment = SubResource("Environment_gv5m4")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
-transform = Transform3D(1, 0, 0, 0, 0.836688, 0.54768, 0, -0.54768, 0.836688, 0, 0, 0)
+transform = Transform3D(0.79504, 0.332199, -0.507499, 2.97226e-08, 0.836688, 0.54768, 0.606558, -0.435427, 0.6652, 0, 0, 0)
 shadow_enabled = true
 
 [node name="Player" type="CharacterBody3D" parent="."]
