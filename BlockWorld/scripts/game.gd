@@ -19,6 +19,12 @@ static func spawnBlock(world, position, dynamic, blockscript):
 	box_collision.shape = BoxShape3D.new()
 	body.add_child(box_collision)
 
+	var mesh
+	if "mesh" in blockscript:
+		mesh = blockscript.mesh
+	else:
+		mesh = block_mesh
+
 	var material
 	if "shader" in blockscript:
 		material = ShaderMaterial.new()
@@ -28,7 +34,7 @@ static func spawnBlock(world, position, dynamic, blockscript):
 		material.albedo_texture = blockscript.texture
 	
 	var mesh_instance = MeshInstance3D.new()
-	mesh_instance.mesh = block_mesh
+	mesh_instance.mesh = mesh
 	mesh_instance.material_override = material
 	body.add_child(mesh_instance)
 
