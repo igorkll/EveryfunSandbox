@@ -10,10 +10,9 @@ static func spawnBlock(world, position, dynamic, blockscript):
 	body.position = position
 	body.set_script(blockscript)
 	
-	var collision_shape = CollisionShape3D.new()
-	var box_shape = BoxShape3D.new()
-	collision_shape.shape = box_shape
-	body.add_child(collision_shape)
+	var box_collision = CollisionShape3D.new()
+	box_collision.shape = BoxShape3D.new()
+	body.add_child(box_collision)
 
 	var material
 	if "shader" in blockscript:
