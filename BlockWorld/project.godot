@@ -66,6 +66,12 @@ use={
 ]
 }
 
+[physics]
+
+3d/sleep_threshold_linear=0.0
+3d/sleep_threshold_angular=0.0
+3d/time_before_sleep=0.0
+
 [rendering]
 
 lights_and_shadows/directional_shadow/size=16384
