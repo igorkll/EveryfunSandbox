@@ -1,5 +1,10 @@
 extends Node
 
+static var block_mesh
+
+func _ready():
+	block_mesh = BoxMesh.new()
+
 static func spawnBlock(world, position, dynamic, blockscript):
 	var body
 	if dynamic:
@@ -18,14 +23,12 @@ static func spawnBlock(world, position, dynamic, blockscript):
 	if "shader" in blockscript:
 		material = ShaderMaterial.new()
 		material.shader = blockscript.shader
-		material.set_shader_parameter("albedo_texture", blockscript.texture)
 	else:
 		material = StandardMaterial3D.new()
 		material.albedo_texture = blockscript.texture
 	
 	var mesh_instance = MeshInstance3D.new()
-	var cube_mesh = BoxMesh.new()
-	mesh_instance.mesh = cube_mesh
+	mesh_instance.mesh = block_mesh
 	mesh_instance.material_override = material
 	body.add_child(mesh_instance)
 
