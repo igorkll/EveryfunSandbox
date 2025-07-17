@@ -20,7 +20,7 @@ func _physics_process(delta):
 	var direction = Vector3.ZERO	
 
 	var _move_acceleration = move_acceleration
-	if Input.is_action_pressed("move_sprint"):
+	if Input.is_action_pressed("sprint"):
 		_move_acceleration *= sprint_mul
 
 	if Input.is_action_pressed("move_right"):
@@ -32,7 +32,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed("move_forward"):
 		direction.z += 1
 		
-	if Input.is_action_pressed("move_jump") && is_on_floor():
+	if Input.is_action_pressed("jump") && is_on_floor():
 		if not current_jump:
 			current_jump_budget = jump_budget
 		current_jump = true
@@ -43,10 +43,19 @@ func _physics_process(delta):
 			current_jump = false
 			current_jump_budget = 0
 	
-	if Input.is_action_just_released("move_jump"):
+	if Input.is_action_just_released("jump"):
 		current_jump = false
 		current_jump_budget = 0
 		
+	if Input.is_action_just_released("grab"):
+		var raycast = $RayCast
+		raycast.global_transform.origin = $Camera.global_transform.origin
+		raycast.	target_position = -$Camera.global_transform.basis.z * 100
+		raycast.force_raycast_update()
+		if raycast.is_colliding():
+			var collided_object = raycast.get_collider()
+			game.destroyBlock(collided_object)
+	
 	var camera_basis = $Camera.global_transform.basis
 	var camera_direction = -camera_basis.z.normalized()
 	var camera_right = camera_basis.x.normalized()

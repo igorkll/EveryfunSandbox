@@ -39,3 +39,8 @@ static func spawnBlock(world, position, dynamic, blockscript):
 	body.add_child(mesh_instance)
 
 	world.add_child(body)
+	return body
+
+static func destroyBlock(blockobject):
+	blockobject.queue_free()
+	pass
