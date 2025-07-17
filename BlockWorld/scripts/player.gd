@@ -3,14 +3,11 @@ extends CharacterBody3D
 var sprint_mul = 2
 
 var move_acceleration = 75
-var fall_acceleration = 40
-var jump_acceleration = 80
-
-var max_fall_velocity = 200
-var max_move_velocity = 6
+var fall_acceleration = 30
+var jump_acceleration = 200
 
 var velocity_down = 0.0005
-var jump_budget = 0.15
+var jump_budget = 0.05
 
 
 var current_jump = false
@@ -22,10 +19,8 @@ func _ready():
 func _physics_process(delta):
 	var direction = Vector3.ZERO	
 
-	var _max_move_velocity = max_move_velocity
 	var _move_acceleration = move_acceleration
 	if Input.is_action_pressed("move_sprint"):
-		_max_move_velocity *= sprint_mul
 		_move_acceleration *= sprint_mul
 
 	if Input.is_action_pressed("move_right"):
@@ -64,17 +59,9 @@ func _physics_process(delta):
 
 	if current_jump:
 		velocity.y += jump_acceleration * delta
-	elif not is_on_floor():
+	
+	if not is_on_floor():
 		velocity.y -= fall_acceleration * delta
-		
-	var velocity2d = Vector2 (velocity.x, velocity.z);
-	if velocity2d.length() > _max_move_velocity:
-		velocity2d = velocity2d.normalized() * _max_move_velocity
-		velocity.x = velocity2d.x
-		velocity.z = velocity2d.y
-		
-	if velocity.y < -max_fall_velocity:
-		velocity.y = -max_fall_velocity
 	
 	var speed_mul = pow(velocity_down, delta);
 	velocity.x *= speed_mul;
