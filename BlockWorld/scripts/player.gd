@@ -1,7 +1,5 @@
 extends CharacterBody3D
 
-var lib = preload("res://lib.gd")
-
 var sprint_mul = 2
 
 var move_acceleration = 75

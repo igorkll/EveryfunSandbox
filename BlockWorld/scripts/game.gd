@@ -15,7 +15,7 @@ static func spawnBlock(world, position):
 	body.add_child(mesh_instance)
 	
 	var material = StandardMaterial3D.new()
-	material.albedo_texture = preload("res://skybox.jpg")
+	material.albedo_texture = preload("res://textures/skybox.jpg")
 	mesh_instance.material_override = material
 	
 	world.add_child(body)
