@@ -35,3 +35,7 @@ void fragment() {
 	float offset = (1.0 - distance(UV, center));
 	ALBEDO = hsv_to_rgb(fract(time - offset), 1.0, 1.0);
 }
+
+void light() {
+	DIFFUSE_LIGHT = vec3(1.0, 1.0, 1.0);
+}
