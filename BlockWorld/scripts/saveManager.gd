@@ -10,6 +10,8 @@ func _ready():
 
 static var save_name
 static var save_dir
+static var save_world
+static var save_world_dynamic
 
 static func getSavePath(name):
 	return "user://saves/" + name
@@ -18,12 +20,26 @@ static func loadOrCreate(name):
 	save_name = name
 	save_dir = getSavePath(save_name)
 	DirAccess.make_dir_recursive_absolute(save_dir)
+	
+	save_world = node_main.get_node("world")
+	if save_world:
+		save_world.queue_free()
+	
+	save_world = Node3D.new()
+	save_world.name = "world"
+	node_main.add_child(save_world)
+	
+	save_world_dynamic = Node3D.new()
+	save_world_dynamic.name = "dynamic"
+	save_world.add_child(save_world_dynamic)
 
 static func save():
-	var file = FileAccess.open(save_dir + "/dynamicBlocks.json", FileAccess.WRITE)
+	var file = FileAccess.open(save_dir + "/dynamic.json", FileAccess.WRITE)
 	if file:
-		var dynamicBlocks = {
-			"AS": true
-		}
-		file.store_string(JSON.stringify(dynamicBlocks))
+		var dynamic = []
+		for node in save_world_dynamic.get_children():
+			dynamic.append({})
+			pass
+			
+		file.store_buffer(var_to_bytes(dynamic))
 		file.close()

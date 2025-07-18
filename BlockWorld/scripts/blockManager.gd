@@ -49,7 +49,7 @@ static func spawn(position, dynamic, blockname):
 		mesh_instance.material_override = material
 		body.add_child(mesh_instance)
 
-	node_main.get_node("World").add_child(body)
+	node_main.get_node("world").add_child(body)
 	return body
 
 static func destroy(blockobject):
