@@ -64,6 +64,14 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null):
 	else:
 		node_main.get_node("world").add_child(body)
 	
+	if "__firstInit" in body:
+		if not "fi" in body.___gamedata or not body.___gamedata.fi: # first init
+			body.__firstInit()
+			body.___gamedata.fi = true
+			
+	if "__init" in body:
+		body.__init()
+	
 	return body
 
 static func destroy(blockobject):
