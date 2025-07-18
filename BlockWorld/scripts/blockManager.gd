@@ -10,6 +10,11 @@ static func spawn(world, position, dynamic, blockscript):
 	body.position = position
 	body.set_script(blockscript)
 	
+	if dynamic:
+		body.__rigid_body = body
+	else:
+		body.__static_body = body
+	
 	var box_collision = CollisionShape3D.new()
 	box_collision.shape = BoxShape3D.new()
 	body.add_child(box_collision)

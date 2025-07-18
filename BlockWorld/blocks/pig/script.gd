@@ -3,13 +3,6 @@ extends block
 static var texture = preload("res://blocks/pig/texture.png")
 static var mesh = preload("res://mesh/single_texture_block.obj")
 
-var rigid_body: RigidBody3D
-
-func _ready():
-	var obj = self
-	if obj is RigidBody3D:
-		rigid_body = obj as RigidBody3D
-
 func _physics_process(delta):
-	if rigid_body:
-		rigid_body.apply_impulse(Vector3(0, 0.15, 0))
+	if __rigid_body:
+		__rigid_body.apply_impulse(Vector3(0, 0.15, 0))
