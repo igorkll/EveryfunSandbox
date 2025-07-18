@@ -1,6 +1,13 @@
 extends Node
 
-static func spawn(world, position, dynamic, blockscript):
+static var node_root
+static var node_main
+
+func _ready():
+	node_root = get_tree().root
+	node_main = node_root.get_node("Main")
+
+static func spawn(position, dynamic, blockscript):
 	var body
 	if dynamic:
 		body = RigidBody3D.new()
@@ -40,7 +47,7 @@ static func spawn(world, position, dynamic, blockscript):
 		mesh_instance.material_override = material
 		body.add_child(mesh_instance)
 
-	world.add_child(body)
+	node_main.get_node("World").add_child(body)
 	return body
 
 static func destroy(blockobject):
