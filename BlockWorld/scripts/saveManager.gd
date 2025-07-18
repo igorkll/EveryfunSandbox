@@ -31,7 +31,7 @@ static func _recreateTree():
 	save_world.add_child(save_world_dynamic)
 	
 static func exists(name):
-	return FileAccess.file_exists(getSavePath(name))
+	return DirAccess.dir_exists_absolute(getSavePath(name))
 	
 static func open(name):
 	_recreateTree()
@@ -42,7 +42,7 @@ static func open(name):
 	if file:
 		var dynamic = bytes_to_var(file.get_buffer(file.get_length()))
 		for rigidBodyData in dynamic:
-			blockManager.spawn(rigidBodyData.p, rigidBodyData.r, true, rigidBodyData.n)
+			blockManager.spawn(rigidBodyData.p, rigidBodyData.r, true, rigidBodyData.n, rigidBodyData.d)
 		file.close()
 
 static func create(name):
@@ -60,7 +60,8 @@ static func save():
 			dynamic.append({
 				p = rigidBody.position,
 				r = rigidBody.quaternion,
-				n = rigidBody.__name
+				n = rigidBody.__name,
+				d = rigidBody.___alldata
 			})
 			pass
 			

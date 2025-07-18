@@ -22,3 +22,12 @@ func _ready():
 		saveManager.save()
 	else:
 		saveManager.open("default")
+
+var save_timer = 0
+var save_per = 5
+
+func _physics_process(delta):
+	save_timer += delta
+	if save_timer > save_per:
+		saveManager.save()
+		save_timer = 0
