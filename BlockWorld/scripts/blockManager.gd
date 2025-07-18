@@ -7,7 +7,7 @@ func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("Main")
 
-static func spawn(position, dynamic, blockname, quaternion=null, data=null):
+static func spawn(position, dynamic, blockname, quaternion=null, data=null, state=null):
 	var blockscript = load("res://blocks/" + blockname + "/script.gd")
 	
 	var body
@@ -23,6 +23,11 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null):
 	
 	if not data:
 		data = [{}, {}]
+		
+	if state:
+		body.__state = state
+	else:
+		body.__state = {}
 	
 	body.__name = blockname
 	body.___alldata = data
@@ -83,4 +88,9 @@ static func interact(blockobject):
 
 static func isBlock(blockobject):
 	return blockobject is RigidBody3D || blockobject is StaticBody3D
+
+static func isDynamic(blockobject):
+	return blockobject is RigidBody3D
 	
+static func isStatic(blockobject):
+	return blockobject is StaticBody3D
