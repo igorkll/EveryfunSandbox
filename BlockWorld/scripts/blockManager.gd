@@ -21,6 +21,8 @@ static func spawn(world, position, dynamic, blockscript):
 		if "shader" in blockscript:
 			material = ShaderMaterial.new()
 			material.shader = blockscript.shader
+			if "texture" in blockscript:
+				material.set_shader_parameter("__texture", blockscript.texture)
 		else:
 			material = StandardMaterial3D.new()
 			if "texture" in blockscript:
