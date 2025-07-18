@@ -1,4 +1,4 @@
-extends Node
+extends block
 
 static var texture = preload("res://blocks/pig/texture.png")
 static var mesh = preload("res://mesh/single_texture_block.obj")

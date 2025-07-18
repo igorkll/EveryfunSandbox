@@ -1,5 +1,6 @@
 shader_type spatial;
 
+uniform bool reverse = false;
 uniform float speed = 0.3;
 uniform vec2 center = vec2(0.5, 0.5);
 
@@ -33,7 +34,10 @@ vec3 hsv_to_rgb(float h, float s, float v) {
 void fragment() {
 	float time = TIME * speed;
 	float offset = (1.0 - distance(UV, center));
-	ALBEDO = hsv_to_rgb(fract(time - offset), 1.0, 1.0);
+	if (reverse) {
+		offset = -offset;
+	}
+	ALBEDO = hsv_to_rgb(fract(time + offset), 1.0, 1.0);
 }
 
 void light() {
