@@ -31,5 +31,5 @@ vec3 hsv_to_rgb(float h, float s, float v) {
 
 void fragment() {
     float time = TIME * speed;
-    ALBEDO = hsv_to_rgb(fract(time), 1, 1);
+    ALBEDO = hsv_to_rgb(fract(time + UV.x + UV.y), 1, 1);
 }
