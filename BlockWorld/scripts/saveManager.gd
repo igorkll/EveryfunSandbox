@@ -42,6 +42,20 @@ static func open(name):
 		var dynamic = bytes_to_var(file.get_buffer(file.get_length()))
 		for rigidBodyData in dynamic:
 			blockManager.spawn(rigidBodyData.p, true, rigidBodyData.n, rigidBodyData.r, rigidBodyData.d)
+		
+		file.close()
+		
+	file = FileAccess.open(save_dir + "/gamedata", FileAccess.READ)
+	if file:
+		var gamedata = bytes_to_var(file.get_buffer(file.get_length()))
+		
+		var player = node_main.get_node("Player")
+		var camera = player.get_node("Camera")
+		
+		player.position = gamedata.player_position
+		camera.total_pitch = gamedata.player_camera_total_pitch
+		camera.quaternion = gamedata.player_camera_quaternion
+			
 		file.close()
 
 static func create(name):
@@ -74,8 +88,8 @@ static func save():
 		
 		var gamedata = {
 			player_position = player.position,
-			total_pitch = camera.total_pitch,
-			total_pitch = camera.total_pitch
+			player_camera_total_pitch = camera.total_pitch,
+			player_camera_quaternion = camera.quaternion
 		}
 			
 		file.store_buffer(var_to_bytes(gamedata))
