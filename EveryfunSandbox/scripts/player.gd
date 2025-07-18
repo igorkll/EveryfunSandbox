@@ -9,9 +9,11 @@ var jump_acceleration = 200
 var velocity_down = 0.0005
 var jump_budget = 0.05
 
-
 var current_jump = false
 var current_jump_budget = 0
+
+var grabbed_block
+var grab_pid
 
 func raycast():
 	var raycast = $RayCast
@@ -19,11 +21,19 @@ func raycast():
 	raycast.target_position = -$Camera.global_transform.basis.z * 4
 	raycast.force_raycast_update()
 	return raycast
+	
+func grabMagned(body, delta):
+	var camera_position = $Camera.global_transform.origin
+	var camera_direction = -$Camera.global_transform.basis.z.normalized()
+	var target_position = camera_position + (camera_direction * 5)
+	body.apply_impulse(grab_pid.compute(target_position, body.position, delta))
 
 func _ready():
 	position = (Vector3) (0, 2, 0)
 		
 func _physics_process(delta):
+	# ---------------------------------- moving control
+		
 	var direction = Vector3.ZERO	
 
 	var _move_acceleration = move_acceleration
@@ -54,13 +64,21 @@ func _physics_process(delta):
 		current_jump = false
 		current_jump_budget = 0
 		
+	# ---------------------------------- world control
+		
 	if Input.is_action_just_released("grab"):
-		var raycast = raycast()
-		if raycast.is_colliding():
-			var collided_object = raycast.get_collider()
-			if blockManager.isBlock(collided_object):
-				blockManager.toDynamic(collided_object)
-				
+		if grabbed_block:
+			grabbed_block = null
+		else:
+			var raycast = raycast()
+			if raycast.is_colliding():
+				var collided_object = raycast.get_collider()
+				if blockManager.isBlock(collided_object):
+					grabbed_block = blockManager.toDynamic(collided_object)
+					grab_pid = PID3.new()
+					grab_pid.Kp = 0.5
+					grab_pid.Ki = 0
+					grab_pid.Kd = 1
 				
 	if Input.is_action_just_released("use"):
 		var raycast = raycast()
@@ -68,6 +86,13 @@ func _physics_process(delta):
 			var collided_object = raycast.get_collider()
 			if blockManager.isBlock(collided_object):
 				blockManager.interact(collided_object)
+				
+	# ---------------------------------- process
+	
+	if grabbed_block:
+		grabMagned(grabbed_block, delta)
+		
+	# ---------------------------------- moving
 	
 	var camera_basis = $Camera.global_transform.basis
 	var camera_direction = -camera_basis.z.normalized()

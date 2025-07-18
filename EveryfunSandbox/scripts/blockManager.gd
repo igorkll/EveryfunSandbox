@@ -97,5 +97,7 @@ static func isStatic(blockobject):
 
 static func toDynamic(blockobject):
 	if isStatic(blockobject):
-		spawn(blockobject.position, true, blockobject.__name, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
+		var dynamic = spawn(blockobject.position, true, blockobject.__name, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
 		destroy(blockobject)
+		return dynamic
+	return blockobject
