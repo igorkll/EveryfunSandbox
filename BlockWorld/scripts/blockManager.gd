@@ -7,7 +7,7 @@ func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("Main")
 
-static func spawn(position, quaternion, dynamic, blockname, data):
+static func spawn(position, dynamic, blockname, quaternion=null, data=null):
 	var blockscript = load("res://blocks/" + blockname + "/script.gd")
 	
 	var body
@@ -26,8 +26,8 @@ static func spawn(position, quaternion, dynamic, blockname, data):
 	
 	body.__name = blockname
 	body.___alldata = data
-	body.___gamedata = data[1]
-	body.__data = data[2]
+	body.___gamedata = data[0]
+	body.__data = data[1]
 	
 	if dynamic:
 		body.__rigid_body = body

@@ -42,7 +42,7 @@ static func open(name):
 	if file:
 		var dynamic = bytes_to_var(file.get_buffer(file.get_length()))
 		for rigidBodyData in dynamic:
-			blockManager.spawn(rigidBodyData.p, rigidBodyData.r, true, rigidBodyData.n, rigidBodyData.d)
+			blockManager.spawn(rigidBodyData.p, true, rigidBodyData.n, rigidBodyData.r, rigidBodyData.d)
 		file.close()
 
 static func create(name):
