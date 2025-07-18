@@ -7,7 +7,9 @@ func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("Main")
 
-static func spawn(position, dynamic, blockscript):
+static func spawn(position, dynamic, blockname):
+	var blockscript = load("res://blocks/" + blockname + "/script.gd")
+	
 	var body
 	if dynamic:
 		body = RigidBody3D.new()

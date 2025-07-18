@@ -50,5 +50,3 @@ script = ExtResource("3_tlwt5")
 
 [node name="RayCast" type="RayCast3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.77039, -1.44316, -3.31592)
-
-[node name="World" type="Node3D" parent="."]
