@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 blockManager="*res://scripts/blockManager.gd"
 _block="res://blocks/block.gd"
+saveManager="*res://scripts/saveManager.gd"
 
 [display]
 
