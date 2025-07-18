@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="BlockWorld"
+config/name="EveryfunSandbox"
 run/main_scene="uid://bw0m6x1agdhve"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
