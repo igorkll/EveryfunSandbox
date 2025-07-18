@@ -1,6 +1,7 @@
 shader_type spatial;
 
-uniform float speed = 0.1;
+uniform float speed = 0.3;
+uniform vec2 center = vec2(0.5, 0.5);
 
 vec3 hsv_to_rgb(float h, float s, float v) {
     vec3 rgb;
@@ -30,6 +31,7 @@ vec3 hsv_to_rgb(float h, float s, float v) {
 }
 
 void fragment() {
-    float time = TIME * speed;
-    ALBEDO = hsv_to_rgb(fract(time + UV.x + UV.y), 1, 1);
+	float time = TIME * speed;
+	float offset = (1.0 - distance(UV, center));
+	ALBEDO = hsv_to_rgb(fract(time - offset), 1.0, 1.0);
 }
