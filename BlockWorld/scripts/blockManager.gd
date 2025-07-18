@@ -94,3 +94,8 @@ static func isDynamic(blockobject):
 	
 static func isStatic(blockobject):
 	return blockobject is StaticBody3D
+
+static func toDynamic(blockobject):
+	if isStatic(blockobject):
+		spawn(blockobject.position, true, blockobject.__name, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
+		destroy(blockobject)

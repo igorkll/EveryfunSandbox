@@ -59,7 +59,7 @@ func _physics_process(delta):
 		if raycast.is_colliding():
 			var collided_object = raycast.get_collider()
 			if blockManager.isBlock(collided_object):
-				blockManager.destroy(collided_object)
+				blockManager.toDynamic(collided_object)
 				
 	if Input.is_action_just_released("use"):
 		var raycast = raycast()
