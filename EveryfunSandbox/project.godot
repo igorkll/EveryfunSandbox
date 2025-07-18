@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/bg_color=Color(0.1812, 0.1812, 0.1812, 1)
 boot_splash/image="uid://2dvpirsyultl"
 config/icon="uid://dmm0c18k048ss"
-boot_splash/minimum_display_time=5000
+boot_splash/minimum_display_time=2000
 
 [autoload]
 
