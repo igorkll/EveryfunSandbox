@@ -7,17 +7,21 @@ func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("Main")
 
-static func spawn(position, dynamic, blockname):
+static func spawn(position, quaternion, dynamic, blockname):
 	var blockscript = load("res://blocks/" + blockname + "/script.gd")
 	
 	var body
 	if dynamic:
 		body = RigidBody3D.new()
+		if quaternion:
+			body.quaternion = quaternion
 	else:
 		body = StaticBody3D.new()
 	
 	body.position = position
 	body.set_script(blockscript)
+	
+	body.__name = blockname
 	
 	if dynamic:
 		body.__rigid_body = body
@@ -49,7 +53,11 @@ static func spawn(position, dynamic, blockname):
 		mesh_instance.material_override = material
 		body.add_child(mesh_instance)
 
-	node_main.get_node("world").add_child(body)
+	if dynamic:
+		node_main.get_node("world").get_node("dynamic").add_child(body)
+	else:
+		node_main.get_node("world").add_child(body)
+	
 	return body
 
 static func destroy(blockobject):
