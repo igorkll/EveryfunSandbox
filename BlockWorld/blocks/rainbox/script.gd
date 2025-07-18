@@ -5,7 +5,7 @@ static var mesh = preload("res://mesh/single_texture_block.obj")
 
 func _ready():
 	var light = OmniLight3D.new()
-	
+	light.omni_shadow_mode = OmniLight3D.SHADOW_CUBE
 	add_child(light)
 
 func __interact():
