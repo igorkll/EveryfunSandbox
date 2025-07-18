@@ -3,16 +3,15 @@ extends Node
 static var node_root
 static var node_main
 
-func _ready():
-	node_root = get_tree().root
-	node_main = node_root.get_node("Main")
-
-
 static var save_name
 static var save_dir
 
 static var save_world
 static var save_world_dynamic
+
+func _ready():
+	node_root = get_tree().root
+	node_main = node_root.get_node("Main")
 
 static func getSavePath(name):
 	return "user://saves/" + name
@@ -66,4 +65,18 @@ static func save():
 			pass
 			
 		file.store_buffer(var_to_bytes(dynamic))
+		file.close()
+		
+	file = FileAccess.open(save_dir + "/gamedata", FileAccess.WRITE)
+	if file:
+		var player = node_main.get_node("Player")
+		var camera = player.get_node("Camera")
+		
+		var gamedata = {
+			player_position = player.position,
+			total_pitch = camera.total_pitch,
+			total_pitch = camera.total_pitch
+		}
+			
+		file.store_buffer(var_to_bytes(gamedata))
 		file.close()

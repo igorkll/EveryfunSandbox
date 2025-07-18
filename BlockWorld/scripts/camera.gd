@@ -1,6 +1,6 @@
 extends Camera3D
 
-var _total_pitch = 0.0
+var total_pitch = 0.0
 var sensitivity = 0.2
 
 func _ready():
@@ -11,8 +11,8 @@ func _input(event):
 		var yaw = event.relative.x * sensitivity
 		var pitch = event.relative.y * sensitivity
 		
-		pitch = clamp(pitch, -89 - _total_pitch, 89 - _total_pitch)
-		_total_pitch += pitch
+		pitch = clamp(pitch, -89 - total_pitch, 89 - total_pitch)
+		total_pitch += pitch
 	
 		rotate_y(deg_to_rad(-yaw))
 		rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
