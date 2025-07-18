@@ -61,6 +61,7 @@ func _physics_process(delta):
 			if blockManager.isBlock(collided_object):
 				blockManager.toDynamic(collided_object)
 				
+				
 	if Input.is_action_just_released("use"):
 		var raycast = raycast()
 		if raycast.is_colliding():
@@ -78,11 +79,9 @@ func _physics_process(delta):
 	velocity.x += move_direction.x * _move_acceleration * delta
 	velocity.z += move_direction.z * _move_acceleration * delta
 
+	velocity.y -= fall_acceleration * delta
 	if current_jump:
 		velocity.y += jump_acceleration * delta
-	
-	if not is_on_floor():
-		velocity.y -= fall_acceleration * delta
 	
 	var speed_mul = pow(velocity_down, delta);
 	velocity.x *= speed_mul;
