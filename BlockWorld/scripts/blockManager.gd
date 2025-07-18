@@ -23,7 +23,8 @@ static func spawn(world, position, dynamic, blockscript):
 			material.shader = blockscript.shader
 		else:
 			material = StandardMaterial3D.new()
-			material.albedo_texture = blockscript.texture
+			if "texture" in blockscript:
+				material.albedo_texture = blockscript.texture
 			
 		body.__material = material
 		
