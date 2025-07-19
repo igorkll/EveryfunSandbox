@@ -11,7 +11,7 @@ static var save_world_dynamic
 
 func _ready():
 	node_root = get_tree().root
-	node_main = node_root.get_node("Main")
+	node_main = node_root.get_node("main")
 
 static func getSavePath(name):
 	return "user://saves/" + name
@@ -50,8 +50,8 @@ static func open(name):
 	if file:
 		var gamedata = bytes_to_var(file.get_buffer(file.get_length()))
 		
-		var player = node_main.get_node("Player")
-		var camera = player.get_node("Camera")
+		var player = node_main.get_node("player")
+		var camera = player.get_node("camera")
 		
 		player.position = gamedata.player_position
 		camera.total_pitch = gamedata.player_camera_total_pitch
@@ -84,8 +84,8 @@ static func save():
 		
 	file = FileAccess.open(save_dir + "/gamedata", FileAccess.WRITE)
 	if file:
-		var player = node_main.get_node("Player")
-		var camera = player.get_node("Camera")
+		var player = node_main.get_node("player")
+		var camera = player.get_node("camera")
 		
 		var gamedata = {
 			player_position = player.position,

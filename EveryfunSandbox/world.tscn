@@ -24,29 +24,29 @@ glow_enabled = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
-[node name="Main" type="Node3D"]
+[node name="main" type="Node3D"]
 script = ExtResource("1_aqk2v")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="worldEnv" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gv5m4")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+[node name="worldLight" type="DirectionalLight3D" parent="worldEnv"]
 transform = Transform3D(0.79504, 0.332199, -0.507499, 2.97226e-08, 0.836688, 0.54768, 0.606558, -0.435427, 0.6652, 0, 0, 0)
 shadow_enabled = true
 shadow_blur = 2.0
 
-[node name="Player" type="CharacterBody3D" parent="."]
+[node name="player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.77039, 1.44316, 3.31592)
 script = ExtResource("1_f3sb7")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+[node name="collision" type="CollisionShape3D" parent="player"]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.00568438, 0.00694084, 0.00512743)
 shape = SubResource("CapsuleShape3D_gv5m4")
 
-[node name="Camera" type="Camera3D" parent="Player"]
+[node name="camera" type="Camera3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689037, 0)
 fov = 80.0
 script = ExtResource("3_tlwt5")
 
-[node name="RayCast" type="RayCast3D" parent="Player"]
+[node name="raycast" type="RayCast3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.77039, -1.44316, -3.31592)

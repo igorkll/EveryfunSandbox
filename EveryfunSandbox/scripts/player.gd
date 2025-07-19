@@ -22,18 +22,18 @@ var grab_pid
 var grab_rotate_pid
 
 func raycast():
-	var raycast = $RayCast
-	raycast.global_transform.origin = $Camera.global_transform.origin
-	raycast.target_position = -$Camera.global_transform.basis.z * max_interact_distance
+	var raycast = $raycast
+	raycast.global_transform.origin = $camera.global_transform.origin
+	raycast.target_position = -$camera.global_transform.basis.z * max_interact_distance
 	raycast.force_raycast_update()
 	return raycast
 	
 func grabMagned(body, delta):
-	var camera_position = $Camera.global_transform.origin
-	var camera_direction = -$Camera.global_transform.basis.z.normalized()
+	var camera_position = $camera.global_transform.origin
+	var camera_direction = -$camera.global_transform.basis.z.normalized()
 	var target_position = camera_position + (camera_direction * grabbed_distance)
 	body.apply_impulse(grab_pid.compute(target_position, body.position, delta))
-	body.apply_torque(grab_rotate_pid.compute($Camera.rotation, body.rotation, delta))
+	body.apply_torque(grab_rotate_pid.compute($camera.rotation, body.rotation, delta))
 
 func _ready():
 	position = (Vector3) (0, 2, 0)
@@ -123,7 +123,7 @@ func _physics_process(delta):
 		
 	# ---------------------------------- moving
 	
-	var camera_basis = $Camera.global_transform.basis
+	var camera_basis = $camera.global_transform.basis
 	var camera_direction = -camera_basis.z.normalized()
 	var camera_right = camera_basis.x.normalized()
 	var move_direction = (camera_direction * direction.z + camera_right * direction.x).normalized()

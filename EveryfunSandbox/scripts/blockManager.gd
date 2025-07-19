@@ -5,7 +5,7 @@ static var node_main
 
 func _ready():
 	node_root = get_tree().root
-	node_main = node_root.get_node("Main")
+	node_main = node_root.get_node("main")
 
 static func spawn(position, dynamic, blockname, quaternion=null, data=null, state=null):
 	var blockscript = load("res://blocks/" + blockname + "/script.gd")
