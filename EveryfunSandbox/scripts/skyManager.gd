@@ -1,0 +1,18 @@
+extends Node
+
+static var node_root
+static var node_main: Node3D
+static var node_worldEnv: WorldEnvironment
+static var node_worldLight: DirectionalLight3D
+
+func _ready():
+	node_root = get_tree().root
+	node_main = node_root.get_node("main")
+	node_worldEnv = node_main.get_node("worldEnv")
+	node_worldLight = node_worldEnv.get_node("worldLight")
+
+static func setTime(time):
+	var dayOffset = abs(0.5 - time) * 2
+	var dayValue = 1 - dayOffset
+	node_worldEnv.environment.background_energy_multiplier = dayValue
+	node_worldLight.light_energy = dayValue

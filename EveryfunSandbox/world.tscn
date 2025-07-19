@@ -18,6 +18,7 @@ sky = SubResource("Sky_fj7yv")
 ambient_light_source = 3
 ambient_light_sky_contribution = 0.1
 reflected_light_source = 1
+sdfgi_enabled = true
 sdfgi_read_sky_light = false
 sdfgi_energy = 4.0
 glow_enabled = true
