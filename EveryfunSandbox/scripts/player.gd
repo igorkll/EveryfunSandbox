@@ -9,23 +9,28 @@ var jump_acceleration = 200
 var velocity_down = 0.0005
 var jump_budget = 0.05
 
+var max_grab_distance = 10
+var max_interact_distance = 10
+
+
 var current_jump = false
 var current_jump_budget = 0
 
+var grabbed_distance = 5
 var grabbed_block
 var grab_pid
 
 func raycast():
 	var raycast = $RayCast
 	raycast.global_transform.origin = $Camera.global_transform.origin
-	raycast.target_position = -$Camera.global_transform.basis.z * 4
+	raycast.target_position = -$Camera.global_transform.basis.z * max_interact_distance
 	raycast.force_raycast_update()
 	return raycast
 	
 func grabMagned(body, delta):
 	var camera_position = $Camera.global_transform.origin
 	var camera_direction = -$Camera.global_transform.basis.z.normalized()
-	var target_position = camera_position + (camera_direction * 5)
+	var target_position = camera_position + (camera_direction * grabbed_distance)
 	body.apply_impulse(grab_pid.compute(target_position, body.position, delta))
 
 func _ready():
@@ -65,6 +70,16 @@ func _physics_process(delta):
 		current_jump_budget = 0
 		
 	# ---------------------------------- world control
+	
+	if Input.is_action_just_pressed("wheel_up"):
+		grabbed_distance = grabbed_distance + 0.5
+		if grabbed_distance > max_grab_distance:
+			grabbed_distance = max_grab_distance
+		
+	if Input.is_action_just_pressed("wheel_down"):
+		grabbed_distance = grabbed_distance - 0.5
+		if grabbed_distance < 2:
+			grabbed_distance = 2
 		
 	if Input.is_action_just_released("grab"):
 		if grabbed_block:
@@ -84,7 +99,7 @@ func _physics_process(delta):
 		if grabbed_block:
 			blockManager.toStatic(grabbed_block)
 			grabbed_block = null
-				
+	
 	if Input.is_action_just_released("use"):
 		var raycast = raycast()
 		if raycast.is_colliding():
