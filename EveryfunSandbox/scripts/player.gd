@@ -79,6 +79,11 @@ func _physics_process(delta):
 					grab_pid.Kp = 4
 					grab_pid.Ki = 0
 					grab_pid.Kd = 1
+					
+	if Input.is_action_just_released("place"):
+		if grabbed_block:
+			blockManager.toStatic(grabbed_block)
+			grabbed_block = null
 				
 	if Input.is_action_just_released("use"):
 		var raycast = raycast()

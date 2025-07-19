@@ -13,10 +13,11 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	var body
 	if dynamic:
 		body = RigidBody3D.new()
-		if quaternion:
-			body.quaternion = quaternion
 	else:
 		body = StaticBody3D.new()
+	
+	if quaternion:
+		body.quaternion = quaternion
 	
 	body.position = position
 	body.set_script(blockscript)
@@ -97,7 +98,17 @@ static func isStatic(blockobject):
 
 static func toDynamic(blockobject):
 	if isStatic(blockobject):
-		var dynamic = spawn(blockobject.position, true, blockobject.__name, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
+		var newObject = spawn(blockobject.position, true, blockobject.__name, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
 		destroy(blockobject)
-		return dynamic
+		return newObject
+	return blockobject
+	
+static func snapBlockPosition(pos):
+	return Vector3(roundf(pos.x), roundf(pos.y), roundf(pos.z))
+
+static func toStatic(blockobject):
+	if isDynamic(blockobject):
+		var newObject = spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, blockobject.___alldata, blockobject.__state)
+		destroy(blockobject)
+		return newObject
 	return blockobject
