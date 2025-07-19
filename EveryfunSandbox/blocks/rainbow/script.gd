@@ -1,6 +1,6 @@
 extends block
 
-static var shader = preload("res://blocks/rainbow/shader.gdshader")
+static var shader = preload("shader.gdshader")
 static var mesh = preload("res://mesh/single_texture_block.obj")
 
 func updateState():

@@ -9,6 +9,7 @@ func _ready():
 			blockManager.spawn((Vector3) (10, 10 + iy * 2, 0), true, "tnt")
 			blockManager.spawn((Vector3) (10, 10 + iy * 2, 10), true, "den")
 			blockManager.spawn((Vector3) (10, 10 + iy * 2, -10), true, "rainbow")
+			blockManager.spawn((Vector3) (12, 10 + iy * 2, -12), true, "gipno_pig")
 			
 			blockManager.spawn((Vector3) (0, 10 + iy * 2, 12), false, "pig")
 			blockManager.spawn((Vector3) (12, 10 + iy * 2, 0), false, "tnt")

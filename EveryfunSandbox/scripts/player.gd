@@ -76,7 +76,7 @@ func _physics_process(delta):
 				if blockManager.isBlock(collided_object):
 					grabbed_block = blockManager.toDynamic(collided_object)
 					grab_pid = PID3.new()
-					grab_pid.Kp = 0.5
+					grab_pid.Kp = 4
 					grab_pid.Ki = 0
 					grab_pid.Kd = 1
 				
