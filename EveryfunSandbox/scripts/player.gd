@@ -19,6 +19,7 @@ var current_jump_budget = 0
 var grabbed_distance = 5
 var grabbed_block
 var grab_pid
+var grab_rotate_pid
 
 func raycast():
 	var raycast = $RayCast
@@ -32,6 +33,7 @@ func grabMagned(body, delta):
 	var camera_direction = -$Camera.global_transform.basis.z.normalized()
 	var target_position = camera_position + (camera_direction * grabbed_distance)
 	body.apply_impulse(grab_pid.compute(target_position, body.position, delta))
+	body.apply_torque(grab_rotate_pid.compute($Camera.rotation, body.rotation, delta))
 
 func _ready():
 	position = (Vector3) (0, 2, 0)
@@ -90,10 +92,17 @@ func _physics_process(delta):
 				var collided_object = raycast.get_collider()
 				if blockManager.isBlock(collided_object):
 					grabbed_block = blockManager.toDynamic(collided_object)
+					
 					grab_pid = PID3.new()
 					grab_pid.Kp = 4
 					grab_pid.Ki = 0
 					grab_pid.Kd = 1
+					
+					grab_rotate_pid = PID3.new()
+					grab_rotate_pid.Kp = 0.2
+					grab_rotate_pid.Ki = 0
+					grab_rotate_pid.Kd = 0
+					
 					
 	if Input.is_action_just_released("place"):
 		if grabbed_block:
