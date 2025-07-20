@@ -22,15 +22,15 @@ static func getChunkPosition(position):
 	return Vector3(chunk_x * chunkSize, chunk_y * chunkSize, chunk_z * chunkSize)
 	
 static func getChunkArrayPosition(position):
-	var chunk_x = int(position.x) % chunkSize
-	var chunk_y = int(position.y) % chunkSize
-	var chunk_z = int(position.z) % chunkSize
+	var chunk_x = wrapi(int(position.x), 0, chunkSize)
+	var chunk_y = wrapi(int(position.y), 0, chunkSize)
+	var chunk_z = wrapi(int(position.z), 0, chunkSize)
 	return chunk_x + (chunk_y * chunkSize) + (chunk_z * chunkSize * chunkSize)
 	
 static func getChunkInternalPosition(position):
-	var chunk_x = int(position.x) % chunkSize
-	var chunk_y = int(position.y) % chunkSize
-	var chunk_z = int(position.z) % chunkSize
+	var chunk_x = wrapi(int(position.x), 0, chunkSize)
+	var chunk_y = wrapi(int(position.y), 0, chunkSize)
+	var chunk_z = wrapi(int(position.z), 0, chunkSize)
 	return Vector3(chunk_x, chunk_y, chunk_z)
 
 static func getChunk(position):
