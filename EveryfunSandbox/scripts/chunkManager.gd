@@ -72,3 +72,4 @@ static func addMesh(position, blockname):
 
 	multiMeshInstance.multimesh.instance_count += 1;
 	multiMeshInstance.multimesh.set_instance_transform(multiMeshInstance.multimesh.instance_count - 1, transform)
+	

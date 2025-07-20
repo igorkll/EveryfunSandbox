@@ -26,6 +26,10 @@ saveManager="*res://scripts/saveManager.gd"
 skyManager="*res://scripts/skyManager.gd"
 chunkManager="*res://scripts/chunkManager.gd"
 
+[display]
+
+window/size/mode=3
+
 [input]
 
 move_forward={
