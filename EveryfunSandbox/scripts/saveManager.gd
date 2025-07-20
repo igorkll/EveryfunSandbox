@@ -81,13 +81,11 @@ static func open(name):
 		player.position = gamedata.player_position
 		camera.total_pitch = gamedata.player_camera_total_pitch
 		camera.quaternion = gamedata.player_camera_quaternion
-		skyManager.setTime(gamedata.time)
+		gameApi.setTime(gamedata.time)
 			
 		file.close()
 		
-	for ix in range(-1, 2):
-		for iz in range(-1, 2):
-			loadChunk(chunkManager.getChunkName(player.position, ix, iz))
+	chunkManager.updateLoadedChunks([player.positions])
 
 static func create(name):
 	_recreateTree(name)
@@ -141,7 +139,8 @@ static func save():
 			player_position = player.position,
 			player_camera_total_pitch = camera.total_pitch,
 			player_camera_quaternion = camera.quaternion,
-			time = skyManager.getTime()
+			time = gameApi.getTime(),
+			generator = 1
 		}
 			
 		file.store_buffer(var_to_bytes(gamedata))

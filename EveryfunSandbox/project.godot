@@ -23,8 +23,9 @@ boot_splash/minimum_display_time=2000
 blockManager="*res://scripts/blockManager.gd"
 _block="res://blocks/block.gd"
 saveManager="*res://scripts/saveManager.gd"
-skyManager="*res://scripts/skyManager.gd"
+gameApi="*res://scripts/gameApi.gd"
 chunkManager="*res://scripts/chunkManager.gd"
+worldGenerator="*res://scripts/worldGenerator.gd"
 
 [display]
 
