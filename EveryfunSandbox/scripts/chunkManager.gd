@@ -35,6 +35,10 @@ static func getChunk(position):
 	chunk.name = chunkname
 	chunks.add_child(chunk)
 	
+	var meshlist = Node3D.new()
+	meshlist.name = "meshlist"
+	chunk.add_child(meshlist)
+	
 	return chunk
 
 static func addCollision(position):
@@ -43,3 +47,18 @@ static func addCollision(position):
 	collision.shape = BoxShape3D.new()
 	collision.transform.origin = position - getChunkPosition(position)
 	chunk.add_child(collision)
+
+static func addMesh(position, blockname):
+	var chunk = getChunk(position)
+	var meshlist = chunk.get_node("meshlist")
+	
+	var multiMeshInstance:MultiMeshInstance3D = meshlist.get_node(blockname)
+	if not multiMeshInstance:
+		multiMeshInstance = MultiMeshInstance3D.new()
+		multiMeshInstance.name = blockname
+		meshlist.add_child(multiMeshInstance)
+		
+		var multiMesh = MultiMesh.new()
+		multiMesh.name = "multimesh"
+		multiMeshInstance.multimesh = multiMesh
+		multiMeshInstance.add_child(multiMesh)
