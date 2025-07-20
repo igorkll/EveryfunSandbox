@@ -64,8 +64,11 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	box_collision.shape = BoxShape3D.new()
 	body.add_child(box_collision)
 	
-	var chunk
-	if dynamic:
+	var allowMultimesh = true
+	if "allowMultimesh" in blockscript:
+		allowMultimesh = blockscript.allowMultimesh
+
+	if dynamic || not allowMultimesh:
 		var _mesh = getMeshAndMaterial(blockscript)
 					
 		body.__material = _mesh[1]
@@ -75,7 +78,7 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		mesh_instance.material_override = _mesh[1]
 		body.add_child(mesh_instance)
 	else:
-		chunk = chunkManager.getChunk(position)
+		var chunk = chunkManager.getChunk(position)
 		chunk.array[chunkManager.getChunkArrayPosition(position)] = blockname
 		if autoChunkUpdate:
 			chunk.updateMesh()
@@ -83,7 +86,7 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	if dynamic:
 		node_main.get_node("world").get_node("dynamic").add_child(body)
 	else:
-		chunk.get_node("staticObjects").add_child(body)
+		chunkManager.getChunk(position).get_node("staticObjects").add_child(body)
 	
 	if "__firstInit" in body:
 		if not "fi" in body.___gamedata or not body.___gamedata.fi: # first init

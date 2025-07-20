@@ -2,9 +2,10 @@ extends block
 
 static var shader = preload("shader.gdshader")
 static var mesh = preload("res://mesh/single_texture_block.obj")
+static var allowMultimesh = false
 
 func updateState():
-	# self.__material.set_shader_parameter("reverse", self.__data.state)
+	self.__material.set_shader_parameter("reverse", self.__data.state)
 	pass
 	
 func __firstInit():
