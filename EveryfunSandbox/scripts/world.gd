@@ -1,8 +1,6 @@
 extends Node
 
 func _ready():
-	skyManager.setTime(0.5)
-	
 	if not saveManager.exists("default"):
 		saveManager.create("default")
 		

@@ -81,6 +81,7 @@ static func open(name):
 		player.position = gamedata.player_position
 		camera.total_pitch = gamedata.player_camera_total_pitch
 		camera.quaternion = gamedata.player_camera_quaternion
+		skyManager.setTime(gamedata.time)
 			
 		file.close()
 		
@@ -139,7 +140,8 @@ static func save():
 		var gamedata = {
 			player_position = player.position,
 			player_camera_total_pitch = camera.total_pitch,
-			player_camera_quaternion = camera.quaternion
+			player_camera_quaternion = camera.quaternion,
+			time = skyManager.getTime()
 		}
 			
 		file.store_buffer(var_to_bytes(gamedata))

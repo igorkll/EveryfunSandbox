@@ -59,7 +59,7 @@ static func getChunk(position):
 	
 static func unloadChunk(chunk):
 	saveManager.saveChunk(chunk)
-	chunk.queue_free()
+	chunk.free()
 
 static func updateLoadedChunks(positions):
 	var loadedChunks = []
@@ -73,8 +73,10 @@ static func updateLoadedChunks(positions):
 					var chunkname = getChunkName(position, ix, iy, iz)
 					if not chunks.has_node(chunkname):
 						saveManager.loadChunk(chunkname)
-						loadedChunks.append(chunkname)
+					loadedChunks.append(chunkname)
 
-	for chunkname in chunks.get_children():
+	for chunk in chunks.get_children():
+		var chunkname = getChunkName(chunk.chunkPosition)
 		if not chunkname in loadedChunks:
-			unloadChunk(chunkname)
+			unloadChunk(chunk)
+			pass
