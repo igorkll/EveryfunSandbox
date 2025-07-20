@@ -2,6 +2,7 @@ extends Node
 
 static var node_root
 static var node_main
+static var autoChunkUpdate = false
 
 func _ready():
 	node_root = get_tree().root
@@ -62,9 +63,8 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	var box_collision = CollisionShape3D.new()
 	box_collision.shape = BoxShape3D.new()
 	body.add_child(box_collision)
-		
-	var chunk = chunkManager.getChunk(position)
-
+	
+	var chunk
 	if dynamic:
 		var _mesh = getMeshAndMaterial(blockscript)
 					
@@ -75,7 +75,10 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		mesh_instance.material_override = _mesh[1]
 		body.add_child(mesh_instance)
 	else:
+		chunk = chunkManager.getChunk(position)
 		chunk.array[chunkManager.getChunkArrayPosition(position)] = blockname
+		if autoChunkUpdate:
+			chunk.updateMesh()
 
 	if dynamic:
 		node_main.get_node("world").get_node("dynamic").add_child(body)

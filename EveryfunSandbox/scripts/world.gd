@@ -28,6 +28,8 @@ func _ready():
 	
 	for chunk in $world.get_node("chunks").get_children():
 		chunk.updateMesh()
+		
+	blockManager.autoChunkUpdate = true
 	
 
 var save_timer = 0
