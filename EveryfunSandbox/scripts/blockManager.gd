@@ -30,7 +30,7 @@ static func getMeshAndMaterial(blockscript):
 static func getBlockscript(blockname):
 	return load("res://blocks/" + blockname + "/script.gd")
 
-static func spawn(position, dynamic, blockname, quaternion=null, data=null, state=null):
+static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, data=null, state=null):
 	blockSpawned = true
 	
 	var blockscript = getBlockscript(blockname)
@@ -82,7 +82,8 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		mesh_instance.material_override = _mesh[1]
 		body.add_child(mesh_instance)
 	else:
-		var chunk = chunkManager.getChunk(position)
+		if not chunk:
+			chunk = chunkManager.getChunk(position)
 		chunk.array[chunkManager.getChunkArrayPosition(position)] = blockname
 		if autoChunkUpdate:
 			chunk.updateMesh()
@@ -90,7 +91,8 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	if dynamic:
 		node_main.get_node("world").get_node("dynamic").add_child(body)
 	else:
-		var chunk = chunkManager.getChunk(position)
+		if not chunk:
+			chunk = chunkManager.getChunk(position)
 		chunk.chunkUpdated = true
 		chunk.get_node("staticObjects").add_child(body)
 	
@@ -131,7 +133,7 @@ static func isBlock(blockobject):
 static func toDynamic(blockobject):
 	if isStatic(blockobject):
 		destroy(blockobject)
-		return spawn(blockobject.position, true, blockobject.__name, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
+		return spawn(blockobject.position, true, blockobject.__name, null, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
 	return blockobject
 	
 static func snapBlockPosition(pos):
@@ -140,5 +142,5 @@ static func snapBlockPosition(pos):
 static func toStatic(blockobject):
 	if isDynamic(blockobject):
 		destroy(blockobject)
-		return spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, blockobject.___alldata, blockobject.__state)
+		return spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, null, blockobject.___alldata, blockobject.__state)
 	return blockobject

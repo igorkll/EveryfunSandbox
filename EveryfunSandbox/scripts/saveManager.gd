@@ -52,15 +52,18 @@ static func loadChunk(position):
 	if file:
 		var staticObjects = bytes_to_var(file.get_buffer(file.get_length()))
 		for staticObject in staticObjects:
-			blockManager.spawn(staticObject.p, false, staticObject.n, null, staticObject.d)
+			blockManager.spawn(staticObject.p, false, staticObject.n, chunk, null, staticObject.d)
 		
 		file.close()
 	else:
-		worldGenerator.call(gamedata.generator, position, gamedata.seed)
+		worldGenerator.call(gamedata.generator, chunk, position, gamedata.seed)
 	
 	blockManager.autoChunkUpdate = oldAutoChunkUpdate
 	if blockManager.blockSpawned:
-		chunk.updateMesh()
+		# chunk.updateMesh()
+		pass
+		
+	return chunk
 	
 static func exists(name):
 	return DirAccess.dir_exists_absolute(getSavePath(name))
@@ -73,7 +76,7 @@ static func open(name):
 	if file:
 		var dynamic = bytes_to_var(file.get_buffer(file.get_length()))
 		for rigidBodyData in dynamic:
-			blockManager.spawn(rigidBodyData.p, true, rigidBodyData.n, rigidBodyData.r, rigidBodyData.d)
+			blockManager.spawn(rigidBodyData.p, true, rigidBodyData.n, null, rigidBodyData.r, rigidBodyData.d)
 		
 		file.close()
 	
