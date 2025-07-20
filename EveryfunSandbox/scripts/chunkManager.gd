@@ -54,11 +54,15 @@ static func addMesh(position, blockname):
 	
 	var multiMeshInstance:MultiMeshInstance3D = meshlist.get_node(blockname)
 	if not multiMeshInstance:
+		var _mesh = blockManager.getMeshAndMaterial(blockManager.getBlockscript(blockname))
+		
 		multiMeshInstance = MultiMeshInstance3D.new()
 		multiMeshInstance.name = blockname
+		multiMeshInstance.material_override = _mesh[2]
 		meshlist.add_child(multiMeshInstance)
 		
 		var multiMesh = MultiMesh.new()
 		multiMesh.name = "multimesh"
+		multiMesh.mesh = _mesh[1]
 		multiMeshInstance.multimesh = multiMesh
 		multiMeshInstance.add_child(multiMesh)

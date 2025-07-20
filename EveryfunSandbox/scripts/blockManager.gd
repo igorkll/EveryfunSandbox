@@ -7,8 +7,28 @@ func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("main")
 	
+static func getMeshAndMaterial(blockscript):
+	if "mesh" in blockscript:
+		var mesh = blockscript.mesh
+
+		var material
+		if "shader" in blockscript:
+			material = ShaderMaterial.new()
+			material.shader = blockscript.shader
+			if "texture" in blockscript:
+				material.set_shader_parameter("__texture", blockscript.texture)
+		else:
+			material = StandardMaterial3D.new()
+			if "texture" in blockscript:
+				material.albedo_texture = blockscript.texture
+				
+		return [mesh, material]
+		
+static func getBlockscript(blockname):
+	return load("res://blocks/" + blockname + "/script.gd")
+
 static func spawn(position, dynamic, blockname, quaternion=null, data=null, state=null):
-	var blockscript = load("res://blocks/" + blockname + "/script.gd")
+	var blockscript = getBlockscript(blockname)
 	
 	var body
 	if dynamic:
@@ -45,26 +65,14 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		chunkManager.addCollision(position)
 
 	if dynamic:
-		if "mesh" in blockscript:
-			var mesh = blockscript.mesh
-
-			var material
-			if "shader" in blockscript:
-				material = ShaderMaterial.new()
-				material.shader = blockscript.shader
-				if "texture" in blockscript:
-					material.set_shader_parameter("__texture", blockscript.texture)
-			else:
-				material = StandardMaterial3D.new()
-				if "texture" in blockscript:
-					material.albedo_texture = blockscript.texture
+		var _mesh = getMeshAndMaterial(blockscript)
 					
-			body.__material = material
-			
-			var mesh_instance = MeshInstance3D.new()
-			mesh_instance.mesh = mesh
-			mesh_instance.material_override = material
-			body.add_child(mesh_instance)
+		body.__material = _mesh[2]
+		
+		var mesh_instance = MeshInstance3D.new()
+		mesh_instance.mesh = _mesh[1]
+		mesh_instance.material_override = _mesh[2]
+		body.add_child(mesh_instance)
 	else:
 		chunkManager.addMesh(position, blockname)
 
