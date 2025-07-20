@@ -96,6 +96,8 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	return body
 
 static func destroy(blockobject):
+	if not blockobject.__rigid_body:
+		chunkManager.getChunk(blockobject.position).array[chunkManager.getChunkArrayPosition(blockobject.position)] = null
 	blockobject.queue_free()
 	
 static func interact(blockobject):
