@@ -62,6 +62,9 @@ static func unloadChunk(chunk):
 	chunk.queue_free()
 
 static func updateLoadedChunks(position):
+	var chunks = node_main.get_node("world").get_node("chunks")
 	for ix in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
 		for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
-			saveManager.loadChunk(getChunkName(position, ix, iz))
+			var chunkname = getChunkName(position, ix, iz)
+			if not chunkname in chunks:
+				saveManager.loadChunk(chunkname)
