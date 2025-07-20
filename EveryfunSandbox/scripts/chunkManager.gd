@@ -30,10 +30,14 @@ static func getChunk(position):
 	if chunk:
 		return chunk
 
-	chunk = StaticBody3D.new()
+	chunk = Node3D.new()
 	chunk.position = getChunkPosition(position)
 	chunk.name = chunkname
 	chunks.add_child(chunk)
+	
+	var body = StaticBody3D.new()
+	body.name = "body"
+	chunk.add_child(body)
 	
 	return chunk
 
@@ -42,4 +46,4 @@ static func addCollision(position):
 	var box_collision = CollisionShape3D.new()
 	box_collision.shape = BoxShape3D.new()
 	box_collision.transform.origin = position - getChunkPosition(position)
-	chunk.add_child(box_collision)
+	chunk.get_node("body").add_child(box_collision)
