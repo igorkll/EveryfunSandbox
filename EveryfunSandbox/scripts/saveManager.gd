@@ -100,14 +100,11 @@ static func open(name):
 	chunkManager.updateLoadedChunks([player.position])
 
 
-static func create(name, _parameters):
+static func create(name, _parameters={}):
 	_recreateTree(name)
 	
 	DirAccess.make_dir_recursive_absolute(save_dir)
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
-	
-	if not _parameters:
-		_parameters = {}
 	
 	if not _parameters.has("generator"):
 		_parameters.generator = "flat_world"
