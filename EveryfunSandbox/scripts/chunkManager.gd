@@ -72,7 +72,7 @@ static func updateLoadedChunks(positions):
 	
 	for position in positions:
 		for ix in range(-chunkLoadingRadius, chunkLoadingRadius):
-			for iy in range(-chunkLoadingRadius, chunkLoadingRadius):
+			for iy in range(-1, chunkLoadingRadius):
 				for iz in range(-chunkLoadingRadius, chunkLoadingRadius):
 					var chunkname = getChunkName(position, ix, iy, iz)
 					if not loadedChunks.has(chunkname):
