@@ -62,11 +62,12 @@ static func addMesh(position, blockname):
 		meshlist.add_child(multiMeshInstance)
 		
 		var multiMesh = MultiMesh.new()
+		multiMesh.transform_format = MultiMesh.TRANSFORM_3D
 		multiMesh.mesh = _mesh[0]
 		multiMeshInstance.multimesh = multiMesh
 	
 	var transform = Transform3D()
 	transform.origin = position - getChunkPosition(position)
-	
+
 	multiMeshInstance.multimesh.set_instance_transform(multiMeshInstance.multimesh.instance_count, transform)
 	multiMeshInstance.multimesh.instance_count += 1;
