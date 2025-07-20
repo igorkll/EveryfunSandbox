@@ -3,8 +3,8 @@ extends Node
 static var node_root
 static var node_main
 
-static var chunkSize = 8
-static var chunkLoadingRadius = 6
+static var chunkSize = 32
+static var chunkLoadingRadius = 16
 
 static var loadedChunks = {}
 
@@ -79,5 +79,4 @@ static func updateLoadedChunks(positions):
 
 	for chunkname in loadedChunks:
 		if not chunkname in checkChunks:
-			print(chunkname)
 			unloadChunk(loadedChunks[chunkname])
