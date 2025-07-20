@@ -40,13 +40,22 @@ static func _recreateTree(name):
 	save_world.add_child(save_world_chunks)
 	
 static func loadChunk(name):
+	var oldAutoChunkUpdate = blockManager.autoChunkUpdate
+	blockManager.autoChunkUpdate = false
+	
+	var lastPosition
 	var file = FileAccess.open(save_chunk_dir + "/" + name, FileAccess.READ)
 	if file:
 		var staticObjects = bytes_to_var(file.get_buffer(file.get_length()))
 		for staticObject in staticObjects:
 			blockManager.spawn(staticObject.p, false, staticObject.n, null, staticObject.d)
+			lastPosition = staticObject.p
 		
 		file.close()
+	
+	blockManager.autoChunkUpdate = oldAutoChunkUpdate
+	if lastPosition:
+		chunkManager.getChunk(lastPosition).updateMesh()
 	
 static func exists(name):
 	return DirAccess.dir_exists_absolute(getSavePath(name))

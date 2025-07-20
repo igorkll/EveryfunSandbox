@@ -67,5 +67,5 @@ static func updateLoadedChunks(position):
 		for iy in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
 			for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
 				var chunkname = getChunkName(position, ix, iy, iz)
-				if not chunkname in chunks:
+				if not chunks.has_node(chunkname):
 					saveManager.loadChunk(chunkname)
