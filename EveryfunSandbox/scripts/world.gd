@@ -18,8 +18,8 @@ func _ready():
 			blockManager.spawn((Vector3) (12, 10 + iy * 2, 12), false, "den")
 			blockManager.spawn((Vector3) (12, 10 + iy * 2, -12), false, "rainbow")
 			
-		for ix in range(-64, 32):
-			for iz in range(-32, 32):
+		for ix in range(-64, 64):
+			for iz in range(-64, 64):
 				blockManager.spawn((Vector3) (ix, 0, iz), false, "grass")
 				
 		saveManager.save()

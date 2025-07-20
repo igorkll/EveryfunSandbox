@@ -26,7 +26,7 @@ func updateMesh():
 					if blockname in usesCount:
 						usesCount[blockname] += 1
 					else:
-						usesCount[blockname] = 0
+						usesCount[blockname] = 1
 						currentIndex[blockname] = 0
 	
 	for ix in range(chunkManager.chunkSize):
