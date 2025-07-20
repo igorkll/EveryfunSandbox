@@ -97,7 +97,12 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 
 static func destroy(blockobject):
 	if not blockobject.__rigid_body:
-		chunkManager.getChunk(blockobject.position).array[chunkManager.getChunkArrayPosition(blockobject.position)] = null
+		var chunk = chunkManager.getChunk(blockobject.position)
+		var index = chunkManager.getChunkArrayPosition(blockobject.position)
+		if chunk.array[index] == blockobject.__name:
+			chunk.array[index] = null
+			if autoChunkUpdate:
+				chunk.updateMesh()
 	blockobject.queue_free()
 	
 static func interact(blockobject):
@@ -115,9 +120,8 @@ static func isBlock(blockobject):
 
 static func toDynamic(blockobject):
 	if isStatic(blockobject):
-		var newObject = spawn(blockobject.position, true, blockobject.__name, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
 		destroy(blockobject)
-		return newObject
+		return spawn(blockobject.position, true, blockobject.__name, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
 	return blockobject
 	
 static func snapBlockPosition(pos):
@@ -125,7 +129,6 @@ static func snapBlockPosition(pos):
 
 static func toStatic(blockobject):
 	if isDynamic(blockobject):
-		var newObject = spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, blockobject.___alldata, blockobject.__state)
 		destroy(blockobject)
-		return newObject
+		return spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, blockobject.___alldata, blockobject.__state)
 	return blockobject
