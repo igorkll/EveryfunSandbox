@@ -6,6 +6,8 @@ static var node_main
 static var chunkSize = 8
 static var chunkLoadingRadius = 6
 
+static var loadedChunks = {}
+
 func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("main")
@@ -50,6 +52,7 @@ static func getChunk(position):
 			for ix in range(chunkManager.chunkSize):
 				chunk.array.append(null)
 	chunks.add_child(chunk)
+	loadedChunks[chunk.name] = chunk
 	
 	var staticObjects = Node3D.new()
 	staticObjects.name = "staticObjects"
@@ -59,24 +62,22 @@ static func getChunk(position):
 	
 static func unloadChunk(chunk):
 	saveManager.saveChunk(chunk)
+	loadedChunks.erase(chunk.name)
 	chunk.free()
 
 static func updateLoadedChunks(positions):
-	var loadedChunks = []
-	
-	var chunks = node_main.get_node("world").get_node("chunks")
+	var checkChunks = []
 	
 	for position in positions:
 		for ix in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
 			for iy in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
 				for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
 					var chunkname = getChunkName(position, ix, iy, iz)
-					if not chunks.has_node(chunkname):
+					if not chunkname in loadedChunks:
 						saveManager.loadChunk(getChunkPosition(position, ix, iy, iz))
-					loadedChunks.append(chunkname)
+					checkChunks.append(chunkname)
 
-	for chunk in chunks.get_children():
-		var chunkname = getChunkName(chunk.chunkPosition)
-		if not chunkname in loadedChunks:
-			unloadChunk(chunk)
-			pass
+	for chunkname in loadedChunks:
+		if not chunkname in checkChunks:
+			print(chunkname)
+			unloadChunk(loadedChunks[chunkname])
