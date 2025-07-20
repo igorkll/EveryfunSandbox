@@ -14,7 +14,7 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	if dynamic:
 		body = RigidBody3D.new()
 	else:
-		body = StaticBody3D.new()
+		body = Node3D.new()
 	
 	if quaternion:
 		body.quaternion = quaternion
@@ -37,6 +37,7 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		
 	if dynamic:
 		body.__rigid_body = body
+		
 		var box_collision = CollisionShape3D.new()
 		box_collision.shape = BoxShape3D.new()
 		body.add_child(box_collision)
