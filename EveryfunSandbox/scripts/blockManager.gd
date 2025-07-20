@@ -34,13 +34,14 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	body.___alldata = data
 	body.___gamedata = data[0]
 	body.__data = data[1]
-	
+		
 	if dynamic:
 		body.__rigid_body = body
-	
-	var box_collision = CollisionShape3D.new()
-	box_collision.shape = BoxShape3D.new()
-	body.add_child(box_collision)
+		var box_collision = CollisionShape3D.new()
+		box_collision.shape = BoxShape3D.new()
+		body.add_child(box_collision)
+	else:
+		chunkManager.addCollision(position)
 
 	if "mesh" in blockscript:
 		var mesh = blockscript.mesh

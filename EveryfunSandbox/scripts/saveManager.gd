@@ -34,6 +34,10 @@ static func _recreateTree():
 	save_world_static.name = "static"
 	save_world.add_child(save_world_static)
 	
+	var save_world_chunks = Node3D.new()
+	save_world_chunks.name = "chunks"
+	save_world.add_child(save_world_chunks)
+	
 static func exists(name):
 	# return DirAccess.dir_exists_absolute(getSavePath(name))
 	return false
