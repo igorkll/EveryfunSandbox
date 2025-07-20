@@ -15,13 +15,14 @@ func _ready():
 var save_timer = 0
 var save_per = 5
 
-var update_chunks_per = 2
-var update_chunks_timer = 0
+var updateChunks_per = 2
+var updateChunks_timer = 0
 
 func _physics_process(delta):
-	update_chunks_timer += delta
-	if update_chunks_timer > update_chunks_per:
+	updateChunks_timer += delta
+	if updateChunks_timer > updateChunks_per:
 		chunkManager.updateLoadedChunks([$player.position])
+		updateChunks_timer = 0
 		
 	save_timer += delta
 	if save_timer > save_per:
