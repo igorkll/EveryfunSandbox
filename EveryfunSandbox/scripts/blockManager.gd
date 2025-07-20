@@ -34,7 +34,7 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	if dynamic:
 		body = RigidBody3D.new()
 	else:
-		body = Node3D.new()
+		body = StaticBody3D.new()
 	
 	if quaternion:
 		body.quaternion = quaternion
@@ -61,8 +61,8 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		var box_collision = CollisionShape3D.new()
 		box_collision.shape = BoxShape3D.new()
 		body.add_child(box_collision)
-	else:
-		chunkManager.addCollision(position)
+		
+	var chunk = chunkManager.getChunk(position)
 
 	if dynamic:
 		var _mesh = getMeshAndMaterial(blockscript)
@@ -74,12 +74,12 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		mesh_instance.material_override = _mesh[1]
 		body.add_child(mesh_instance)
 	else:
-		chunkManager.addMesh(position, blockname)
+		chunk.array[chunkManager.getChunkInternalPosition(position)] = blockname
 
 	if dynamic:
 		node_main.get_node("world").get_node("dynamic").add_child(body)
 	else:
-		node_main.get_node("world").get_node("static").add_child(body)
+		chunk.add_child(body)
 	
 	if "__firstInit" in body:
 		if not "fi" in body.___gamedata or not body.___gamedata.fi: # first init
@@ -102,7 +102,7 @@ static func isDynamic(blockobject):
 	return blockobject.get_parent() == node_main.get_node("world").get_node("dynamic")
 	
 static func isStatic(blockobject):
-	return blockobject.get_parent() == node_main.get_node("world").get_node("static")
+	return blockobject.get_parent().get_parent() == node_main.get_node("world").get_node("chunks")
 	
 static func isBlock(blockobject):
 	return isDynamic(blockobject) || isStatic(blockobject)
