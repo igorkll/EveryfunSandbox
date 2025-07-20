@@ -3,7 +3,7 @@ extends Node
 static var node_root
 static var node_main
 
-static var chunkSize = 32
+static var chunkSize = 2
 static var chunkLoadingRadius = 16
 
 static var loadedChunks = {}
@@ -40,9 +40,11 @@ static func getChunk(position):
 	var chunkname = getChunkName(position)
 	
 	var chunks = node_main.get_node("world").get_node("chunks")
-	var chunk = chunks.get_node(chunkname)
-	if chunk:
-		return chunk
+	var chunk
+	if chunks.has_node(chunkname):
+		chunk = chunks.get_node(chunkname)
+		if chunk:
+			return chunk
 
 	chunk = Chunk.new()
 	chunk.name = chunkname
@@ -69,11 +71,11 @@ static func updateLoadedChunks(positions):
 	var checkChunks = []
 	
 	for position in positions:
-		for ix in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
-			for iy in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
-				for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
+		for ix in range(-chunkLoadingRadius, chunkLoadingRadius):
+			for iy in range(-chunkLoadingRadius, chunkLoadingRadius):
+				for iz in range(-chunkLoadingRadius, chunkLoadingRadius):
 					var chunkname = getChunkName(position, ix, iy, iz)
-					if not chunkname in loadedChunks:
+					if not loadedChunks.has(chunkname):
 						saveManager.loadChunk(getChunkPosition(position, ix, iy, iz))
 					checkChunks.append(chunkname)
 

@@ -25,9 +25,10 @@ static func _recreateTree(name):
 	save_dir = getSavePath(save_name)
 	save_chunk_dir = save_dir + "/chunks"
 	
-	save_world = node_main.get_node("world")
-	if save_world:
-		save_world.queue_free()
+	if node_main.has_node("world"):
+		save_world = node_main.get_node("world")
+		if save_world:
+			save_world.queue_free()
 	
 	save_world = Node3D.new()
 	save_world.name = "world"
@@ -46,6 +47,7 @@ static func loadChunk(position):
 	blockManager.autoChunkUpdate = false
 	blockManager.blockSpawned = false
 	
+	var chunk = chunkManager.getChunk(position)
 	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(position), FileAccess.READ)
 	if file:
 		var staticObjects = bytes_to_var(file.get_buffer(file.get_length()))
@@ -58,7 +60,7 @@ static func loadChunk(position):
 	
 	blockManager.autoChunkUpdate = oldAutoChunkUpdate
 	if blockManager.blockSpawned:
-		chunkManager.getChunk(position).updateMesh()
+		chunk.updateMesh()
 	
 static func exists(name):
 	return DirAccess.dir_exists_absolute(getSavePath(name))

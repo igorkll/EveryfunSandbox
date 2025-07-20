@@ -7,9 +7,11 @@ var chunkPosition
 var chunkUpdated = false
 
 func updateMesh():
-	var meshlist = $meshlist
-	if meshlist:
-		meshlist.free()
+	var meshlist
+	if has_node("meshlist"):
+		meshlist = $meshlist
+		if meshlist:
+			meshlist.free()
 		
 	meshlist = Node3D.new()
 	meshlist.position = chunkPosition
@@ -37,7 +39,10 @@ func updateMesh():
 				var blockname = array[chunkManager.getChunkArrayPosition(position)]
 				
 				if blockname:
-					var multiMeshInstance:MultiMeshInstance3D = meshlist.get_node(blockname)
+					var multiMeshInstance:MultiMeshInstance3D
+					if meshlist.has_node(blockname):
+						multiMeshInstance = meshlist.get_node(blockname)
+						
 					if not multiMeshInstance:
 						var _mesh = blockManager.getMeshAndMaterial(blockManager.getBlockscript(blockname))
 						
