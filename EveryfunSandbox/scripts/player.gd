@@ -141,4 +141,5 @@ func _physics_process(delta):
 	velocity.x *= speed_mul;
 	velocity.z *= speed_mul;
 	
+	chunkManager.updateLoadedChunks(position)
 	move_and_slide()

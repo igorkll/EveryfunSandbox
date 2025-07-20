@@ -4,6 +4,7 @@ static var node_root
 static var node_main
 
 static var chunkSize = 32
+static var chunkLoadingRadius = 1
 
 func _ready():
 	node_root = get_tree().root
@@ -55,3 +56,12 @@ static func getChunk(position):
 	chunk.add_child(staticObjects)
 	
 	return chunk
+	
+static func unloadChunk(chunk):
+	saveManager.saveChunk(chunk)
+	chunk.queue_free()
+
+static func updateLoadedChunks(position):
+	for ix in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
+		for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
+			saveManager.loadChunk(getChunkName(position, ix, iz))
