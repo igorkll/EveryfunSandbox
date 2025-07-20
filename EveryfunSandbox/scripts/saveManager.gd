@@ -8,6 +8,7 @@ static var save_dir
 
 static var save_world
 static var save_world_dynamic
+static var save_world_static
 
 func _ready():
 	node_root = get_tree().root
@@ -28,6 +29,10 @@ static func _recreateTree():
 	save_world_dynamic = Node3D.new()
 	save_world_dynamic.name = "dynamic"
 	save_world.add_child(save_world_dynamic)
+	
+	save_world_static = Node3D.new()
+	save_world_static.name = "static"
+	save_world.add_child(save_world_static)
 	
 static func exists(name):
 	# return DirAccess.dir_exists_absolute(getSavePath(name))

@@ -37,8 +37,6 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	
 	if dynamic:
 		body.__rigid_body = body
-	else:
-		body.__static_body = body
 	
 	var box_collision = CollisionShape3D.new()
 	box_collision.shape = BoxShape3D.new()
@@ -68,7 +66,7 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	if dynamic:
 		node_main.get_node("world").get_node("dynamic").add_child(body)
 	else:
-		node_main.get_node("world").add_child(body)
+		node_main.get_node("world").get_node("static").add_child(body)
 	
 	if "__firstInit" in body:
 		if not "fi" in body.___gamedata or not body.___gamedata.fi: # first init
@@ -87,14 +85,14 @@ static func interact(blockobject):
 	if "__interact" in blockobject:
 		blockobject.__interact()
 
-static func isBlock(blockobject):
-	return blockobject is RigidBody3D || blockobject is StaticBody3D
-
 static func isDynamic(blockobject):
-	return blockobject is RigidBody3D
+	return blockobject.get_parent() == node_main.get_node("world").get_node("dynamic")
 	
 static func isStatic(blockobject):
-	return blockobject is StaticBody3D
+	return blockobject.get_parent() == node_main.get_node("world").get_node("static")
+	
+static func isBlock(blockobject):
+	return isDynamic(blockobject) || isStatic(blockobject)
 
 static func toDynamic(blockobject):
 	if isStatic(blockobject):
