@@ -3,8 +3,8 @@ extends Node
 static var node_root
 static var node_main
 
-static var chunkSize = 32
-static var chunkLoadingRadius = 1
+static var chunkSize = 8
+static var chunkLoadingRadius = 6
 
 func _ready():
 	node_root = get_tree().root

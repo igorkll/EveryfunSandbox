@@ -44,6 +44,7 @@ static func _recreateTree(name):
 static func loadChunk(position):
 	var oldAutoChunkUpdate = blockManager.autoChunkUpdate
 	blockManager.autoChunkUpdate = false
+	blockManager.blockSpawned = false
 	
 	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(position), FileAccess.READ)
 	if file:
@@ -56,13 +57,15 @@ static func loadChunk(position):
 		worldGenerator.call(gamedata.generator, position, gamedata.seed)
 	
 	blockManager.autoChunkUpdate = oldAutoChunkUpdate
-	chunkManager.getChunk(position).updateMesh()
+	if blockManager.blockSpawned:
+		chunkManager.getChunk(position).updateMesh()
 	
 static func exists(name):
 	return DirAccess.dir_exists_absolute(getSavePath(name))
 	
 static func open(name):
 	_recreateTree(name)
+	updateGamedata()
 	
 	var file = FileAccess.open(save_dir + "/dynamic", FileAccess.READ)
 	if file:
