@@ -33,13 +33,14 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	var body
 	if dynamic:
 		body = RigidBody3D.new()
+		body.position = position
 	else:
 		body = StaticBody3D.new()
+		body.position = position
 	
 	if quaternion:
 		body.quaternion = quaternion
 	
-	body.position = position
 	body.set_script(blockscript)
 	
 	if not data:
@@ -58,9 +59,9 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	if dynamic:
 		body.__rigid_body = body
 		
-		var box_collision = CollisionShape3D.new()
-		box_collision.shape = BoxShape3D.new()
-		body.add_child(box_collision)
+	var box_collision = CollisionShape3D.new()
+	box_collision.shape = BoxShape3D.new()
+	body.add_child(box_collision)
 		
 	var chunk = chunkManager.getChunk(position)
 
@@ -74,7 +75,8 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		mesh_instance.material_override = _mesh[1]
 		body.add_child(mesh_instance)
 	else:
-		chunk.array[chunkManager.getChunkInternalPosition(position)] = blockname
+		chunk.array[chunkManager.getChunkArrayPosition(position)] = blockname
+		chunk.updateMesh()
 
 	if dynamic:
 		node_main.get_node("world").get_node("dynamic").add_child(body)

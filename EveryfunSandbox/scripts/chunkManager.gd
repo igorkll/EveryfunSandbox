@@ -21,11 +21,17 @@ static func getChunkPosition(position):
 	var chunk_z = floor(position.z / chunkSize)
 	return Vector3(chunk_x * chunkSize, chunk_y * chunkSize, chunk_z * chunkSize)
 	
-static func getChunkInternalPosition(position):
+static func getChunkArrayPosition(position):
 	var chunk_x = int(position.x) % chunkSize
 	var chunk_y = int(position.y) % chunkSize
 	var chunk_z = int(position.z) % chunkSize
 	return chunk_x + (chunk_y * chunkSize) + (chunk_z * chunkSize * chunkSize)
+	
+static func getChunkInternalPosition(position):
+	var chunk_x = int(position.x) % chunkSize
+	var chunk_y = int(position.y) % chunkSize
+	var chunk_z = int(position.z) % chunkSize
+	return Vector3(chunk_x, chunk_y, chunk_z)
 
 static func getChunk(position):
 	var chunkname = getChunkName(position)
@@ -36,8 +42,12 @@ static func getChunk(position):
 		return chunk
 
 	chunk = Chunk.new()
-	chunk.position = getChunkPosition(position)
 	chunk.name = chunkname
+	chunk.chunkPosition = chunkManager.getChunkPosition(position)
+	for iz in range(chunkManager.chunkSize):
+		for iy in range(chunkManager.chunkSize):
+			for ix in range(chunkManager.chunkSize):
+				chunk.array.append(null)
 	chunks.add_child(chunk)
 	
 	return chunk

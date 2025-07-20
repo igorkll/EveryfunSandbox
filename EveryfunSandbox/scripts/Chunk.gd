@@ -3,11 +3,13 @@ extends Node3D
 class_name Chunk
 
 var array = []
+var chunkPosition
 
 func updateMesh():
 	var meshlist = $meshlist
 	if not meshlist:
 		meshlist = Node3D.new()
+		meshlist.position = chunkPosition
 		meshlist.name = "meshlist"
 		add_child(meshlist)
 	
@@ -16,7 +18,8 @@ func updateMesh():
 	for ix in range(chunkManager.chunkSize):
 		for iy in range(chunkManager.chunkSize):
 			for iz in range(chunkManager.chunkSize):
-				var blockname = array[chunkManager.getChunkInternalPosition(position)]
+				var position = Vector3(ix, iy, iz)
+				var blockname = array[chunkManager.getChunkArrayPosition(position)]
 				if blockname:
 					if blockname in usesCount:
 						usesCount[blockname] += 1
@@ -28,7 +31,7 @@ func updateMesh():
 		for iy in range(chunkManager.chunkSize):
 			for iz in range(chunkManager.chunkSize):
 				var position = Vector3(ix, iy, iz)
-				var blockname = array[chunkManager.getChunkInternalPosition(position)]
+				var blockname = array[chunkManager.getChunkArrayPosition(position)]
 				
 				if blockname:
 					var multiMeshInstance:MultiMeshInstance3D = meshlist.get_node(blockname)
