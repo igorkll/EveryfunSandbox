@@ -86,7 +86,9 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	if dynamic:
 		node_main.get_node("world").get_node("dynamic").add_child(body)
 	else:
-		chunkManager.getChunk(position).get_node("staticObjects").add_child(body)
+		var chunk = chunkManager.getChunk(position)
+		chunk.chunkUpdated = true
+		chunk.get_node("staticObjects").add_child(body)
 	
 	if "__firstInit" in body:
 		if not "fi" in body.___gamedata or not body.___gamedata.fi: # first init
@@ -103,6 +105,7 @@ static func destroy(blockobject):
 		var chunk = chunkManager.getChunk(blockobject.position)
 		var index = chunkManager.getChunkArrayPosition(blockobject.position)
 		if chunk.array[index] == blockobject.__name:
+			chunk.chunkUpdated = true
 			chunk.array[index] = null
 			if autoChunkUpdate:
 				chunk.updateMesh()
