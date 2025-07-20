@@ -25,6 +25,10 @@ func _ready():
 		saveManager.save()
 	else:
 		saveManager.open("default")
+	
+	for chunk in $world.get_node("chunks").get_children():
+		chunk.updateMesh()
+	
 
 var save_timer = 0
 var save_per = 5

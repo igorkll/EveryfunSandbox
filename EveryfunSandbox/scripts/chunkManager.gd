@@ -50,4 +50,8 @@ static func getChunk(position):
 				chunk.array.append(null)
 	chunks.add_child(chunk)
 	
+	var staticObjects = Node3D.new()
+	staticObjects.name = "staticObjects"
+	chunk.add_child(staticObjects)
+	
 	return chunk

@@ -7,11 +7,13 @@ var chunkPosition
 
 func updateMesh():
 	var meshlist = $meshlist
-	if not meshlist:
-		meshlist = Node3D.new()
-		meshlist.position = chunkPosition
-		meshlist.name = "meshlist"
-		add_child(meshlist)
+	if meshlist:
+		meshlist.queue_free()
+	
+	meshlist = Node3D.new()
+	meshlist.position = chunkPosition
+	meshlist.name = "meshlist"
+	add_child(meshlist)
 	
 	var usesCount = {}
 	var currentIndex = {}
@@ -49,8 +51,8 @@ func updateMesh():
 						multiMeshInstance.multimesh = multiMesh
 						meshlist.add_child(multiMeshInstance)
 				
-						var transform = Transform3D()
-						transform.origin = position
-						multiMeshInstance.multimesh.set_instance_transform(currentIndex[blockname], transform)
-						currentIndex[blockname] += 1
+					var transform = Transform3D()
+					transform.origin = position
+					multiMeshInstance.multimesh.set_instance_transform(currentIndex[blockname], transform)
+					currentIndex[blockname] += 1
 	

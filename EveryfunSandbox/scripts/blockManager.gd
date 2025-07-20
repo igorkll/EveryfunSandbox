@@ -76,12 +76,11 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 		body.add_child(mesh_instance)
 	else:
 		chunk.array[chunkManager.getChunkArrayPosition(position)] = blockname
-		chunk.updateMesh()
 
 	if dynamic:
 		node_main.get_node("world").get_node("dynamic").add_child(body)
 	else:
-		chunk.add_child(body)
+		chunk.get_node("staticObjects").add_child(body)
 	
 	if "__firstInit" in body:
 		if not "fi" in body.___gamedata or not body.___gamedata.fi: # first init
@@ -104,7 +103,7 @@ static func isDynamic(blockobject):
 	return blockobject.get_parent() == node_main.get_node("world").get_node("dynamic")
 	
 static func isStatic(blockobject):
-	return blockobject.get_parent().get_parent() == node_main.get_node("world").get_node("chunks")
+	return blockobject.get_parent().get_parent().get_parent() == node_main.get_node("world").get_node("chunks")
 	
 static func isBlock(blockobject):
 	return isDynamic(blockobject) || isStatic(blockobject)
