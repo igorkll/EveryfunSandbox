@@ -6,11 +6,6 @@ func _ready():
 	else:
 		saveManager.open("default")
 	
-	for chunk in $world.get_node("chunks").get_children():
-		chunk.updateMesh()
-		
-	blockManager.autoChunkUpdate = true
-	
 
 var save_timer = 0
 var save_per = 5

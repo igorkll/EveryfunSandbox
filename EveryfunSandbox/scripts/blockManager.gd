@@ -2,7 +2,7 @@ extends Node
 
 static var node_root
 static var node_main
-static var autoChunkUpdate = false
+static var autoChunkUpdate = true
 static var blockSpawned = false
 
 func _ready():

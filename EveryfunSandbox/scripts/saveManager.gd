@@ -11,7 +11,7 @@ static var save_world
 static var save_world_dynamic
 static var save_world_chunks
 
-static var gamedata
+static var world_parameters
 
 func _ready():
 	node_root = get_tree().root
@@ -56,12 +56,11 @@ static func loadChunk(position):
 		
 		file.close()
 	else:
-		worldGenerator.call(gamedata.generator, chunk, position, gamedata.seed)
+		worldGenerator.call(world_parameters.generator, chunk, position, world_parameters.seed)
 	
 	blockManager.autoChunkUpdate = oldAutoChunkUpdate
 	if blockManager.blockSpawned:
-		# chunk.updateMesh()
-		pass
+		chunk.updateMesh()
 		
 	return chunk
 	
@@ -70,7 +69,6 @@ static func exists(name):
 	
 static func open(name):
 	_recreateTree(name)
-	updateGamedata()
 	
 	var file = FileAccess.open(save_dir + "/dynamic", FileAccess.READ)
 	if file:
@@ -85,7 +83,7 @@ static func open(name):
 		
 	file = FileAccess.open(save_dir + "/gamedata", FileAccess.READ)
 	if file:
-		gamedata = bytes_to_var(file.get_buffer(file.get_length()))
+		var gamedata = bytes_to_var(file.get_buffer(file.get_length()))
 		
 		player.position = gamedata.player_position
 		camera.total_pitch = gamedata.player_camera_total_pitch
@@ -94,28 +92,30 @@ static func open(name):
 			
 		file.close()
 		
+	file = FileAccess.open(save_dir + "/parameters", FileAccess.READ)
+	if file:
+		world_parameters = bytes_to_var(file.get_buffer(file.get_length()))
+		file.close()
+		
 	chunkManager.updateLoadedChunks([player.position])
 
-static func updateGamedata():
-	var player = node_main.get_node("player")
-	var camera = player.get_node("camera")
-	
-	gamedata = {
-		player_position = player.position,
-		player_camera_total_pitch = camera.total_pitch,
-		player_camera_quaternion = camera.quaternion,
-		time = gameApi.getTime(),
-		generator = "flat_world",
-		seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
-	}
 
-static func create(name):
+static func create(name, _parameters):
 	_recreateTree(name)
 	
 	DirAccess.make_dir_recursive_absolute(save_dir)
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
 	
-	updateGamedata()
+	if not _parameters:
+		_parameters = {}
+	
+	if not _parameters.has("generator"):
+		_parameters.generator = "flat_world"
+	
+	if not _parameters.has("seed"):
+		_parameters.seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
+		
+	world_parameters = _parameters
 	
 	var player = node_main.get_node("player")
 	chunkManager.updateLoadedChunks([player.position])
@@ -159,9 +159,22 @@ static func save():
 		
 	file = FileAccess.open(save_dir + "/gamedata", FileAccess.WRITE)
 	if file:
-		updateGamedata()
+		var player = node_main.get_node("player")
+		var camera = player.get_node("camera")
+		
+		var gamedata = {
+			player_position = player.position,
+			player_camera_total_pitch = camera.total_pitch,
+			player_camera_quaternion = camera.quaternion,
+			time = gameApi.getTime()
+		}
 			
 		file.store_buffer(var_to_bytes(gamedata))
+		file.close()
+		
+	file = FileAccess.open(save_dir + "/parameters", FileAccess.WRITE)
+	if file:
+		file.store_buffer(var_to_bytes(world_parameters))
 		file.close()
 		
 	saveAllChunks()
