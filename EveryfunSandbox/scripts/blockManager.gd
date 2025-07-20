@@ -25,7 +25,8 @@ static func getMeshAndMaterial(blockscript):
 				material.albedo_texture = blockscript.texture
 				
 		return [mesh, material]
-		
+
+
 static func getBlockscript(blockname):
 	return load("res://blocks/" + blockname + "/script.gd")
 

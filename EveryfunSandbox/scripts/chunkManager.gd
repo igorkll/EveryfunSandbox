@@ -3,8 +3,8 @@ extends Node
 static var node_root
 static var node_main
 
-static var chunkSize = 2
-static var chunkLoadingRadius = 16
+static var chunkSize = 32
+static var chunkLoadingRadius = 2
 
 static var loadedChunks = {}
 
