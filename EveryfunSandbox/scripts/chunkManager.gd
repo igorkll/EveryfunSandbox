@@ -10,11 +10,11 @@ func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("main")
 
-static func getChunkName(position, offsetX = 0, offsetZ = 0):
+static func getChunkName(position, offsetX = 0, offsetY = 0, offsetZ = 0):
 	var chunk_x: int = floor(position.x / chunkSize)
 	var chunk_y: int = floor(position.y / chunkSize)
 	var chunk_z: int = floor(position.z / chunkSize)
-	return str(chunk_x + offsetX) + "_" + str(chunk_y) + "_" + str(chunk_z + offsetZ)
+	return str(chunk_x + offsetX) + "_" + str(chunk_y + offsetY) + "_" + str(chunk_z + offsetZ)
 
 static func getChunkPosition(position):
 	var chunk_x = floor(position.x / chunkSize)
@@ -64,7 +64,8 @@ static func unloadChunk(chunk):
 static func updateLoadedChunks(position):
 	var chunks = node_main.get_node("world").get_node("chunks")
 	for ix in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
-		for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
-			var chunkname = getChunkName(position, ix, iz)
-			if not chunkname in chunks:
-				saveManager.loadChunk(chunkname)
+		for iy in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
+			for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
+				var chunkname = getChunkName(position, ix, iy, iz)
+				if not chunkname in chunks:
+					saveManager.loadChunk(chunkname)
