@@ -31,6 +31,7 @@ static func getChunk(position):
 		return chunk
 
 	chunk = StaticBody3D.new()
+	chunk.position = getChunkPosition(position)
 	chunk.name = chunkname
 	chunks.add_child(chunk)
 	
