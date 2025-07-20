@@ -9,11 +9,11 @@ func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("main")
 
-static func getChunkName(position):
+static func getChunkName(position, offsetX = 0, offsetZ = 0):
 	var chunk_x: int = floor(position.x / chunkSize)
 	var chunk_y: int = floor(position.y / chunkSize)
 	var chunk_z: int = floor(position.z / chunkSize)
-	return str(chunk_x) + "_" + str(chunk_y) + "_" + str(chunk_z)
+	return str(chunk_x + offsetX) + "_" + str(chunk_y) + "_" + str(chunk_z + offsetZ)
 
 static func getChunkPosition(position):
 	var chunk_x = floor(position.x / chunkSize)

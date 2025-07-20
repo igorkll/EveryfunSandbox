@@ -18,7 +18,11 @@ func _ready():
 static func getSavePath(name):
 	return "user://saves/" + name
 	
-static func _recreateTree():
+static func _recreateTree(name):
+	save_name = name
+	save_dir = getSavePath(save_name)
+	save_chunk_dir = save_dir + "/chunks"
+	
 	save_world = node_main.get_node("world")
 	if save_world:
 		save_world.queue_free()
@@ -35,14 +39,20 @@ static func _recreateTree():
 	save_world_chunks.name = "chunks"
 	save_world.add_child(save_world_chunks)
 	
+static func loadChunk(name):
+	var file = FileAccess.open(save_chunk_dir + "/" + name, FileAccess.READ)
+	if file:
+		var staticObjects = bytes_to_var(file.get_buffer(file.get_length()))
+		for staticObject in staticObjects:
+			blockManager.spawn(staticObject.p, false, staticObject.n, null, staticObject.d)
+		
+		file.close()
+	
 static func exists(name):
-	# return DirAccess.dir_exists_absolute(getSavePath(name))
-	return false
+	return DirAccess.dir_exists_absolute(getSavePath(name))
 	
 static func open(name):
-	_recreateTree()
-	save_name = name
-	save_dir = getSavePath(save_name)
+	_recreateTree(name)
 	
 	var file = FileAccess.open(save_dir + "/dynamic", FileAccess.READ)
 	if file:
@@ -51,25 +61,26 @@ static func open(name):
 			blockManager.spawn(rigidBodyData.p, true, rigidBodyData.n, rigidBodyData.r, rigidBodyData.d)
 		
 		file.close()
+	
+	var player = node_main.get_node("player")
+	var camera = player.get_node("camera")
 		
 	file = FileAccess.open(save_dir + "/gamedata", FileAccess.READ)
 	if file:
 		var gamedata = bytes_to_var(file.get_buffer(file.get_length()))
-		
-		var player = node_main.get_node("player")
-		var camera = player.get_node("camera")
 		
 		player.position = gamedata.player_position
 		camera.total_pitch = gamedata.player_camera_total_pitch
 		camera.quaternion = gamedata.player_camera_quaternion
 			
 		file.close()
+		
+	for ix in range(-1, 2):
+		for iz in range(-1, 2):
+			loadChunk(chunkManager.getChunkName(player.position, ix, iz))
 
 static func create(name):
-	_recreateTree()
-	save_name = name
-	save_dir = getSavePath(save_name)
-	save_chunk_dir = save_dir + "/chunks"
+	_recreateTree(name)
 	
 	DirAccess.make_dir_recursive_absolute(save_dir)
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
