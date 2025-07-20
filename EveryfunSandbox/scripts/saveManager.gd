@@ -86,7 +86,20 @@ static func open(name):
 			
 		file.close()
 		
-	chunkManager.updateLoadedChunks([player.positions])
+	chunkManager.updateLoadedChunks([player.position])
+
+static func updateGamedata():
+	var player = node_main.get_node("player")
+	var camera = player.get_node("camera")
+	
+	gamedata = {
+		player_position = player.position,
+		player_camera_total_pitch = camera.total_pitch,
+		player_camera_quaternion = camera.quaternion,
+		time = gameApi.getTime(),
+		generator = "flat_world",
+		seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
+	}
 
 static func create(name):
 	_recreateTree(name)
@@ -94,8 +107,10 @@ static func create(name):
 	DirAccess.make_dir_recursive_absolute(save_dir)
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
 	
+	updateGamedata()
+	
 	var player = node_main.get_node("player")
-	chunkManager.updateLoadedChunks([player.positions])
+	chunkManager.updateLoadedChunks([player.position])
 	
 static func saveChunk(chunk):
 	if chunk.chunkUpdated:
@@ -136,17 +151,7 @@ static func save():
 		
 	file = FileAccess.open(save_dir + "/gamedata", FileAccess.WRITE)
 	if file:
-		var player = node_main.get_node("player")
-		var camera = player.get_node("camera")
-		
-		gamedata = {
-			player_position = player.position,
-			player_camera_total_pitch = camera.total_pitch,
-			player_camera_quaternion = camera.quaternion,
-			time = gameApi.getTime(),
-			generator = "flat_world",
-			seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
-		}
+		updateGamedata()
 			
 		file.store_buffer(var_to_bytes(gamedata))
 		file.close()

@@ -15,17 +15,11 @@ static func getChunkName(position, offsetX = 0, offsetY = 0, offsetZ = 0):
 	var chunk_y: int = floor(position.y / chunkSize)
 	var chunk_z: int = floor(position.z / chunkSize)
 	return str(chunk_x + offsetX) + "_" + str(chunk_y + offsetY) + "_" + str(chunk_z + offsetZ)
-	
-static func getChunkLocalPosition(position, offsetX = 0, offsetY = 0, offsetZ = 0):
-	var chunk_x: int = floor(position.x / chunkSize)
-	var chunk_y: int = floor(position.y / chunkSize)
-	var chunk_z: int = floor(position.z / chunkSize)
-	return Vector3(chunk_x + offsetX, chunk_y + offsetY, chunk_z + offsetZ)
 
-static func getChunkPosition(position):
-	var chunk_x = floor(position.x / chunkSize)
-	var chunk_y = floor(position.y / chunkSize)
-	var chunk_z = floor(position.z / chunkSize)
+static func getChunkPosition(position, offsetX = 0, offsetY = 0, offsetZ = 0):
+	var chunk_x = floor(position.x / chunkSize) + offsetX
+	var chunk_y = floor(position.y / chunkSize) + offsetY
+	var chunk_z = floor(position.z / chunkSize) + offsetZ
 	return Vector3(chunk_x * chunkSize, chunk_y * chunkSize, chunk_z * chunkSize)
 	
 static func getChunkArrayPosition(position):
@@ -78,7 +72,7 @@ static func updateLoadedChunks(positions):
 				for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
 					var chunkname = getChunkName(position, ix, iy, iz)
 					if not chunks.has_node(chunkname):
-						saveManager.loadChunk(getChunkLocalPosition(position, ix, iy, iz))
+						saveManager.loadChunk(getChunkPosition(position, ix, iy, iz))
 					loadedChunks.append(chunkname)
 
 	for chunk in chunks.get_children():
