@@ -11,6 +11,8 @@ static var save_world
 static var save_world_dynamic
 static var save_world_chunks
 
+static var gamedata
+
 func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("main")
@@ -39,23 +41,22 @@ static func _recreateTree(name):
 	save_world_chunks.name = "chunks"
 	save_world.add_child(save_world_chunks)
 	
-static func loadChunk(name):
+static func loadChunk(position):
 	var oldAutoChunkUpdate = blockManager.autoChunkUpdate
 	blockManager.autoChunkUpdate = false
 	
-	var lastPosition
-	var file = FileAccess.open(save_chunk_dir + "/" + name, FileAccess.READ)
+	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(position), FileAccess.READ)
 	if file:
 		var staticObjects = bytes_to_var(file.get_buffer(file.get_length()))
 		for staticObject in staticObjects:
 			blockManager.spawn(staticObject.p, false, staticObject.n, null, staticObject.d)
-			lastPosition = staticObject.p
 		
 		file.close()
+	else:
+		worldGenerator.call(gamedata.generator, position, gamedata.seed)
 	
 	blockManager.autoChunkUpdate = oldAutoChunkUpdate
-	if lastPosition:
-		chunkManager.getChunk(lastPosition).updateMesh()
+	chunkManager.getChunk(position).updateMesh()
 	
 static func exists(name):
 	return DirAccess.dir_exists_absolute(getSavePath(name))
@@ -76,7 +77,7 @@ static func open(name):
 		
 	file = FileAccess.open(save_dir + "/gamedata", FileAccess.READ)
 	if file:
-		var gamedata = bytes_to_var(file.get_buffer(file.get_length()))
+		gamedata = bytes_to_var(file.get_buffer(file.get_length()))
 		
 		player.position = gamedata.player_position
 		camera.total_pitch = gamedata.player_camera_total_pitch
@@ -92,6 +93,9 @@ static func create(name):
 	
 	DirAccess.make_dir_recursive_absolute(save_dir)
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
+	
+	var player = node_main.get_node("player")
+	chunkManager.updateLoadedChunks([player.positions])
 	
 static func saveChunk(chunk):
 	if chunk.chunkUpdated:
@@ -135,12 +139,13 @@ static func save():
 		var player = node_main.get_node("player")
 		var camera = player.get_node("camera")
 		
-		var gamedata = {
+		gamedata = {
 			player_position = player.position,
 			player_camera_total_pitch = camera.total_pitch,
 			player_camera_quaternion = camera.quaternion,
 			time = gameApi.getTime(),
-			generator = 1
+			generator = "flat_world",
+			seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
 		}
 			
 		file.store_buffer(var_to_bytes(gamedata))

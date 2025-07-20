@@ -3,6 +3,7 @@ extends Node
 static var node_root
 static var node_main
 static var autoChunkUpdate = false
+static var lastPosition
 
 func _ready():
 	node_root = get_tree().root
@@ -29,6 +30,8 @@ static func getBlockscript(blockname):
 	return load("res://blocks/" + blockname + "/script.gd")
 
 static func spawn(position, dynamic, blockname, quaternion=null, data=null, state=null):
+	lastPosition = position
+	
 	var blockscript = getBlockscript(blockname)
 	
 	var body
