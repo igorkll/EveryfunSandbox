@@ -11,10 +11,10 @@ func _ready():
 	node_main = node_root.get_node("main")
 
 static func getChunkName(position):
-	var chunk_x = floor(position.x / chunkWidth)
-	var chunk_y = floor(position.y / chunkHeight)
-	var chunk_z = floor(position.z / chunkWidth)
-	return str(chunk_x) + ":" + str(chunk_y) + ":" + str(chunk_z)
+	var chunk_x: int = floor(position.x / chunkWidth)
+	var chunk_y: int = floor(position.y / chunkHeight)
+	var chunk_z: int = floor(position.z / chunkWidth)
+	return str(chunk_x) + "_" + str(chunk_y) + "_" + str(chunk_z)
 
 static func getChunkPosition(position):
 	var chunk_x = floor(position.x / chunkWidth)
@@ -58,11 +58,15 @@ static func addMesh(position, blockname):
 		
 		multiMeshInstance = MultiMeshInstance3D.new()
 		multiMeshInstance.name = blockname
-		multiMeshInstance.material_override = _mesh[2]
+		multiMeshInstance.material_override = _mesh[1]
 		meshlist.add_child(multiMeshInstance)
 		
 		var multiMesh = MultiMesh.new()
-		multiMesh.name = "multimesh"
-		multiMesh.mesh = _mesh[1]
+		multiMesh.mesh = _mesh[0]
 		multiMeshInstance.multimesh = multiMesh
-		multiMeshInstance.add_child(multiMesh)
+	
+	var transform = Transform3D()
+	transform.origin = position - getChunkPosition(position)
+	
+	multiMeshInstance.multimesh.set_instance_transform(multiMeshInstance.multimesh.instance_count, transform)
+	multiMeshInstance.multimesh.instance_count += 1;

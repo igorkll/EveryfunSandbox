@@ -67,11 +67,11 @@ static func spawn(position, dynamic, blockname, quaternion=null, data=null, stat
 	if dynamic:
 		var _mesh = getMeshAndMaterial(blockscript)
 					
-		body.__material = _mesh[2]
+		body.__material = _mesh[1]
 		
 		var mesh_instance = MeshInstance3D.new()
-		mesh_instance.mesh = _mesh[1]
-		mesh_instance.material_override = _mesh[2]
+		mesh_instance.mesh = _mesh[0]
+		mesh_instance.material_override = _mesh[1]
 		body.add_child(mesh_instance)
 	else:
 		chunkManager.addMesh(position, blockname)
