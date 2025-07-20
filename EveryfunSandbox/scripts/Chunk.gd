@@ -5,6 +5,12 @@ class_name Chunk
 var array = []
 var chunkPosition
 var chunkUpdated = false
+var usesCount = {}
+
+func deltaUseCount(blockname, delta):
+	if not usesCount.has(blockname):
+		usesCount[blockname] = 0
+	usesCount[blockname] += delta
 
 func updateMesh():
 	var meshlist
@@ -18,20 +24,7 @@ func updateMesh():
 	meshlist.name = "meshlist"
 	add_child(meshlist)
 	
-	var usesCount = {}
 	var currentIndex = {}
-	for ix in range(chunkManager.chunkSize):
-		for iy in range(chunkManager.chunkSize):
-			for iz in range(chunkManager.chunkSize):
-				var position = Vector3(ix, iy, iz)
-				var blockname = array[chunkManager.getChunkArrayPosition(position)]
-				if blockname:
-					if blockname in usesCount:
-						usesCount[blockname] += 1
-					else:
-						usesCount[blockname] = 1
-						currentIndex[blockname] = 0
-	
 	for ix in range(chunkManager.chunkSize):
 		for iy in range(chunkManager.chunkSize):
 			for iz in range(chunkManager.chunkSize):
@@ -59,6 +52,9 @@ func updateMesh():
 				
 					var transform = Transform3D()
 					transform.origin = position
+					if not currentIndex.has(blockname):
+						currentIndex[blockname] = 0
+					
 					multiMeshInstance.multimesh.set_instance_transform(currentIndex[blockname], transform)
 					currentIndex[blockname] += 1
 	

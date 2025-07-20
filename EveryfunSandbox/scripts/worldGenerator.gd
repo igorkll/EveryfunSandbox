@@ -13,6 +13,6 @@ static func stone_world(chunk, position, seed):
 		return
 	
 	for ix in range(0, chunkManager.chunkSize):
-		for iy in range(0, chunkManager.chunkSize):
+		for iy in range(0, 2):
 			for iz in range(0, chunkManager.chunkSize):
 				blockManager.spawn(position + Vector3(ix, iy, iz), false, "den", chunk)

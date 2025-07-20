@@ -9,6 +9,7 @@ func jump():
 func __init():
 	if "jump" in __data && __data.jump && __rigid_body:
 		jump()
+		__data.jump = false
 
 func __interact():
 	if __rigid_body:

@@ -85,6 +85,7 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 		if not chunk:
 			chunk = chunkManager.getChunk(position)
 		chunk.array[chunkManager.getChunkArrayPosition(position)] = blockname
+		chunk.deltaUseCount(body.__name, 1)
 		if autoChunkUpdate:
 			chunk.updateMesh()
 
@@ -111,6 +112,7 @@ static func destroy(blockobject):
 		var chunk = chunkManager.getChunk(blockobject.position)
 		var index = chunkManager.getChunkArrayPosition(blockobject.position)
 		if chunk.array[index] == blockobject.__name:
+			chunk.deltaUseCount(blockobject.__name, -1)
 			chunk.chunkUpdated = true
 			chunk.array[index] = null
 			if autoChunkUpdate:
