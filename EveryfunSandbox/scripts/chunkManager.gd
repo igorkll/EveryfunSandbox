@@ -79,6 +79,10 @@ static func updateLoadedChunks(positions):
 						saveManager.loadChunk(getChunkPosition(position, ix, iy, iz))
 					checkChunks.append(chunkname)
 
-	for chunkname in loadedChunks:
+	var cloned_loadedChunks = {}
+	for key in loadedChunks.keys():
+		cloned_loadedChunks[key] = loadedChunks[key]
+	
+	for chunkname in cloned_loadedChunks:
 		if not chunkname in checkChunks:
 			unloadChunk(loadedChunks[chunkname])
