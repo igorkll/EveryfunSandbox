@@ -72,6 +72,9 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 	if "allowMultimesh" in blockscript:
 		allowMultimesh = blockscript.allowMultimesh
 
+	if not chunk:
+		chunk = chunkManager.getChunk(position)
+
 	if dynamic || not allowMultimesh:
 		var _mesh = getMeshAndMaterial(blockscript)
 					
@@ -82,19 +85,14 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 		mesh_instance.material_override = _mesh[1]
 		body.add_child(mesh_instance)
 	else:
-		if not chunk:
-			chunk = chunkManager.getChunk(position)
 		chunk.array[chunkManager.getChunkArrayPosition(position)] = blockname
 		chunk.deltaUseCount(body.__name, 1)
 		if autoChunkUpdate:
 			chunk.updateMesh()
 
 	if dynamic:
-		node_main.get_node("world").get_node("dynamic").add_child(body)
+		chunk.get_node("dynamicObjects").add_child(body)
 	else:
-		if not chunk:
-			chunk = chunkManager.getChunk(position)
-		chunk.chunkUpdated = true
 		chunk.get_node("staticObjects").add_child(body)
 	
 	if "__firstInit" in body:
@@ -108,12 +106,11 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 	return body
 
 static func destroy(blockobject):
-	if not blockobject.__rigid_body:
+	if isStatic(blockobject):
 		var chunk = chunkManager.getChunk(blockobject.position)
 		var index = chunkManager.getChunkArrayPosition(blockobject.position)
 		if chunk.array[index] == blockobject.__name:
 			chunk.deltaUseCount(blockobject.__name, -1)
-			chunk.chunkUpdated = true
 			chunk.array[index] = null
 			if autoChunkUpdate:
 				chunk.updateMesh()
@@ -124,10 +121,10 @@ static func interact(blockobject):
 		blockobject.__interact()
 
 static func isDynamic(blockobject):
-	return blockobject.get_parent() == node_main.get_node("world").get_node("dynamic")
+	return blockobject.get_parent().name == "dynamicObjects"
 	
 static func isStatic(blockobject):
-	return blockobject.get_parent().get_parent().get_parent() == node_main.get_node("world").get_node("chunks")
+	return blockobject.get_parent().name == "staticObjects"
 	
 static func isBlock(blockobject):
 	return isDynamic(blockobject) || isStatic(blockobject)

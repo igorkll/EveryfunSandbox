@@ -34,10 +34,6 @@ static func _recreateTree(name):
 	save_world.name = "world"
 	node_main.add_child(save_world)
 	
-	save_world_dynamic = Node3D.new()
-	save_world_dynamic.name = "dynamic"
-	save_world.add_child(save_world_dynamic)
-	
 	save_world_chunks = Node3D.new()
 	save_world_chunks.name = "chunks"
 	save_world.add_child(save_world_chunks)
@@ -50,18 +46,23 @@ static func loadChunk(position):
 	var chunk = chunkManager.getChunk(position)
 	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(position), FileAccess.READ)
 	if file:
-		var staticObjects = bytes_to_var(file.get_buffer(file.get_length()))
-		for staticObject in staticObjects:
-			blockManager.spawn(staticObject.p, false, staticObject.n, chunk, null, staticObject.d)
-		
-		file.close()
+		if file:
+			var objects = bytes_to_var(file.get_buffer(file.get_length()))
+			
+			for staticObject in objects.staticObjects:
+				blockManager.spawn(staticObject.p, false, staticObject.n, chunk, null, staticObject.d)
+			
+			for dynamicObject in objects.dynamicObjects:
+				blockManager.spawn(dynamicObject.p, true, dynamicObject.n, chunk, dynamicObject.r, dynamicObject.d)
+			
+			file.close()
 	else:
 		worldGenerator.call(world_parameters.generator, chunk, position, world_parameters.seed)
 	
 	blockManager.autoChunkUpdate = oldAutoChunkUpdate
 	if blockManager.blockSpawned:
 		chunk.updateMesh()
-		
+	
 	return chunk
 	
 static func exists(name):
@@ -70,18 +71,10 @@ static func exists(name):
 static func open(name):
 	_recreateTree(name)
 	
-	var file = FileAccess.open(save_dir + "/dynamic", FileAccess.READ)
-	if file:
-		var dynamic = bytes_to_var(file.get_buffer(file.get_length()))
-		for rigidBodyData in dynamic:
-			blockManager.spawn(rigidBodyData.p, true, rigidBodyData.n, null, rigidBodyData.r, rigidBodyData.d)
-		
-		file.close()
-	
 	var player = node_main.get_node("player")
 	var camera = player.get_node("camera")
-		
-	file = FileAccess.open(save_dir + "/gamedata", FileAccess.READ)
+	
+	var file = FileAccess.open(save_dir + "/gamedata", FileAccess.READ)
 	if file:
 		var gamedata = bytes_to_var(file.get_buffer(file.get_length()))
 		
@@ -118,43 +111,39 @@ static func create(name, _parameters={}):
 	chunkManager.updateLoadedChunks([player.position])
 	
 static func saveChunk(chunk):
-	if chunk.chunkUpdated:
-		chunk.chunkUpdated = false
-		var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(chunk.chunkPosition), FileAccess.WRITE)
-		if file:
-			var staticObjects = []
-			for staticObject in chunk.get_node("staticObjects").get_children():
-				staticObjects.append({
-					p = staticObject.position,
-					n = staticObject.__name,
-					d = staticObject.___alldata
-				})
-				pass
-				
-			file.store_buffer(var_to_bytes(staticObjects))
-			file.close()
+	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(chunk.chunkPosition), FileAccess.WRITE)
+	if file:
+		var chunkdata = {
+			staticObjects = [],
+			dynamicObjects = []
+		}
+		
+		for staticObject in chunk.get_node("staticObjects").get_children():
+			chunkdata.staticObjects.append({
+				p = staticObject.position,
+				n = staticObject.__name,
+				d = staticObject.___alldata
+			})
+			pass
+		
+		for dynamicObject in chunk.get_node("dynamicObjects").get_children():
+			chunkdata.dynamicObjects.append({
+				p = dynamicObject.position,
+				r = dynamicObject.quaternion,
+				n = dynamicObject.__name,
+				d = dynamicObject.___alldata
+			})
+			pass
+		
+		file.store_buffer(var_to_bytes(chunkdata))
+		file.close()
 		
 static func saveAllChunks(): # сохраняет только загруженые в данный момент чанки!
 	for chunk in save_world_chunks.get_children():
 		saveChunk(chunk)
 
 static func save():
-	var file = FileAccess.open(save_dir + "/dynamic", FileAccess.WRITE)
-	if file:
-		var dynamic = []
-		for rigidBody in save_world_dynamic.get_children():
-			dynamic.append({
-				p = rigidBody.position,
-				r = rigidBody.quaternion,
-				n = rigidBody.__name,
-				d = rigidBody.___alldata
-			})
-			pass
-			
-		file.store_buffer(var_to_bytes(dynamic))
-		file.close()
-		
-	file = FileAccess.open(save_dir + "/gamedata", FileAccess.WRITE)
+	var file = FileAccess.open(save_dir + "/gamedata", FileAccess.WRITE)
 	if file:
 		var player = node_main.get_node("player")
 		var camera = player.get_node("camera")

@@ -60,6 +60,10 @@ static func getChunk(position):
 	staticObjects.name = "staticObjects"
 	chunk.add_child(staticObjects)
 	
+	var dynamicObjects = Node3D.new()
+	dynamicObjects.name = "dynamicObjects"
+	chunk.add_child(dynamicObjects)
+	
 	return chunk
 	
 static func unloadChunk(chunk):

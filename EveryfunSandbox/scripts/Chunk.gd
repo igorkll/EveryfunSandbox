@@ -4,7 +4,6 @@ class_name Chunk
 
 var array = []
 var chunkPosition
-var chunkUpdated = false
 var usesCount = {}
 
 func deltaUseCount(blockname, delta):
