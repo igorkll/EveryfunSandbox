@@ -4,10 +4,24 @@ static var node_root
 static var node_main
 static var autoChunkUpdate = true
 static var blockSpawned = false
+static var blockList = []
 
 func _ready():
 	node_root = get_tree().root
 	node_main = node_root.get_node("main")
+	
+	var dir = DirAccess.open("res://blocks")
+
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+
+		while file_name != "":
+			if dir.current_is_dir(): 
+				blockList.append(file_name)
+			file_name = dir.get_next()
+
+		dir.list_dir_end()
 	
 static func getMeshAndMaterial(blockscript):
 	if "mesh" in blockscript:

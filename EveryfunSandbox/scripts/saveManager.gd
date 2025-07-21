@@ -99,7 +99,7 @@ static func create(name, _parameters={}):
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
 	
 	if not _parameters.has("generator"):
-		_parameters.generator = "flat_world"
+		_parameters.generator = "random"
 	
 	if not _parameters.has("seed"):
 		_parameters.seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
