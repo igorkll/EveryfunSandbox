@@ -9,17 +9,21 @@ var jump_acceleration = 200
 var velocity_down = 0.0005
 var jump_budget = 0.05
 
-var max_grab_distance = 10
+var grab_start_timer = 1
+var grab_max_distance = 10
+var grab_min_distance = 3
+var grab_def_distance = 3
 var max_interact_distance = 10
 
 
 var current_jump = false
 var current_jump_budget = 0
 
-var grabbed_distance = 5
+var grabbed_rotation
+var grabbed_distance
+var grabbed_force
 var grabbed_block
-var grab_pid
-var grab_rotate_pid
+var grabbed_pid
 
 func raycast():
 	var raycast = $raycast
@@ -32,8 +36,7 @@ func grabMagned(body, delta):
 	var camera_position = $camera.global_transform.origin
 	var camera_direction = -$camera.global_transform.basis.z.normalized()
 	var target_position = camera_position + (camera_direction * grabbed_distance)
-	body.apply_impulse(grab_pid.compute(target_position, body.position, delta))
-	body.apply_torque(grab_rotate_pid.compute($camera.rotation, body.rotation, delta))
+	body.apply_impulse(grabbed_pid.compute(target_position, body.position, delta) * grabbed_force)
 
 func _ready():
 	position = (Vector3) (0, 2, 0)
@@ -73,15 +76,15 @@ func _physics_process(delta):
 		
 	# ---------------------------------- world control
 	
-	if Input.is_action_just_pressed("wheel_up"):
+	if Input.is_action_just_pressed("wheel_up") && grabbed_block:
 		grabbed_distance = grabbed_distance + 0.5
-		if grabbed_distance > max_grab_distance:
-			grabbed_distance = max_grab_distance
+		if grabbed_distance > grab_max_distance:
+			grabbed_distance = grab_max_distance
 		
-	if Input.is_action_just_pressed("wheel_down"):
+	if Input.is_action_just_pressed("wheel_down") && grabbed_block:
 		grabbed_distance = grabbed_distance - 0.5
-		if grabbed_distance < 2:
-			grabbed_distance = 2
+		if grabbed_distance < grab_min_distance:
+			grabbed_distance = grab_min_distance
 		
 	if Input.is_action_just_released("grab"):
 		if grabbed_block:
@@ -92,16 +95,14 @@ func _physics_process(delta):
 				var collided_object = raycast.get_collider()
 				if blockManager.isBlock(collided_object):
 					grabbed_block = blockManager.toDynamic(collided_object)
+					grabbed_force = 0
+					grabbed_distance = grab_def_distance
+					grabbed_rotation = collided_object.rotation
 					
-					grab_pid = PID3.new()
-					grab_pid.Kp = 4
-					grab_pid.Ki = 0
-					grab_pid.Kd = 1
-					
-					grab_rotate_pid = PID3.new()
-					grab_rotate_pid.Kp = 0.2
-					grab_rotate_pid.Ki = 0
-					grab_rotate_pid.Kd = 0
+					grabbed_pid = PID3.new()
+					grabbed_pid.Kp = 4
+					grabbed_pid.Ki = 0
+					grabbed_pid.Kd = 1
 					
 					
 	if Input.is_action_just_released("place"):
@@ -119,6 +120,9 @@ func _physics_process(delta):
 	# ---------------------------------- process
 	
 	if grabbed_block:
+		grabbed_force += delta / grab_start_timer
+		if grabbed_force > 1:
+			grabbed_force = 1
 		grabMagned(grabbed_block, delta)
 		
 	# ---------------------------------- moving
