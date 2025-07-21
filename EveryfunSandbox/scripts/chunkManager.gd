@@ -49,10 +49,7 @@ static func getChunk(position):
 	chunk = Chunk.new()
 	chunk.name = chunkname
 	chunk.chunkPosition = chunkManager.getChunkPosition(position)
-	for iz in range(chunkManager.chunkSize):
-		for iy in range(chunkManager.chunkSize):
-			for ix in range(chunkManager.chunkSize):
-				chunk.array.append(null)
+	chunk.array.resize(chunkManager.chunkSize * chunkManager.chunkSize * chunkManager.chunkSize)
 	chunks.add_child(chunk)
 	loadedChunks[chunk.name] = chunk
 	

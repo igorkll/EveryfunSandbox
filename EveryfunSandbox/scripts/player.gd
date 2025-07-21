@@ -11,7 +11,7 @@ var jump_budget = 0.05
 
 var grab_start_timer = 1
 var grab_max_distance = 10
-var grab_min_distance = 3
+var grab_min_distance = 2.5
 var grab_def_distance = 3
 var max_interact_distance = 10
 

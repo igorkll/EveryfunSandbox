@@ -100,7 +100,7 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 		body.add_child(mesh_instance)
 	else:
 		chunk.array[chunkManager.getChunkArrayPosition(position)] = blockname
-		chunk.deltaUseCount(body.__name, 1)
+		chunk.deltaUseCount(blockname, 1)
 		if autoChunkUpdate:
 			chunk.updateMesh()
 
