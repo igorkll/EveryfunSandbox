@@ -46,16 +46,15 @@ static func loadChunk(position):
 	var chunk = chunkManager.getChunk(position)
 	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(position), FileAccess.READ)
 	if file:
-		if file:
-			var objects = bytes_to_var(file.get_buffer(file.get_length()))
-			
-			for staticObject in objects.staticObjects:
-				blockManager.spawn(staticObject.p, false, staticObject.n, chunk, null, staticObject.d)
-			
-			for dynamicObject in objects.dynamicObjects:
-				blockManager.spawn(dynamicObject.p, true, dynamicObject.n, chunk, dynamicObject.r, dynamicObject.d)
-			
-			file.close()
+		var objects = bytes_to_var(file.get_buffer(file.get_length()))
+		
+		for staticObject in objects.staticObjects:
+			blockManager.spawn(staticObject.p, false, staticObject.n, chunk, null, staticObject.d)
+		
+		for dynamicObject in objects.dynamicObjects:
+			blockManager.spawn(dynamicObject.p, true, dynamicObject.n, chunk, dynamicObject.r, dynamicObject.d)
+		
+		file.close()
 	else:
 		worldGenerator.call(world_parameters.generator, chunk, position, world_parameters.seed)
 	
