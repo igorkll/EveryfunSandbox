@@ -6,7 +6,6 @@ static var allowMultimesh = false
 
 func updateState():
 	self.__material.set_shader_parameter("reverse", self.__data.state)
-	pass
 	
 func __firstInit():
 	self.__data.state = false

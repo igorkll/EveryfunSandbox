@@ -13,6 +13,4 @@ func __init():
 	add_child(audio_before_explode)
 
 func __interact():
-	if __rigid_body:
-		audio_before_explode.play()
-		__rigid_body.apply_impulse(Vector3(0, 100, 0))
+	audio_before_explode.play()

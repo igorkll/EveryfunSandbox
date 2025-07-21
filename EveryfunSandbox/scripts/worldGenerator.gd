@@ -15,7 +15,7 @@ static func stone(chunk, position, seed):
 	for ix in range(0, chunkManager.chunkSize):
 		for iy in range(0, 2):
 			for iz in range(0, chunkManager.chunkSize):
-				blockManager.spawn(position + Vector3(ix, iy, iz), false, "den", chunk)
+				blockManager.spawn(position + Vector3(ix, iy, iz), false, "tnt", chunk)
 
 static func random(chunk, position, seed):
 	var blockedPosition
