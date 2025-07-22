@@ -114,7 +114,7 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 			chunk.updateMesh()
 
 	if dynamic:
-		chunk.get_node("dynamicObjects").add_child(body)
+		node_main.get_node("dynamicObjects").add_child(body)
 	else:
 		chunk.get_node("staticObjects").add_child(body)
 	

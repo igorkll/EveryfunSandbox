@@ -8,8 +8,8 @@ static var save_dir
 static var save_chunk_dir
 
 static var save_world
-static var save_world_dynamic
 static var save_world_chunks
+static var save_world_dynamic
 
 static var world_parameters
 
@@ -37,6 +37,10 @@ static func _recreateTree(name):
 	save_world_chunks = Node3D.new()
 	save_world_chunks.name = "chunks"
 	save_world.add_child(save_world_chunks)
+	
+	save_world_dynamic = Node3D.new()
+	save_world_dynamic.name = "dynamicObjects"
+	node_main.add_child(save_world_dynamic)
 	
 static func loadChunk(position):
 	var oldAutoChunkUpdate = blockManager.autoChunkUpdate
@@ -99,7 +103,7 @@ static func create(name, _parameters={}):
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
 	
 	if not _parameters.has("generator"):
-		_parameters.generator = "random"
+		_parameters.generator = "flat"
 	
 	if not _parameters.has("seed"):
 		_parameters.seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
@@ -123,16 +127,15 @@ static func saveChunk(chunk):
 				n = staticObject.__name,
 				d = staticObject.___alldata
 			})
-			pass
-		
-		for dynamicObject in chunk.get_node("dynamicObjects").get_children():
-			chunkdata.dynamicObjects.append({
-				p = dynamicObject.position,
-				r = dynamicObject.quaternion,
-				n = dynamicObject.__name,
-				d = dynamicObject.___alldata
-			})
-			pass
+			
+		for dynamicObject in save_world_dynamic.get_children():
+			if chunkManager.isObjectInChunk(dynamicObject.position, chunk.chunkPosition):
+				chunkdata.dynamicObjects.append({
+					p = dynamicObject.position,
+					r = dynamicObject.quaternion,
+					n = dynamicObject.__name,
+					d = dynamicObject.___alldata
+				})
 		
 		file.store_buffer(var_to_bytes(chunkdata))
 		file.close()

@@ -35,6 +35,15 @@ static func getChunkInternalPosition(position):
 	var chunk_y = wrapi(int(position.y), 0, chunkSize)
 	var chunk_z = wrapi(int(position.z), 0, chunkSize)
 	return Vector3(chunk_x, chunk_y, chunk_z)
+	
+static func isObjectInChunk(object_position, chunk_position):
+	var chunk_min = chunk_position
+	var chunk_max = chunk_position
+	chunk_max.x += chunkSize
+	chunk_max.y += chunkSize
+	chunk_max.z += chunkSize
+
+	return object_position.x >= chunk_min.x and object_position.x < chunk_max.x and object_position.y >= chunk_min.y and object_position.y < chunk_max.y and object_position.z >= chunk_min.z and object_position.z < chunk_max.z
 
 static func getChunk(position):
 	var chunkname = getChunkName(position)
@@ -56,10 +65,6 @@ static func getChunk(position):
 	var staticObjects = Node3D.new()
 	staticObjects.name = "staticObjects"
 	chunk.add_child(staticObjects)
-	
-	var dynamicObjects = Node3D.new()
-	dynamicObjects.name = "dynamicObjects"
-	chunk.add_child(dynamicObjects)
 	
 	return chunk
 	
