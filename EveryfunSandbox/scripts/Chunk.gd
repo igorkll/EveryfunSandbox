@@ -23,7 +23,12 @@ func updateMesh():
 	meshlist.name = "meshlist"
 	add_child(meshlist)
 	
-	var currentIndex = {}
+	var combined_mesh = ArrayMesh.new()
+	
+	var combined_vertices = []
+	var combined_normals = []
+	var combined_uvs = []
+	
 	for ix in range(chunkManager.chunkSize):
 		for iy in range(chunkManager.chunkSize):
 			for iz in range(chunkManager.chunkSize):
@@ -31,29 +36,23 @@ func updateMesh():
 				var blockname = array[chunkManager.getChunkArrayPosition(position)]
 				
 				if blockname:
-					var multiMeshInstance:MultiMeshInstance3D
-					if meshlist.has_node(blockname):
-						multiMeshInstance = meshlist.get_node(blockname)
-						
-					if not multiMeshInstance:
-						var _mesh = blockManager.getMeshAndMaterial(blockManager.getBlockscript(blockname))
-						
-						var multiMesh = MultiMesh.new()
-						multiMesh.transform_format = MultiMesh.TRANSFORM_3D
-						multiMesh.mesh = _mesh[0]
-						multiMesh.instance_count = usesCount[blockname]
-							
-						multiMeshInstance = MultiMeshInstance3D.new()
-						multiMeshInstance.name = blockname
-						multiMeshInstance.material_override = _mesh[1]
-						multiMeshInstance.multimesh = multiMesh
-						meshlist.add_child(multiMeshInstance)
-				
+					var _mesh = blockManager.getMeshAndMaterial(blockManager.getBlockscript(blockname))
+					
 					var transform = Transform3D()
 					transform.origin = position
-					if not currentIndex.has(blockname):
-						currentIndex[blockname] = 0
-					
-					multiMeshInstance.multimesh.set_instance_transform(currentIndex[blockname], transform)
-					currentIndex[blockname] += 1
-	
+				
+					var arrays = _mesh[0].get_arrays()
+					var t:ArrayMesh
+
+					var vertices = arrays[Mesh.ARRAY_VERTEX]
+					for vertex in vertices:
+						combined_vertices.append(transform.xform(vertex))
+
+					combined_normals += arrays[Mesh.ARRAY_NORMAL]
+					combined_uvs += arrays[Mesh.ARRAY_TEX_UV]
+
+	combined_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, [
+		combined_vertices,
+		combined_normals,
+		combined_uvs
+	])
