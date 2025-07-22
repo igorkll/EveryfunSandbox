@@ -22,15 +22,15 @@ func updateMesh():
 	meshlist.position = chunkPosition
 	meshlist.name = "meshlist"
 	add_child(meshlist)
-	
+
 	var currentIndex = {}
 	for ix in range(chunkManager.chunkSize):
 		for iy in range(chunkManager.chunkSize):
 			for iz in range(chunkManager.chunkSize):
-				var position = Vector3(ix, iy, iz)
-				var blockname = array[chunkManager.getChunkArrayPosition(position)]
+				var blockname = array[ix + (iy * chunkManager.chunkSize) + (iz * chunkManager.chunkSize * chunkManager.chunkSize)]
 				
 				if blockname:
+					var position = Vector3(ix, iy, iz)
 					var multiMeshInstance:MultiMeshInstance3D
 					if meshlist.has_node(blockname):
 						multiMeshInstance = meshlist.get_node(blockname)
