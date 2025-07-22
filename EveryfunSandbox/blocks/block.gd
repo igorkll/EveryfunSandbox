@@ -10,3 +10,6 @@ var __rigid_body: RigidBody3D
 
 var ___alldata
 var ___gamedata
+
+var ___allstate
+var ___gamestate

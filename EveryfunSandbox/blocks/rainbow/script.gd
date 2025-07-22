@@ -2,12 +2,12 @@ extends block
 
 static var shader = preload("shader.gdshader")
 static var mesh = preload("res://mesh/single_texture_block.obj")
-static var allowMultimesh = false
+static var allowChunkmesh = false
 
 func updateState():
 	self.__material.set_shader_parameter("reverse", self.__data.state)
 	
-func __firstInit():
+func __initData():
 	self.__data.state = false
 
 func __init():

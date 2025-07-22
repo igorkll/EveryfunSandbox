@@ -61,35 +61,36 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 		body.quaternion = quaternion
 	
 	body.set_script(blockscript)
+	body.__name = blockname
+	if dynamic:
+		body.__rigid_body = body
 	
 	if not data:
 		data = [{}, {}]
-		
-	if state:
-		body.__state = state
-	else:
-		body.__state = {}
 	
-	body.__name = blockname
 	body.___alldata = data
 	body.___gamedata = data[0]
 	body.__data = data[1]
 		
-	if dynamic:
-		body.__rigid_body = body
+	if not state:
+		state = [{}, {}]
+	
+	body.___allstate = state
+	body.___gamestate = state[0]
+	body.__state = state[1]
 		
 	var box_collision = CollisionShape3D.new()
 	box_collision.shape = BoxShape3D.new()
 	body.add_child(box_collision)
 	
-	var allowMultimesh = true
-	if "allowMultimesh" in blockscript:
-		allowMultimesh = blockscript.allowMultimesh
+	var allowChunkmesh = true
+	if "allowChunkmesh" in blockscript:
+		allowChunkmesh = blockscript.allowChunkmesh
 
 	if not chunk:
 		chunk = chunkManager.getChunk(position)
 
-	if dynamic || not allowMultimesh:
+	if dynamic || not allowChunkmesh:
 		var _mesh = getMeshAndMaterial(blockscript)
 					
 		body.__material = _mesh[1]
@@ -109,10 +110,15 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 	else:
 		chunk.get_node("staticObjects").add_child(body)
 	
-	if "__firstInit" in body:
-		if not "fi" in body.___gamedata or not body.___gamedata.fi: # first init
-			body.__firstInit()
-			body.___gamedata.fi = true
+	if "__initData" in body:
+		if not "inited" in body.___gamedata or not body.___gamedata.inited:
+			body.__initData()
+			body.___gamedata.inited = true
+			
+	if "__initState" in body:
+		if not "inited" in body.___gamestate or not body.___gamestate.inited:
+			body.__initState()
+			body.___gamestate.inited = true
 			
 	if "__init" in body:
 		body.__init()
@@ -146,7 +152,7 @@ static func isBlock(blockobject):
 static func toDynamic(blockobject):
 	if isStatic(blockobject):
 		destroy(blockobject)
-		return spawn(blockobject.position, true, blockobject.__name, null, blockobject.quaternion, blockobject.___alldata, blockobject.__state)
+		return spawn(blockobject.position, true, blockobject.__name, null, blockobject.quaternion, blockobject.___alldata, blockobject.___allstate)
 	return blockobject
 	
 static func snapBlockPosition(pos):
@@ -155,5 +161,5 @@ static func snapBlockPosition(pos):
 static func toStatic(blockobject):
 	if isDynamic(blockobject):
 		destroy(blockobject)
-		return spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, null, blockobject.___alldata, blockobject.__state)
+		return spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, null, blockobject.___alldata, blockobject.___allstate)
 	return blockobject
