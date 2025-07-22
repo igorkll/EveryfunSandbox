@@ -44,7 +44,7 @@ static func getMeshAndMaterial(blockscript):
 static func getBlockscript(blockname):
 	return load("res://blocks/" + blockname + "/script.gd")
 
-static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, data=null, state=null):
+static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, data=null, state=null, parentsNode=null):
 	blockSpawned = true
 	
 	var blockscript = getBlockscript(blockname)
@@ -82,6 +82,14 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 	var box_collision = CollisionShape3D.new()
 	box_collision.shape = BoxShape3D.new()
 	body.add_child(box_collision)
+	
+	if parentsNode:
+		parentsNode.get_parent().remove_child(parentsNode)
+	else:
+		parentsNode = Node3D.new()
+
+	body.add_child(parentsNode)
+	body.__parents = parentsNode
 	
 	var allowChunkmesh = true
 	if "allowChunkmesh" in blockscript:
@@ -151,8 +159,10 @@ static func isBlock(blockobject):
 
 static func toDynamic(blockobject):
 	if isStatic(blockobject):
+		var newBlock = spawn(blockobject.position, true, blockobject.__name, null, blockobject.quaternion, blockobject.___alldata, blockobject.___allstate, blockobject.__parents)
 		destroy(blockobject)
-		return spawn(blockobject.position, true, blockobject.__name, null, blockobject.quaternion, blockobject.___alldata, blockobject.___allstate)
+		return newBlock
+	
 	return blockobject
 	
 static func snapBlockPosition(pos):
@@ -160,6 +170,8 @@ static func snapBlockPosition(pos):
 
 static func toStatic(blockobject):
 	if isDynamic(blockobject):
+		var newBlock = spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, null, blockobject.___alldata, blockobject.___allstate, blockobject.__parents)
 		destroy(blockobject)
-		return spawn(snapBlockPosition(blockobject.position), false, blockobject.__name, null, null, blockobject.___alldata, blockobject.___allstate)
+		return newBlock
+	
 	return blockobject

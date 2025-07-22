@@ -9,12 +9,13 @@ func updateState():
 	
 func __initData():
 	self.__data.state = false
-
-func __init():
+	
+func __initState():
 	var light = OmniLight3D.new()
 	light.omni_shadow_mode = OmniLight3D.SHADOW_CUBE
-	add_child(light)
-	
+	__parents.add_child(light)
+
+func __init():
 	updateState()
 
 func __interact():
