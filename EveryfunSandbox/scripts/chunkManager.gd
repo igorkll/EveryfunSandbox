@@ -69,7 +69,7 @@ static func getChunk(position):
 	return chunk
 	
 static func unloadChunk(chunk):
-	saveManager.saveChunk(chunk)
+	saveManager.saveChunk(chunk, true)
 	loadedChunks.erase(chunk.name)
 	chunk.free()
 

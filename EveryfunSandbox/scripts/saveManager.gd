@@ -113,7 +113,7 @@ static func create(name, _parameters={}):
 	var player = node_main.get_node("player")
 	chunkManager.updateLoadedChunks([player.position])
 	
-static func saveChunk(chunk):
+static func saveChunk(chunk, destroyDynamic=false):
 	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(chunk.chunkPosition), FileAccess.WRITE)
 	if file:
 		var chunkdata = {
@@ -127,7 +127,7 @@ static func saveChunk(chunk):
 				n = staticObject.__name,
 				d = staticObject.___alldata
 			})
-			
+		
 		for dynamicObject in save_world_dynamic.get_children():
 			if chunkManager.isObjectInChunk(dynamicObject.position, chunk.chunkPosition):
 				chunkdata.dynamicObjects.append({
@@ -136,6 +136,8 @@ static func saveChunk(chunk):
 					n = dynamicObject.__name,
 					d = dynamicObject.___alldata
 				})
+				if destroyDynamic:
+					dynamicObject.queue_free()
 		
 		file.store_buffer(var_to_bytes(chunkdata))
 		file.close()
