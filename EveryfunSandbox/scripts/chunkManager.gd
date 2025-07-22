@@ -4,7 +4,7 @@ static var node_root
 static var node_main
 
 static var chunkSize = 32
-static var chunkLoadingRadius = 2
+static var chunkLoadingRadius = 8
 
 static var loadedChunks = {}
 
