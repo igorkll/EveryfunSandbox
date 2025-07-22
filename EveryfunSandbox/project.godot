@@ -27,6 +27,10 @@ gameApi="*res://scripts/gameApi.gd"
 chunkManager="*res://scripts/chunkManager.gd"
 worldGenerator="*res://scripts/worldGenerator.gd"
 
+[display]
+
+window/size/mode=3
+
 [input]
 
 move_forward={
