@@ -24,9 +24,9 @@ func updateMesh():
 	add_child(meshlist)
 
 	var currentIndex = {}
-	for ix in range(chunkManager.chunkSize):
+	for iz in range(chunkManager.chunkSize):
 		for iy in range(chunkManager.chunkSize):
-			for iz in range(chunkManager.chunkSize):
+			for ix in range(chunkManager.chunkSize):
 				var blockname = array[ix + (iy * chunkManager.chunkSize) + (iz * chunkManager.chunkSize * chunkManager.chunkSize)]
 				
 				if blockname:
