@@ -8,7 +8,7 @@ static var node_worldLight: DirectionalLight3D
 static var dayColor = Color(1, 1, 1)
 static var nightColor = Color(1, 0.7, 0)
 
-static var currentTime = 0.2
+static var currentTime = 0.5
 
 func _ready():
 	node_root = get_tree().root
