@@ -5,6 +5,7 @@ class_name Chunk
 var array = []
 var chunkPosition
 var usesCount = {}
+var thread
 
 func deltaUseCount(blockname, delta):
 	if not usesCount.has(blockname):
@@ -23,7 +24,10 @@ func updateMesh():
 	meshlist.name = "meshlist"
 	add_child(meshlist)
 
-	var thread = Thread.new()
+	if thread != null:
+		thread.wait_to_finish()
+	
+	thread = Thread.new()
 	thread.start(_updateMesh_thread.bind(meshlist))
 
 func _updateMesh_thread(meshlist):
