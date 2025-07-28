@@ -72,6 +72,8 @@ static func _loadChunk(chunk, position):
 	
 	if updateMesh:
 		chunk.call_deferred("updateMesh")
+		
+	chunk.loaded = true
 	
 static func exists(name):
 	return DirAccess.dir_exists_absolute(getSavePath(name))
@@ -118,6 +120,8 @@ static func create(name, _parameters={}):
 	
 	var player = node_main.get_node("player")
 	chunkManager.updateLoadedChunks([player.position])
+	
+	save()
 	
 static func saveChunk(chunk, destroyDynamic=false):
 	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(chunk.chunkPosition), FileAccess.WRITE)
