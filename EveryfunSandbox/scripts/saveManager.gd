@@ -43,30 +43,32 @@ static func _recreateTree(name):
 	node_main.add_child(save_world_dynamic)
 	
 static func loadChunk(position):
-	var oldAutoChunkUpdate = blockManager.autoChunkUpdate
-	blockManager.autoChunkUpdate = false
-	blockManager.blockSpawned = false
-	
 	var chunk = chunkManager.getChunk(position)
+	
+	var thread = Thread.new()
+	thread.start(_loadChunk.bind(chunk, position))
+		
+static func _loadChunk(chunk, position):
+	var updateMesh = false
+	
 	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(position), FileAccess.READ)
 	if file:
 		var objects = bytes_to_var(file.get_buffer(file.get_length()))
 		
 		for staticObject in objects.staticObjects:
-			blockManager.spawn(staticObject.p, false, staticObject.n, chunk, null, staticObject.d)
+			blockManager.wspawn(staticObject.p, false, staticObject.n, chunk, null, staticObject.d)
+			updateMesh = true
 		
 		for dynamicObject in objects.dynamicObjects:
-			blockManager.spawn(dynamicObject.p, true, dynamicObject.n, chunk, dynamicObject.r, dynamicObject.d)
+			blockManager.wspawn(dynamicObject.p, true, dynamicObject.n, chunk, dynamicObject.r, dynamicObject.d)
+			updateMesh = true
 		
 		file.close()
 	else:
-		worldGenerator.call(world_parameters.generator, chunk, position, world_parameters.seed)
+		updateMesh = worldGenerator.call(world_parameters.generator, chunk, position, world_parameters.seed)
 	
-	blockManager.autoChunkUpdate = oldAutoChunkUpdate
-	if blockManager.blockSpawned:
-		chunk.updateMesh()
-	
-	return chunk
+	if updateMesh:
+		chunk.call_deferred("updateMesh")
 	
 static func exists(name):
 	return DirAccess.dir_exists_absolute(getSavePath(name))

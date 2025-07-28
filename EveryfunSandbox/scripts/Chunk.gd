@@ -12,23 +12,21 @@ func deltaUseCount(blockname, delta):
 	usesCount[blockname] += delta
 
 func updateMesh():
-	var oldMeshlist
+	var meshlist
 	if has_node("meshlist"):
-		oldMeshlist = $meshlist
-		if oldMeshlist:
-			oldMeshlist.free()
+		meshlist = $meshlist
+		if meshlist:
+			meshlist.free()
 	
-	var meshlist = Node3D.new()
+	meshlist = Node3D.new()
 	meshlist.position = chunkPosition
 	meshlist.name = "meshlist"
 	add_child(meshlist)
 
 	var thread = Thread.new()
-	thread.start(_updateMesh_thread.bind(meshlist, oldMeshlist))
-	
-	
+	thread.start(_updateMesh_thread.bind(meshlist))
 
-func _updateMesh_thread(meshlist, oldMeshlist):
+func _updateMesh_thread(meshlist):
 	var currentIndex = {}
 	var multiMeshInstances = {}
 	for i in range(chunkManager.chunkSize * chunkManager.chunkSize * chunkManager.chunkSize):
@@ -37,7 +35,7 @@ func _updateMesh_thread(meshlist, oldMeshlist):
 		if blockname:
 			var position = Vector3(i % chunkManager.chunkSize, floor(i / chunkManager.chunkSize) % chunkManager.chunkSize, floor(i / chunkManager.chunkSize / chunkManager.chunkSize))
 			var multiMeshInstance: MultiMeshInstance3D
-			if blockname in multiMeshInstances:
+			if multiMeshInstances.has(blockname):
 				multiMeshInstance = multiMeshInstances[blockname]
 				
 			if not multiMeshInstance:

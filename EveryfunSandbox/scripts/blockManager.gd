@@ -2,7 +2,6 @@ extends Node
 
 static var node_root
 static var node_main
-static var autoChunkUpdate = true
 static var blockSpawned = false
 static var blockList = []
 
@@ -44,9 +43,10 @@ static func getMeshAndMaterial(blockscript):
 static func getBlockscript(blockname):
 	return load("res://blocks/" + blockname + "/script.gd")
 
-static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, data=null, state=null, parentsNode=null):
-	blockSpawned = true
-	
+static func wspawn(position, dynamic, blockname, chunk=null, quaternion=null, data=null, state=null, parentsNode=null):
+	spawn(position, dynamic, blockname, chunk, quaternion, data, state, parentsNode, false)
+
+static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, data=null, state=null, parentsNode=null, autoChunkUpdate=true):
 	var blockscript = getBlockscript(blockname)
 	
 	var body
@@ -113,27 +113,11 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 		if autoChunkUpdate:
 			chunk.updateMesh()
 
-	if dynamic:
-		node_main.get_node("dynamicObjects").add_child(body)
-	else:
-		chunk.get_node("staticObjects").add_child(body)
-	
-	if "__initData" in body:
-		if not "inited" in body.___gamedata or not body.___gamedata.inited:
-			body.__initData()
-			body.___gamedata.inited = true
-			
-	if "__initState" in body:
-		if not "inited" in body.___gamestate or not body.___gamestate.inited:
-			body.__initState()
-			body.___gamestate.inited = true
-			
-	if "__init" in body:
-		body.__init()
+	body.call_deferred("___after_spawn", node_main, chunk, body, dynamic)
 	
 	return body
 
-static func destroy(blockobject):
+static func destroy(blockobject, autoChunkUpdate=true):
 	if isStatic(blockobject):
 		var chunk = chunkManager.getChunk(blockobject.position)
 		var index = chunkManager.getChunkArrayPosition(blockobject.position)
