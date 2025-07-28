@@ -29,9 +29,9 @@ func updateMesh():
 		thread.wait_to_finish()
 	
 	thread = Thread.new()
-	thread.start(_updateMesh_thread.bind(meshlist))
+	thread.start(_updateMesh_thread.bind(meshlist, usesCount.duplicate()))
 
-func _updateMesh_thread(meshlist):
+func _updateMesh_thread(meshlist, clonedUsesCount):
 	var currentIndex = {}
 	var multiMeshInstances = {}
 	for i in range(chunkManager.chunkSize * chunkManager.chunkSize * chunkManager.chunkSize):
@@ -49,7 +49,7 @@ func _updateMesh_thread(meshlist):
 				var multiMesh = MultiMesh.new()
 				multiMesh.transform_format = MultiMesh.TRANSFORM_3D
 				multiMesh.mesh = _mesh[0]
-				multiMesh.instance_count = usesCount[blockname]
+				multiMesh.instance_count = clonedUsesCount[blockname]
 					
 				multiMeshInstance = MultiMeshInstance3D.new()
 				multiMeshInstance.name = blockname
