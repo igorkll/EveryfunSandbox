@@ -115,6 +115,19 @@ static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, dat
 
 	body.call_deferred("___after_spawn", node_main, chunk, body, dynamic)
 	
+	if "__initData" in body:
+		if not "inited" in body.___gamedata or not body.___gamedata.inited:
+			body.call_deferred("__initData")
+			body.___gamedata.inited = true
+			
+	if "__initState" in body:
+		if not "inited" in body.___gamestate or not body.___gamestate.inited:
+			body.call_deferred("__initState")
+			body.___gamestate.inited = true
+			
+	if "__init" in body:
+		body.call_deferred("__init")
+	
 	return body
 
 static func destroy(blockobject, autoChunkUpdate=true):

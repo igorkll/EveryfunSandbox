@@ -15,7 +15,7 @@ static func stone(chunk, position, seed):
 		return false
 	
 	for ix in range(0, chunkManager.chunkSize):
-		for iy in range(0, chunkManager.chunkSize):
+		for iy in range(0, 2):
 			for iz in range(0, chunkManager.chunkSize):
 				blockManager.wspawn(position + Vector3(ix, iy, iz), false, "grass", chunk)
 				
