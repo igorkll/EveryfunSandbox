@@ -83,9 +83,9 @@ static func updateLoadedChunks(positions):
 	var checkChunks = []
 	
 	for position in positions:
-		for ix in range(-chunkLoadingRadius, chunkLoadingRadius):
-			for iy in range(-1, chunkLoadingRadius):
-				for iz in range(-chunkLoadingRadius, chunkLoadingRadius):
+		for ix in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
+			for iy in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
+				for iz in range(-chunkLoadingRadius, chunkLoadingRadius + 1):
 					var chunkname = getChunkName(position, ix, iy, iz)
 					if not loadedChunks.has(chunkname):
 						saveManager.loadChunk(getChunkPosition(position, ix, iy, iz))
