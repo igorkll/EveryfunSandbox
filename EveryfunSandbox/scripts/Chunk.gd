@@ -6,6 +6,7 @@ var array = []
 var chunkPosition
 var usesCount = {}
 var thread
+var loadThread
 
 func deltaUseCount(blockname, delta):
 	if not usesCount.has(blockname):

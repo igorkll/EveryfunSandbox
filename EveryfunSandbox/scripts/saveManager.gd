@@ -45,8 +45,11 @@ static func _recreateTree(name):
 static func loadChunk(position):
 	var chunk = chunkManager.getChunk(position)
 	
-	var thread = Thread.new()
-	thread.start(_loadChunk.bind(chunk, position))
+	if chunk.loadThread != null:
+		chunk.loadThread.wait_to_finish()
+		
+	chunk.loadThread = Thread.new()
+	chunk.loadThread.start(_loadChunk.bind(chunk, position))
 		
 static func _loadChunk(chunk, position):
 	var updateMesh = false
@@ -106,7 +109,7 @@ static func create(name, _parameters={}):
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
 	
 	if not _parameters.has("generator"):
-		_parameters.generator = "flat"
+		_parameters.generator = "stone"
 	
 	if not _parameters.has("seed"):
 		_parameters.seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
