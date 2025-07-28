@@ -82,6 +82,7 @@ static func open(name):
 		var gamedata = bytes_to_var(file.get_buffer(file.get_length()))
 		
 		player.position = gamedata.player_position
+		player.velocity = gamedata.player_velocity
 		camera.total_pitch = gamedata.player_camera_total_pitch
 		camera.quaternion = gamedata.player_camera_quaternion
 		gameApi.setTime(gamedata.time)
@@ -103,7 +104,7 @@ static func create(name, _parameters={}):
 	DirAccess.make_dir_recursive_absolute(save_chunk_dir)
 	
 	if not _parameters.has("generator"):
-		_parameters.generator = "flat"
+		_parameters.generator = "random"
 	
 	if not _parameters.has("seed"):
 		_parameters.seed = RandomNumberGenerator.new().randi_range(-2147483648, 2147483647)
@@ -154,6 +155,7 @@ static func save():
 		
 		var gamedata = {
 			player_position = player.position,
+			player_velocity = player.velocity,
 			player_camera_total_pitch = camera.total_pitch,
 			player_camera_quaternion = camera.quaternion,
 			time = gameApi.getTime()
