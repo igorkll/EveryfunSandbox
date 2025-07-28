@@ -42,9 +42,6 @@ func _ready():
 	position = (Vector3) (0, 2, 0)
 
 func _physics_process(delta):
-	if not chunkManager.getChunk(position).loaded:
-		return
-	
 	# ---------------------------------- moving control
 		
 	var direction = Vector3.ZERO	
