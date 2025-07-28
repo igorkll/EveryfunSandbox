@@ -63,7 +63,8 @@ static func _loadChunk(chunk, position):
 			updateMesh = true
 		
 		for dynamicObject in objects.dynamicObjects:
-			blockManager.wspawn(dynamicObject.p, true, dynamicObject.n, chunk, dynamicObject.r, dynamicObject.d)
+			var body = blockManager.wspawn(dynamicObject.p, true, dynamicObject.n, chunk, dynamicObject.r, dynamicObject.d)
+			body.linear_velocity = dynamicObject.v
 			updateMesh = true
 		
 		file.close()
@@ -142,6 +143,7 @@ static func saveChunk(chunk, destroyDynamic=false):
 			if chunkManager.isObjectInChunk(dynamicObject.position, chunk.chunkPosition):
 				chunkdata.dynamicObjects.append({
 					p = dynamicObject.position,
+					v = dynamicObject.linear_velocity,
 					r = dynamicObject.quaternion,
 					n = dynamicObject.__name,
 					d = dynamicObject.___alldata
