@@ -12,26 +12,33 @@ func deltaUseCount(blockname, delta):
 	usesCount[blockname] += delta
 
 func updateMesh():
-	var meshlist
+	var oldMeshlist
 	if has_node("meshlist"):
-		meshlist = $meshlist
-		if meshlist:
-			meshlist.free()
-		
-	meshlist = Node3D.new()
+		oldMeshlist = $meshlist
+		if oldMeshlist:
+			oldMeshlist.free()
+	
+	var meshlist = Node3D.new()
 	meshlist.position = chunkPosition
 	meshlist.name = "meshlist"
 	add_child(meshlist)
 
+	var thread = Thread.new()
+	thread.start(_updateMesh_thread.bind(meshlist, oldMeshlist))
+	
+	
+
+func _updateMesh_thread(meshlist, oldMeshlist):
 	var currentIndex = {}
+	var multiMeshInstances = {}
 	for i in range(chunkManager.chunkSize * chunkManager.chunkSize * chunkManager.chunkSize):
 		var blockname = array[i]
 		
 		if blockname:
 			var position = Vector3(i % chunkManager.chunkSize, floor(i / chunkManager.chunkSize) % chunkManager.chunkSize, floor(i / chunkManager.chunkSize / chunkManager.chunkSize))
-			var multiMeshInstance:MultiMeshInstance3D
-			if meshlist.has_node(blockname):
-				multiMeshInstance = meshlist.get_node(blockname)
+			var multiMeshInstance: MultiMeshInstance3D
+			if blockname in multiMeshInstances:
+				multiMeshInstance = multiMeshInstances[blockname]
 				
 			if not multiMeshInstance:
 				var _mesh = blockManager.getMeshAndMaterial(blockManager.getBlockscript(blockname))
@@ -45,7 +52,8 @@ func updateMesh():
 				multiMeshInstance.name = blockname
 				multiMeshInstance.material_override = _mesh[1]
 				multiMeshInstance.multimesh = multiMesh
-				meshlist.add_child(multiMeshInstance)
+				meshlist.call_deferred("add_child", multiMeshInstance)
+				multiMeshInstances[blockname] = multiMeshInstance
 		
 			var transform = Transform3D()
 			transform.origin = position
@@ -54,4 +62,3 @@ func updateMesh():
 			
 			multiMeshInstance.multimesh.set_instance_transform(currentIndex[blockname], transform)
 			currentIndex[blockname] += 1
-	
