@@ -29,13 +29,13 @@ func updateMesh():
 		thread.wait_to_finish()
 	
 	thread = Thread.new()
-	thread.start(_updateMesh_thread.bind(meshlist, usesCount.duplicate()))
+	thread.start(_updateMesh_thread.bind(meshlist, usesCount.duplicate(), array.duplicate()))
 
-func _updateMesh_thread(meshlist, clonedUsesCount):
+func _updateMesh_thread(meshlist, clonedUsesCount, clonedArray):
 	var currentIndex = {}
 	var multiMeshInstances = {}
 	for i in range(chunkManager.chunkSize * chunkManager.chunkSize * chunkManager.chunkSize):
-		var blockname = array[i]
+		var blockname = clonedArray[i]
 		
 		if blockname:
 			var position = Vector3(i % chunkManager.chunkSize, floor(i / chunkManager.chunkSize) % chunkManager.chunkSize, floor(i / chunkManager.chunkSize / chunkManager.chunkSize))
