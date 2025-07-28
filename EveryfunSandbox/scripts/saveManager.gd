@@ -41,7 +41,7 @@ static func _recreateTree(name):
 	save_world_dynamic = Node3D.new()
 	save_world_dynamic.name = "dynamicObjects"
 	node_main.add_child(save_world_dynamic)
-	
+
 static func loadChunk(position):
 	var chunk = chunkManager.getChunk(position)
 	

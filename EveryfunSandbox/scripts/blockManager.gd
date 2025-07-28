@@ -44,7 +44,7 @@ static func getBlockscript(blockname):
 	return load("res://blocks/" + blockname + "/script.gd")
 
 static func wspawn(position, dynamic, blockname, chunk=null, quaternion=null, data=null, state=null, parentsNode=null):
-	spawn(position, dynamic, blockname, chunk, quaternion, data, state, parentsNode, false)
+	return spawn(position, dynamic, blockname, chunk, quaternion, data, state, parentsNode, false)
 
 static func spawn(position, dynamic, blockname, chunk=null, quaternion=null, data=null, state=null, parentsNode=null, autoChunkUpdate=true):
 	var blockscript = getBlockscript(blockname)
