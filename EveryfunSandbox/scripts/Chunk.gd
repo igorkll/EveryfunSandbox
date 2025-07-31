@@ -28,6 +28,7 @@ func updateMesh():
 
 	if updateThread != null:
 		updateThread.wait_to_finish()
+		updateThread = null
 	
 	updateThread = Thread.new()
 	updateThread.start(_updateMesh_thread.bind(meshlist, usesCount.duplicate(), array.duplicate()))

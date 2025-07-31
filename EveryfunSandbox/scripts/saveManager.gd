@@ -47,6 +47,7 @@ static func loadChunk(position):
 	
 	if chunk.loadThread != null:
 		chunk.loadThread.wait_to_finish()
+		chunk.loadThread = null
 		
 	chunk.loadThread = Thread.new()
 	chunk.loadThread.start(_loadChunk.bind(chunk, position))
@@ -125,6 +126,14 @@ static func create(name, _parameters={}):
 	save()
 	
 static func saveChunk(chunk, destroyDynamic=false):
+	if chunk.loadThread != null:
+		chunk.loadThread.wait_to_finish()
+		chunk.loadThread = null
+		
+	if chunk.updateThread != null:
+		chunk.updateThread.wait_to_finish()
+		chunk.updateThread = null
+	
 	var file = FileAccess.open(save_chunk_dir + "/" + chunkManager.getChunkName(chunk.chunkPosition), FileAccess.WRITE)
 	if file:
 		var chunkdata = {

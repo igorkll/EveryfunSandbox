@@ -69,12 +69,6 @@ static func getChunk(position):
 	return chunk
 	
 static func unloadChunk(chunk):
-	if chunk.loadThread != null:
-		chunk.loadThread.wait_to_finish()
-		
-	if chunk.updateThread != null:
-		chunk.updateThread.wait_to_finish()
-		
 	saveManager.saveChunk(chunk, true)
 	loadedChunks.erase(chunk.name)
 	chunk.free()

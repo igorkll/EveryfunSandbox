@@ -5,7 +5,6 @@ func _ready():
 		saveManager.create("default")
 	else:
 		saveManager.open("default")
-	
 
 var save_timer = 0
 var save_per = 5
