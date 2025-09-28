@@ -62,6 +62,5 @@ transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, -16.272602, 0)
 shape = SubResource("BoxShape3D_tlwt5")
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="."]
-transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, -16.272602, 0)
 mesher = SubResource("VoxelMesherTransvoxel_036b0")
 script = ExtResource("4_aqk2v")

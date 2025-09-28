@@ -1,14 +1,15 @@
 extends VoxelTerrain
 
 func _ready():
-	var gen = VoxelGeneratorWaves.new()
-	gen.height_range = 50
+	var gen = VoxelGeneratorNoise.new()
+	var noise = FastNoiseLite.new()
+	noise.seed = randi()
+	noise.frequency = 0.02
+	noise.fractal_octaves = 4
+	gen.noise = noise
 	
-	var mesher = VoxelMesherBlocky.new()
+	var mesher = VoxelMesherTransvoxel.new()
 	
-	var library = VoxelBlockyLibrary.new()
-	setup_block_library(library)
-	mesher.library = library
 	
 	self.mesher = mesher
 	self.generator = gen
