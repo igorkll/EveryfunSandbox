@@ -19,8 +19,7 @@ func _ready():
 
 func setup_block_library(library: VoxelBlockyLibrary):
 	# Камень
-	var stone = VoxelBlockyModelCube.new()
-	stone.color = Color("8b8b8b")
+	var stone = VoxelBlockyModelEmpty.new()
 	library.add_model(stone)
 	
 	# Земля
