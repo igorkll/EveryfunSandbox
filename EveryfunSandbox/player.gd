@@ -1,28 +1,82 @@
 extends CharacterBody3D
 
+var sprint_mul = 2
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+var move_acceleration = 40
+var jump_acceleration = 8
+var fall_speed_mul = 2
 
+var velocity_drop = 0.0005
+var jump_budget = 0.02
 
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
+var max_interact_distance = 10
+
+var current_jump = false
+var current_jump_budget = 0
+
+func raycast():
+	var raycast = $raycast
+	raycast.global_transform.origin = $camera.global_transform.origin
+	raycast.target_position = -$camera.global_transform.basis.z * max_interact_distance
+	raycast.force_raycast_update()
+	return raycast
+
+func _ready():
+	position = (Vector3) (0, 2, 0)
+
+func _physics_process(delta):
+	# ---------------------------------- moving control
+		
+	var direction = Vector3.ZERO	
+
+	var _move_acceleration = move_acceleration
+	if Input.is_action_pressed("sprint"):
+		_move_acceleration *= sprint_mul
+
+	if Input.is_action_pressed("move_right"):
+		direction.x += 1
+	if Input.is_action_pressed("move_left"):
+		direction.x -= 1
+	if Input.is_action_pressed("move_back"):
+		direction.z -= 1
+	if Input.is_action_pressed("move_forward"):
+		direction.z += 1
+		
+	if Input.is_action_pressed("jump") && is_on_floor():
+		if not current_jump:
+			current_jump_budget = jump_budget
+		current_jump = true
+		
+	if current_jump:
+		current_jump_budget -= delta
+		if current_jump_budget < 0:
+			current_jump = false
+			current_jump_budget = 0
+	
+	if Input.is_action_just_released("jump"):
+		current_jump = false
+		current_jump_budget = 0
+	
+	# ---------------------------------- moving
+	
+	var camera_basis = $camera.global_transform.basis
+	var camera_direction = -camera_basis.z.normalized()
+	var camera_right = camera_basis.x.normalized()
+	var move_direction = (camera_direction * direction.z + camera_right * direction.x).normalized()
+	move_direction.y = 0
+	move_direction = move_direction.normalized()
+
+	velocity.x += move_direction.x * _move_acceleration * delta
+	velocity.z += move_direction.z * _move_acceleration * delta
+
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		velocity += get_gravity() * delta * fall_speed_mul
 
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
-
+	if current_jump:
+		velocity.y += jump_acceleration
+	
+	var speed_mul = pow(velocity_drop, delta);
+	velocity.x *= speed_mul;
+	velocity.z *= speed_mul;
+	
 	move_and_slide()
