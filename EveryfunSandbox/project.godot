@@ -18,15 +18,6 @@ boot_splash/image="uid://2dvpirsyultl"
 config/icon="uid://dmm0c18k048ss"
 boot_splash/minimum_display_time=2000
 
-[autoload]
-
-blockManager="*res://scripts/blockManager.gd"
-_block="res://blocks/block.gd"
-saveManager="*res://scripts/saveManager.gd"
-gameApi="*res://scripts/gameApi.gd"
-chunkManager="*res://scripts/chunkManager.gd"
-worldGenerator="*res://scripts/worldGenerator.gd"
-
 [display]
 
 window/size/mode=3

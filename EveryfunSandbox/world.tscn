@@ -1,9 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=7 format=3 uid="uid://bw0m6x1agdhve"]
 
-[ext_resource type="Script" uid="uid://csa4tycdt2mx2" path="res://scripts/world.gd" id="1_aqk2v"]
-[ext_resource type="Script" uid="uid://bhh8jwjpyw0w6" path="res://scripts/player.gd" id="1_f3sb7"]
 [ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
-[ext_resource type="Script" uid="uid://clpri4gnvvt6s" path="res://scripts/camera.gd" id="3_tlwt5"]
+[ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://player.gd" id="2_fj7yv"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tlwt5"]
 panorama = ExtResource("2_aqk2v")
@@ -25,7 +23,6 @@ sdfgi_energy = 4.0
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
 [node name="main" type="Node3D"]
-script = ExtResource("1_aqk2v")
 
 [node name="worldEnv" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_gv5m4")
@@ -36,8 +33,7 @@ shadow_enabled = true
 shadow_blur = 2.0
 
 [node name="player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.77039, 1.44316, 3.31592)
-script = ExtResource("1_f3sb7")
+script = ExtResource("2_fj7yv")
 
 [node name="collision" type="CollisionShape3D" parent="player"]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.00568438, 0.00694084, 0.00512743)
@@ -46,7 +42,5 @@ shape = SubResource("CapsuleShape3D_gv5m4")
 [node name="camera" type="Camera3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689037, 0)
 fov = 80.0
-script = ExtResource("3_tlwt5")
 
 [node name="raycast" type="RayCast3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.77039, -1.44316, -3.31592)
