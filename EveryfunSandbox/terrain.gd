@@ -8,24 +8,27 @@ func _ready():
 	noise.fractal_octaves = 4
 	gen.noise = noise
 	
-	var mesher = VoxelMesherTransvoxel.new()
+	var mesher = VoxelMesherBlocky.new()
 	
+	var library = VoxelBlockyLibrary.new()
+	setup_block_library(library)
+	mesher.library = library
 	
 	self.mesher = mesher
 	self.generator = gen
 
 func setup_block_library(library: VoxelBlockyLibrary):
 	# Камень
-	var stone = VoxelBlockyModel.new()
+	var stone = VoxelBlockyModelCube.new()
 	stone.color = Color("8b8b8b")
 	library.add_model(stone)
 	
 	# Земля
-	var dirt = VoxelBlockyModel.new()
+	var dirt = VoxelBlockyModelCube.new()
 	dirt.color = Color("5d4037")
 	library.add_model(dirt)
 	
 	# Трава
-	var grass = VoxelBlockyModel.new()
+	var grass = VoxelBlockyModelCube.new()
 	grass.color = Color("4caf50")
 	library.add_model(grass)
