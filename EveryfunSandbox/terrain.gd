@@ -1,12 +1,7 @@
 extends VoxelTerrain
 
 func _ready():
-	var gen = VoxelGeneratorNoise.new()
-	var noise = FastNoiseLite.new()
-	noise.seed = randi()
-	noise.frequency = 0.02
-	noise.fractal_octaves = 4
-	gen.noise = noise
+	var gen = VoxelGeneratorWaves.new()
 	
 	var mesher = VoxelMesherBlocky.new()
 	
@@ -18,7 +13,6 @@ func _ready():
 	self.generator = gen
 
 func setup_block_library(library: VoxelBlockyLibrary):
-	# Камень
 	var stone = VoxelBlockyModelEmpty.new()
 	library.add_model(stone)
 	

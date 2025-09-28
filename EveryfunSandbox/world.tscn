@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=10 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://player.gd" id="2_fj7yv"]
@@ -23,8 +23,6 @@ sdfgi_read_sky_light = false
 sdfgi_energy = 4.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_tlwt5"]
 
 [sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_036b0"]
 
@@ -54,12 +52,6 @@ script = ExtResource("3_tlwt5")
 view_distance = 512
 
 [node name="raycast" type="RayCast3D" parent="player"]
-
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(16, 0, 0, 0, 16, 0, 0, 0, 16, 0, -16.272602, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-shape = SubResource("BoxShape3D_tlwt5")
 
 [node name="VoxelTerrain" type="VoxelTerrain" parent="."]
 mesher = SubResource("VoxelMesherTransvoxel_036b0")
