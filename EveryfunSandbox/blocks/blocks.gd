@@ -33,13 +33,14 @@ func _ready():
 	
 	shader = preload("res://blocks/blocks.gdshader")
 	library = _get_library()
-
+	
 func _addBlockFolder(path):
 	var jsonPath = path + "/blocks.json"
-	var json_as_text = FileAccess.get_file_as_string(jsonPath)
-	var json_as_dict = JSON.parse_string(json_as_text)
-	if json_as_dict:
-		
+	var list = JSON.parse_string(FileAccess.get_file_as_string(jsonPath))
+	if list:
+		for item in list:
+			item.texture = load(path + "/" + item.texture)
+			blocklist.append(item)
 
 func _get_library():
 	var library = VoxelBlockyLibrary.new()
