@@ -1,7 +1,8 @@
 extends VoxelTerrain
 
 func _ready():
-	var gen = VoxelGeneratorWaves.new()
+	var gen = VoxelGeneratorFlat.new()
+	gen.channel = VoxelBuffer.CHANNEL_TYPE
 	
 	var mesher = VoxelMesherBlocky.new()
 	
@@ -16,12 +17,10 @@ func setup_block_library(library: VoxelBlockyLibrary):
 	var stone = VoxelBlockyModelEmpty.new()
 	library.add_model(stone)
 	
-	# Земля
 	var dirt = VoxelBlockyModelCube.new()
 	dirt.color = Color("5d4037")
 	library.add_model(dirt)
 	
-	# Трава
 	var grass = VoxelBlockyModelCube.new()
 	grass.color = Color("4caf50")
 	library.add_model(grass)
