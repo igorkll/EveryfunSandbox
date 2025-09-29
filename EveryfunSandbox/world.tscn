@@ -24,7 +24,7 @@ sdfgi_energy = 4.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
-[sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_036b0"]
+[sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_aqk2v"]
 
 [node name="main" type="Node3D"]
 
@@ -49,9 +49,10 @@ fov = 80.0
 script = ExtResource("3_tlwt5")
 
 [node name="VoxelViewer" type="VoxelViewer" parent="player/camera"]
+view_distance = 256
 
 [node name="raycast" type="RayCast3D" parent="player"]
 
-[node name="VoxelTerrain" type="VoxelTerrain" parent="."]
-mesher = SubResource("VoxelMesherTransvoxel_036b0")
+[node name="VoxelLodTerrain" type="VoxelLodTerrain" parent="."]
+mesher = SubResource("VoxelMesherTransvoxel_aqk2v")
 script = ExtResource("4_aqk2v")

@@ -1,4 +1,4 @@
-extends VoxelTerrain
+extends VoxelLodTerrain
 
 func _ready():
 	var gen = VoxelGeneratorWaves.new()
@@ -12,6 +12,8 @@ func _ready():
 	
 	self.mesher = mesher
 	self.generator = gen
+	self.view_distance = 1024
+	self.lod_distance = 256
 
 func setup_block_library(library: VoxelBlockyLibrary):
 	var air = VoxelBlockyModelEmpty.new()
