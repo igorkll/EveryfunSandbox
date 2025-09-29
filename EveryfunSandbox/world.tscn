@@ -49,7 +49,6 @@ fov = 80.0
 script = ExtResource("3_tlwt5")
 
 [node name="VoxelViewer" type="VoxelViewer" parent="player/camera"]
-view_distance = 512
 
 [node name="raycast" type="RayCast3D" parent="player"]
 

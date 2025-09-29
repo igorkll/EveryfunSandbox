@@ -1,8 +1,7 @@
 extends VoxelTerrain
 
-# FUCKING ENGINE!!
 func _ready():
-	var gen = VoxelGeneratorFlat.new()
+	var gen = VoxelGeneratorWaves.new()
 	gen.channel = VoxelBuffer.CHANNEL_TYPE
 	
 	var mesher = VoxelMesherBlocky.new()
