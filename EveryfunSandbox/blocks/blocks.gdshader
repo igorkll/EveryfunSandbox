@@ -1,8 +1,7 @@
 shader_type spatial;
 
-uniform vec3 color_bottom = vec3(0.0, 1.0, 0.0);
-uniform vec3 color_top = vec3(1.0, 1.0, 0.0);
+uniform sampler2D diff_texture;
 
 void fragment() {
-    ALBEDO = mix(color_bottom, color_top, UV.y);
+    ALBEDO = texture(diff_texture, UV).rgb;
 }
