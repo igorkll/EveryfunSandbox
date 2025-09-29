@@ -2,8 +2,8 @@ extends CharacterBody3D
 
 var sprint_mul = 2
 
-var move_acceleration = 40
-var jump_acceleration = 10
+var move_acceleration = 30
+var jump_acceleration = 8
 var fall_speed_mul = 2.5
 
 var velocity_drop = 0.0005
@@ -20,7 +20,7 @@ func _ready():
 	voxel_tool = get_node("/root/main/VoxelLodTerrain").get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 	
-	position = (Vector3) (0, 500, 0)
+	position = (Vector3) (0, 50, 0)
 
 func _physics_process(delta):
 	# ---------------------------------- moving control

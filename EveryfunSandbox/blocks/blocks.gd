@@ -51,7 +51,12 @@ func _get_library():
 	for block in blocklist:
 		var material = ShaderMaterial.new()
 		material.shader = shader
-		material.set_shader_parameter("diff_texture", block.texture)
+		if block.has("no_filter") and block.no_filter:
+			material.set_shader_parameter("diff_texture_no_filter", block.texture)
+			material.set_shader_parameter("no_filter", true)
+		else:
+			material.set_shader_parameter("diff_texture", block.texture)
+			material.set_shader_parameter("no_filter", false)
 		
 		var textureMode = textureModes[block.texture_mode]
 		
