@@ -14,8 +14,8 @@ func _ready():
 	self.generator = gen
 
 func setup_block_library(library: VoxelBlockyLibrary):
-	var stone = VoxelBlockyModelEmpty.new()
-	library.add_model(stone)
+	var air = VoxelBlockyModelEmpty.new()
+	library.add_model(air)
 	
 	var dirt = VoxelBlockyModelCube.new()
 	dirt.color = Color("5d4037")
