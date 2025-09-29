@@ -19,12 +19,8 @@ func get_block_library():
 	var air = VoxelBlockyModelEmpty.new()
 	library.add_model(air)
 	
-	var dirt = VoxelBlockyModelCube.new()
-	dirt.set_material_override(0, game.blockMaterial)
-	library.add_model(dirt)
-	
-	var grass = VoxelBlockyModelCube.new()
-	grass.color = Color("4caf50")
-	library.add_model(grass)
+	var block = VoxelBlockyModelCube.new()
+	block.set_material_override(0, blocks.material)
+	library.add_model(block)
 	
 	return library
