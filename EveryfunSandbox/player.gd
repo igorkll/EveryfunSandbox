@@ -18,6 +18,8 @@ var voxel_tool
 
 func _ready():
 	voxel_tool = get_node("/root/main/VoxelLodTerrain").get_voxel_tool()
+	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
+	
 	position = (Vector3) (0, 2, 0)
 
 func _physics_process(delta):
@@ -56,8 +58,7 @@ func _physics_process(delta):
 	# ---------------------------------- edit
 	
 	if Input.is_action_just_pressed("attack"):
-		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z.normalized(), 128)
-		print(result)
+		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, 128)
 		if result:
 			voxel_tool.set_voxel(result.position, 0)
 	
