@@ -1,5 +1,6 @@
 extends VoxelTerrain
 
+# FUCKING ENGINE!!
 func _ready():
 	var gen = VoxelGeneratorFlat.new()
 	gen.channel = VoxelBuffer.CHANNEL_TYPE
