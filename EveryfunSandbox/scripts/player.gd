@@ -65,7 +65,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("place"):
 		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, 128)
 		if result:
-			voxel_tool.set_voxel(result.position, 2)
+			voxel_tool.set_voxel(result.previous_position, 2)
 	
 	# ---------------------------------- moving
 	
