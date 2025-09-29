@@ -55,4 +55,5 @@ view_distance = 256
 
 [node name="VoxelLodTerrain" type="VoxelLodTerrain" parent="."]
 mesher = SubResource("VoxelMesherTransvoxel_aqk2v")
+mesh_block_size = 32
 script = ExtResource("4_aqk2v")

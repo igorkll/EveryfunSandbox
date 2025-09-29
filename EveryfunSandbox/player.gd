@@ -14,14 +14,10 @@ var max_interact_distance = 10
 var current_jump = false
 var current_jump_budget = 0
 
-func raycast():
-	var raycast = $raycast
-	raycast.global_transform.origin = $camera.global_transform.origin
-	raycast.target_position = -$camera.global_transform.basis.z * max_interact_distance
-	raycast.force_raycast_update()
-	return raycast
+var voxel_tool
 
 func _ready():
+	voxel_tool = get_node("/root/main/VoxelLodTerrain").get_voxel_tool()
 	position = (Vector3) (0, 2, 0)
 
 func _physics_process(delta):
@@ -56,6 +52,14 @@ func _physics_process(delta):
 	if Input.is_action_just_released("jump"):
 		current_jump = false
 		current_jump_budget = 0
+		
+	# ---------------------------------- edit
+	
+	if Input.is_action_just_pressed("attack"):
+		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z.normalized(), 128)
+		print(result)
+		if result:
+			voxel_tool.set_voxel(result.position, 0)
 	
 	# ---------------------------------- moving
 	
@@ -78,7 +82,5 @@ func _physics_process(delta):
 	var speed_mul = pow(velocity_drop, delta);
 	velocity.x *= speed_mul;
 	velocity.z *= speed_mul;
-	
-	print(position)
 	
 	move_and_slide()

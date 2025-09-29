@@ -12,7 +12,7 @@ func _ready():
 	
 	self.mesher = mesher
 	self.generator = gen
-	self.view_distance = 1024
+	self.view_distance = 2048
 	self.lod_distance = 256
 
 func setup_block_library(library: VoxelBlockyLibrary):
