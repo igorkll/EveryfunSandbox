@@ -3,12 +3,7 @@ extends Node
 var shader
 var library
 
-var blocklist = [
-	{
-		texture = preload("res://blocks/stone/texture.png"),
-		texture_mode = 1
-	}
-]
+var blocklist = []
 
 var textureModes = [
 	[
@@ -34,8 +29,17 @@ var textureModes = [
 ]
 
 func _ready():
+	_addBlockFolder("res://blocks")
+	
 	shader = preload("res://blocks/blocks.gdshader")
 	library = _get_library()
+
+func _addBlockFolder(path):
+	var jsonPath = path + "/blocks.json"
+	var json_as_text = FileAccess.get_file_as_string(jsonPath)
+	var json_as_dict = JSON.parse_string(json_as_text)
+	if json_as_dict:
+		
 
 func _get_library():
 	var library = VoxelBlockyLibrary.new()
