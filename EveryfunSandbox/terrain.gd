@@ -6,23 +6,25 @@ func _ready():
 	
 	var mesher = VoxelMesherBlocky.new()
 	
-	var library = VoxelBlockyLibrary.new()
-	setup_block_library(library)
-	mesher.library = library
+	mesher.library = get_block_library()
 	
 	self.mesher = mesher
 	self.generator = gen
 	self.view_distance = 2048
 	self.lod_distance = 256
 
-func setup_block_library(library: VoxelBlockyLibrary):
+func get_block_library():
+	var library = VoxelBlockyLibrary.new()
+	
 	var air = VoxelBlockyModelEmpty.new()
 	library.add_model(air)
 	
 	var dirt = VoxelBlockyModelCube.new()
-	dirt.color = Color("5d4037")
+	dirt.set_material_override(0, game.blockMaterial)
 	library.add_model(dirt)
 	
 	var grass = VoxelBlockyModelCube.new()
 	grass.color = Color("4caf50")
 	library.add_model(grass)
+	
+	return library

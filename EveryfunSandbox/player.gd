@@ -3,8 +3,8 @@ extends CharacterBody3D
 var sprint_mul = 2
 
 var move_acceleration = 40
-var jump_acceleration = 8
-var fall_speed_mul = 2
+var jump_acceleration = 10
+var fall_speed_mul = 2.5
 
 var velocity_drop = 0.0005
 var jump_budget = 0.02
