@@ -125,10 +125,10 @@ func onWalking():
 	var defaultRandomInterval
 	if Input.is_action_pressed("sprint"):
 		defaultInterval = 0.2
-		defaultRandomInterval = 0.5
+		defaultRandomInterval = 0.05
 	else:
 		defaultInterval = 0.4
-		defaultRandomInterval = 1
+		defaultRandomInterval = 0.1
 
 	if result:
 		var voxelId = voxel_tool.get_voxel(result.position)
@@ -149,6 +149,8 @@ func onWalking():
 				walkSoundTimer.start(walkSound.bind(sound))
 				
 				currentWalkSound = sound
+	else:
+		stopWalkTimer()
 				
 	if walkSoundTimer:
 		walkSoundTimer.interval = currentWalkSound.get("interval", defaultInterval)
