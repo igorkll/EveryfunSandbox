@@ -9,8 +9,8 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var size = buffer.get_size()
 	var scale = 1 << lod
 	
-	var id_grass = blocks.blockIDs["grass"]
-	var id_stone = blocks.blockIDs["stone"]
+	var id_grass = game.blockIDs["grass"]
+	var id_stone = game.blockIDs["stone"]
 	
 	for ix in range(size.x):
 		for iy in range(size.y):

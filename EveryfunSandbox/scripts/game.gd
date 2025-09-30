@@ -1,13 +1,14 @@
 extends Node
 
-var shader
-var library
+var blockLibrary
 
-var blocksounds = {}
-var blocklist = []
+var soundList = {}
+var blockList = []
 var blockIDs = {}
 
-var textureModes = [
+var _shader = preload("res://shaders/blocks.gdshader")
+
+var _textureModes = [
 	[
 		Vector2i(3, 3),
 		
@@ -32,33 +33,34 @@ var textureModes = [
 
 func _ready():
 	blockIDs["air"] = 0
-	_addFolder("res://blocks")
+	_addFolder("res://game")
 	
-	shader = preload("res://shaders/blocks.gdshader")
-	library = _get_library()
+	blockLibrary = _getLibrary()
 	
 func _addFolder(path):
 	var list = JSON.parse_string(FileAccess.get_file_as_string(path + "/sounds.json"))
 	if list:
 		for item in list:
-			blocksounds[item.name] = item
+			soundList[item.name] = item
 
 	list = JSON.parse_string(FileAccess.get_file_as_string(path + "/blocks.json"))
 	if list:
 		for item in list:
 			item.texture = load(path + "/" + item.texture)
-			blocklist.append(item)
-			blockIDs[item.name] = blocklist.size()
+			
+			blockList.append(item)
+			if item.has("name"):
+				blockIDs[item.name] = blockList.size()
 
-func _get_library():
+func _getLibrary():
 	var library = VoxelBlockyLibrary.new()
 	
 	var air = VoxelBlockyModelEmpty.new()
 	library.add_model(air)
 	
-	for block in blocklist:
+	for block in blockList:
 		var material = ShaderMaterial.new()
-		material.shader = shader
+		material.shader = _shader
 		if block.has("no_texture_filter") and block.no_texture_filter:
 			material.set_shader_parameter("diff_texture_no_filter", block.texture)
 			material.set_shader_parameter("no_filter", true)
@@ -66,7 +68,7 @@ func _get_library():
 			material.set_shader_parameter("diff_texture", block.texture)
 			material.set_shader_parameter("no_filter", false)
 		
-		var textureMode = textureModes[block.texture_mode]
+		var textureMode = _textureModes[block.texture_mode]
 		
 		var blockModel = VoxelBlockyModelCube.new()
 		blockModel.atlas_size_in_tiles = textureMode[0]

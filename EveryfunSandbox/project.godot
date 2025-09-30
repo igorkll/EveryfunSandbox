@@ -20,7 +20,7 @@ boot_splash/minimum_display_time=2000
 
 [autoload]
 
-blocks="*res://scripts/blocks.gd"
+game="*res://scripts/game.gd"
 
 [display]
 

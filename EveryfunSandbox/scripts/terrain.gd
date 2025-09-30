@@ -4,7 +4,7 @@ var world_generator = preload("res://generators/world.gd")
 
 func _ready():
 	var mesher = VoxelMesherBlocky.new()
-	mesher.library = blocks.library
+	mesher.library = game.blockLibrary
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()
