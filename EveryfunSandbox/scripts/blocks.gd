@@ -3,6 +3,7 @@ extends Node
 var shader
 var library
 
+var blocksounds = {}
 var blocklist = []
 var blockIDs = {}
 
@@ -31,14 +32,18 @@ var textureModes = [
 
 func _ready():
 	blockIDs["air"] = 0
-	_addBlockFolder("res://blocks")
+	_addFolder("res://blocks")
 	
-	shader = preload("res://blocks/blocks.gdshader")
+	shader = preload("res://shaders/blocks.gdshader")
 	library = _get_library()
 	
-func _addBlockFolder(path):
-	var jsonPath = path + "/blocks.json"
-	var list = JSON.parse_string(FileAccess.get_file_as_string(jsonPath))
+func _addFolder(path):
+	var list = JSON.parse_string(FileAccess.get_file_as_string(path + "/sounds.json"))
+	if list:
+		for item in list:
+			blocksounds[item.name] = item
+
+	list = JSON.parse_string(FileAccess.get_file_as_string(path + "/blocks.json"))
 	if list:
 		for item in list:
 			item.texture = load(path + "/" + item.texture)

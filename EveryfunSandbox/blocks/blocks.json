@@ -1,13 +1,19 @@
 [
 	{
 		"name": "grass",
+		
 		"texture": "grass/texture.png",
 		"texture_mode": 0,
-		"no_texture_filter": true
+		"no_texture_filter": true,
+		
+		"sounds": "grass"
 	},
 	{
 		"name": "stone",
+		
 		"texture": "stone/texture.png",
-		"texture_mode": 1
+		"texture_mode": 1,
+		
+		"sounds": "stone"
 	}
 ]
