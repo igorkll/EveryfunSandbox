@@ -77,7 +77,7 @@ func _physics_process(delta):
 			
 	if Input.is_action_just_pressed("place"):
 		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
-		if result:
+		if result and game.isCellFree(result.previous_position):
 			voxel_tool.set_voxel(result.previous_position, 2)
 	
 	# ---------------------------------- moving
