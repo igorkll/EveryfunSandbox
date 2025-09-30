@@ -2,11 +2,17 @@ extends VoxelGeneratorScript
 
 func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var size = buffer.get_size()
-	for ix in range(0, size.x):
-		for iy in range(0, size.y):
-			for iz in range(0, size.z):
-				var pos = position + Vector3i(ix, iy, iz)
-				if pos.y == 10:
-					buffer.set_voxel(1, ix, iy, iz, VoxelBuffer.CHANNEL_TYPE)
+	var scale = 1 << lod
+	print(scale)
+	print(size)
+	
+	for ix in range(size.x):
+		for iy in range(size.y):
+			for iz in range(size.z):
+				var localPos = Vector3i(ix, iy, iz)
+				var worldPos = position + (localPos * scale)
+
+				if worldPos.y == 10:
+					buffer.set_voxel_v(1, localPos, VoxelBuffer.CHANNEL_TYPE)
 				else:
-					buffer.set_voxel(0, ix, iy, iz, VoxelBuffer.CHANNEL_TYPE)
+					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
