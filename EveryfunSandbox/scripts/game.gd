@@ -6,8 +6,11 @@ var blockLibrary
 
 var soundList = {}
 var musicList = {}
+var musicCategories = {}
 var blockList = []
 var blockIDs = {}
+
+var currentMusicCategory
 
 func loadResource(resourcePath):
 	return load(resourcePath)
@@ -32,10 +35,29 @@ func playSound(sound, position: Vector3, parent=null):
 	audioPlayer.play()
 	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
 	
-func playMusic(music):
+func playMusic(music, loop=true):
 	var musicPlayer = get_node("/root/main/music")
 	musicPlayer.stream = music.stream
+	musicPlayer.loop = loop
 	musicPlayer.play()
+	musicPlayer.connect("finished", selectMusicFromCategory)
+	
+func stopMusic():
+	var musicPlayer = get_node("/root/main/music")
+	musicPlayer.loop = false
+	musicPlayer.stop()
+
+func selectMusicFromCategory(category=null):
+	if not category:
+		category = currentMusicCategory
+	playMusic(musicCategories[randi_range(0, musicCategories[category].size())], false)
+
+func playMusicCategory(category):
+	currentMusicCategory = category
+	selectMusicFromCategory()
+	
+func stopMusicCategory():
+	currentMusicCategory = null
 
 func getVoxelPositionFromGlobalPosition(position: Vector3) -> Vector3i:
 	return Vector3i(position - terrain.global_transform.origin)
@@ -92,7 +114,7 @@ func _ready():
 	
 	blockLibrary = _getLibrary()
 	
-	playMusic(musicList["calm_3"])
+	playMusicCategory("calm")
 	
 func _addFolder(path):
 	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
@@ -124,6 +146,11 @@ func _addFolder(path):
 		for music in list:
 			music.stream = loadResource(path.path_join(music.path))
 			musicList[music.name] = music
+			
+			if music.has("category"):
+				if not musicCategories.has(music.category):
+					musicCategories[music.category] = []
+				musicCategories[music.category].append(music)
 
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
 	if list:
