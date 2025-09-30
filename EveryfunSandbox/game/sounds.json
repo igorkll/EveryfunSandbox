@@ -17,6 +17,8 @@
 		],
 		"playback_mode": 0,
 		"random_pitch": 1.2,
-		"random_volume_offset_db": 3
+		"random_volume_offset_db": 3,
+		"interval": 0.3,
+		"random_interval": 0.1
 	}
 ]
