@@ -5,6 +5,7 @@ var player
 var blockLibrary
 
 var soundList = {}
+var musicList = {}
 var blockList = []
 var blockIDs = {}
 
@@ -30,6 +31,11 @@ func playSound(sound, position: Vector3, parent=null):
 
 	audioPlayer.play()
 	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
+	
+func playMusic(music):
+	var musicPlayer = get_node("/root/main/music")
+	musicPlayer.stream = music.stream
+	musicPlayer.play()
 
 func getVoxelPositionFromGlobalPosition(position: Vector3):
 	pass
@@ -72,6 +78,8 @@ func _ready():
 	
 	blockLibrary = _getLibrary()
 	
+	playMusic(musicList["silence"])
+	
 func _addFolder(path):
 	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
 	if list:
@@ -96,6 +104,12 @@ func _addFolder(path):
 			sound.stream = audioStreamRandomizer
 			
 			soundList[sound.name] = sound
+			
+	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/music.json")))
+	if list:
+		for music in list:
+			sound.stream = loadResource(path.path_join(music.path))
+			musicList[music.name] = music
 
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
 	if list:
