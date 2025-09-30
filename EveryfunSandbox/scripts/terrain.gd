@@ -1,20 +1,12 @@
 extends VoxelLodTerrain
 
-func _ready():
-	var noise := FastNoiseLite.new()
-	noise.seed = randi()
-	noise.frequency = 0.02
-	noise.fractal_octaves = 4
+var world_generator = preload("res://scripts/generator.gd")
 
-	var gen = VoxelGeneratorNoise2D.new()
-	gen.channel = VoxelBuffer.CHANNEL_TYPE
-	gen.noise = noise
-	gen.height_range = 50
-	
+func _ready():
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = blocks.library
 	
 	self.mesher = mesher
-	self.generator = gen
+	self.generator = world_generator.new()
 	self.view_distance = 2048
 	self.lod_distance = 256
