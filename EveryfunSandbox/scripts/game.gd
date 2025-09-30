@@ -78,7 +78,7 @@ func _ready():
 	
 	blockLibrary = _getLibrary()
 	
-	playMusic(musicList["silence"])
+	playMusic(musicList["calm_3"])
 	
 func _addFolder(path):
 	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
