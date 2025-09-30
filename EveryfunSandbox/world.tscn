@@ -17,7 +17,6 @@ background_color = Color(0, 0.137255, 0.211765, 1)
 sky = SubResource("Sky_fj7yv")
 ambient_light_source = 1
 ssr_depth_tolerance = 97.21
-sdfgi_enabled = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
@@ -33,6 +32,9 @@ environment = SubResource("Environment_gv5m4")
 [node name="worldLight" type="DirectionalLight3D" parent="worldEnv"]
 transform = Transform3D(0.79504, 0.332199, -0.507499, 2.97226e-08, 0.836688, 0.54768, 0.606558, -0.435427, 0.6652, 0, 0, 0)
 shadow_enabled = true
+shadow_bias = 0.125
+shadow_normal_bias = 3.0
+shadow_blur = 0.2
 directional_shadow_max_distance = 512.0
 
 [node name="player" type="CharacterBody3D" parent="."]
