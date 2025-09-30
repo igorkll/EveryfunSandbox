@@ -4,6 +4,7 @@ var shader
 var library
 
 var blocklist = []
+var blockIDs = {}
 
 var textureModes = [
 	[
@@ -29,6 +30,7 @@ var textureModes = [
 ]
 
 func _ready():
+	blockIDs["air"] = 0
 	_addBlockFolder("res://blocks")
 	
 	shader = preload("res://blocks/blocks.gdshader")
@@ -41,6 +43,7 @@ func _addBlockFolder(path):
 		for item in list:
 			item.texture = load(path + "/" + item.texture)
 			blocklist.append(item)
+			blockIDs[item.name] = blocklist.size()
 
 func _get_library():
 	var library = VoxelBlockyLibrary.new()
@@ -51,7 +54,7 @@ func _get_library():
 	for block in blocklist:
 		var material = ShaderMaterial.new()
 		material.shader = shader
-		if block.has("no_filter") and block.no_filter:
+		if block.has("no_texture_filter") and block.no_texture_filter:
 			material.set_shader_parameter("diff_texture_no_filter", block.texture)
 			material.set_shader_parameter("no_filter", true)
 		else:

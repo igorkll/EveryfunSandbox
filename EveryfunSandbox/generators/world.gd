@@ -9,6 +9,9 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var size = buffer.get_size()
 	var scale = 1 << lod
 	
+	var id_grass = blocks.blockIDs["grass"]
+	var id_stone = blocks.blockIDs["stone"]
+	
 	for ix in range(size.x):
 		for iy in range(size.y):
 			for iz in range(size.z):
@@ -19,8 +22,8 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 				var terrainHeight = round(noiseValue * 15)
 
 				if worldPos.y == terrainHeight:
-					buffer.set_voxel_v(1, localPos, VoxelBuffer.CHANNEL_TYPE)
+					buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
 				elif worldPos.y < terrainHeight:
-					buffer.set_voxel_v(2, localPos, VoxelBuffer.CHANNEL_TYPE)
+					buffer.set_voxel_v(id_stone, localPos, VoxelBuffer.CHANNEL_TYPE)
 				else:
 					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
