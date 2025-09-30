@@ -10,7 +10,7 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 				var localPos = Vector3i(ix, iy, iz)
 				var worldPos = position + (localPos * scale)
 
-				if worldPos.y == 10:
+				if worldPos.y == 11:
 					buffer.set_voxel_v(1, localPos, VoxelBuffer.CHANNEL_TYPE)
 				else:
 					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
