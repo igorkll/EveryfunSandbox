@@ -14,6 +14,11 @@ func loadResource(resourcePath):
 func playSound(sound, position: Vector3, parent=null):
 	var audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.stream = sound.stream
+	audioPlayer.unit_size = sound.get("unit_size", 1)
+	audioPlayer.max_distance = sound.get("max_distance", 30)
+	audioPlayer.attenuation_filter_cutoff_hz = sound.get("attenuation_filter_cutoff_hz", 5000)
+	audioPlayer.volume_db = sound.get("volume_db", 0)
+	
 	if position != null:
 		audioPlayer.position = position
 		if parent:
