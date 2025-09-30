@@ -45,26 +45,16 @@ func getGlobalPositionFromVoxelPosition(position: Vector3i) -> Vector3:
 
 func isCellFree(position: Vector3) -> bool:
 	var space_state = get_tree().current_scene.get_world_3d().direct_space_state
-	
-	# Создаем параметры запроса формы
 	var query = PhysicsShapeQueryParameters3D.new()
 	
-	# Создаем box shape для проверки
 	var shape = BoxShape3D.new()
 	shape.size = Vector3(0.8, 0.8, 0.8)
 	query.shape = shape
-	
-	# Устанавливаем позицию (центр ячейки)
 	query.transform = Transform3D(Basis(), getGlobalPositionFromVoxelPosition(position))
-	
-	# Настраиваем маски столкновений
 	query.collide_with_areas = true
 	query.collide_with_bodies = true
 	
-	# Выполняем запрос
 	var results = space_state.intersect_shape(query)
-	
-	# Если есть результаты - ячейка занята
 	return results.size() == 0
 
 # ------------------------------------------------- backend
