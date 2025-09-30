@@ -11,7 +11,7 @@ var blockIDs = {}
 func loadResource(resourcePath):
 	return load(resourcePath)
 
-func playSound(sound, position: Vector3, parent):
+func playSound(sound, position: Vector3, parent=null):
 	var audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.stream = sound.stream
 	if position != null:

@@ -22,28 +22,36 @@ func _ready():
 	
 	position = (Vector3) (0, 50, 0)
 
+var _walk = false
+
 func _physics_process(delta):
 	# ---------------------------------- moving control
-		
-	var direction = Vector3.ZERO	
 
 	var _move_acceleration = move_acceleration
 	if Input.is_action_pressed("sprint"):
 		_move_acceleration *= sprint_mul
 
+	var direction = Vector3.ZERO	
+	var walk = false
 	if Input.is_action_pressed("move_right"):
 		direction.x += 1
-		onWalk()
+		walk = true
 	if Input.is_action_pressed("move_left"):
 		direction.x -= 1
-		onWalk()
+		walk = true
 	if Input.is_action_pressed("move_back"):
 		direction.z -= 1
-		onWalk()
+		walk = true
 	if Input.is_action_pressed("move_forward"):
 		direction.z += 1
-		onWalk()
-		
+		walk = true
+	
+	if walk:
+		onWalking()
+	elif _walk:
+		onStopWalk()
+	_walk = walk
+	
 	if Input.is_action_pressed("jump") && is_on_floor():
 		if not current_jump:
 			current_jump_budget = jump_budget
@@ -95,7 +103,16 @@ func _physics_process(delta):
 	
 	move_and_slide()
 
-func onWalk():
+var walkSoundTimer
+var walkVoxelId
+
+func stopWalkTimer():
+	if walkSoundTimer:
+		walkSoundTimer.queue_free()
+		walkSoundTimer = null
+	walkVoxelId = null
+
+func onWalking():
 	var result = voxel_tool.raycast(
 		global_transform.origin,
 		Vector3.DOWN,
@@ -107,4 +124,21 @@ func onWalk():
 		var voxel = game.blockList[voxelId]
 		if voxel and voxel.has("walking_sound") and game.soundList.has(voxel.walking_sound):
 			var sound = game.soundList[voxel.walking_sound]
-			game.playSound(sound, Vector3(0, $collision.shape.height / 2, 0), self)
+			
+			if not walkSoundTimer || walkVoxelId != voxelId:
+				stopWalkTimer()
+				walkVoxelId = voxelId
+				
+				walkSoundTimer = RandomIntervalTimer.new()
+				add_child(walkSoundTimer)
+				
+				walkSoundTimer.interval = sound.get("interval", 1)
+				walkSoundTimer.random_interval = sound.get("random_interval", 0)
+				
+				walkSoundTimer.start(walkSound.bind(sound))
+
+func onStopWalk():
+	stopWalkTimer()
+	
+func walkSound(sound):
+	game.playSound(sound, global_transform.origin + Vector3(0, $collision.shape.height / 2, 0))
