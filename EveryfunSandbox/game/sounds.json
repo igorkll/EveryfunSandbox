@@ -13,22 +13,18 @@
 		],
 		"playback_mode": 0,
 		"random_pitch": 1.2,
-		"random_volume_offset_db": 3,
-		"interval": 0.3,
-		"random_interval": 0.1
+		"random_volume_offset_db": 3
 	},
 	{
 		"name": "stone",
 		"list": [
 			{
-				"path": "sounds/grass/1.mp3",
+				"path": "sounds/stone/1.mp3",
 				"weight": 1
 			}
 		],
 		"playback_mode": 0,
 		"random_pitch": 1.2,
-		"random_volume_offset_db": 3,
-		"interval": 0.3,
-		"random_interval": 0.1
+		"random_volume_offset_db": 3
 	}
 ]

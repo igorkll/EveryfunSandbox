@@ -105,12 +105,14 @@ func _physics_process(delta):
 
 var walkSoundTimer
 var walkVoxelId
+var currentWalkSound
 
 func stopWalkTimer():
 	if walkSoundTimer:
 		walkSoundTimer.queue_free()
 		walkSoundTimer = null
 	walkVoxelId = null
+	currentWalkSound = null
 
 func onWalking():
 	var result = voxel_tool.raycast(
@@ -118,6 +120,15 @@ func onWalking():
 		Vector3.DOWN,
 		($collision.shape.height / 2) + 0.1
 	)
+	
+	var defaultInterval
+	var defaultRandomInterval
+	if Input.is_action_pressed("sprint"):
+		defaultInterval = 0.2
+		defaultRandomInterval = 0.5
+	else:
+		defaultInterval = 0.4
+		defaultRandomInterval = 1
 
 	if result:
 		var voxelId = voxel_tool.get_voxel(result.position)
@@ -125,17 +136,23 @@ func onWalking():
 		if voxel and voxel.has("walking_sound") and game.soundList.has(voxel.walking_sound):
 			var sound = game.soundList[voxel.walking_sound]
 			
-			if not walkSoundTimer || walkVoxelId != voxelId:
+			if sound && (not walkSoundTimer || walkVoxelId != voxelId):
 				stopWalkTimer()
 				walkVoxelId = voxelId
 				
 				walkSoundTimer = RandomIntervalTimer.new()
 				add_child(walkSoundTimer)
 				
-				walkSoundTimer.interval = sound.get("interval", 1)
-				walkSoundTimer.random_interval = sound.get("random_interval", 0)
+				walkSoundTimer.interval = sound.get("interval", defaultInterval)
+				walkSoundTimer.random_interval = sound.get("random_interval", defaultRandomInterval)
 				
 				walkSoundTimer.start(walkSound.bind(sound))
+				
+				currentWalkSound = sound
+				
+	if walkSoundTimer:
+		walkSoundTimer.interval = currentWalkSound.get("interval", defaultInterval)
+		walkSoundTimer.random_interval = currentWalkSound.get("random_interval", defaultRandomInterval)
 
 func onStopWalk():
 	stopWalkTimer()
