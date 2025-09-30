@@ -8,17 +8,29 @@ var soundList = {}
 var blockList = []
 var blockIDs = {}
 
-func playSound(sound, position: Vector3):
+func loadResource(resourcePath):
+	return load(resourcePath)
+
+func playSound(sound, position: Vector3, parent):
 	var audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.stream = sound.stream
 	if position != null:
 		audioPlayer.position = position
-		terrain.add_child(audioPlayer)
+		if parent:
+			parent.add_child(audioPlayer)
+		else:
+			terrain.add_child(audioPlayer)
 	else:
 		player.add_child(audioPlayer)
 
 	audioPlayer.play()
 	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
+
+func getVoxelPositionFromGlobalPosition(position: Vector3):
+	pass
+	
+func getGlobalPositionFromVoxelPosition(position: Vector3):
+	pass
 
 # ------------------------------------------------- backend
 
@@ -51,7 +63,6 @@ func _ready():
 	terrain = get_node("/root/main/VoxelLodTerrain")
 	player = get_node("/root/main/player")
 	
-	blockIDs["air"] = 0
 	_addFolder("res://game")
 	
 	blockLibrary = _getLibrary()
@@ -66,7 +77,7 @@ func _addFolder(path):
 				var weight = 1.0
 				if listItem.has("weight"):
 					weight = listItem.weight
-				audioStreamRandomizer.add_stream(-1, listItem.path, weight)
+				audioStreamRandomizer.add_stream(-1, loadResource(listItem.path), weight)
 			
 			if sound.has("random_pitch"):
 				audioStreamRandomizer.random_pitch = sound.random_pitch
@@ -84,39 +95,47 @@ func _addFolder(path):
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
 	if list:
 		for item in list:
-			item.texture = load(path.path_join(item.texture))
+			if item.has("texture"):
+				item.texture = loadResource(path.path_join(item.texture))
 			
-			blockList.append(item)
 			if item.has("name"):
 				blockIDs[item.name] = blockList.size()
+			
+			blockList.append(item)
 
 func _getLibrary():
 	var library = VoxelBlockyLibrary.new()
 	
-	var air = VoxelBlockyModelEmpty.new()
-	library.add_model(air)
-	
 	for block in blockList:
-		var material = ShaderMaterial.new()
-		material.shader = _shader
-		if block.has("no_texture_filter") and block.no_texture_filter:
-			material.set_shader_parameter("diff_texture_no_filter", block.texture)
-			material.set_shader_parameter("no_filter", true)
+		var blockModel
+		if block.has("texture"):
+			var material = ShaderMaterial.new()
+			material.shader = _shader
+			if block.has("no_texture_filter") and block.no_texture_filter:
+				material.set_shader_parameter("diff_texture_no_filter", block.texture)
+				material.set_shader_parameter("no_filter", true)
+			else:
+				material.set_shader_parameter("diff_texture", block.texture)
+				material.set_shader_parameter("no_filter", false)
+			
+			var textureMode
+			if block.has("texture_mode"):
+				textureMode = _textureModes[block.texture_mode]
+			else:
+				textureMode = _textureModes[1]
+			
+			blockModel = VoxelBlockyModelCube.new()
+			blockModel.atlas_size_in_tiles = textureMode[0]
+			blockModel.set_material_override(0, material)
+			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_X, textureMode[1])
+			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_X, textureMode[2])
+			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Y, textureMode[3])
+			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Y, textureMode[4])
+			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Z, textureMode[5])
+			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Z, textureMode[6])
 		else:
-			material.set_shader_parameter("diff_texture", block.texture)
-			material.set_shader_parameter("no_filter", false)
+			blockModel = VoxelBlockyModelEmpty.new()
 		
-		var textureMode = _textureModes[block.texture_mode]
-		
-		var blockModel = VoxelBlockyModelCube.new()
-		blockModel.atlas_size_in_tiles = textureMode[0]
-		blockModel.set_material_override(0, material)
-		blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_X, textureMode[1])
-		blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_X, textureMode[2])
-		blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Y, textureMode[3])
-		blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Y, textureMode[4])
-		blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Z, textureMode[5])
-		blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Z, textureMode[6])
 		library.add_model(blockModel)
 	
 	return library

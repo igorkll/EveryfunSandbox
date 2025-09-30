@@ -33,12 +33,16 @@ func _physics_process(delta):
 
 	if Input.is_action_pressed("move_right"):
 		direction.x += 1
+		onWalk()
 	if Input.is_action_pressed("move_left"):
 		direction.x -= 1
+		onWalk()
 	if Input.is_action_pressed("move_back"):
 		direction.z -= 1
+		onWalk()
 	if Input.is_action_pressed("move_forward"):
 		direction.z += 1
+		onWalk()
 		
 	if Input.is_action_pressed("jump") && is_on_floor():
 		if not current_jump:
@@ -58,12 +62,12 @@ func _physics_process(delta):
 	# ---------------------------------- edit
 	
 	if Input.is_action_just_pressed("attack"):
-		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, 128)
+		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 		if result:
 			voxel_tool.set_voxel(result.position, 0)
 			
 	if Input.is_action_just_pressed("place"):
-		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, 128)
+		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 		if result:
 			voxel_tool.set_voxel(result.previous_position, 2)
 	
@@ -90,3 +94,17 @@ func _physics_process(delta):
 	velocity.z *= speed_mul;
 	
 	move_and_slide()
+
+func onWalk():
+	var result = voxel_tool.raycast(
+		global_transform.origin,
+		Vector3.DOWN,
+		($collision.shape.height / 2) + 0.1
+	)
+
+	if result:
+		var voxelId = voxel_tool.get_voxel(result.position)
+		var voxel = game.blockList[voxelId]
+		if voxel and voxel.has("walking_sound") and game.soundList.has(voxel.walking_sound):
+			var sound = game.soundList[voxel.walking_sound]
+			game.playSound(sound, Vector3(0, $collision.shape.height / 2, 0), self)

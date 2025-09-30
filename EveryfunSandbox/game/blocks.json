@@ -1,12 +1,15 @@
 [
 	{
+		"name": "air"
+	},
+	{
 		"name": "grass",
 		
 		"texture": "grass/texture.png",
 		"texture_mode": 0,
 		"no_texture_filter": true,
 		
-		"sounds": "grass"
+		"walking_sound": "grass"
 	},
 	{
 		"name": "stone",
