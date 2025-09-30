@@ -7,5 +7,860 @@
 	{
 		"texture": "stone/texture.png",
 		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
+	},
+	{
+		"texture": "grass/texture.png",
+		"texture_mode": 0,
+		"no_filter": true
+	},
+	{
+		"texture": "stone/texture.png",
+		"texture_mode": 1
 	}
 ]

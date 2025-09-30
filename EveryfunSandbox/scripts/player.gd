@@ -20,7 +20,7 @@ func _ready():
 	voxel_tool = get_node("/root/main/VoxelLodTerrain").get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 	
-	position = (Vector3) (0, 50, 0)
+	position = (Vector3) (0, 100, 0)
 
 func _physics_process(delta):
 	# ---------------------------------- moving control
