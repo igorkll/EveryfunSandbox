@@ -17,7 +17,7 @@ var current_jump_budget = 0
 var voxel_tool
 
 func _ready():
-	voxel_tool = get_node("/root/main/VoxelLodTerrain").get_voxel_tool()
+	voxel_tool = game.terrain.get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 	
 	position = (Vector3) (0, 50, 0)

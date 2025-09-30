@@ -1,10 +1,22 @@
 extends Node
 
+var terrain
 var blockLibrary
 
 var soundList = {}
 var blockList = []
 var blockIDs = {}
+
+func playSound(sound, stream: AudioStream, position: Vector3):
+	var player = AudioStreamPlayer3D.new()
+	player.stream = stream
+	player.translation = position
+	terrain.add_child(player)
+
+	player.play()
+	player.connect("finished", Callable(player, "queue_free"))
+
+# ------------------------------------------------- backend
 
 var _shader = preload("res://shaders/blocks.gdshader")
 
@@ -32,21 +44,23 @@ var _textureModes = [
 ]
 
 func _ready():
+	terrain = get_node("/root/main/VoxelLodTerrain")
+	
 	blockIDs["air"] = 0
 	_addFolder("res://game")
 	
 	blockLibrary = _getLibrary()
 	
 func _addFolder(path):
-	var list = JSON.parse_string(FileAccess.get_file_as_string(path + "/sounds.json"))
+	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
 	if list:
 		for item in list:
 			soundList[item.name] = item
 
-	list = JSON.parse_string(FileAccess.get_file_as_string(path + "/blocks.json"))
+	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
 	if list:
 		for item in list:
-			item.texture = load(path + "/" + item.texture)
+			item.texture = load(path.path_join(item.texture))
 			
 			blockList.append(item)
 			if item.has("name"):
