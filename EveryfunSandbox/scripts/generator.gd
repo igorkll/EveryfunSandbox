@@ -3,8 +3,6 @@ extends VoxelGeneratorScript
 func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var size = buffer.get_size()
 	var scale = 1 << lod
-	print(scale)
-	print(size)
 	
 	for ix in range(size.x):
 		for iy in range(size.y):
