@@ -77,7 +77,7 @@ func _addFolder(path):
 				var weight = 1.0
 				if listItem.has("weight"):
 					weight = listItem.weight
-				audioStreamRandomizer.add_stream(-1, loadResource(listItem.path), weight)
+				audioStreamRandomizer.add_stream(-1, loadResource(path.path_join(listItem.path)), weight)
 			
 			if sound.has("random_pitch"):
 				audioStreamRandomizer.random_pitch = sound.random_pitch

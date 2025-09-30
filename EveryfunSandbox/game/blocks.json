@@ -5,7 +5,7 @@
 	{
 		"name": "grass",
 		
-		"texture": "grass/texture.png",
+		"texture": "blocks/grass/texture.png",
 		"texture_mode": 0,
 		"no_texture_filter": true,
 		
@@ -14,7 +14,7 @@
 	{
 		"name": "stone",
 		
-		"texture": "stone/texture.png",
+		"texture": "blocks/stone/texture.png",
 		"texture_mode": 1
 	}
 ]
