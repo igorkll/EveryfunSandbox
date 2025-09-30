@@ -1,10 +1,14 @@
 [
 	{
 		"name": "grass",
-		
-	},
-	{
-		"name": "stone",
-		
+		"list": [
+			{
+				"path": "grass/walking.mp3",
+				"weight": 1
+			}
+		],
+		"playback_mode": 0,
+		"random_pitch": 1.2,
+		"random_volume_offset_db": 3
 	}
 ]

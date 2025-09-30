@@ -1,20 +1,24 @@
 extends Node
 
 var terrain
+var player
 var blockLibrary
 
 var soundList = {}
 var blockList = []
 var blockIDs = {}
 
-func playSound(sound, stream: AudioStream, position: Vector3):
-	var player = AudioStreamPlayer3D.new()
-	player.stream = stream
-	player.translation = position
-	terrain.add_child(player)
+func playSound(sound, position: Vector3):
+	var audioPlayer = AudioStreamPlayer3D.new()
+	audioPlayer.stream = sound.stream
+	if position != null:
+		audioPlayer.position = position
+		terrain.add_child(audioPlayer)
+	else:
+		player.add_child(audioPlayer)
 
-	player.play()
-	player.connect("finished", Callable(player, "queue_free"))
+	audioPlayer.play()
+	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
 
 # ------------------------------------------------- backend
 
@@ -45,6 +49,7 @@ var _textureModes = [
 
 func _ready():
 	terrain = get_node("/root/main/VoxelLodTerrain")
+	player = get_node("/root/main/player")
 	
 	blockIDs["air"] = 0
 	_addFolder("res://game")
@@ -54,8 +59,27 @@ func _ready():
 func _addFolder(path):
 	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
 	if list:
-		for item in list:
-			soundList[item.name] = item
+		for sound in list:
+			var audioStreamRandomizer = AudioStreamRandomizer.new()
+			
+			for listItem in sound.list:
+				var weight = 1.0
+				if listItem.has("weight"):
+					weight = listItem.weight
+				audioStreamRandomizer.add_stream(-1, listItem.path, weight)
+			
+			if sound.has("random_pitch"):
+				audioStreamRandomizer.random_pitch = sound.random_pitch
+				
+			if sound.has("random_volume_offset_db"):
+				audioStreamRandomizer.random_volume_offset_db = sound.random_volume_offset_db
+				
+			if sound.has("playback_mode"):
+				audioStreamRandomizer.playback_mode = sound.playback_mode
+			
+			sound.stream = audioStreamRandomizer
+			
+			soundList[sound.name] = sound
 
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
 	if list:

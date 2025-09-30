@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=11 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_fj7yv"]
@@ -25,6 +25,8 @@ sdfgi_energy = 4.0
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
 [sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_aqk2v"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_aqk2v"]
 
 [node name="main" type="Node3D"]
 
@@ -57,3 +59,6 @@ view_distance = 256
 mesher = SubResource("VoxelMesherTransvoxel_aqk2v")
 mesh_block_size = 32
 script = ExtResource("4_aqk2v")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = SubResource("AudioStreamRandomizer_aqk2v")

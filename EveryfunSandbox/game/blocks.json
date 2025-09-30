@@ -12,8 +12,6 @@
 		"name": "stone",
 		
 		"texture": "stone/texture.png",
-		"texture_mode": 1,
-		
-		"sounds": "stone"
+		"texture_mode": 1
 	}
 ]
