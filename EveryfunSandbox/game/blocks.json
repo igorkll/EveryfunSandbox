@@ -7,9 +7,10 @@
 		
 		"texture": "blocks/grass/texture.png",
 		"texture_mode": 0,
-		"no_texture_filter": true,
+		"texture_no_filter": true,
 		
-		"walking_sound": "grass"
+		"sound_walking": "grass",
+		"sound_jump": "grass"
 	},
 	{
 		"name": "stone",
@@ -17,6 +18,7 @@
 		"texture": "blocks/stone/texture.png",
 		"texture_mode": 1,
 		
-		"walking_sound": "stone"
+		"sound_walking": "stone",
+		"sound_jump": "stone"
 	}
 ]

@@ -111,19 +111,14 @@ func _getLibrary():
 		if block.has("texture"):
 			var material = ShaderMaterial.new()
 			material.shader = _shader
-			if block.has("no_texture_filter") and block.no_texture_filter:
+			if block.get("texture_no_filter", false):
 				material.set_shader_parameter("diff_texture_no_filter", block.texture)
 				material.set_shader_parameter("no_filter", true)
 			else:
 				material.set_shader_parameter("diff_texture", block.texture)
 				material.set_shader_parameter("no_filter", false)
 			
-			var textureMode
-			if block.has("texture_mode"):
-				textureMode = _textureModes[block.texture_mode]
-			else:
-				textureMode = _textureModes[1]
-			
+			var textureMode = _textureModes[block.get("texture_mode", 1)]
 			blockModel = VoxelBlockyModelCube.new()
 			blockModel.atlas_size_in_tiles = textureMode[0]
 			blockModel.set_material_override(0, material)

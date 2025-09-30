@@ -23,6 +23,7 @@ func _ready():
 	position = (Vector3) (0, 50, 0)
 
 var _walk = false
+var _on_floor = false
 
 func _physics_process(delta):
 	# ---------------------------------- moving control
@@ -91,8 +92,15 @@ func _physics_process(delta):
 	velocity.x += move_direction.x * _move_acceleration * delta
 	velocity.z += move_direction.z * _move_acceleration * delta
 
-	if not is_on_floor():
+	var on_floor = is_on_floor()
+	if not on_floor:
 		velocity += get_gravity() * delta * fall_speed_mul
+	elif not _on_floor:
+		var voxel = getDownVoxelObj()
+		if voxel and voxel.has("sound_jump") and game.soundList.has(voxel.sound_jump):
+			blockSound(game.soundList[voxel.sound_jump])
+			
+	_on_floor = on_floor
 
 	if current_jump:
 		velocity.y += jump_acceleration
@@ -114,13 +122,22 @@ func stopWalkTimer():
 	walkVoxelId = null
 	currentWalkSound = null
 
-func onWalking():
+func getDownVoxel():
 	var result = voxel_tool.raycast(
 		global_transform.origin,
 		Vector3.DOWN,
 		($collision.shape.height / 2) + 0.1
 	)
-	
+
+	if result:
+		return voxel_tool.get_voxel(result.position)
+		
+func getDownVoxelObj():
+	var voxelId = getDownVoxel()
+	if voxelId:
+		return game.blockList[voxelId]
+
+func onWalking():
 	var defaultInterval
 	var defaultRandomInterval
 	if Input.is_action_pressed("sprint"):
@@ -130,11 +147,11 @@ func onWalking():
 		defaultInterval = 0.4
 		defaultRandomInterval = 0.1
 
-	if result:
-		var voxelId = voxel_tool.get_voxel(result.position)
+	var voxelId = getDownVoxel()
+	if voxelId:
 		var voxel = game.blockList[voxelId]
-		if voxel and voxel.has("walking_sound") and game.soundList.has(voxel.walking_sound):
-			var sound = game.soundList[voxel.walking_sound]
+		if voxel and voxel.has("sound_walking") and game.soundList.has(voxel.sound_walking):
+			var sound = game.soundList[voxel.sound_walking]
 			
 			if sound && (not walkSoundTimer || walkVoxelId != voxelId):
 				stopWalkTimer()
@@ -146,7 +163,7 @@ func onWalking():
 				walkSoundTimer.interval = sound.get("interval", defaultInterval)
 				walkSoundTimer.random_interval = sound.get("random_interval", defaultRandomInterval)
 				
-				walkSoundTimer.start(walkSound.bind(sound))
+				walkSoundTimer.start(blockSound.bind(sound))
 				
 				currentWalkSound = sound
 	else:
@@ -158,6 +175,6 @@ func onWalking():
 
 func onStopWalk():
 	stopWalkTimer()
-	
-func walkSound(sound):
+
+func blockSound(sound):
 	game.playSound(sound, global_transform.origin + Vector3(0, $collision.shape.height / 2, 0))
