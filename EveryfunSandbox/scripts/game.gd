@@ -108,7 +108,7 @@ func _addFolder(path):
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/music.json")))
 	if list:
 		for music in list:
-			sound.stream = loadResource(path.path_join(music.path))
+			music.stream = loadResource(path.path_join(music.path))
 			musicList[music.name] = music
 
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
