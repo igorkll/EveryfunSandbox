@@ -1,6 +1,6 @@
 extends VoxelLodTerrain
 
-var world_generator = preload("res://scripts/generator.gd")
+var world_generator = preload("res://generators/world.gd")
 
 func _ready():
 	var mesher = VoxelMesherBlocky.new()
