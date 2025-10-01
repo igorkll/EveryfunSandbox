@@ -84,6 +84,11 @@ func _ready():
 	
 	blockLibrary = _getLibrary()
 	_initMusic()
+	
+func _musicEnd(musicPlayer):
+	timers.setTimeout(func():
+		musicPlayer.play()
+	, randi_range(3, 30))
 
 func _initMusic():
 	var musicRandomizer = AudioStreamRandomizer.new()
@@ -92,8 +97,8 @@ func _initMusic():
 	
 	var musicPlayer = get_node("/root/main/music")
 	musicPlayer.stream = musicRandomizer
-	musicPlayer.autoplay = true
 	musicPlayer.play()
+	musicPlayer.connect("finished", _musicEnd.bind(musicPlayer))
 	
 func _addFolder(path):
 	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
