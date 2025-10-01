@@ -1,10 +1,7 @@
 extends Node
 
-var pending_timers: Array[SceneTreeTimer] = []
-
 func setTimeout(callback: Callable, delay_seconds: float) -> Timer:
 	var timer = Timer.new()
-	add_child(timer)
 	timer.wait_time = delay_seconds
 	timer.one_shot = true
 	timer.autostart = true
@@ -12,6 +9,7 @@ func setTimeout(callback: Callable, delay_seconds: float) -> Timer:
 		callback.call()
 		timer.queue_free()
 	)
+	get_tree().root.add_child(timer)
 	return timer
 
 func clearTimeout(timer: Timer):
