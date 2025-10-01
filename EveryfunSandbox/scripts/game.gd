@@ -48,7 +48,6 @@ func playMusic(music):
 	var musicPlayer = get_node("/root/main/music")
 	musicPlayer.stream = music.stream
 	musicPlayer.play()
-	musicPlayer.connect("finished", onMusicEnd)
 	
 func stopMusic():
 	_no_onMusicStop()
@@ -128,6 +127,8 @@ var _textureModes = [
 ]
 
 func _ready():
+	get_node("/root/main/music").connect("finished", onMusicEnd)
+	
 	terrain = get_node("/root/main/VoxelLodTerrain")
 	player = get_node("/root/main/player")
 	
