@@ -35,25 +35,28 @@ func playSound(sound, position: Vector3, parent=null):
 	audioPlayer.play()
 	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
 	
-func playMusic(music, fromCategory=false):
+func playMusic(music):
 	var musicPlayer = get_node("/root/main/music")
 	musicPlayer.stream = music.stream
-	musicPlayer.loop = not fromCategory
 	musicPlayer.play()
-	if fromCategory:
-		musicPlayer.connect("finished", selectMusicFromCategory)
-	else:
-		musicPlayer.disconnect("finished", selectMusicFromCategory)
+	musicPlayer.connect("finished", onMusicEnd)
 	
 func stopMusic():
 	var musicPlayer = get_node("/root/main/music")
 	musicPlayer.loop = false
 	musicPlayer.stop()
+	
+func onMusicEnd():
+	if currentMusicCategory:
+		selectMusicFromCategory()
+	else:
+		var musicPlayer = get_node("/root/main/music")
+		musicPlayer.play()
 
 func selectMusicFromCategory(category=null):
 	if not category:
 		category = currentMusicCategory
-	playMusic(musicCategories[randi_range(0, musicCategories[category].size())], true)
+	playMusic(musicCategories[category][randi_range(0, musicCategories[category].size() - 1)])
 
 func playMusicCategory(category):
 	currentMusicCategory = category
