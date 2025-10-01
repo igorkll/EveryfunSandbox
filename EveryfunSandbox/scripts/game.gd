@@ -5,12 +5,9 @@ var player
 var blockLibrary
 
 var soundList = {}
-var musicList = {}
-var musicCategories = {}
+var musicList = []
 var blockList = []
 var blockIDs = {}
-
-var currentMusicCategory
 
 func loadResource(resourcePath):
 	return load(resourcePath)
@@ -31,50 +28,6 @@ func playSound(sound, position: Vector3, parent=null):
 
 	audioPlayer.play()
 	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
-
-var _onMusicEndTimer
-
-func _no_onMusicStop():
-	if _onMusicEndTimer:
-		timers.clearTimeout(_onMusicEndTimer)
-		_onMusicEndTimer = null
-
-func playMusic(music):
-	_no_onMusicStop()
-	
-	var musicPlayer = get_node("/root/main/music")
-	musicPlayer.stream = music.stream
-	musicPlayer.play()
-	
-func stopMusic():
-	_no_onMusicStop()
-	
-	var musicPlayer = get_node("/root/main/music")
-	musicPlayer.loop = false
-	musicPlayer.stop()
-	
-func onMusicEnd():
-	_onMusicEndTimer = timers.setTimeout(func():
-		_onMusicEndTimer = null
-		if currentMusicCategory:
-			selectMusicFromCategory()
-		else:
-			var musicPlayer = get_node("/root/main/music")
-			musicPlayer.play()
-	, randi_range(3, 30))
-	
-
-func selectMusicFromCategory(category=null):
-	if not category:
-		category = currentMusicCategory
-	playMusic(musicCategories[category][randi_range(0, musicCategories[category].size() - 1)])
-
-func playMusicCategory(category):
-	currentMusicCategory = category
-	selectMusicFromCategory()
-	
-func stopMusicCategory():
-	currentMusicCategory = null
 
 func getVoxelPositionFromGlobalPosition(position: Vector3) -> Vector3i:
 	return Vector3i(position - terrain.global_transform.origin)
@@ -124,16 +77,23 @@ var _textureModes = [
 ]
 
 func _ready():
-	get_node("/root/main/music").connect("finished", onMusicEnd)
-	
 	terrain = get_node("/root/main/VoxelLodTerrain")
 	player = get_node("/root/main/player")
 	
 	_addFolder("res://game")
 	
 	blockLibrary = _getLibrary()
+	_initMusic()
+
+func _initMusic():
+	var musicRandomizer = AudioStreamRandomizer.new()
+	for music in musicList:
+		musicRandomizer.add_stream(-1, music, 1)
 	
-	playMusicCategory("energetic")
+	var musicPlayer = get_node("/root/main/music")
+	musicPlayer.stream = musicRandomizer
+	musicPlayer.autoplay = true
+	musicPlayer.play()
 	
 func _addFolder(path):
 	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
@@ -163,13 +123,7 @@ func _addFolder(path):
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/music.json")))
 	if list:
 		for music in list:
-			music.stream = loadResource(path.path_join(music.path))
-			musicList[music.name] = music
-			
-			if music.has("category"):
-				if not musicCategories.has(music.category):
-					musicCategories[music.category] = []
-				musicCategories[music.category].append(music)
+			musicList.append(loadResource(path.path_join(music)))
 
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
 	if list:
