@@ -64,9 +64,9 @@ script = ExtResource("4_aqk2v")
 [node name="music" type="AudioStreamPlayer" parent="."]
 bus = &"Music"
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="gui" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+[node name="container" type="MarginContainer" parent="gui"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -77,16 +77,16 @@ theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
-[node name="Panel" type="Panel" parent="CanvasLayer/MarginContainer"]
+[node name="menuUI" type="Panel" parent="gui/container"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer"]
+[node name="gameUI" type="MarginContainer" parent="gui/container"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="gui/container/gameUI"]
 texture_filter = 1
 layout_mode = 2
 texture = ExtResource("5_036b0")
