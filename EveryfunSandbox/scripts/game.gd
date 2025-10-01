@@ -34,24 +34,39 @@ func playSound(sound, position: Vector3, parent=null):
 
 	audioPlayer.play()
 	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
-	
+
+var _onMusicEndTimer
+
+func _no_onMusicStop():
+	if _onMusicEndTimer:
+		timers.clearTimeout(_onMusicEndTimer)
+		_onMusicEndTimer = null
+
 func playMusic(music):
+	_no_onMusicStop()
+	
 	var musicPlayer = get_node("/root/main/music")
 	musicPlayer.stream = music.stream
 	musicPlayer.play()
 	musicPlayer.connect("finished", onMusicEnd)
 	
 func stopMusic():
+	_no_onMusicStop()
+	
 	var musicPlayer = get_node("/root/main/music")
 	musicPlayer.loop = false
 	musicPlayer.stop()
 	
 func onMusicEnd():
-	if currentMusicCategory:
-		selectMusicFromCategory()
-	else:
-		var musicPlayer = get_node("/root/main/music")
-		musicPlayer.play()
+	_onMusicEndTimer = timers.setTimeout(func():
+		_onMusicEndTimer = null
+		if currentMusicCategory:
+			selectMusicFromCategory()
+		else:
+			var musicPlayer = get_node("/root/main/music")
+			musicPlayer.play()
+	, randi_range(3, 30))
+	
 
 func selectMusicFromCategory(category=null):
 	if not category:
