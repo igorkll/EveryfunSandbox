@@ -23,14 +23,11 @@ func playSound(sound, position: Vector3, parent=null):
 	audioPlayer.attenuation_filter_cutoff_hz = sound.get("attenuation_filter_cutoff_hz", 5000)
 	audioPlayer.volume_db = sound.get("volume_db", 0)
 	
-	if position != null:
-		audioPlayer.position = position
-		if parent:
-			parent.add_child(audioPlayer)
-		else:
-			terrain.add_child(audioPlayer)
+	audioPlayer.position = position
+	if parent:
+		parent.add_child(audioPlayer)
 	else:
-		player.add_child(audioPlayer)
+		terrain.add_child(audioPlayer)
 
 	audioPlayer.play()
 	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
