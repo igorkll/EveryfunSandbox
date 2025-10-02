@@ -100,6 +100,7 @@ theme_override_constants/margin_right = 300
 theme_override_constants/margin_bottom = 150
 
 [node name="menuUI" type="Panel" parent="gui/Control/MarginContainer"]
+material = ExtResource("6_pkg7o")
 layout_mode = 2
 
 [node name="gameUI" type="Control" parent="gui/Control"]

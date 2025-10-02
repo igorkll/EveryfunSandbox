@@ -8,4 +8,3 @@ void fragment() {
 	float newValue = clamp(1.0 - (value * 5.0), 0.0, 1.0);
 	COLOR = vec4(newValue, newValue, newValue, COLOR.a);
 }
-
