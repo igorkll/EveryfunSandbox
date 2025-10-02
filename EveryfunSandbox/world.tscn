@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=12 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_fj7yv"]
@@ -27,8 +27,6 @@ sdfgi_probe_bias = 0.0
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_dwbse"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_036b0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
 shader = ExtResource("5_dwbse")
@@ -75,59 +73,46 @@ bus = &"Ambient"
 
 [node name="gui" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer2" type="MarginContainer" parent="gui"]
+[node name="Control" type="Control" parent="gui"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="gui/MarginContainer2"]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="gui/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 140
 theme_override_constants/margin_top = 140
 theme_override_constants/margin_right = 140
 theme_override_constants/margin_bottom = 140
 
-[node name="menuUI" type="Panel" parent="gui/MarginContainer2/MarginContainer"]
+[node name="menuUI" type="Panel" parent="gui/Control/MarginContainer"]
 layout_mode = 2
 
-[node name="gameUI" type="Panel" parent="gui/MarginContainer2"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_036b0")
-
-[node name="MarginContainer" type="MarginContainer" parent="gui/MarginContainer2/gameUI"]
-custom_minimum_size = Vector2(50, 50)
+[node name="gameUI" type="Control" parent="gui/Control"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -25.0
-offset_top = -25.0
-offset_right = 25.0
-offset_bottom = 25.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
-[node name="crosspiece" type="TextureRect" parent="gui/MarginContainer2/gameUI/MarginContainer"]
-texture_filter = 1
-material = SubResource("ShaderMaterial_pkg7o")
-layout_mode = 2
-texture = ExtResource("5_036b0")
-
-[node name="Panel" type="Panel" parent="gui/MarginContainer2/gameUI"]
+[node name="Panel" type="Panel" parent="gui/Control/gameUI"]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 30.0
 offset_right = 130.0
 offset_bottom = 80.0
 
-[node name="gameMessage" type="Label" parent="gui/MarginContainer2/gameUI/Panel"]
+[node name="gameMessage" type="Label" parent="gui/Control/gameUI/Panel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -142,3 +127,28 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 0
 text = "test"
+
+[node name="Control" type="Control" parent="gui/Control/gameUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.5
+offset_top = -22.5
+offset_right = 22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="crosspiece" type="TextureRect" parent="gui/Control/gameUI/Control"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_pkg7o")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_036b0")
