@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=14 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_fj7yv"]
@@ -27,6 +27,8 @@ sdfgi_probe_bias = 0.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dwbse"]
+
 [sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_aqk2v"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
@@ -51,7 +53,7 @@ transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.00568438, 0.00694084
 shape = SubResource("CapsuleShape3D_gv5m4")
 
 [node name="camera" type="Camera3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689037, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689, 0)
 fov = 80.0
 script = ExtResource("3_tlwt5")
 
@@ -59,6 +61,9 @@ script = ExtResource("3_tlwt5")
 view_distance = 256
 
 [node name="raycast" type="RayCast3D" parent="player"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="player"]
+mesh = SubResource("CapsuleMesh_dwbse")
 
 [node name="VoxelLodTerrain" type="VoxelLodTerrain" parent="."]
 mesher = SubResource("VoxelMesherTransvoxel_aqk2v")

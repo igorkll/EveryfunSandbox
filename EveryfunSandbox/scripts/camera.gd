@@ -7,6 +7,7 @@ var orbitalHeight = 10
 var total_pitch = 0.0
 var orbital = false
 var orbitalValue = 0
+var defaultPosition = position
 
 func _input(event):
 	if !orbital:
@@ -38,5 +39,5 @@ func setOrbital(newOrbital):
 	if orbital:
 		orbitalUpdate()
 	else:
-		position = Vector3(0, 0, 0)
+		position = defaultPosition
 		cameraUpdate(0, 0)

@@ -3,16 +3,25 @@ extends Node
 var menuUI
 var gameUI
 
-func openUI(gameUImode):
-	menuUI.visible = not gameUImode
-	gameUI.visible = gameUImode
-	
-	game.camera.setOrbital(not gameUImode)
-	game.player.setControlLock(not gameUImode)
-	game.setMouseEnabled(not gameUImode)
+func switchUI(ui):
+	match ui:
+		0:
+			menuUI.visible = true
+			gameUI.visible = false
+			
+			game.camera.setOrbital(true)
+			game.player.setControlLock(true)
+			game.setMouseEnabled(true)
+		1:
+			menuUI.visible = false
+			gameUI.visible = true
+			
+			game.camera.setOrbital(false)
+			game.player.setControlLock(false)
+			game.setMouseEnabled(false)
 
 func _ready():
 	menuUI = get_node("/root/main/gui/container/menuUI")
 	gameUI = get_node("/root/main/gui/container/gameUI")
 	
-	openUI(false)
+	switchUI(1)
