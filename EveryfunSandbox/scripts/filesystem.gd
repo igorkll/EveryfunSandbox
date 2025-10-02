@@ -38,3 +38,17 @@ func isFile(path):
 	var result = dir.file_exists(spath[1])
 	game.logCallResult("filesystem.isFile", result)
 	return result
+
+func readFile(path):
+	return FileAccess.get_file_as_string(path)
+	
+func writeFile(path, data):
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	file.store_string(data)
+	file.close()
+
+func readJson(path):
+	return JSON.parse_string(readFile(path))
+	
+func writeJson(path, data):
+	writeFile(path, JSON.stringify(data))

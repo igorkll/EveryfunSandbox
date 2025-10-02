@@ -18,6 +18,7 @@ func switchUI(ui):
 			game.camera.setOrbital(true)
 			game.player.setControlLock(true)
 			game.setMouseEnabled(true)
+			game.setAudioChannelVolume("Other", 0)
 		1:
 			menuUI.visible = false
 			gameUI.visible = true
@@ -25,6 +26,7 @@ func switchUI(ui):
 			game.camera.setOrbital(false)
 			game.player.setControlLock(false)
 			game.setMouseEnabled(false)
+			game.applyAudioSettings()
 
 func _ready():
 	menuUI = get_node("/root/main/gui/container/menuUI")

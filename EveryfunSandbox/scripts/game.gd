@@ -4,6 +4,7 @@ var terrain
 var player
 var camera
 var blockLibrary
+var settings
 
 var soundList = {}
 var musicList = []
@@ -83,6 +84,19 @@ func logCall(funcname, ...args):
 	
 func logCallResult(funcname, result):
 	print("---- %s -> %s" % [funcname, formatType(result)])
+	
+func setAudioChannelVolume(bus, multiplier):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(bus), linear_to_db(clamp(multiplier, 0.0, 1.0)))
+	
+func applyAudioSettings():
+	pass
+	
+func loadSettings():
+	settings = filesystem.readJson(consts.settings_path)
+	applyAudioSettings()
+
+func saveSettings():
+	filesystem.writeJson(consts.settings_path, settings)
 
 # ------------------------------------------------- backend
 
@@ -114,6 +128,8 @@ var _textureModes = [
 func _ready():
 	player = get_node("/root/main/player")
 	camera = get_node("/root/main/player/camera")
+	
+	loadSettings()
 	
 	_addFolder("res://game")
 	
@@ -150,7 +166,7 @@ func _initAmbient():
 	ambientPlayer.connect("finished", _ambientEnd.bind(ambientPlayer))
 	
 func _addFolder(path):
-	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
+	var list = filesystem.readJson(path.path_join("/sounds.json"))
 	if list:
 		for sound in list:
 			var audioStreamRandomizer = AudioStreamRandomizer.new()
@@ -174,17 +190,17 @@ func _addFolder(path):
 			
 			soundList[sound.name] = sound
 			
-	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/music.json")))
+	list = filesystem.readJson(path.path_join("/music.json"))
 	if list:
 		for music in list:
 			musicList.append(loadResource(path.path_join(music)))
 			
-	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/ambient.json")))
+	list = filesystem.readJson(path.path_join("/ambient.json"))
 	if list:
 		for ambient in list:
 			ambientList.append(loadResource(path.path_join(ambient)))
 
-	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
+	list = filesystem.readJson(path.path_join("/blocks.json"))
 	if list:
 		for item in list:
 			if item.has("texture"):
