@@ -21,18 +21,42 @@ var _on_floor = false
 var playerData
 var inited = false
 
-var halfPlayerSize = $collision.shape.height / 2
+var halfPlayerSize
+var defaultPlayerPosition = position
 
 func _ready():
+	halfPlayerSize = $collision.shape.height / 2
 	pass
-	
+
+func checkOptimalSpawnPosition(raycastPosition) -> bool:
+	var result = game.terrain.voxel_tool.raycast(raycastPosition, Vector3.DOWN, 2000)
+	if result:
+		position = game.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3(0, halfPlayerSize + 0.5, 0))
+		return true
+	return false
+
 func findOptimalSpawnPosition():
 	var raycastPosition = $camera.get_global_transform().origin
 	raycastPosition.y = 1000
 	
-	var result = game.terrain.voxel_tool.raycast(raycastPosition, Vector3.down, 10000)
-	if result:
-		position = game.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3(0, halfPlayerSize + 0.5, 0))
+	var positionFinded = false
+	if checkOptimalSpawnPosition(raycastPosition):
+		positionFinded = true
+	else:
+		for x in range(-1000, 1000, 10):
+			if checkOptimalSpawnPosition(raycastPosition + Vector3(x, 0, 0)):
+				positionFinded = true
+				break
+		
+		if not positionFinded:
+			for z in range(-1000, 1000, 10):
+				if checkOptimalSpawnPosition(raycastPosition + Vector3(0, 0, z)):
+					positionFinded = true
+					break
+	
+	if not positionFinded:
+		position = defaultPlayerPosition
+	
 
 func init():
 	currentPlayerData = findPlayerData()
@@ -232,6 +256,7 @@ func findPlayerData():
 	if not saves.currentWorldData.playersData.has(id):
 		saves.currentWorldData.playersData = {}
 	saves.currentWorldData.playersData = funcs.merge_dicts(saves.currentWorldData.playersData, defaultPlayerData)
+	return saves.currentWorldData.playersData
 
 func getDownVoxel():
 	return _getVoxel(Vector3.DOWN)
