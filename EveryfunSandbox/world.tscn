@@ -89,10 +89,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 140
-theme_override_constants/margin_top = 140
-theme_override_constants/margin_right = 140
-theme_override_constants/margin_bottom = 140
+theme_override_constants/margin_left = 300
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 300
+theme_override_constants/margin_bottom = 150
 
 [node name="menuUI" type="Panel" parent="gui/Control/MarginContainer"]
 layout_mode = 2
