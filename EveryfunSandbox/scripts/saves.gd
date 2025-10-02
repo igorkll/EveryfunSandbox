@@ -5,11 +5,7 @@ var currentWorldRuntimeData
 var currentWorldData
 
 var defaultWorldData = {
-	"playersData": [
-		{
-			
-		}
-	]
+	"playersData": {}
 }
 
 var objects

@@ -18,14 +18,32 @@ var controlLock = false
 var _walk = false
 var _on_floor = false
 
+var playerData
+var inited = false
+
+var halfPlayerSize = $collision.shape.height / 2
+
 func _ready():
 	pass
 	
+func findOptimalSpawnPosition():
+	var raycastPosition = $camera.get_global_transform().origin
+	raycastPosition.y = 1000
+	
+	var result = game.terrain.voxel_tool.raycast(raycastPosition, Vector3.down, 10000)
+	if result:
+		position = game.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3(0, halfPlayerSize + 0.5, 0))
+
 func init():
-	if
+	currentPlayerData = findPlayerData()
+	if currentPlayerData.has("position"):
+		position = currentPlayerData.position
+	else:
+		findOptimalSpawnPosition()
+	inited = true
 
 func _physics_process(delta):
-	if not saves.isWorldFullLoaded():
+	if not inited || not saves.isWorldFullLoaded():
 		return
 	
 	# ---------------------------------- moving control
@@ -118,6 +136,10 @@ func _physics_process(delta):
 	velocity.z *= speed_mul;
 	
 	move_and_slide()
+	
+	# ---------------------------------- update data
+	
+	currentPlayerData.position = position
 
 var walkSoundTimer
 var walkVoxelId
@@ -195,6 +217,21 @@ func _getVoxel(side):
 				return result
 
 # ------------------------------------------------- api
+
+var currentPlayerData
+var defaultPlayerData = {}
+
+func getNickname():
+	return "host"
+
+func getUniqueId():
+	return "host"
+
+func findPlayerData():
+	var id = getUniqueId()
+	if not saves.currentWorldData.playersData.has(id):
+		saves.currentWorldData.playersData = {}
+	saves.currentWorldData.playersData = funcs.merge_dicts(saves.currentWorldData.playersData, defaultPlayerData)
 
 func getDownVoxel():
 	return _getVoxel(Vector3.DOWN)
