@@ -7,6 +7,7 @@ var blockLibrary
 
 var soundList = {}
 var musicList = []
+var ambientList = []
 var blockList = []
 var blockIDs = {}
 
@@ -92,11 +93,15 @@ func _ready():
 	
 	blockLibrary = _getLibrary()
 	_initMusic()
+	_initAmbient()
 	
 func _musicEnd(musicPlayer):
 	timers.setTimeout(func():
 		musicPlayer.play()
 	, randi_range(3, 30))
+	
+func _ambientEnd(ambientPlayer):
+	ambientPlayer.play()
 
 func _initMusic():
 	var musicRandomizer = AudioStreamRandomizer.new()
@@ -107,6 +112,16 @@ func _initMusic():
 	musicPlayer.stream = musicRandomizer
 	musicPlayer.play()
 	musicPlayer.connect("finished", _musicEnd.bind(musicPlayer))
+	
+func _initAmbient():
+	var ambientRandomizer = AudioStreamRandomizer.new()
+	for ambient in ambientList:
+		ambientRandomizer.add_stream(-1, ambient, 1)
+	
+	var ambientPlayer = get_node("/root/main/ambient")
+	ambientPlayer.stream = ambientRandomizer
+	ambientPlayer.play()
+	ambientPlayer.connect("finished", _ambientEnd.bind(ambientPlayer))
 	
 func _addFolder(path):
 	var list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/sounds.json")))
@@ -137,6 +152,11 @@ func _addFolder(path):
 	if list:
 		for music in list:
 			musicList.append(loadResource(path.path_join(music)))
+			
+	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/ambient.json")))
+	if list:
+		for ambient in list:
+			ambientList.append(loadResource(path.path_join(ambient)))
 
 	list = JSON.parse_string(FileAccess.get_file_as_string(path.path_join("/blocks.json")))
 	if list:

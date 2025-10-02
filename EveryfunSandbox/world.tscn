@@ -73,6 +73,9 @@ script = ExtResource("4_aqk2v")
 [node name="music" type="AudioStreamPlayer" parent="."]
 bus = &"Music"
 
+[node name="ambient" type="AudioStreamPlayer" parent="."]
+bus = &"Ambient"
+
 [node name="gui" type="CanvasLayer" parent="."]
 
 [node name="container" type="MarginContainer" parent="gui"]
