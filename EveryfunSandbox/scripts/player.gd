@@ -15,6 +15,7 @@ var current_jump = false
 var current_jump_budget = 0
 
 var voxel_tool
+var controlLock = false
 
 func _ready():
 	voxel_tool = game.terrain.get_voxel_tool()
@@ -29,23 +30,27 @@ func _physics_process(delta):
 	# ---------------------------------- moving control
 
 	var _move_acceleration = move_acceleration
-	if Input.is_action_pressed("sprint"):
-		_move_acceleration *= sprint_mul
-
 	var direction = Vector3.ZERO	
 	var walk = false
-	if Input.is_action_pressed("move_right"):
-		direction.x += 1
-		walk = true
-	if Input.is_action_pressed("move_left"):
-		direction.x -= 1
-		walk = true
-	if Input.is_action_pressed("move_back"):
-		direction.z -= 1
-		walk = true
-	if Input.is_action_pressed("move_forward"):
-		direction.z += 1
-		walk = true
+	if not controlLock:
+		if Input.is_action_pressed("move_right"):
+			direction.x += 1
+			walk = true
+		
+		if Input.is_action_pressed("move_left"):
+			direction.x -= 1
+			walk = true
+		
+		if Input.is_action_pressed("move_back"):
+			direction.z -= 1
+			walk = true
+		
+		if Input.is_action_pressed("move_forward"):
+			direction.z += 1
+			walk = true
+		
+		if Input.is_action_pressed("sprint"):
+			_move_acceleration *= sprint_mul
 	
 	if walk:
 		onWalking()
@@ -53,7 +58,7 @@ func _physics_process(delta):
 		onStopWalk()
 	_walk = walk
 	
-	if Input.is_action_pressed("jump") && is_on_floor():
+	if not controlLock && Input.is_action_pressed("jump") && is_on_floor():
 		if not current_jump:
 			current_jump_budget = jump_budget
 		current_jump = true
@@ -71,15 +76,16 @@ func _physics_process(delta):
 		
 	# ---------------------------------- edit
 	
-	if Input.is_action_just_pressed("attack"):
-		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
-		if result:
-			voxel_tool.set_voxel(result.position, 0)
-			
-	if Input.is_action_just_pressed("place"):
-		var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
-		if result and game.isCellFree(result.previous_position):
-			voxel_tool.set_voxel(result.previous_position, 2)
+	if not controlLock:
+		if Input.is_action_just_pressed("attack"):
+			var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
+			if result:
+				voxel_tool.set_voxel(result.position, 0)
+				
+		if Input.is_action_just_pressed("place"):
+			var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
+			if result and game.isCellFree(result.previous_position):
+				voxel_tool.set_voxel(result.previous_position, 2)
 	
 	# ---------------------------------- moving
 	
@@ -180,3 +186,8 @@ func onStopWalk():
 
 func blockSound(sound):
 	game.playSound(sound, global_transform.origin + Vector3(0, $collision.shape.height / 2, 0))
+
+# ------------------------------------------------- backend
+
+func setControlLock(newControlLock):
+	controlLock = newControlLock

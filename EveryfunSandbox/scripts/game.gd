@@ -2,6 +2,7 @@ extends Node
 
 var terrain
 var player
+var camera
 var blockLibrary
 
 var soundList = {}
@@ -79,6 +80,7 @@ var _textureModes = [
 func _ready():
 	terrain = get_node("/root/main/VoxelLodTerrain")
 	player = get_node("/root/main/player")
+	camera = get_node("/root/main/player/camera")
 	
 	_addFolder("res://game")
 	
