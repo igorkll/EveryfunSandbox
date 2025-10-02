@@ -2,8 +2,8 @@ shader_type canvas_item;
 
 uniform float radius : hint_range(0.0, 1.0) = 0.4;
 uniform float alpha : hint_range(0.0, 1.0) = 0.4;
-uniform int blur_steps : hint_range(1, 128) = 16;
-uniform float blur_size : hint_range(0.0, 512.0) = 512.0;
+uniform int blur_steps : hint_range(1, 128) = 8;
+uniform float blur_size : hint_range(0.0, 512.0) = 64.0;
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 
