@@ -8,3 +8,6 @@ func merge_dicts(dict1: Dictionary, dict2: Dictionary) -> Dictionary:
 		else:
 			result[key] = dict1[key]
 	return result
+
+func indexExistsInArray(array, index):
+	return index >= 0 && index < array.size()

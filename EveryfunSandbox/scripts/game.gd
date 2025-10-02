@@ -222,10 +222,12 @@ func _initMusic():
 	
 	var musicStream = _musicRandomizer
 	var session = settings.statistics.game_session_counter - 1
-	if miscData
+	if miscData.has("the_first_music_in_the_first_played_sessions"):
+		if funcs.indexExistsInArray(miscData["the_first_music_in_the_first_played_sessions"], session):
+			musicStream = loadResource(miscData["the_first_music_in_the_first_played_sessions"][session])
 	
 	var musicPlayer = get_node("/root/main/music")
-	musicPlayer.stream = 
+	musicPlayer.stream = musicStream
 	musicPlayer.play()
 	musicPlayer.connect("finished", _musicEnd.bind(musicPlayer))
 	
@@ -242,6 +244,10 @@ func _initAmbient():
 func _addFolder(path):
 	var list = filesystem.readJson(path.path_join("/misc.json"))
 	if list:
+		if list.has("the_first_music_in_the_first_played_sessions"):
+			for i in range(list["the_first_music_in_the_first_played_sessions"].size()):
+				var musicPath = list["the_first_music_in_the_first_played_sessions"][i]
+				list["the_first_music_in_the_first_played_sessions"][i] = path.path_join(musicPath)
 		miscData = funcs.merge_dicts(miscData, list)
 	
 	list = filesystem.readJson(path.path_join("/sounds.json"))
