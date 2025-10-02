@@ -72,15 +72,17 @@ func formatType(value):
 			valueType = str(value)
 	return valueType
 	
-func formatCall(funcname, result, ...args) -> String:
+func formatCall(funcname, ...args) -> String:
 	var parts := []
 	for arg in args:
 		parts.append(formatType(arg))
-	return "%s(%s) -> %s" % [funcname, ", ".join(parts), formatType(result)]
+	return "%s(%s)" % [funcname, ", ".join(parts)]
 	
-func logCall(funcname, result, ...args):
-	var logStr = formatCall(funcname, result, args)
-	print(logStr)
+func logCall(funcname, ...args):
+	print(formatCall(funcname, args))
+	
+func logCallResult(funcname, result):
+	print("---- %s -> %s" % [funcname, formatType(result)])
 
 # ------------------------------------------------- backend
 

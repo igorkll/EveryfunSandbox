@@ -14,13 +14,9 @@ var max_interact_distance = 10
 var current_jump = false
 var current_jump_budget = 0
 
-var voxel_tool
 var controlLock = false
 
 func _ready():
-	voxel_tool = game.terrain.get_voxel_tool()
-	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
-	
 	position = (Vector3) (0, 50, 0)
 
 var _walk = false
@@ -78,14 +74,14 @@ func _physics_process(delta):
 	
 	if not controlLock:
 		if Input.is_action_just_pressed("attack"):
-			var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
+			var result = game.terrain.voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result:
-				voxel_tool.set_voxel(result.position, 0)
+				game.terrain.voxel_tool.set_voxel(result.position, 0)
 				
 		if Input.is_action_just_pressed("place"):
-			var result = voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
+			var result = game.terrain.voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and game.isCellFree(result.previous_position):
-				voxel_tool.set_voxel(result.previous_position, 2)
+				game.terrain.voxel_tool.set_voxel(result.previous_position, 2)
 	
 	# ---------------------------------- moving
 	
@@ -130,14 +126,14 @@ func stopWalkTimer():
 	currentWalkSound = null
 
 func getDownVoxel():
-	var result = voxel_tool.raycast(
+	var result = game.terrain.voxel_tool.raycast(
 		global_transform.origin,
 		Vector3.DOWN,
 		($collision.shape.height / 2) + 0.1
 	)
 
 	if result:
-		return voxel_tool.get_voxel(result.position)
+		return game.terrain.voxel_tool.get_voxel(result.position)
 		
 func getDownVoxelObj():
 	var voxelId = getDownVoxel()

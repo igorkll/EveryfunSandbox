@@ -1,6 +1,7 @@
 extends VoxelLodTerrain
 
 var world_generator = preload("res://generators/world.gd")
+var voxel_tool
 
 func init(terrainPath):
 	var mesher = VoxelMesherBlocky.new()
@@ -14,6 +15,9 @@ func init(terrainPath):
 	self.view_distance = 128
 	self.lod_distance = 64
 	self.stream = stream
+	
+	voxel_tool = get_voxel_tool()
+	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 
 func save():
 	save_modified_blocks()
