@@ -43,6 +43,7 @@ shadow_bias = 0.01
 directional_shadow_max_distance = 256.0
 
 [node name="player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
 script = ExtResource("2_fj7yv")
 
 [node name="collision" type="CollisionShape3D" parent="player"]

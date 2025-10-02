@@ -6,6 +6,16 @@ var camera
 var blockLibrary
 var settings
 
+var defaultSettings = {
+	"audio": {
+		"volume": {
+			"Master": 0.7,
+			"Music": 0.3,
+			"Ambient": 0.2
+		}
+	}
+}
+
 var soundList = {}
 var musicList = []
 var ambientList = []
@@ -89,10 +99,16 @@ func setAudioChannelVolume(bus, multiplier):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(bus), linear_to_db(clamp(multiplier, 0.0, 1.0)))
 	
 func applyAudioSettings():
-	pass
+	for key in settings.audio.volume.keys():
+		setAudioChannelVolume(key, settings.audio.volume[key])
+	game.setAudioChannelVolume("Other", 1)
 	
 func loadSettings():
-	settings = filesystem.readJson(consts.settings_path)
+	settings = {}
+	if filesystem.isFile(consts.settings_path):
+		settings = filesystem.readJson(consts.settings_path)
+	settings = funcs.merge_dicts(settings, defaultSettings)
+	
 	applyAudioSettings()
 
 func saveSettings():

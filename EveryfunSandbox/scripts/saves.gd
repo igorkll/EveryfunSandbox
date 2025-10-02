@@ -1,7 +1,17 @@
 extends Node
 
-var currentWorldName = null
-var currentWorldRuntimeData = null
+var currentWorldName
+var currentWorldRuntimeData
+var currentWorldData
+
+var defaultWorldData = {
+	"playersData": [
+		{
+			
+		}
+	]
+}
+
 var objects
 
 func _ready():
@@ -37,6 +47,8 @@ func save() -> bool:
 		return false
 	
 	game.terrain.save()
+	filesystem.writeJson(getPathInSave("data.json"), currentWorldData)
+	
 	return true
 
 func unload() -> bool:
@@ -66,10 +78,17 @@ func open(savename) -> bool:
 	terrain.name = "terrain"
 	terrain.set_script(terrainScript)
 	objects.add_child(terrain)
-	
 	terrain.init(getPathInSave("terrain.db"))
-	
 	game.terrain = terrain
+	
+	var dataPath = getPathInSave("data.json")
+	currentWorldData = {}
+	if filesystem.isFile(dataPath):
+		currentWorldData = filesystem.readJson(dataPath)
+	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
+	
+	game.player.init()
+	
 	return true
 	
 func exists(savename):

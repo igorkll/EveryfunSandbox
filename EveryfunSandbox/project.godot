@@ -21,6 +21,7 @@ boot_splash/minimum_display_time=2000
 [autoload]
 
 consts="*res://scripts/consts.gd"
+funcs="*res://scripts/funcs.gd"
 timers="*res://scripts/timers.gd"
 filesystem="*res://scripts/filesystem.gd"
 game="*res://scripts/game.gd"

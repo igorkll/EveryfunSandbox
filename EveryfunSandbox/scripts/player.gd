@@ -15,12 +15,14 @@ var current_jump = false
 var current_jump_budget = 0
 
 var controlLock = false
-
-func _ready():
-	position = (Vector3) (0, 50, 0)
-
 var _walk = false
 var _on_floor = false
+
+func _ready():
+	pass
+	
+func init():
+	if
 
 func _physics_process(delta):
 	if not saves.isWorldFullLoaded():
