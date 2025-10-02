@@ -1,3 +1,6 @@
-[gd_resource type="Theme" format=3 uid="uid://cxdqotjrqebme"]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cxdqotjrqebme"]
+
+[ext_resource type="Shader" uid="uid://bouu1iwjpmhdo" path="res://gui/panel.gdshader" id="1_qshik"]
 
 [resource]
+shader = ExtResource("1_qshik")

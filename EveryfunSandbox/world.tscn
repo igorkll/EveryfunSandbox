@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=15 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_fj7yv"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b1500kk1trgkb" path="res://gui/crosspiece.png" id="5_036b0"]
 [ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="5_dwbse"]
 [ext_resource type="LabelSettings" uid="uid://c3k7yyfmeayen" path="res://gui/gameMessageFont.tres" id="6_dwbse"]
-[ext_resource type="Theme" uid="uid://cxdqotjrqebme" path="res://gui/panel.tres" id="6_pkg7o"]
+[ext_resource type="Material" uid="uid://cxdqotjrqebme" path="res://gui/panel.tres" id="6_pkg7o"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tlwt5"]
 panorama = ExtResource("2_aqk2v")
@@ -32,6 +32,9 @@ sdfgi_probe_bias = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
 shader = ExtResource("5_dwbse")
+
+[sub_resource type="Theme" id="Theme_dwbse"]
+/styles/style = null
 
 [node name="main" type="Node3D"]
 
@@ -142,8 +145,9 @@ theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
 [node name="gameMessage" type="PanelContainer" parent="gui/Control/gameUI/MarginContainer"]
+material = ExtResource("6_pkg7o")
 layout_mode = 2
-theme = ExtResource("6_pkg7o")
+theme = SubResource("Theme_dwbse")
 
 [node name="MarginContainer" type="MarginContainer" parent="gui/Control/gameUI/MarginContainer/gameMessage"]
 layout_mode = 2
