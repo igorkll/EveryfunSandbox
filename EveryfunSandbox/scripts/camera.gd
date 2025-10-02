@@ -5,11 +5,12 @@ var sensitivity = 0.2
 var orbital = false
 
 func _input(event):
-	if !orbital && event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		var yaw = event.relative.x * sensitivity
-		var pitch = event.relative.y * sensitivity
-		cameraUpdate(yaw, pitch)
-		
+	if !orbital:
+		if event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			var yaw = event.relative.x * sensitivity
+			var pitch = event.relative.y * sensitivity
+			cameraUpdate(yaw, pitch)
+
 func cameraUpdate(yaw, pitch):
 	pitch = clamp(pitch, -89 - total_pitch, 89 - total_pitch)
 	total_pitch += pitch
