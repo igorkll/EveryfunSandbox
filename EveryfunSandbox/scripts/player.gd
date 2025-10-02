@@ -128,21 +128,6 @@ func stopWalkTimer():
 	walkVoxelId = null
 	currentWalkSound = null
 
-func getDownVoxel():
-	var result = game.terrain.voxel_tool.raycast(
-		global_transform.origin,
-		Vector3.DOWN,
-		($collision.shape.height / 2) + 0.1
-	)
-
-	if result:
-		return game.terrain.voxel_tool.get_voxel(result.position)
-		
-func getDownVoxelObj():
-	var voxelId = getDownVoxel()
-	if voxelId:
-		return game.blockList[voxelId]
-
 func onWalking():
 	var defaultInterval
 	var defaultRandomInterval
@@ -186,7 +171,44 @@ func onStopWalk():
 func blockSound(sound):
 	game.playSound(sound, global_transform.origin + Vector3(0, $collision.shape.height / 2, 0))
 
-# ------------------------------------------------- backend
+func _getVoxelWithOffset(side, offset):
+	var result = game.terrain.voxel_tool.raycast(
+		global_transform.origin + offset,
+		side,
+		($collision.shape.height / 2) + 0.1
+	)
+
+	if result:
+		return game.terrain.voxel_tool.get_voxel(result.position)
+
+func _getVoxel(side):
+	var result = _getVoxelWithOffset(side, Vector3(0, 0, 0))
+	if result:
+		return result
+	
+	for x in [-1, 1]:
+		for z in [-1, 1]:
+			result = _getVoxelWithOffset(side, Vector3(x, 0, z))
+			if result:
+				return result
+
+# ------------------------------------------------- api
+
+func getDownVoxel():
+	return _getVoxel(Vector3.DOWN)
+		
+func getDownVoxelObj():
+	var voxelId = getDownVoxel()
+	if voxelId:
+		return game.blockList[voxelId]
+		
+func getUpVoxel():
+	return _getVoxel(Vector3.UP)
+		
+func getUpVoxelObj():
+	var voxelId = getUpVoxel()
+	if voxelId:
+		return game.blockList[voxelId]
 
 func setControlLock(newControlLock):
 	controlLock = newControlLock
