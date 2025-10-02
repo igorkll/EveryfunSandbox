@@ -75,24 +75,29 @@ bus = &"Ambient"
 
 [node name="gui" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="gui"]
-offset_right = 1152.0
-offset_bottom = 648.0
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 30
+[node name="MarginContainer2" type="MarginContainer" parent="gui"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="menuUI" type="Panel" parent="gui/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="gui/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 140
+theme_override_constants/margin_top = 140
+theme_override_constants/margin_right = 140
+theme_override_constants/margin_bottom = 140
+
+[node name="menuUI" type="Panel" parent="gui/MarginContainer2/MarginContainer"]
 layout_mode = 2
 
-[node name="gameUI" type="Panel" parent="gui"]
-offset_right = 1152.0
-offset_bottom = 648.0
+[node name="gameUI" type="Panel" parent="gui/MarginContainer2"]
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_036b0")
 
-[node name="MarginContainer" type="MarginContainer" parent="gui/gameUI"]
+[node name="MarginContainer" type="MarginContainer" parent="gui/MarginContainer2/gameUI"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 8
@@ -109,20 +114,20 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="crosspiece" type="TextureRect" parent="gui/gameUI/MarginContainer"]
+[node name="crosspiece" type="TextureRect" parent="gui/MarginContainer2/gameUI/MarginContainer"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_pkg7o")
 layout_mode = 2
 texture = ExtResource("5_036b0")
 
-[node name="Panel" type="Panel" parent="gui/gameUI"]
+[node name="Panel" type="Panel" parent="gui/MarginContainer2/gameUI"]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 30.0
 offset_right = 130.0
 offset_bottom = 80.0
 
-[node name="gameMessage" type="Label" parent="gui/gameUI/Panel"]
+[node name="gameMessage" type="Label" parent="gui/MarginContainer2/gameUI/Panel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
