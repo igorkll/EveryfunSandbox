@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=13 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_fj7yv"]
 [ext_resource type="Script" uid="uid://cnv5mi67jr1go" path="res://scripts/camera.gd" id="3_tlwt5"]
 [ext_resource type="Script" uid="uid://dbquwro53lnix" path="res://scripts/terrain.gd" id="4_aqk2v"]
 [ext_resource type="Texture2D" uid="uid://b1500kk1trgkb" path="res://textures/crosspiece.png" id="5_036b0"]
+[ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="5_dwbse"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tlwt5"]
 panorama = ExtResource("2_aqk2v")
@@ -27,6 +28,9 @@ sdfgi_probe_bias = 0.0
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
 [sub_resource type="VoxelMesherTransvoxel" id="VoxelMesherTransvoxel_aqk2v"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
+shader = ExtResource("5_dwbse")
 
 [node name="main" type="Node3D"]
 
@@ -88,5 +92,6 @@ size_flags_vertical = 4
 
 [node name="TextureRect" type="TextureRect" parent="gui/container/gameUI"]
 texture_filter = 1
+material = SubResource("ShaderMaterial_pkg7o")
 layout_mode = 2
 texture = ExtResource("5_036b0")

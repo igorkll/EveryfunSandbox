@@ -11,4 +11,4 @@ func _ready():
 	menuUI = get_node("/root/main/gui/container/menuUI")
 	gameUI = get_node("/root/main/gui/container/gameUI")
 	
-	openUI(false)
+	openUI(true)
