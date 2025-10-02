@@ -49,6 +49,12 @@ func isCellFree(position: Vector3) -> bool:
 	
 	var results = space_state.intersect_shape(query)
 	return results.size() == 0
+	
+func setMouseEnabled(mouseEnabled):
+	if mouseEnabled:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 # ------------------------------------------------- backend
 

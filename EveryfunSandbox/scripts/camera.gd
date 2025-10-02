@@ -4,9 +4,6 @@ var total_pitch = 0.0
 var sensitivity = 0.2
 var orbital = false
 
-func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
 func _input(event):
 	if !orbital && event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		var yaw = event.relative.x * sensitivity

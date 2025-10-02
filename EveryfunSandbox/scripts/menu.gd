@@ -9,6 +9,7 @@ func openUI(gameUImode):
 	
 	game.camera.setOrbital(not gameUImode)
 	game.player.setControlLock(not gameUImode)
+	game.setMouseEnabled(not gameUImode)
 
 func _ready():
 	menuUI = get_node("/root/main/gui/container/menuUI")
