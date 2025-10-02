@@ -43,7 +43,7 @@ func save() -> bool:
 		return false
 	
 	game.terrain.save()
-	filesystem.writeJson(getPathInSave("data.json"), currentWorldData)
+	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	
 	return true
 
@@ -77,10 +77,10 @@ func open(savename) -> bool:
 	terrain.init(getPathInSave("terrain.db"))
 	game.terrain = terrain
 	
-	var dataPath = getPathInSave("data.json")
+	var dataPath = getPathInSave("data")
 	currentWorldData = {}
 	if filesystem.isFile(dataPath):
-		currentWorldData = filesystem.readJson(dataPath)
+		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
 	
 	game.player.init()

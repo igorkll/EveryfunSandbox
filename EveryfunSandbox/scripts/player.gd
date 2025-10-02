@@ -31,7 +31,7 @@ func _ready():
 func checkOptimalSpawnPosition(raycastPosition) -> bool:
 	var result = game.terrain.voxel_tool.raycast(raycastPosition, Vector3.DOWN, 2000)
 	if result:
-		position = game.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3(0, halfPlayerSize + 0.5, 0))
+		position = game.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3(0, halfPlayerSize + consts.player_spawn_vertical_offset, 0))
 		return true
 	return false
 
@@ -61,7 +61,7 @@ func findOptimalSpawnPosition():
 func init():
 	currentPlayerData = findPlayerData()
 	if currentPlayerData.has("position"):
-		position = currentPlayerData.position
+		position = currentPlayerData.position + Vector3(0, consts.player_spawn_vertical_offset, 0)
 	else:
 		findOptimalSpawnPosition()
 	inited = true
@@ -115,7 +115,6 @@ func _physics_process(delta):
 	if Input.is_action_just_released("jump"):
 		current_jump = false
 		current_jump_budget = 0
-		saves.save()
 		
 	# ---------------------------------- edit
 	
@@ -254,9 +253,9 @@ func getUniqueId():
 func findPlayerData():
 	var id = getUniqueId()
 	if not saves.currentWorldData.playersData.has(id):
-		saves.currentWorldData.playersData = {}
-	saves.currentWorldData.playersData = funcs.merge_dicts(saves.currentWorldData.playersData, defaultPlayerData)
-	return saves.currentWorldData.playersData
+		saves.currentWorldData.playersData[id] = {}
+	saves.currentWorldData.playersData[id] = funcs.merge_dicts(saves.currentWorldData.playersData[id], defaultPlayerData)
+	return saves.currentWorldData.playersData[id]
 
 func getDownVoxel():
 	return _getVoxel(Vector3.DOWN)

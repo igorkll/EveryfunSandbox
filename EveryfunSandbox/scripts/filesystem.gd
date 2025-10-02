@@ -46,9 +46,23 @@ func writeFile(path, data):
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
+	
+func readFileBytes(path):
+	return FileAccess.get_file_as_bytes(path)
+	
+func writeFileBytes(path, data):
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	file.store_buffer(data)
+	file.close()
 
 func readJson(path):
 	return JSON.parse_string(readFile(path))
 	
 func writeJson(path, data):
 	writeFile(path, JSON.stringify(data))
+	
+func readObj(path):
+	return bytes_to_var(readFileBytes(path))
+	
+func writeObj(path, data):
+	writeFileBytes(path, var_to_bytes(data))
