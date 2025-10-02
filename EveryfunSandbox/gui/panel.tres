@@ -4,7 +4,6 @@
 
 [resource]
 shader = ExtResource("1_qshik")
-shader_parameter/radius = 0.4
 shader_parameter/alpha = 0.4
 shader_parameter/blur_steps = 8
-shader_parameter/blur_size = 0.01
+shader_parameter/blur_size = 0.05
