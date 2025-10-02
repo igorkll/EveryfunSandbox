@@ -1,5 +1,6 @@
 extends Node
 
+var mainNode
 var terrain
 var player
 var camera
@@ -193,6 +194,7 @@ var _textureModes = [
 ]
 
 func _ready():
+	mainNode = get_node("/root/main")
 	player = get_node("/root/main/player")
 	camera = get_node("/root/main/player/camera")
 	

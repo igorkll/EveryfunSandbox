@@ -29,8 +29,8 @@ func switchUI(ui):
 			game.applyAudioSettings()
 
 func _ready():
-	menuUI = get_node("/root/main/gui/container/menuUI")
-	gameUI = get_node("/root/main/gui/container/gameUI")
+	menuUI = game.mainNode.find_child("menuUI", true, false)
+	gameUI = game.mainNode.find_child("gameUI", true, false)
 	switchUI(0)
 	
 	saves.open("test")
