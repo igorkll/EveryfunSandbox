@@ -3,7 +3,11 @@ extends Node
 var menuUI
 var gameUI
 
+var currentUI
+
 func switchUI(ui):
+	currentUI = ui
+	
 	match ui:
 		0:
 			menuUI.visible = true
@@ -23,7 +27,6 @@ func switchUI(ui):
 func _ready():
 	menuUI = get_node("/root/main/gui/container/menuUI")
 	gameUI = get_node("/root/main/gui/container/gameUI")
-	
 	switchUI(0)
 	
 	saves.open("test")
@@ -31,3 +34,8 @@ func _ready():
 func _process(delta):
 	if not saves.isWorldFullLoaded():
 		switchUI(0)
+	elif Input.is_action_just_pressed("menu"):
+		if currentUI == 1:
+			switchUI(0)
+		else:
+			switchUI(1)
