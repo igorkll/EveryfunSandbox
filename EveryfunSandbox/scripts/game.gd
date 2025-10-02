@@ -5,8 +5,12 @@ var player
 var camera
 var blockLibrary
 var settings
+var miscData = {}
 
 var defaultSettings = {
+	"statistics": {
+		"game_session_counter": 0
+	},
 	"audio": {
 		"volume": {
 			"Master": 0.7,
@@ -117,6 +121,7 @@ func loadSettings():
 	if filesystem.isFile(consts.settings_path):
 		settings = filesystem.readJson(consts.settings_path)
 	settings = funcs.merge_dicts(settings, defaultSettings)
+	settings.statistics.game_session_counter = settings.statistics.game_session_counter + 1;
 	
 	applyAudioSettings()
 
@@ -199,8 +204,11 @@ func _ready():
 	_initMusic()
 	_initAmbient()
 	
+var _musicRandomizer
+
 func _musicEnd(musicPlayer):
 	timers.setTimeout(func():
+		musicPlayer.stream = _musicRandomizer
 		musicPlayer.play()
 	, randi_range(3, 30))
 	
@@ -208,12 +216,16 @@ func _ambientEnd(ambientPlayer):
 	ambientPlayer.play()
 
 func _initMusic():
-	var musicRandomizer = AudioStreamRandomizer.new()
+	_musicRandomizer = AudioStreamRandomizer.new()
 	for music in musicList:
-		musicRandomizer.add_stream(-1, music, 1)
+		_musicRandomizer.add_stream(-1, music, 1)
+	
+	var musicStream = _musicRandomizer
+	var session = settings.statistics.game_session_counter - 1
+	if miscData
 	
 	var musicPlayer = get_node("/root/main/music")
-	musicPlayer.stream = musicRandomizer
+	musicPlayer.stream = 
 	musicPlayer.play()
 	musicPlayer.connect("finished", _musicEnd.bind(musicPlayer))
 	
@@ -228,7 +240,11 @@ func _initAmbient():
 	ambientPlayer.connect("finished", _ambientEnd.bind(ambientPlayer))
 	
 func _addFolder(path):
-	var list = filesystem.readJson(path.path_join("/sounds.json"))
+	var list = filesystem.readJson(path.path_join("/misc.json"))
+	if list:
+		miscData = funcs.merge_dicts(miscData, list)
+	
+	list = filesystem.readJson(path.path_join("/sounds.json"))
 	if list:
 		for sound in list:
 			var audioStreamRandomizer = AudioStreamRandomizer.new()
