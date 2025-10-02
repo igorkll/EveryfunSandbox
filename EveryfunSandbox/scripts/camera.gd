@@ -1,8 +1,12 @@
 extends Camera3D
 
-var total_pitch = 0.0
 var sensitivity = 0.2
+var orbitalOffset = 15
+var orbitalHeight = 10
+
+var total_pitch = 0.0
 var orbital = false
+var orbitalValue = 0
 
 func _input(event):
 	if !orbital:
@@ -10,6 +14,16 @@ func _input(event):
 			var yaw = event.relative.x * sensitivity
 			var pitch = event.relative.y * sensitivity
 			cameraUpdate(yaw, pitch)
+			
+func _physics_process(delta):
+	if orbital:
+		orbitalUpdate(delta)
+		
+func orbitalUpdate(delta=null):
+	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)
+	look_at(get_parent().global_transform.origin, Vector3.UP)
+	if delta:
+		orbitalValue += deg_to_rad(8) * delta;
 
 func cameraUpdate(yaw, pitch):
 	pitch = clamp(pitch, -89 - total_pitch, 89 - total_pitch)
@@ -20,8 +34,9 @@ func cameraUpdate(yaw, pitch):
 
 func setOrbital(newOrbital):
 	orbital = newOrbital
+	orbitalValue = 0
 	if orbital:
-		position = Vector3(0, 10, 0)
+		orbitalUpdate()
 	else:
 		position = Vector3(0, 0, 0)
 		cameraUpdate(0, 0)
