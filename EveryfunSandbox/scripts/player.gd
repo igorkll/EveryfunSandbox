@@ -23,6 +23,9 @@ var _walk = false
 var _on_floor = false
 
 func _physics_process(delta):
+	if not saves.isWorldFullLoaded():
+		return
+	
 	# ---------------------------------- moving control
 
 	var _move_acceleration = move_acceleration

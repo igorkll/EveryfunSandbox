@@ -5,7 +5,15 @@ var objects
 
 func _ready():
 	objects = get_node("/root/main/objects")
-	create("test")
+	
+func isWorldLoaded() -> bool:
+	return currentWorldName != null
+	
+func isWorldFullLoaded() -> bool:
+	if currentWorldName == null:
+		return false
+		
+	return true
 	
 func getPathInSave(path, savename=null):
 	if savename == null:

@@ -24,4 +24,10 @@ func _ready():
 	menuUI = get_node("/root/main/gui/container/menuUI")
 	gameUI = get_node("/root/main/gui/container/gameUI")
 	
-	switchUI(1)
+	switchUI(0)
+	
+	saves.open("test")
+
+func _process(delta):
+	if not saves.isWorldFullLoaded():
+		switchUI(0)

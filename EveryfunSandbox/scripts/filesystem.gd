@@ -30,3 +30,11 @@ func isDirectory(path):
 	var result = dir.dir_exists(spath[1])
 	game.logCallResult("filesystem.isDirectory", result)
 	return result
+
+func isFile(path):
+	game.logCall("filesystem.isFile", path)
+	var spath = splitGodotPath(path)
+	var dir = DirAccess.open(spath[0])
+	var result = dir.file_exists(spath[1])
+	game.logCallResult("filesystem.isFile", result)
+	return result
