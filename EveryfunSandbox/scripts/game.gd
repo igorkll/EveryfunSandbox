@@ -16,7 +16,7 @@ var defaultSettings = {
 	},
 	"control": {
 		"joystick": {
-			"deadzone": 0.2,
+			"deadzone": 0.05,
 			"sensitivity": 1
 		},
 		"mouse": {
@@ -128,7 +128,6 @@ func joystickProcess(value):
 	value = abs(value)
 	if value < settings.control.joystick.deadzone:
 		value = 0
-	value *= settings.control.joystick.sensitivity;
 	if negative:
 		return -value
 	return value
@@ -147,7 +146,6 @@ func getJoystickValues():
 		axisRY += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_RIGHT_Y))
 		axisTL += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_TRIGGER_LEFT))
 		axisTR += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_TRIGGER_RIGHT))
-	print([axisLX, axisLY, axisRX, axisRY, axisTL, axisTR])
 	return [axisLX, axisLY, axisRX, axisRY, axisTL, axisTR]
 
 func getLeftJoystickValues():

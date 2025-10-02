@@ -20,8 +20,9 @@ func _process(delta):
 	if orbital:
 		orbitalUpdate(delta)
 	else:
-		var axises = game.getLeftJoystickValues()
-		cameraUpdate(axises[0] * delta * consts.base_joystick_camera_sensitivity, axises[1] * delta * consts.base_joystick_camera_sensitivity)
+		var axises = game.getRightJoystickValues()
+		var mul = game.settings.control.joystick.sensitivity * delta * consts.base_joystick_camera_sensitivity
+		cameraUpdate(axises[0] * mul, axises[1] * mul)
 
 func orbitalUpdate(delta=null):
 	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)

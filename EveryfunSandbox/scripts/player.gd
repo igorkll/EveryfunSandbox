@@ -76,6 +76,12 @@ func _physics_process(delta):
 	var direction = Vector3.ZERO	
 	var walk = false
 	if not controlLock:
+		var joystickWalk = game.getLeftJoystickValues()
+		
+		if joystickWalk[0] != 0 || joystickWalk[1] != 0:
+			direction += Vector3(joystickWalk[0], 0, -joystickWalk[1])
+			walk = true
+		
 		if Input.is_action_pressed("move_right"):
 			direction.x += 1
 			walk = true
@@ -132,11 +138,17 @@ func _physics_process(delta):
 	# ---------------------------------- moving
 	
 	var camera_basis = $camera.global_transform.basis
-	var camera_direction = -camera_basis.z.normalized()
+	var camera_direction = -camera_basis.z
 	var camera_right = camera_basis.x.normalized()
-	var move_direction = (camera_direction * direction.z + camera_right * direction.x).normalized()
+	
+	camera_direction.y = 0
+	camera_direction = camera_direction.normalized()
+	
+	var move_direction = (camera_direction * direction.z + camera_right * direction.x)
 	move_direction.y = 0
-	move_direction = move_direction.normalized()
+	
+	if move_direction.length() > 1:
+		move_direction = move_direction.normalized()
 
 	velocity.x += move_direction.x * _move_acceleration * delta
 	velocity.z += move_direction.z * _move_acceleration * delta
