@@ -23,6 +23,8 @@ boot_splash/minimum_display_time=2000
 game="*res://scripts/game.gd"
 timers="*res://scripts/timers.gd"
 menu="*res://scripts/menu.gd"
+saves="*res://scripts/saves.gd"
+filesystem="*res://scripts/filesystem.gd"
 
 [display]
 

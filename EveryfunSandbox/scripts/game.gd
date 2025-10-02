@@ -57,6 +57,31 @@ func setMouseEnabled(mouseEnabled):
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
+func formatType(value):
+	var valueType
+	match typeof(value):
+		TYPE_STRING:
+			valueType = "\"%s\"" % value
+		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_COLOR, TYPE_RECT2:
+			valueType = str(value)
+		TYPE_BOOL:
+			valueType = str(value).to_lower()
+		TYPE_NIL:
+			valueType = "null"
+		_:
+			valueType = str(value)
+	return valueType
+	
+func formatCall(funcname, result, ...args) -> String:
+	var parts := []
+	for arg in args:
+		parts.append(formatType(arg))
+	return "%s(%s) -> %s" % [funcname, ", ".join(parts), formatType(result)]
+	
+func logCall(funcname, result, ...args):
+	var logStr = formatCall(funcname, result, args)
+	print(logStr)
+
 # ------------------------------------------------- backend
 
 var _shader = preload("res://shaders/blocks.gdshader")
@@ -85,7 +110,6 @@ var _textureModes = [
 ]
 
 func _ready():
-	terrain = get_node("/root/main/VoxelLodTerrain")
 	player = get_node("/root/main/player")
 	camera = get_node("/root/main/player/camera")
 	
