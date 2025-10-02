@@ -13,6 +13,15 @@ var defaultSettings = {
 			"Music": 0.3,
 			"Ambient": 0.2
 		}
+	},
+	"control": {
+		"joystick": {
+			"deadzone": 0.2,
+			"sensitivity": 1
+		},
+		"mouse": {
+			"sensitivity": 1
+		}
 	}
 }
 
@@ -113,6 +122,45 @@ func loadSettings():
 
 func saveSettings():
 	filesystem.writeJson(consts.settings_path, settings)
+
+func joystickProcess(value):
+	var negative = value < 0
+	value = abs(value)
+	if value < settings.control.joystick.deadzone:
+		value = 0
+	value *= settings.control.joystick.sensitivity;
+	if negative:
+		return -value
+	return value
+
+func getJoystickValues():
+	var axisLX = 0
+	var axisLY = 0
+	var axisRX = 0
+	var axisRY = 0
+	var axisTL = 0
+	var axisTR = 0
+	for device in range(Input.get_connected_joypads().size()):
+		axisLX += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_LEFT_X))
+		axisLY += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_LEFT_Y))
+		axisRX += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_RIGHT_X))
+		axisRY += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_RIGHT_Y))
+		axisTL += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_TRIGGER_LEFT))
+		axisTR += joystickProcess(Input.get_joy_axis(device, JOY_AXIS_TRIGGER_RIGHT))
+	print([axisLX, axisLY, axisRX, axisRY, axisTL, axisTR])
+	return [axisLX, axisLY, axisRX, axisRY, axisTL, axisTR]
+
+func getLeftJoystickValues():
+	var joystickValues = getJoystickValues()
+	return [joystickValues[0], joystickValues[1]]
+	
+func getRightJoystickValues():
+	var joystickValues = getJoystickValues()
+	return [joystickValues[2], joystickValues[3]]
+	
+func getTriggerJoystickValues():
+	var joystickValues = getJoystickValues()
+	return [joystickValues[4], joystickValues[5]]
 
 # ------------------------------------------------- backend
 

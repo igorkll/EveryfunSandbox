@@ -1,6 +1,5 @@
 extends Camera3D
 
-var sensitivity = 0.2
 var orbitalOffset = 15
 var orbitalHeight = 10
 
@@ -13,14 +12,17 @@ var oldRotation = rotation
 func _input(event):
 	if !orbital:
 		if event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-			var yaw = event.relative.x * sensitivity
-			var pitch = event.relative.y * sensitivity
+			var yaw = event.relative.x * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
+			var pitch = event.relative.y * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
 			cameraUpdate(yaw, pitch)
 			
-func _physics_process(delta):
+func _process(delta):
 	if orbital:
 		orbitalUpdate(delta)
-		
+	else:
+		var axises = game.getLeftJoystickValues()
+		cameraUpdate(axises[0] * delta * consts.base_joystick_camera_sensitivity, axises[1] * delta * consts.base_joystick_camera_sensitivity)
+
 func orbitalUpdate(delta=null):
 	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)
 	look_at(get_parent().global_transform.origin, Vector3.UP)
