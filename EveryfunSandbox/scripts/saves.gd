@@ -1,6 +1,7 @@
 extends Node
 
 var currentWorldName = null
+var currentWorldRuntimeData = null
 var objects
 
 func _ready():
@@ -13,7 +14,15 @@ func isWorldFullLoaded() -> bool:
 	if currentWorldName == null:
 		return false
 		
-	return true
+	if currentWorldRuntimeData.fullLoaded:
+		return true
+	
+	if game.terrain.is_area_meshed(AABB(
+		game.getVoxelPositionFromGlobalPosition(game.player.position) - consts.minimum_loading_radius_for_play,
+		game.getVoxelPositionFromGlobalPosition(game.player.position) + consts.minimum_loading_radius_for_play), 0):
+		currentWorldRuntimeData.fullLoaded = true
+	
+	return currentWorldRuntimeData.fullLoaded
 	
 func getPathInSave(path, savename=null):
 	if savename == null:
@@ -39,6 +48,7 @@ func unload() -> bool:
 	
 	game.terrain = null
 	currentWorldName = null
+	currentWorldRuntimeData = null
 	return true
 
 func open(savename) -> bool:
@@ -47,6 +57,9 @@ func open(savename) -> bool:
 	
 	unload()
 	currentWorldName = savename
+	currentWorldRuntimeData = {
+		"fullLoaded": false
+	}
 	
 	var terrainScript = preload("res://scripts/terrain.gd")
 	var terrain = VoxelLodTerrain.new()

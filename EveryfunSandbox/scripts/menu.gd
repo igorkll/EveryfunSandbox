@@ -6,6 +6,8 @@ var gameUI
 var currentUI
 
 func switchUI(ui):
+	if currentUI == ui:
+		return
 	currentUI = ui
 	
 	match ui:
