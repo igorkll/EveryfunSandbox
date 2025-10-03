@@ -1,8 +1,8 @@
 shader_type canvas_item;
 
-uniform float alpha : hint_range(0.0, 1.0) = 0.4;
-uniform int blur_steps : hint_range(1, 128) = 8;
-uniform float blur_size : hint_range(0.0, 1.0) = 0.01;
+const float alpha = 0.4;
+const int blur_steps = 8;
+const float blur_size = 0.01;
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 const vec4 color = vec4(0.7, 0.7, 0.7, 1);
