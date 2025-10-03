@@ -169,13 +169,16 @@ func getTriggerJoystickValues():
 var gameMessageBase = preload("res://gameMessage.tscn")
 var gameMessagesContainer
 
-func gameMessage(text, withoutTimeout=false):
+func gameMessage(text, withoutTimeout=false, processAnimation=false):
 	var message = gameMessageBase.instantiate()
 	var label = message.find_child("label", true, false)
 	label.text = text
 	
 	if not withoutTimeout:
 		message.timeout = 8
+	
+	if processAnimation:
+		message.processAnimation = true
 	
 	gameMessagesContainer.add_child(message)
 	return message

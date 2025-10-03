@@ -2,6 +2,9 @@ extends VoxelLodTerrain
 
 var world_generator = preload("res://generators/world.gd")
 var voxel_tool
+var saveTracker
+var saveGameMessage
+var saveWait = false
 
 func init(terrainPath):
 	var mesher = VoxelMesherBlocky.new()
@@ -19,5 +22,18 @@ func init(terrainPath):
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 
+func _process(delta):
+	if saveTracker && saveTracker.is_complete():
+		saveGameMessage.queue_free()
+		saveTracker = null
+	
+	if saveWait && not saveTracker:
+		save()
+
 func save():
-	save_modified_blocks()
+	if saveTracker:
+		saveWait = true
+		return
+	
+	saveTracker = save_modified_blocks()
+	saveGameMessage = game.gameMessage("saving terrain...", true, true)
