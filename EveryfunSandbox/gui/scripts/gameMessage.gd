@@ -12,8 +12,11 @@ func _process(delta):
 		currentTimeout -= delta
 		material.set_shader_parameter("timeout", currentTimeout / timeout)
 		if currentTimeout <= 0:
-			queue_free()
+			task_end()
 			currentTimeout = null
 	
 	if timeout != null && currentTimeout == null:
 		currentTimeout = timeout
+
+func task_end():
+	queue_free()
