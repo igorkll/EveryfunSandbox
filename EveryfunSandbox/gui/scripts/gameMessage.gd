@@ -2,9 +2,17 @@ extends PanelContainer
 
 var timeout
 var currentTimeout
+var minShowTime
+
 var processAnimation = false
+var freeWait = false
 
 func _process(delta):
+	if minShowTime != null:
+		minShowTime -= delta
+		if minShowTime <= 0 && freeWait:
+			queue_free()
+	
 	material.set_shader_parameter("processAnimation", processAnimation)
 	material.set_shader_parameter("timeout", 1)
 	
@@ -19,4 +27,7 @@ func _process(delta):
 		currentTimeout = timeout
 
 func task_end():
-	queue_free()
+	if minShowTime == null || minShowTime <= 0:
+		queue_free()
+	else:
+		freeWait = true

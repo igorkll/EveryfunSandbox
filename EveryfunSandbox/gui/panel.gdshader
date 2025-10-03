@@ -1,12 +1,12 @@
 shader_type canvas_item;
 
-const vec4 color = vec4(0.7, 0.7, 0.7, 1);
-const vec4 progressColor = vec4(0.9, 0.9, 0.9, 1);
+const vec4 color = vec4(0.6, 0.6, 0.6, 1);
+const vec4 progressColor = vec4(0.2, 0.2, 0.8, 1);
 const float alpha = 0.4;
 const int blur_steps = 8;
 const float blur_size = 0.01;
-const float anim_speed = 1.0;
-const float anim_stretch = 2.0;
+const float anim_speed = 8.0;
+const float anim_stretch = 8.0;
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 uniform float timeout = 0.0;
@@ -26,7 +26,7 @@ void fragment() {
 	
 	vec4 currentColor;
 	if (processAnimation) {
-		currentColor = mix(color, progressColor, (sin((UV.x * anim_stretch) + (TIME * anim_speed)) + 1.0) / 2.0);
+		currentColor = mix(color, progressColor, (sin((UV.x * anim_stretch) - (TIME * anim_speed)) + 1.0) / 2.0);
 	} else if (UV.x < timeout) {
 		currentColor = progressColor;
 	} else {

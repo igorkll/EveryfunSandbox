@@ -1,14 +1,14 @@
 [gd_scene load_steps=13 format=3 uid="uid://bw0m6x1agdhve"]
 
-[ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
-[ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_fj7yv"]
-[ext_resource type="Script" uid="uid://cnv5mi67jr1go" path="res://scripts/camera.gd" id="3_tlwt5"]
-[ext_resource type="Texture2D" uid="uid://b1500kk1trgkb" path="res://gui/crosspiece.png" id="5_036b0"]
-[ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="5_dwbse"]
-[ext_resource type="Material" uid="uid://cxdqotjrqebme" path="res://gui/panel.tres" id="6_pkg7o"]
+[ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="1_7mycd"]
+[ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_272bh"]
+[ext_resource type="Script" uid="uid://cnv5mi67jr1go" path="res://scripts/camera.gd" id="3_5vw27"]
+[ext_resource type="Material" uid="uid://cxdqotjrqebme" path="res://gui/panel.tres" id="4_kek77"]
+[ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="5_4c57u"]
+[ext_resource type="Texture2D" uid="uid://b1500kk1trgkb" path="res://gui/crosspiece.png" id="6_efxa6"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tlwt5"]
-panorama = ExtResource("2_aqk2v")
+panorama = ExtResource("1_7mycd")
 
 [sub_resource type="Sky" id="Sky_fj7yv"]
 sky_material = SubResource("PanoramaSkyMaterial_tlwt5")
@@ -30,7 +30,7 @@ sdfgi_probe_bias = 0.0
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_dwbse"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
-shader = ExtResource("5_dwbse")
+shader = ExtResource("5_4c57u")
 
 [node name="main" type="Node3D"]
 
@@ -45,7 +45,7 @@ directional_shadow_max_distance = 256.0
 
 [node name="player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
-script = ExtResource("2_fj7yv")
+script = ExtResource("2_272bh")
 
 [node name="collision" type="CollisionShape3D" parent="player"]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.00568438, 0.00694084, 0.00512743)
@@ -54,7 +54,7 @@ shape = SubResource("CapsuleShape3D_gv5m4")
 [node name="camera" type="Camera3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689, 0)
 fov = 80.0
-script = ExtResource("3_tlwt5")
+script = ExtResource("3_5vw27")
 
 [node name="VoxelViewer" type="VoxelViewer" parent="player/camera"]
 view_distance = 256
@@ -96,7 +96,7 @@ theme_override_constants/margin_right = 300
 theme_override_constants/margin_bottom = 150
 
 [node name="menuUI" type="Panel" parent="gui/Control/MarginContainer"]
-material = ExtResource("6_pkg7o")
+material = ExtResource("4_kek77")
 layout_mode = 2
 
 [node name="gameUI" type="Control" parent="gui/Control"]
@@ -130,7 +130,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("5_036b0")
+texture = ExtResource("6_efxa6")
 
 [node name="MarginContainer2" type="MarginContainer" parent="gui/Control/gameUI"]
 layout_mode = 1
