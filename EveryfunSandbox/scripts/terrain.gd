@@ -3,7 +3,6 @@ extends VoxelLodTerrain
 var world_generator = preload("res://generators/world.gd")
 var voxel_tool
 var saveTracker
-var saveGameMessage
 var saveWait = false
 
 func init(terrainPath):
@@ -24,7 +23,6 @@ func init(terrainPath):
 
 func _process(delta):
 	if saveTracker && saveTracker.is_complete():
-		saveGameMessage.task_end()
 		saveTracker = null
 	
 	if saveWait && not saveTracker:
@@ -36,4 +34,3 @@ func save():
 		return
 	
 	saveTracker = save_modified_blocks()
-	saveGameMessage = game.gameMessage("saving...", true, true, 1)

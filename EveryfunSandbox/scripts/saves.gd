@@ -9,6 +9,7 @@ var defaultWorldData = {
 }
 
 var objects
+var loadingGameMessage
 
 func _ready():
 	objects = get_node("/root/main/objects")
@@ -27,6 +28,9 @@ func isWorldFullLoaded() -> bool:
 		game.getVoxelPositionFromGlobalPosition(game.player.position) - consts.minimum_loading_radius_for_play,
 		game.getVoxelPositionFromGlobalPosition(game.player.position) + consts.minimum_loading_radius_for_play), 0):
 		currentWorldRuntimeData.fullLoaded = true
+		if loadingGameMessage != null:
+			loadingGameMessage.task_end()
+			loadingGameMessage = null
 	
 	return currentWorldRuntimeData.fullLoaded
 	
@@ -45,6 +49,8 @@ func save() -> bool:
 	game.terrain.save()
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	
+	game.gameMessage("game saved!")
+	
 	return true
 
 func unload() -> bool:
@@ -62,6 +68,8 @@ func unload() -> bool:
 func open(savename) -> bool:
 	if not exists(savename):
 		return false
+	
+	loadingGameMessage = game.gameMessage("loading...", true, true)
 	
 	unload()
 	currentWorldName = savename
@@ -95,3 +103,7 @@ func create(savename) -> bool:
 		return false
 	filesystem.makeDirectory(getSavePath(savename))
 	return open(savename)
+
+func _process(delta):
+	if loadingGameMessage != null:
+		isWorldFullLoaded()
