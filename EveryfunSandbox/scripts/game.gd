@@ -175,7 +175,7 @@ func gameMessage(text, withoutTimeout=false):
 	label.text = text
 	
 	if not withoutTimeout:
-		message.timeout = 4
+		message.timeout = 8
 	
 	gameMessagesContainer.add_child(message)
 	return message

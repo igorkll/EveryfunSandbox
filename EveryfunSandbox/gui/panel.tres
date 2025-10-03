@@ -4,3 +4,4 @@
 
 [resource]
 shader = ExtResource("1_qshik")
+shader_parameter/timeout = 0.0
