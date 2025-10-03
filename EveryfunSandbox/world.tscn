@@ -1,12 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=13 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="2_aqk2v"]
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_fj7yv"]
 [ext_resource type="Script" uid="uid://cnv5mi67jr1go" path="res://scripts/camera.gd" id="3_tlwt5"]
 [ext_resource type="Texture2D" uid="uid://b1500kk1trgkb" path="res://gui/crosspiece.png" id="5_036b0"]
 [ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="5_dwbse"]
-[ext_resource type="Theme" uid="uid://b1snsmkgncv41" path="res://gui/theme.tres" id="5_gbfbk"]
-[ext_resource type="LabelSettings" uid="uid://c3k7yyfmeayen" path="res://gui/gameMessageFont.tres" id="6_dwbse"]
 [ext_resource type="Material" uid="uid://cxdqotjrqebme" path="res://gui/panel.tres" id="6_pkg7o"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tlwt5"]
@@ -100,7 +98,6 @@ theme_override_constants/margin_bottom = 150
 [node name="menuUI" type="Panel" parent="gui/Control/MarginContainer"]
 material = ExtResource("6_pkg7o")
 layout_mode = 2
-theme = ExtResource("5_gbfbk")
 
 [node name="gameUI" type="Control" parent="gui/Control"]
 layout_mode = 1
@@ -135,29 +132,17 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_036b0")
 
-[node name="MarginContainer" type="MarginContainer" parent="gui/Control/gameUI"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="MarginContainer2" type="MarginContainer" parent="gui/Control/gameUI"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 240.0
+grow_vertical = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="gameMessage" type="PanelContainer" parent="gui/Control/gameUI/MarginContainer"]
-material = ExtResource("6_pkg7o")
+[node name="gameMessages" type="VBoxContainer" parent="gui/Control/gameUI/MarginContainer2"]
 layout_mode = 2
-theme = ExtResource("5_gbfbk")
-
-[node name="MarginContainer" type="MarginContainer" parent="gui/Control/gameUI/MarginContainer/gameMessage"]
-layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="gameMessageLabel" type="Label" parent="gui/Control/gameUI/MarginContainer/gameMessage/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "testqweqwe"
-label_settings = ExtResource("6_dwbse")
+theme_override_constants/separation = 30

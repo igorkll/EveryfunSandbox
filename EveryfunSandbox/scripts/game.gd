@@ -165,6 +165,17 @@ func getRightJoystickValues():
 func getTriggerJoystickValues():
 	var joystickValues = getJoystickValues()
 	return [joystickValues[4], joystickValues[5]]
+	
+var gameMessageBase = preload("res://gameMessage.tscn")
+var gameMessagesContainer
+
+func gameMessage(text, withoutTimeout=false):
+	var message = gameMessageBase.instantiate()
+	var label = message.find_child("label", true, false)
+	label.text = text
+	
+	gameMessagesContainer.add_child(message)
+	return message
 
 # ------------------------------------------------- backend
 
@@ -197,6 +208,9 @@ func _ready():
 	mainNode = get_node("/root/main")
 	player = get_node("/root/main/player")
 	camera = get_node("/root/main/player/camera")
+	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
+	
+	# gameMessage("text")
 	
 	loadSettings()
 	
