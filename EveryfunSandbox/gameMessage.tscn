@@ -1,15 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://tjueicplvosx"]
+[gd_scene load_steps=3 format=3 uid="uid://tjueicplvosx"]
 
-[ext_resource type="Shader" uid="uid://bouu1iwjpmhdo" path="res://gui/panel.gdshader" id="1_1381g"]
 [ext_resource type="LabelSettings" uid="uid://c3k7yyfmeayen" path="res://gui/gameMessageFont.tres" id="2_1381g"]
 [ext_resource type="Script" uid="uid://bdytovxeyvscj" path="res://gui/scripts/gameMessage.gd" id="2_b6gx0"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b6gx0"]
-shader = ExtResource("1_1381g")
-shader_parameter/timeout = 0.0
-
 [node name="GameMessage" type="PanelContainer"]
-material = SubResource("ShaderMaterial_b6gx0")
 script = ExtResource("2_b6gx0")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

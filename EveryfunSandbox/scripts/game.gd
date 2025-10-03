@@ -169,13 +169,14 @@ func getTriggerJoystickValues():
 var gameMessageBase = preload("res://gameMessage.tscn")
 var gameMessagesContainer
 
-func gameMessage(text, withoutTimeout=false, processAnimation=false, minShowTime=null):
+# minShowTime can be used to delay deleting an item. for example, if you need to display a process that can run very quickly (and then you don't need to immediately delete the label), or it can take a long time (and then you need to remove it immediately when the process is completed)
+func gameMessage(text, timeout=4, processAnimation=false, minShowTime=null):
 	var message = gameMessageBase.instantiate()
 	var label = message.find_child("label", true, false)
 	label.text = text
 	
-	if not withoutTimeout:
-		message.timeout = 8
+	if timeout != null:
+		message.timeout = timeout
 		
 	if minShowTime != null:
 		message.minShowTime = minShowTime
@@ -220,6 +221,7 @@ func _ready():
 	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
 	
 	loadSettings()
+	saveSettings() # update session counter
 	
 	_addFolder("res://game")
 	

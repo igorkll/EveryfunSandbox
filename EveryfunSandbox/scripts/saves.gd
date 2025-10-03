@@ -69,7 +69,7 @@ func open(savename) -> bool:
 	if not exists(savename):
 		return false
 	
-	loadingGameMessage = game.gameMessage("loading...", true, true)
+	loadingGameMessage = game.gameMessage("loading...", null, true)
 	
 	unload()
 	currentWorldName = savename
