@@ -210,7 +210,7 @@ func _ready():
 	camera = get_node("/root/main/player/camera")
 	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
 	
-	# gameMessage("text")
+	gameMessage("text")
 	
 	loadSettings()
 	

@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://tjueicplvosx"]
+[gd_scene load_steps=3 format=3 uid="uid://tjueicplvosx"]
 
+[ext_resource type="Material" uid="uid://cxdqotjrqebme" path="res://gui/panel.tres" id="1_nkv26"]
 [ext_resource type="LabelSettings" uid="uid://c3k7yyfmeayen" path="res://gui/gameMessageFont.tres" id="2_1381g"]
 
 [node name="GameMessage" type="PanelContainer"]
+material = ExtResource("1_nkv26")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
