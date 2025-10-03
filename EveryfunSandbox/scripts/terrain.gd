@@ -24,7 +24,7 @@ func init(terrainPath):
 
 func _process(delta):
 	if saveTracker && saveTracker.is_complete():
-		saveGameMessage.queue_free()
+		saveGameMessage.task_end()
 		saveTracker = null
 	
 	if saveWait && not saveTracker:
@@ -36,4 +36,4 @@ func save():
 		return
 	
 	saveTracker = save_modified_blocks()
-	saveGameMessage = game.gameMessage("saving terrain...", true, true)
+	saveGameMessage = game.gameMessage("saving...", true, true, 1)
