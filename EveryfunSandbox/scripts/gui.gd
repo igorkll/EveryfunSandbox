@@ -4,18 +4,25 @@ var Continue_game
 var audio_Master
 
 func _attachSlider(valuePath, sliderName, range, callback=null):
-	var defaultValue = funcs.getNestedValue(game.settings, valuePath)
+	var startValue = funcs.getNestedValue(game.settings, valuePath)
 	var slider = game.mainNode.find_child(sliderName, true, false)
 	slider.min_value = range[0]
 	slider.max_value = range[1]
-	slider.value = defaultValue * range[2]
+	slider.value = startValue * range[2]
 	slider.value_changed.connect(func(value):
 		value /= range[2]
 		funcs.setNestedValue(game.settings, valuePath, value)
 		if callback != null:
 			callback.call(sliderName, value, false)
 	)
-	callback.call(sliderName, defaultValue, true)
+	callback.call(sliderName, startValue, true)
+	
+	var resetButton = game.mainNode.find_child(sliderName + "_reset", true, false)
+	resetButton.pressed.connect(func():
+		slider.value = funcs.getNestedValue(game.defaultSettings, valuePath) * range[2]
+		if callback != null:
+			callback.call(sliderName, slider.value / range[2], false)
+	)
 
 func _audioSlider(sliderName, value, force):
 	var label = game.mainNode.find_child(sliderName + "_label", true, false)
