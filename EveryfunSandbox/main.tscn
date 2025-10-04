@@ -121,9 +121,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 2
 
 [node name="Main" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -140,7 +141,35 @@ text = "Continue game"
 [node name="Game" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
 visible = false
 layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 metadata/_tab_index = 1
+
+[node name="Audio" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+metadata/_tab_index = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Audio"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Audio/VBoxContainer"]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="gui/Control/MarginContainer/menuUI/TabContainer/Audio/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="Label" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Audio/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Master"
 
 [node name="gameUI" type="Control" parent="gui/Control"]
 layout_mode = 1
