@@ -16,7 +16,8 @@ var defaultSettings = {
 		"volume": {
 			"Master": 0.7,
 			"Music": 0.3,
-			"Ambient": 0.2
+			"Ambient": 0.2,
+			"Effects": 1
 		}
 	},
 	"control": {
@@ -42,8 +43,9 @@ var blockIDs = {}
 func loadResource(resourcePath):
 	return load(resourcePath)
 
-func playSound(sound, position: Vector3, parent=null):
+func playSound(sound, position: Vector3, parent=null, channel="Effects"):
 	var audioPlayer = AudioStreamPlayer3D.new()
+	audioPlayer.bus = channel
 	audioPlayer.stream = sound.stream
 	audioPlayer.unit_size = sound.get("unit_size", 1)
 	audioPlayer.max_distance = sound.get("max_distance", 30)
@@ -118,7 +120,7 @@ func setAudioChannelVolume(bus, multiplier):
 func applyAudioSettings():
 	for key in settings.audio.volume.keys():
 		setAudioChannelVolume(key, settings.audio.volume[key])
-	game.setAudioChannelVolume("Other", 1)
+	game.setAudioChannelVolume("NotMusic", 1)
 
 func defaultSettingsInit():
 	var currentScreen = DisplayServer.window_get_current_screen()
