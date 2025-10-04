@@ -9,22 +9,30 @@ var orbital = false
 var orbitalValue = 0
 var defaultPosition = position
 var oldRotation = rotation
+var realPosition
+
+var shakeAnimationValue = 0
 
 func _input(event):
 	if !orbital:
-		if event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		if event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED && !orbital:
 			var scale = game.getScale()
 			var yaw = event.relative.x * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
-			var pitch = -event.relative.y * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
+			var pitch = event.relative.y * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
 			cameraUpdate(yaw, pitch)
 			
 func _process(delta):
+	if get_parent().isWalking or shakeAnimationValue != 0:
+		shakeAnimationValue += delta
+		if shakeAnimationValue > PI * 2:
+			shakeAnimationValue = 0
+	
 	if orbital:
 		orbitalUpdate(delta)
 	else:
 		var axises = game.getRightJoystickValues()
 		var mul = game.settings.control.joystick.sensitivity * delta * consts.base_joystick_camera_sensitivity
-		cameraUpdate(axises[0] * mul, -axises[1] * mul)
+		cameraUpdate(axises[0] * mul, axises[1] * mul)
 
 func orbitalUpdate(delta=null):
 	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)
@@ -33,12 +41,14 @@ func orbitalUpdate(delta=null):
 		orbitalValue += deg_to_rad(8) * delta;
 
 func cameraUpdate(yaw, pitch):
-	currentYaw += yaw
-	currentPitch += pitch
-	currentPitch = clamp(currentPitch, -90, 90)
+	currentYaw -= yaw
+	currentPitch -= pitch
+	currentPitch = clamp(currentPitch, -90, 90) 
 
 	rotation_degrees.y = currentYaw
 	rotation_degrees.x = currentPitch
+	
+	position = defaultPosition + Vector3(sin(shakeAnimationValue), 0, 0)
 
 func setOrbital(newOrbital):
 	orbital = newOrbital
