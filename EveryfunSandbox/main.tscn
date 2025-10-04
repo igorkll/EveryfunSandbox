@@ -230,6 +230,27 @@ texture_normal = ExtResource("5_272bh")
 ignore_texture_size = true
 stretch_mode = 0
 
+[node name="ui_audio_Music_reset" type="TextureButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Audio/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+texture_normal = ExtResource("5_272bh")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ui_audio_Ambient_reset" type="TextureButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Audio/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+texture_normal = ExtResource("5_272bh")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ui_audio_Effects_reset" type="TextureButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Audio/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+texture_normal = ExtResource("5_272bh")
+ignore_texture_size = true
+stretch_mode = 0
+
 [node name="gameUI" type="Control" parent="gui/Control"]
 layout_mode = 1
 anchors_preset = 15

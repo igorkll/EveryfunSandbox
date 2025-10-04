@@ -7,6 +7,7 @@ var camera
 var blockLibrary
 var settings
 var miscData = {}
+var muteAllExceptMusic = false
 
 var defaultSettings = {
 	"statistics": {
@@ -120,7 +121,11 @@ func setAudioChannelVolume(bus, multiplier):
 func applyAudioSettings():
 	for key in settings.audio.volume.keys():
 		setAudioChannelVolume(key, settings.audio.volume[key])
-	game.setAudioChannelVolume("NotMusic", 1)
+	game.setAudioChannelVolume("NotMusic", 0 if muteAllExceptMusic else 1)
+	
+func setMuteAllExceptMusic(mute):
+	muteAllExceptMusic = mute
+	applyAudioSettings()
 
 func defaultSettingsInit():
 	var currentScreen = DisplayServer.window_get_current_screen()
