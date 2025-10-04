@@ -27,6 +27,7 @@ filesystem="*res://scripts/filesystem.gd"
 game="*res://scripts/game.gd"
 saves="*res://scripts/saves.gd"
 menu="*res://scripts/menu.gd"
+gui="*res://scripts/gui.gd"
 
 [display]
 

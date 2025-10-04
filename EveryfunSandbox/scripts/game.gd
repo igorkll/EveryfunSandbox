@@ -249,7 +249,7 @@ func _ready():
 	_initGui()
 
 func _initGui():
-	setScale(33)
+	setScale(settings.gui.scale)
 
 var _musicRandomizer
 

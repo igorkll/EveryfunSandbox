@@ -131,11 +131,16 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 metadata/_tab_index = 0
 
-[node name="Button" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main"]
+[node name="ui_Continue_game" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-text = "Continue"
+text = "Continue game"
+
+[node name="Game" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="gameUI" type="Control" parent="gui/Control"]
 layout_mode = 1
