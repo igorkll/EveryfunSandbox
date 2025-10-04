@@ -12,8 +12,9 @@ var oldRotation = rotation
 func _input(event):
 	if !orbital:
 		if event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-			var yaw = event.relative.x * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
-			var pitch = event.relative.y * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
+			var scale = game.getScale()
+			var yaw = event.relative.x * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
+			var pitch = event.relative.y * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
 			cameraUpdate(yaw, pitch)
 			
 func _process(delta):

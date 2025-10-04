@@ -201,6 +201,9 @@ func gameMessage(text, timeout=4, processAnimation=false, minShowTime=null):
 	
 func setScale(scale):
 	get_tree().root.content_scale_factor = scale
+	
+func getScale():
+	return get_tree().root.content_scale_factor
 
 # ------------------------------------------------- backend
 
@@ -246,7 +249,7 @@ func _ready():
 	_initGui()
 
 func _initGui():
-	setScale(settings.gui.scale)
+	setScale(33)
 
 var _musicRandomizer
 
