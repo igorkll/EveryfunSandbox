@@ -49,7 +49,7 @@ func save() -> bool:
 	game.terrain.save()
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	
-	game.gameMessage("game saved!")
+	game.gameMessage("Game saved!")
 	
 	return true
 
@@ -69,7 +69,7 @@ func open(savename) -> bool:
 	if not exists(savename):
 		return false
 	
-	loadingGameMessage = game.gameMessage("loading...", null, true)
+	loadingGameMessage = game.gameMessage("Loading...", null, true)
 	
 	unload()
 	currentWorldName = savename

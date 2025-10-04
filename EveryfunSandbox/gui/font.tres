@@ -5,7 +5,7 @@ font_names = PackedStringArray("Impact")
 
 [resource]
 font = SubResource("SystemFont_4fkql")
-font_size = 30
+font_size = 20
 shadow_size = 5
 shadow_color = Color(0, 0, 0, 0.80784315)
 shadow_offset = Vector2(0, 0)

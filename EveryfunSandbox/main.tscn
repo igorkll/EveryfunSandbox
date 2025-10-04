@@ -86,7 +86,7 @@ grow_vertical = 2
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_right = 240.0
+offset_right = 60.0
 grow_vertical = 2
 theme_override_constants/margin_left = 30
 theme_override_constants/margin_top = 30
@@ -113,6 +113,29 @@ theme_override_constants/margin_bottom = 150
 [node name="menuUI" type="Panel" parent="gui/Control/MarginContainer"]
 material = ExtResource("4_kek77")
 layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="gui/Control/MarginContainer/menuUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="Main" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+metadata/_tab_index = 0
+
+[node name="Button" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Continue"
 
 [node name="gameUI" type="Control" parent="gui/Control"]
 layout_mode = 1
@@ -146,3 +169,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_efxa6")
+
+[node name="TextureRect" type="TextureRect" parent="gui/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

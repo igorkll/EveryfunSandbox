@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://tjueicplvosx"]
 
-[ext_resource type="LabelSettings" uid="uid://c3k7yyfmeayen" path="res://gui/gameMessageFont.tres" id="2_1381g"]
+[ext_resource type="LabelSettings" uid="uid://c3k7yyfmeayen" path="res://gui/font.tres" id="2_1381g"]
 [ext_resource type="Script" uid="uid://bdytovxeyvscj" path="res://gui/scripts/gameMessage.gd" id="2_b6gx0"]
 
 [node name="GameMessage" type="PanelContainer"]
@@ -16,5 +16,5 @@ theme_override_constants/margin_bottom = 15
 [node name="label" type="Label" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "testqweqwe"
+text = "test"
 label_settings = ExtResource("2_1381g")

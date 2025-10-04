@@ -27,6 +27,9 @@ var defaultSettings = {
 		"mouse": {
 			"sensitivity": 1
 		}
+	},
+	"gui": {
+		"scale": 1
 	}
 }
 
@@ -116,11 +119,20 @@ func applyAudioSettings():
 	for key in settings.audio.volume.keys():
 		setAudioChannelVolume(key, settings.audio.volume[key])
 	game.setAudioChannelVolume("Other", 1)
+
+func defaultSettingsInit():
+	var currentScreen = DisplayServer.window_get_current_screen()
+	if currentScreen < 0:
+		currentScreen = 0
 	
+	var resolution = DisplayServer.screen_get_size(currentScreen)
+	defaultSettings.gui.scale = resolution.x / 1920
+
 func loadSettings():
 	settings = {}
 	if filesystem.isFile(consts.settings_path):
 		settings = filesystem.readJson(consts.settings_path)
+	defaultSettingsInit()
 	settings = funcs.merge_dicts(settings, defaultSettings)
 	settings.statistics.game_session_counter = settings.statistics.game_session_counter + 1;
 	
@@ -186,6 +198,9 @@ func gameMessage(text, timeout=4, processAnimation=false, minShowTime=null):
 	
 	gameMessagesContainer.add_child(message)
 	return message
+	
+func setScale(scale):
+	get_tree().root.content_scale_factor = scale
 
 # ------------------------------------------------- backend
 
@@ -228,7 +243,11 @@ func _ready():
 	blockLibrary = _getLibrary()
 	_initMusic()
 	_initAmbient()
-	
+	_initGui()
+
+func _initGui():
+	setScale(settings.gui.scale)
+
 var _musicRandomizer
 
 func _musicEnd(musicPlayer):
