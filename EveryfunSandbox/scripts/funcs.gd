@@ -11,3 +11,26 @@ func merge_dicts(dict1: Dictionary, dict2: Dictionary) -> Dictionary:
 
 func indexExistsInArray(array, index):
 	return index >= 0 && index < array.size()
+
+func getNestedValue(table: Dictionary, path: String):
+	var keys = path.split(".")
+	var current = table
+	for key in keys:
+		if current.has(key):
+			current = current[key]
+		else:
+			return null
+	return current
+
+func setNestedValue(table: Dictionary, path: String, value) -> void:
+	var keys = path.split(".")
+	var current = table
+
+	for i in range(keys.size()):
+		var key = keys[i]
+		if i == keys.size() - 1:
+			current[key] = value
+		else:
+			if not current.has(key) or typeof(current[key]) != TYPE_DICTIONARY:
+				current[key] = {}
+			current = current[key]
