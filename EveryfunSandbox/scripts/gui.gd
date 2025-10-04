@@ -15,7 +15,7 @@ func _attachSlider(valuePath, sliderName, range, callback=null):
 		if callback != null:
 			callback.call(sliderName, value, false)
 	)
-	callback.call(sliderName, slider.value, true)
+	callback.call(sliderName, defaultValue, true)
 
 func _audioSlider(sliderName, value, force):
 	var label = game.mainNode.find_child(sliderName + "_label", true, false)

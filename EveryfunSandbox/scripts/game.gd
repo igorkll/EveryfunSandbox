@@ -115,7 +115,7 @@ func logCallResult(funcname, result):
 	print("---- %s -> %s" % [funcname, formatType(result)])
 	
 func setAudioChannelVolume(bus, multiplier):
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(bus), linear_to_db(clamp(multiplier, 0.0, 1.0)))
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(bus), linear_to_db(multiplier))
 	
 func applyAudioSettings():
 	for key in settings.audio.volume.keys():
