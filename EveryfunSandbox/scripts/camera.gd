@@ -39,8 +39,6 @@ func cameraUpdate(yaw, pitch):
 
 	rotation_degrees.y = currentYaw
 	rotation_degrees.x = currentPitch
-	
-	print(currentPitch)
 
 func setOrbital(newOrbital):
 	orbital = newOrbital
