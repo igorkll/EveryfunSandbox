@@ -23,6 +23,7 @@ var inited = false
 
 var halfPlayerSize
 var defaultPlayerPosition = position
+var isWalking = false
 
 func _ready():
 	halfPlayerSize = $collision.shape.height / 2
@@ -74,38 +75,38 @@ func _physics_process(delta):
 
 	var _move_acceleration = move_acceleration
 	var direction = Vector3.ZERO	
-	var walk = false
+	isWalking = false
 	if not controlLock:
 		var joystickWalk = game.getLeftJoystickValues()
 		
 		if joystickWalk[0] != 0 || joystickWalk[1] != 0:
 			direction += Vector3(joystickWalk[0], 0, -joystickWalk[1])
-			walk = true
+			isWalking = true
 		
 		if Input.is_action_pressed("move_right"):
 			direction.x += 1
-			walk = true
+			isWalking = true
 		
 		if Input.is_action_pressed("move_left"):
 			direction.x -= 1
-			walk = true
+			isWalking = true
 		
 		if Input.is_action_pressed("move_back"):
 			direction.z -= 1
-			walk = true
+			isWalking = true
 		
 		if Input.is_action_pressed("move_forward"):
 			direction.z += 1
-			walk = true
+			isWalking = true
 		
 		if Input.is_action_pressed("sprint"):
 			_move_acceleration *= sprint_mul
 	
-	if walk:
+	if isWalking:
 		onWalking()
 	elif _walk:
 		onStopWalk()
-	_walk = walk
+	_walk = isWalking
 	
 	if not controlLock && Input.is_action_pressed("jump") && is_on_floor():
 		if not current_jump:

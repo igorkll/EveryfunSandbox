@@ -15,7 +15,7 @@ var defaultSettings = {
 	},
 	"audio": {
 		"volume": {
-			"Master": 0.7,
+			"Master": 1,
 			"Music": 0.3,
 			"Ambient": 0.2,
 			"Effects": 1

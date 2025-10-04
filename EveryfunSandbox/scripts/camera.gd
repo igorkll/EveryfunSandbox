@@ -3,7 +3,8 @@ extends Camera3D
 var orbitalOffset = 15
 var orbitalHeight = 10
 
-var total_pitch = 0.0
+var currentYaw = 0.0
+var currentPitch = 0.0
 var orbital = false
 var orbitalValue = 0
 var defaultPosition = position
@@ -14,7 +15,7 @@ func _input(event):
 		if event is InputEventMouseMotion && Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			var scale = game.getScale()
 			var yaw = event.relative.x * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
-			var pitch = event.relative.y * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
+			var pitch = -event.relative.y * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
 			cameraUpdate(yaw, pitch)
 			
 func _process(delta):
@@ -23,7 +24,7 @@ func _process(delta):
 	else:
 		var axises = game.getRightJoystickValues()
 		var mul = game.settings.control.joystick.sensitivity * delta * consts.base_joystick_camera_sensitivity
-		cameraUpdate(axises[0] * mul, axises[1] * mul)
+		cameraUpdate(axises[0] * mul, -axises[1] * mul)
 
 func orbitalUpdate(delta=null):
 	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)
@@ -32,11 +33,14 @@ func orbitalUpdate(delta=null):
 		orbitalValue += deg_to_rad(8) * delta;
 
 func cameraUpdate(yaw, pitch):
-	pitch = clamp(pitch, -89 - total_pitch, 89 - total_pitch)
-	total_pitch += pitch
+	currentYaw += yaw
+	currentPitch += pitch
+	currentPitch = clamp(currentPitch, -90, 90)
 
-	rotate_y(deg_to_rad(-yaw))
-	rotate_object_local(Vector3(1,0,0), deg_to_rad(-pitch))
+	rotation_degrees.y = currentYaw
+	rotation_degrees.x = currentPitch
+	
+	print(currentPitch)
 
 func setOrbital(newOrbital):
 	orbital = newOrbital
