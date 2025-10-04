@@ -22,8 +22,10 @@ func _input(event):
 			cameraUpdate(yaw, pitch)
 			
 func _process(delta):
-	if get_parent().isWalking or shakeAnimationValue != 0:
-		shakeAnimationValue += delta
+	var player = get_parent()
+	if player.isWalking or (shakeAnimationValue != 0 and shakeAnimationValue != PI):
+		var freq = consts.step_sprint_interval if player.isSprinting else consts.step_interval
+		shakeAnimationValue += (delta / freq) * 4
 		if shakeAnimationValue > PI * 2:
 			shakeAnimationValue = 0
 	
@@ -43,12 +45,12 @@ func orbitalUpdate(delta=null):
 func cameraUpdate(yaw, pitch):
 	currentYaw -= yaw
 	currentPitch -= pitch
-	currentPitch = clamp(currentPitch, -90, 90) 
+	currentPitch = clamp(currentPitch, -89, 89) 
 
 	rotation_degrees.y = currentYaw
 	rotation_degrees.x = currentPitch
 	
-	position = defaultPosition + Vector3(sin(shakeAnimationValue), 0, 0)
+	position = defaultPosition + Vector3(0, sin(shakeAnimationValue) * 0.2, 0)
 
 func setOrbital(newOrbital):
 	orbital = newOrbital

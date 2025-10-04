@@ -29,6 +29,7 @@ func _audioSlider(sliderName, value, force):
 	label.text = str(roundi(value * 100)) + "%"
 	if not force:
 		game.applyAudioSettings()
+		game.saveSettings()
 
 func _ready():
 	Continue_game = game.mainNode.find_child("ui_Continue_game", true, false)

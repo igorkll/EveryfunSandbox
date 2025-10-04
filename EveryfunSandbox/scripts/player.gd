@@ -24,6 +24,7 @@ var inited = false
 var halfPlayerSize
 var defaultPlayerPosition = position
 var isWalking = false
+var isSprinting = false
 
 func _ready():
 	halfPlayerSize = $collision.shape.height / 2
@@ -99,8 +100,11 @@ func _physics_process(delta):
 			direction.z += 1
 			isWalking = true
 		
-		if Input.is_action_pressed("sprint"):
+		isSprinting = Input.is_action_pressed("sprint")
+		if isSprinting:
 			_move_acceleration *= sprint_mul
+	else:
+		isSprinting = false
 	
 	if isWalking:
 		onWalking()
@@ -193,10 +197,10 @@ func onWalking():
 	var defaultInterval
 	var defaultRandomInterval
 	if Input.is_action_pressed("sprint"):
-		defaultInterval = 0.2
+		defaultInterval = consts.step_sprint_interval
 		defaultRandomInterval = 0.025
 	else:
-		defaultInterval = 0.4
+		defaultInterval = consts.step_interval
 		defaultRandomInterval = 0.05
 
 	var voxelId = getDownVoxel()
