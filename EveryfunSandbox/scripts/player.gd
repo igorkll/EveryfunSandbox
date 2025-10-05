@@ -32,8 +32,10 @@ func _ready():
 
 func checkOptimalSpawnPosition(raycastPosition) -> bool:
 	var result = game.terrain.voxel_tool.raycast(raycastPosition, Vector3.DOWN, 2000)
+	print("try", raycastPosition)
 	if result:
-		position = game.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3(0, halfPlayerSize + consts.player_spawn_vertical_offset, 0))
+		print("OPTIMAL", result.previous_position)
+		position = game.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3i(0, halfPlayerSize + consts.player_spawn_vertical_offset, 0))
 		return true
 	return false
 
@@ -58,19 +60,28 @@ func findOptimalSpawnPosition():
 	
 	if not positionFinded:
 		position = defaultPlayerPosition
-	
+
+var findOptimalSpawnPositionTimer
 
 func init():
 	currentPlayerData = findPlayerData()
 	if currentPlayerData.has("position"):
 		position = currentPlayerData.position + Vector3(0, consts.player_spawn_vertical_offset, 0)
 	else:
-		findOptimalSpawnPosition()
+		findOptimalSpawnPositionTimer = timers.setInterval(func():
+			findOptimalSpawnPosition()
+		, 1)
 	inited = true
+	
+	
 
 func _physics_process(delta):
 	if not inited || not saves.isWorldFullLoaded():
 		return
+	
+	if findOptimalSpawnPositionTimer:
+		timers.clearTimeout(findOptimalSpawnPositionTimer)
+		findOptimalSpawnPositionTimer = null
 	
 	# ---------------------------------- moving control
 
