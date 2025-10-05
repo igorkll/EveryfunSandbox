@@ -16,5 +16,12 @@
 		"texture_mode": 1,
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy"
+	},
+	{
+		"name": "bricks",
+		"texture": "blocks/bricks/texture.png",
+		"texture_mode": 1,
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
 	}
 ]
