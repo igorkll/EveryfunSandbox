@@ -187,6 +187,8 @@ var walkVoxelId
 var currentWalkSound
 
 func stopWalkTimer():
+	if walkSoundTimer is Timer:
+		blockSound(currentWalkSound)
 	if walkSoundTimer:
 		walkSoundTimer.queue_free()
 		walkSoundTimer = null
@@ -213,20 +215,28 @@ func onWalking():
 				stopWalkTimer()
 				walkVoxelId = voxelId
 				
-				walkSoundTimer = RandomIntervalTimer.new()
+				walkSoundTimer = Timer.new()
+				walkSoundTimer.wait_time = defaultInterval / 2
+				walkSoundTimer.one_shot = true
+				walkSoundTimer.timeout.connect(func(): 
+					walkSoundTimer.queue_free()
+					walkSoundTimer = RandomIntervalTimer.new()
+					add_child(walkSoundTimer)
+					
+					walkSoundTimer.interval = sound.get("interval", defaultInterval)
+					walkSoundTimer.random_interval = sound.get("random_interval", defaultRandomInterval)
+					
+					walkSoundTimer.start(blockSound.bind(sound))
+					blockSound(sound)
+				)
 				add_child(walkSoundTimer)
-				
-				walkSoundTimer.interval = sound.get("interval", defaultInterval)
-				walkSoundTimer.random_interval = sound.get("random_interval", defaultRandomInterval)
-				
-				walkSoundTimer.start(blockSound.bind(sound))
-				blockSound(sound)
+				walkSoundTimer.start()
 				
 				currentWalkSound = sound
 	else:
 		stopWalkTimer()
 				
-	if walkSoundTimer:
+	if walkSoundTimer and walkSoundTimer is RandomIntervalTimer:
 		walkSoundTimer.interval = currentWalkSound.get("interval", defaultInterval)
 		walkSoundTimer.random_interval = currentWalkSound.get("random_interval", defaultRandomInterval)
 

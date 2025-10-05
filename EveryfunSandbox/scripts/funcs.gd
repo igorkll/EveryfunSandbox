@@ -34,3 +34,13 @@ func setNestedValue(table: Dictionary, path: String, value) -> void:
 			if not current.has(key) or typeof(current[key]) != TYPE_DICTIONARY:
 				current[key] = {}
 			current = current[key]
+
+func rotateVectorIn_xz(vec: Vector3, angle_degrees: float) -> Vector3:
+	var angle = deg_to_rad(angle_degrees)
+	var cos_a = cos(angle)
+	var sin_a = sin(angle)
+	
+	var x = vec.x * cos_a - vec.z * sin_a
+	var z = vec.x * sin_a + vec.z * cos_a
+	
+	return Vector3(x, vec.y, z)

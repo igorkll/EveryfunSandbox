@@ -27,7 +27,7 @@ func _process(delta):
 	var player = get_parent()
 	var interval = consts.step_sprint_interval if player.isSprinting else consts.step_interval
 	
-	if not player.isWalking:
+	if not player.isWalking or not player.is_on_floor():
 		isWalking = false
 	elif shakeAnimationValue == 0:
 		isWalking = true
@@ -66,7 +66,10 @@ func cameraUpdate(yaw, pitch):
 	rotation_degrees.y = currentYaw
 	rotation_degrees.x = currentPitch
 	
-	position = defaultPosition + Vector3(sin(shakeAnimationValue) * 0.05, abs(sin(shakeAnimationValue)) * -0.2, 0)
+	position = defaultPosition + funcs.rotateVectorIn_xz(
+		Vector3(sin(shakeAnimationValue) * 0.05, abs(sin(shakeAnimationValue)) * -0.2, 0),
+		-currentYaw
+	)
 
 func setOrbital(newOrbital):
 	orbital = newOrbital
