@@ -51,28 +51,34 @@ var blockItems = {}
 var graphicSettingsPresets = [
 	{
 		"shadow_quality": 512,
-		"shadow_distance": 32
+		"shadow_distance": 32,
+		"sdfgi": false
 	},
 	{
 		"shadow_quality": 2048,
-		"shadow_distance": 64
+		"shadow_distance": 64,
+		"sdfgi": false
 	},
 	{
 		"shadow_quality": 4096,
-		"shadow_distance": 100
+		"shadow_distance": 100,
+		"sdfgi": false
 	},
 	{
 		"shadow_quality": 16384,
-		"shadow_distance": 256
+		"shadow_distance": 256,
+		"sdfgi": true
 	}
 ]
 
 func setGraphicQuality(quality):
 	var graphicSettingsPreset = graphicSettingsPresets[quality]
-	var worldLight = game.mainNode.find_child("worldLight", graphicSettingsPreset.shadow_distance)
+	var worldLight = game.mainNode.find_child("worldLight", true, false)
+	var worldEnv = game.mainNode.find_child("worldEnv", true, false)
 	
 	RenderingServer.directional_shadow_atlas_set_size(graphicSettingsPreset.shadow_quality, true)
 	worldLight.directional_shadow_max_distance = graphicSettingsPreset.shadow_distance
+	worldEnv.environment.set_sdfgi_enabled(graphicSettingsPreset.sdfgi)
 
 
 func loadResource(resourcePath):
