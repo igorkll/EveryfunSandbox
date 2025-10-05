@@ -12,6 +12,7 @@ func _attachSlider(valuePath, sliderName, range, callback=null):
 	slider.value_changed.connect(func(value):
 		value /= range[2]
 		funcs.setNestedValue(game.settings, valuePath, value)
+		game.saveSettings()
 		if callback != null:
 			callback.call(sliderName, value, false)
 	)
@@ -29,7 +30,6 @@ func _audioSlider(sliderName, value, force):
 	label.text = str(roundi(value * 100)) + "%"
 	if not force:
 		game.applyAudioSettings()
-		game.saveSettings()
 		
 func _attachButton(button, callback):
 	var buttonObj = game.mainNode.find_child(button, true, false)
@@ -42,6 +42,7 @@ func _attachOption(valuePath, optionName, callback):
 	optionButton.selected = startValue
 	optionButton.item_selected.connect(func(value):
 		funcs.setNestedValue(game.settings, valuePath, value)
+		game.saveSettings()
 		if callback != null:
 			callback.call(value)
 	)
@@ -56,10 +57,8 @@ func _ready():
 	_attachSlider("audio.volume.Ambient", "ui_audio_Ambient", [0, 100, 50], _audioSlider)
 	_attachSlider("audio.volume.Effects", "ui_audio_Effects", [0, 100, 50], _audioSlider)
 	
-	_attachOption("graphic.quality", "ui_graphic_quality", func(value):
-		game.setGraphicQuality(value)
-		game.saveSettings()
-	)
+	_attachOption("graphic.quality", "ui_graphic_quality", game.setGraphicQuality)
+	_attachOption("graphic.distance", "ui_graphic_distance", game.setRenderDistance)
 
 func _process(delta):
 	Continue_game.disabled = not saves.isWorldFullLoaded()

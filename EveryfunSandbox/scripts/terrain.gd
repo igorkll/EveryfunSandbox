@@ -14,8 +14,8 @@ func init(terrainPath):
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()
-	self.view_distance = 128
-	self.lod_distance = 64
+	self.view_distance = game.view_distance
+	self.lod_distance = game.lod_distance
 	self.stream = stream
 	
 	voxel_tool = get_voxel_tool()

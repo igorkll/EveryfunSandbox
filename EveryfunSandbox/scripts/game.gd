@@ -37,7 +37,8 @@ var defaultSettings = {
 		"autoSaveInterval": 60
 	},
 	"graphic": {
-		"quality": 0
+		"quality": 0,
+		"distance": 0
 	}
 }
 
@@ -52,24 +53,64 @@ var graphicSettingsPresets = [
 	{
 		"shadow_quality": 512,
 		"shadow_distance": 32,
-		"sdfgi": false
+		"sdfgi": false,
+		"bias": 0.1,
+		"normalBias": 2.0
 	},
 	{
 		"shadow_quality": 2048,
 		"shadow_distance": 64,
-		"sdfgi": false
+		"sdfgi": false,
+		"bias": 0.025,
+		"normalBias": 2.0
 	},
 	{
 		"shadow_quality": 4096,
 		"shadow_distance": 100,
-		"sdfgi": false
+		"sdfgi": false,
+		"bias": 0.025,
+		"normalBias": 2.0
 	},
 	{
 		"shadow_quality": 16384,
 		"shadow_distance": 256,
-		"sdfgi": true
+		"sdfgi": true,
+		"bias": 0.01,
+		"normalBias": 2.0
 	}
 ]
+
+var distanceSettingsPresets = [
+	{
+		"distance": 64,
+		"lodDistance": 32
+	},
+	{
+		"distance": 128,
+		"lodDistance": 64
+	},
+	{
+		"distance": 256,
+		"lodDistance": 128
+	},
+	{
+		"distance": 512,
+		"lodDistance": 256
+	}
+]
+
+var view_distance
+var lod_distance
+func setRenderDistance(index):
+	var distanceSettingsPreset = distanceSettingsPresets[index]
+	var voxelViewer = game.mainNode.find_child("VoxelViewer", true, false)
+	
+	voxelViewer.view_distance = distanceSettingsPreset.distance
+	if terrain:
+		terrain.view_distance = distanceSettingsPreset.distance
+		terrain.lod_distance = distanceSettingsPreset.lodDistance
+	view_distance = distanceSettingsPreset.distance
+	lod_distance = distanceSettingsPreset.lodDistance
 
 func setGraphicQuality(quality):
 	var graphicSettingsPreset = graphicSettingsPresets[quality]
@@ -78,6 +119,8 @@ func setGraphicQuality(quality):
 	
 	RenderingServer.directional_shadow_atlas_set_size(graphicSettingsPreset.shadow_quality, true)
 	worldLight.directional_shadow_max_distance = graphicSettingsPreset.shadow_distance
+	worldLight.shadow_bias = graphicSettingsPreset.bias
+	worldLight.shadow_normal_bias = graphicSettingsPreset.normalBias
 	worldEnv.environment.set_sdfgi_enabled(graphicSettingsPreset.sdfgi)
 
 
@@ -185,6 +228,7 @@ func loadSettings():
 	
 	applyAudioSettings()
 	setGraphicQuality(settings.graphic.quality)
+	setRenderDistance(settings.graphic.distance)
 
 func saveSettings():
 	filesystem.writeJson(consts.settings_path, settings)
