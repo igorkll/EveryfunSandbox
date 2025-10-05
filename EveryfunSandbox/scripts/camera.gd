@@ -12,6 +12,7 @@ var oldRotation = rotation
 var realPosition
 
 var shakeAnimationValue = 0
+var shakeAnimationValueDouble = 0
 
 func _input(event):
 	if !orbital:
@@ -20,14 +21,36 @@ func _input(event):
 			var yaw = event.relative.x * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
 			var pitch = event.relative.y * scale * game.settings.control.mouse.sensitivity * consts.base_mouse_sensitivity
 			cameraUpdate(yaw, pitch)
-			
+
+var _shakeEnd = false
+var _shakeEnd2 = false
 func _process(delta):
 	var player = get_parent()
-	if player.isWalking or (shakeAnimationValue != 0 and shakeAnimationValue != PI):
-		var freq = consts.step_sprint_interval if player.isSprinting else consts.step_interval
-		shakeAnimationValue += (delta / freq) * 4
+	var interval = consts.step_sprint_interval if player.isSprinting else consts.step_interval
+	
+	if player.isWalking or shakeAnimationValue != 0:
+		shakeAnimationValue += (delta / interval) * 2
 		if shakeAnimationValue > PI * 2:
 			shakeAnimationValue = 0
+			
+	if player.isWalking or shakeAnimationValueDouble != 0:
+		shakeAnimationValueDouble += (delta / interval) * 4
+		if shakeAnimationValueDouble > PI * 2:
+			shakeAnimationValueDouble = 0
+			
+	var __shakeEnd = shakeAnimationValue > PI
+	var shakeEnd = __shakeEnd and not _shakeEnd
+	_shakeEnd = __shakeEnd
+	
+	var __shakeEnd2 = shakeAnimationValueDouble > PI
+	var shakeEnd2 = __shakeEnd2 and not _shakeEnd2
+	_shakeEnd2 = __shakeEnd2
+	
+	if shakeEnd:
+		shakeAnimationValue = 0
+	
+	if shakeEnd2:
+		shakeAnimationValueDouble = 0
 	
 	if orbital:
 		orbitalUpdate(delta)
@@ -50,7 +73,7 @@ func cameraUpdate(yaw, pitch):
 	rotation_degrees.y = currentYaw
 	rotation_degrees.x = currentPitch
 	
-	position = defaultPosition + Vector3(0, sin(shakeAnimationValue) * 0.2, 0)
+	position = defaultPosition + Vector3(0, sin(shakeAnimationValueDouble) * 6, 0)
 
 func setOrbital(newOrbital):
 	orbital = newOrbital
