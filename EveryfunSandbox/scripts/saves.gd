@@ -42,16 +42,25 @@ func getPathInSave(path, savename=null):
 func getSavePath(savename):
 	return ("user://saves").path_join(savename)
 
-func save() -> bool:
+func save(saveEndCallback=null) -> bool:
 	if currentWorldName == null:
 		return false
 	
-	game.terrain.save()
+	if currentWorldRuntimeData.has("voxelSaveCompletionTracker"):
+		return false
+	
+	currentWorldRuntimeData.savingProcessMessage = game.gameMessage("Saving...", null, true)
+	currentWorldRuntimeData.saveEndCallback = saveEndCallback
+	currentWorldRuntimeData.voxelSaveCompletionTracker = game.terrain.save_modified_blocks()
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	
-	game.gameMessage("Game saved!")
-	
 	return true
+	
+func isSaving() -> bool:
+	if currentWorldName == null:
+		return false
+	
+	return not not currentWorldRuntimeData.voxelSaveCompletionTracker
 
 func unload() -> bool:
 	if currentWorldName == null:
@@ -111,3 +120,13 @@ func _process(delta):
 		
 	if currentWorldRuntimeData:
 		currentWorldRuntimeData.time += delta
+		if currentWorldRuntimeData.has("voxelSaveCompletionTracker") && currentWorldRuntimeData.voxelSaveCompletionTracker.is_complete():
+			currentWorldRuntimeData.savingProcessMessage.task_end()
+			game.gameMessage("Game saved!")
+			
+			if currentWorldRuntimeData.has("saveEndCallback"):
+				currentWorldRuntimeData.saveEndCallback.call()
+			
+			currentWorldRuntimeData.voxelSaveCompletionTracker = null
+			currentWorldRuntimeData.savingProcessMessage = null
+			currentWorldRuntimeData.saveEndCallback = null

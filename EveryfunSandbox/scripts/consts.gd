@@ -11,3 +11,5 @@ var base_joystick_camera_sensitivity = 200
 
 var step_interval = 0.4
 var step_sprint_interval = 0.2
+
+var default_scale_on_1080 = 1.5

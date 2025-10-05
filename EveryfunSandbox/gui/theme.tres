@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b1snsmkgncv41"]
+
+[ext_resource type="SystemFont" uid="uid://gok2hr8le2jk" path="res://gui/font.tres" id="1_qgmjj"]
+
+[resource]
+Button/font_sizes/font_size = 20
+Button/fonts/font = ExtResource("1_qgmjj")

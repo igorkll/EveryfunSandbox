@@ -1,11 +1,4 @@
-[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://c3k7yyfmeayen"]
-
-[sub_resource type="SystemFont" id="SystemFont_4fkql"]
-font_names = PackedStringArray("Impact")
+[gd_resource type="SystemFont" format=3 uid="uid://gok2hr8le2jk"]
 
 [resource]
-font = SubResource("SystemFont_4fkql")
-font_size = 20
-shadow_size = 5
-shadow_color = Color(0, 0, 0, 0.80784315)
-shadow_offset = Vector2(0, 0)
+font_names = PackedStringArray("Impact")

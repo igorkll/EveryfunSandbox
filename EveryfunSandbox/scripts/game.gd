@@ -134,7 +134,7 @@ func defaultSettingsInit():
 		currentScreen = 0
 	
 	var resolution = DisplayServer.screen_get_size(currentScreen)
-	defaultSettings.gui.scale = resolution.x / 1920
+	defaultSettings.gui.scale = (resolution.y / 1080) * consts.default_scale_on_1080
 
 func loadSettings():
 	settings = {}
@@ -228,6 +228,14 @@ func destroyBlock(position):
 		playSound(game.soundList[obj.sound_destroy], globalPosition)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
+
+func exit():
+	if saves.isWorldFullLoaded():
+		saves.save(func():
+			get_tree().quit()
+		)
+	else:
+		get_tree().quit()
 
 # ------------------------------------------------- backend
 

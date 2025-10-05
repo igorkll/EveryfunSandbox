@@ -30,10 +30,15 @@ func _audioSlider(sliderName, value, force):
 	if not force:
 		game.applyAudioSettings()
 		game.saveSettings()
+		
+func _attachButton(button, callback):
+	var buttonObj = game.mainNode.find_child(button, true, false)
+	buttonObj.pressed.connect(callback)
+	return buttonObj
 
 func _ready():
-	Continue_game = game.mainNode.find_child("ui_Continue_game", true, false)
-	Continue_game.pressed.connect(_Continue_game_pressed)
+	Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
+	_attachButton("ui_Exit", _Exit_pressed)
 	
 	_attachSlider("audio.volume.Master", "ui_audio_Master", [0, 100, 50], _audioSlider)
 	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 100, 50], _audioSlider)
@@ -45,3 +50,6 @@ func _process(delta):
 
 func _Continue_game_pressed():
 	menu.switchUI(1)
+	
+func _Exit_pressed():
+	game.exit()

@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://c3k7yyfmeayen"]
+
+[ext_resource type="SystemFont" uid="uid://gok2hr8le2jk" path="res://gui/font.tres" id="1_6e8vm"]
+
+[resource]
+font = ExtResource("1_6e8vm")
+font_size = 20
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.80784315)
+shadow_offset = Vector2(0, 0)
