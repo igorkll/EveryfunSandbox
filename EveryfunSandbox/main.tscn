@@ -9,23 +9,32 @@
 [ext_resource type="Texture2D" uid="uid://b1500kk1trgkb" path="res://gui/crosspiece.png" id="6_efxa6"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_272bh"]
-turbidity = 0.0
-energy_multiplier = 10.0
+ground_color = Color(0.6901961, 0.7294118, 0.8117647, 1)
+energy_multiplier = 1.5
+use_debanding = false
 
 [sub_resource type="Sky" id="Sky_fj7yv"]
 sky_material = SubResource("PhysicalSkyMaterial_272bh")
 
 [sub_resource type="Environment" id="Environment_gv5m4"]
 background_mode = 2
-background_energy_multiplier = 0.5
 sky = SubResource("Sky_fj7yv")
-ambient_light_source = 3
-ambient_light_sky_contribution = 0.01
-ambient_light_energy = 0.01
+ambient_light_source = 1
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+ambient_light_energy = 0.03
 reflected_light_source = 1
+tonemap_mode = 4
+tonemap_exposure = 3.0
 ssr_depth_tolerance = 97.21
+ssao_radius = 3.0
+ssao_intensity = 5.35
+sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_read_sky_light = false
+volumetric_fog_length = 16.87
+adjustment_enabled = true
+adjustment_saturation = 1.7
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
