@@ -80,7 +80,7 @@ func cameraUpdate(yaw, pitch):
 	rotation_degrees.y = currentYaw
 	rotation_degrees.x = currentPitch
 	
-	position = defaultPosition + Vector3(sin(shakeAnimationValue) * 0.2, sin(shakeAnimationValueDouble) * 0.2, 0)
+	position = defaultPosition + Vector3(sin(shakeAnimationValueDouble) * 0.2, abs(sin(shakeAnimationValueDouble)) * -0.2, 0)
 
 func setOrbital(newOrbital):
 	orbital = newOrbital
