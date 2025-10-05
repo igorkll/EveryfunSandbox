@@ -4,6 +4,8 @@ var world_generator = preload("res://generators/world.gd")
 var voxel_tool
 
 func init(terrainPath):
+	threaded_update_enabled = true
+	
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = game.blockLibrary
 	

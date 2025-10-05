@@ -39,6 +39,7 @@ func _attachButton(button, callback):
 func _ready():
 	Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
 	_attachButton("ui_Exit", _Exit_pressed)
+	_attachButton("ui_Save", _Save_pressed)
 	
 	_attachSlider("audio.volume.Master", "ui_audio_Master", [0, 100, 50], _audioSlider)
 	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 100, 50], _audioSlider)
@@ -53,3 +54,6 @@ func _Continue_game_pressed():
 	
 func _Exit_pressed():
 	game.exit()
+	
+func _Save_pressed():
+	saves.save()

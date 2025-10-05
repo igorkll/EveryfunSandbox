@@ -43,10 +43,7 @@ func getSavePath(savename):
 	return ("user://saves").path_join(savename)
 
 func save(saveEndCallback=null) -> bool:
-	if currentWorldName == null:
-		return false
-	
-	if currentWorldRuntimeData.has("voxelSaveCompletionTracker"):
+	if currentWorldName == null || not isWorldFullLoaded() || currentWorldRuntimeData.has("voxelSaveCompletionTracker"):
 		return false
 	
 	currentWorldRuntimeData.savingProcessMessage = game.gameMessage("Saving...", null, true)
@@ -84,7 +81,8 @@ func open(savename) -> bool:
 	currentWorldName = savename
 	currentWorldRuntimeData = {
 		"fullLoaded": false,
-		"time": 0
+		"time": 0,
+		"autoSaveTimer": 0
 	}
 	
 	var terrainScript = preload("res://scripts/terrain.gd")
@@ -117,9 +115,15 @@ func create(savename) -> bool:
 func _process(delta):
 	if loadingGameMessage != null:
 		isWorldFullLoaded()
-		
+	
 	if currentWorldRuntimeData:
 		currentWorldRuntimeData.time += delta
+		currentWorldRuntimeData.autoSaveTimer += delta
+
+		if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:
+			currentWorldRuntimeData.autoSaveTimer = 0
+			save()
+		
 		if currentWorldRuntimeData.has("voxelSaveCompletionTracker") && currentWorldRuntimeData.voxelSaveCompletionTracker.is_complete():
 			currentWorldRuntimeData.savingProcessMessage.task_end()
 			game.gameMessage("Game saved!")
@@ -130,3 +134,4 @@ func _process(delta):
 			currentWorldRuntimeData.erase("voxelSaveCompletionTracker")
 			currentWorldRuntimeData.erase("savingProcessMessage")
 			currentWorldRuntimeData.erase("saveEndCallback")
+			

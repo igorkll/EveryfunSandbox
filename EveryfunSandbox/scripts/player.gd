@@ -137,7 +137,6 @@ func _physics_process(delta):
 	if Input.is_action_just_released("jump"):
 		current_jump = false
 		current_jump_budget = 0
-		saves.save()
 		
 	# ---------------------------------- edit
 	

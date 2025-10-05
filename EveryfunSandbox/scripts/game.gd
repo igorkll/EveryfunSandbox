@@ -32,6 +32,9 @@ var defaultSettings = {
 	},
 	"gui": {
 		"scale": 1
+	},
+	"game": {
+		"autoSaveInterval": 60
 	}
 }
 

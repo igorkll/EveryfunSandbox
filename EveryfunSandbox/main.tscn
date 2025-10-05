@@ -151,12 +151,19 @@ size_flags_vertical = 8
 theme_override_font_sizes/font_size = 40
 text = "Continue game"
 
+[node name="ui_Save" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 40
+text = "Save now"
+
 [node name="ui_Exit" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 40
-text = "Exit"
+text = "Save and exit"
 
 [node name="Game" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
 visible = false
