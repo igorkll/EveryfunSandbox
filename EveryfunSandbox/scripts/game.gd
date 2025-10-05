@@ -318,7 +318,7 @@ var soundsTypes = [
 	"sound_headbutt",
 	"sound_place",
 	"sound_destroy",
-	"sound_destroying"
+	"sound_hit"
 ]
 
 func _addFolder(path):

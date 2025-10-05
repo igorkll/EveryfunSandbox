@@ -255,7 +255,7 @@ func onStopWalk():
 	stopWalkTimer()
 
 func blockSound(sound):
-	game.playSound(sound, global_transform.origin + Vector3(0, halfPlayerSize, 0))
+	game.playSound(sound, global_transform.origin - Vector3(0, halfPlayerSize, 0))
 
 func _getVoxelWithOffset(side, offset):
 	var result = game.terrain.voxel_tool.raycast(
