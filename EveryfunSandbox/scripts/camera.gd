@@ -24,16 +24,22 @@ func _input(event):
 
 var _shakeEnd = false
 var _shakeEnd2 = false
+var isWalking = false
 func _process(delta):
 	var player = get_parent()
 	var interval = consts.step_sprint_interval if player.isSprinting else consts.step_interval
 	
-	if player.isWalking or shakeAnimationValue != 0:
+	if not player.isWalking:
+		isWalking = false
+	elif shakeAnimationValue == 0 or shakeAnimationValueDouble == 0:
+		isWalking = true
+	
+	if isWalking or shakeAnimationValue != 0:
 		shakeAnimationValue += (delta / interval) * 2
 		if shakeAnimationValue > PI * 2:
 			shakeAnimationValue = 0
 			
-	if player.isWalking or shakeAnimationValueDouble != 0:
+	if isWalking or shakeAnimationValueDouble != 0:
 		shakeAnimationValueDouble += (delta / interval) * 4
 		if shakeAnimationValueDouble > PI * 2:
 			shakeAnimationValueDouble = 0
@@ -46,11 +52,12 @@ func _process(delta):
 	var shakeEnd2 = __shakeEnd2 and not _shakeEnd2
 	_shakeEnd2 = __shakeEnd2
 	
-	if shakeEnd:
-		shakeAnimationValue = 0
-	
-	if shakeEnd2:
-		shakeAnimationValueDouble = 0
+	if not isWalking:
+		if shakeEnd:
+			shakeAnimationValue = 0
+		
+		if shakeEnd2:
+			shakeAnimationValueDouble = 0
 	
 	if orbital:
 		orbitalUpdate(delta)
@@ -73,7 +80,7 @@ func cameraUpdate(yaw, pitch):
 	rotation_degrees.y = currentYaw
 	rotation_degrees.x = currentPitch
 	
-	position = defaultPosition + Vector3(0, sin(shakeAnimationValueDouble) * 6, 0)
+	position = defaultPosition + Vector3(sin(shakeAnimationValue) * 0.2, sin(shakeAnimationValueDouble) * 0.2, 0)
 
 func setOrbital(newOrbital):
 	orbital = newOrbital
