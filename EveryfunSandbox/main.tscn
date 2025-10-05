@@ -1,6 +1,5 @@
-[gd_scene load_steps=15 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=14 format=3 uid="uid://bw0m6x1agdhve"]
 
-[ext_resource type="Texture2D" uid="uid://cu01uk1psc1jx" path="res://textures/sky.hdr" id="1_7mycd"]
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_272bh"]
 [ext_resource type="Script" uid="uid://cnv5mi67jr1go" path="res://scripts/camera.gd" id="3_5vw27"]
 [ext_resource type="Material" uid="uid://cxdqotjrqebme" path="res://gui/panel.tres" id="4_kek77"]
@@ -9,28 +8,24 @@
 [ext_resource type="Texture2D" uid="uid://g53q31spitlm" path="res://gui/resetValue.png" id="5_272bh"]
 [ext_resource type="Texture2D" uid="uid://b1500kk1trgkb" path="res://gui/crosspiece.png" id="6_efxa6"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tlwt5"]
-panorama = ExtResource("1_7mycd")
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_272bh"]
+turbidity = 0.0
+energy_multiplier = 10.0
 
 [sub_resource type="Sky" id="Sky_fj7yv"]
-sky_material = SubResource("PanoramaSkyMaterial_tlwt5")
+sky_material = SubResource("PhysicalSkyMaterial_272bh")
 
 [sub_resource type="Environment" id="Environment_gv5m4"]
 background_mode = 2
 background_energy_multiplier = 0.5
 sky = SubResource("Sky_fj7yv")
 ambient_light_source = 3
-ambient_light_sky_contribution = 0.1
+ambient_light_sky_contribution = 0.01
 ambient_light_energy = 0.01
 reflected_light_source = 1
 ssr_depth_tolerance = 97.21
-sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_read_sky_light = false
-sdfgi_min_cell_size = 0.01
-sdfgi_energy = 50.0
-sdfgi_normal_bias = 0.5
-sdfgi_probe_bias = 0.5
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
