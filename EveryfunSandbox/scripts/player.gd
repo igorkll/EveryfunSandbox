@@ -145,12 +145,12 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("attack"):
 			var result = game.terrain.voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result:
-				game.terrain.voxel_tool.set_voxel(result.position, 0)
+				game.destroyBlock(result.position)
 				
 		if Input.is_action_just_pressed("place"):
 			var result = game.terrain.voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and game.isCellFree(result.previous_position):
-				game.terrain.voxel_tool.set_voxel(result.previous_position, 2)
+				game.placeBlock(result.previous_position, "stone")
 	
 	# ---------------------------------- moving
 	
@@ -255,7 +255,7 @@ func onStopWalk():
 	stopWalkTimer()
 
 func blockSound(sound):
-	game.playSound(sound, global_transform.origin + Vector3(0, halfPlayerSize, 0), null)
+	game.playSound(sound, global_transform.origin + Vector3(0, halfPlayerSize, 0))
 
 func _getVoxelWithOffset(side, offset):
 	var result = game.terrain.voxel_tool.raycast(

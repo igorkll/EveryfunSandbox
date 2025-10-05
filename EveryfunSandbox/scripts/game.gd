@@ -40,6 +40,7 @@ var musicList = []
 var ambientList = []
 var blockList = []
 var blockIDs = {}
+var blockItems = {}
 
 func loadResource(resourcePath):
 	return load(resourcePath)
@@ -57,7 +58,7 @@ func playSound(sound, position: Vector3, parent=null, channel="Effects"):
 	if parent:
 		parent.add_child(audioPlayer)
 	else:
-		terrain.add_child(audioPlayer)
+		mainNode.add_child(audioPlayer)
 
 	audioPlayer.play()
 	audioPlayer.connect("finished", Callable(audioPlayer, "queue_free"))
@@ -211,6 +212,22 @@ func setScale(scale):
 	
 func getScale():
 	return get_tree().root.content_scale_factor
+	
+func placeBlock(position, blockName):
+	terrain.voxel_tool.set_voxel(position, blockIDs[blockName])
+	
+	var obj = blockItems[blockName]
+	if obj.has("sound_place"):
+		var globalPosition = getGlobalPositionFromVoxelPosition(position)
+		playSound(game.soundList[obj.sound_place], globalPosition)
+		
+func destroyBlock(position):
+	var obj = blockList[terrain.voxel_tool.get_voxel(position)]
+	if obj.has("sound_destroy"):
+		var globalPosition = getGlobalPositionFromVoxelPosition(position)
+		playSound(game.soundList[obj.sound_destroy], globalPosition)
+	
+	terrain.voxel_tool.set_voxel(position, 0)
 
 # ------------------------------------------------- backend
 
@@ -294,7 +311,16 @@ func _initAmbient():
 	ambientPlayer.stream = ambientRandomizer
 	ambientPlayer.play()
 	ambientPlayer.connect("finished", _ambientEnd.bind(ambientPlayer))
-	
+
+var soundsTypes = [
+	"sound_walking",
+	"sound_jump",
+	"sound_headbutt",
+	"sound_place",
+	"sound_destroy",
+	"sound_destroying"
+]
+
 func _addFolder(path):
 	var list = filesystem.readJson(path.path_join("/misc.json"))
 	if list:
@@ -341,11 +367,17 @@ func _addFolder(path):
 	list = filesystem.readJson(path.path_join("/blocks.json"))
 	if list:
 		for item in list:
+			if item.has("sound"):
+				for soundkey in soundsTypes:
+					if not item.has(soundkey):
+						item[soundkey] = item.sound
+			
 			if item.has("texture"):
 				item.texture = loadResource(path.path_join(item.texture))
 			
 			if item.has("name"):
 				blockIDs[item.name] = blockList.size()
+				blockItems[item.name] = item
 			
 			blockList.append(item)
 

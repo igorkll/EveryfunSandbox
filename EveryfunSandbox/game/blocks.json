@@ -4,21 +4,15 @@
 	},
 	{
 		"name": "grass",
-		
 		"texture": "blocks/grass/texture.png",
 		"texture_mode": 0,
 		"texture_no_filter": true,
-		
-		"sound_walking": "grass",
-		"sound_jump": "grass"
+		"sound": "grass"
 	},
 	{
 		"name": "stone",
-		
 		"texture": "blocks/stone/texture.png",
 		"texture_mode": 1,
-		
-		"sound_walking": "stone",
-		"sound_jump": "stone"
+		"sound": "stone"
 	}
 ]
