@@ -124,9 +124,9 @@ func _process(delta):
 			currentWorldRuntimeData.savingProcessMessage.task_end()
 			game.gameMessage("Game saved!")
 			
-			if currentWorldRuntimeData.has("saveEndCallback"):
+			if currentWorldRuntimeData.saveEndCallback:
 				currentWorldRuntimeData.saveEndCallback.call()
 			
-			currentWorldRuntimeData.voxelSaveCompletionTracker = null
-			currentWorldRuntimeData.savingProcessMessage = null
-			currentWorldRuntimeData.saveEndCallback = null
+			currentWorldRuntimeData.erase("voxelSaveCompletionTracker")
+			currentWorldRuntimeData.erase("savingProcessMessage")
+			currentWorldRuntimeData.erase("saveEndCallback")
