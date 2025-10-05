@@ -17,6 +17,11 @@
 		"volume_db": 0
 	},
 	{
+		"fork": true,
+		"name": "grass_placeDestroy",
+		"volume_db": 40
+	},
+	{
 		"name": "stone",
 		"list": [
 			{
@@ -36,5 +41,10 @@
 		"random_pitch": 1.2,
 		"random_volume_offset_db": 3,
 		"volume_db": 0
+	},
+	{
+		"fork": true,
+		"name": "stone_placeDestroy",
+		"volume_db": 40
 	}
 ]

@@ -329,6 +329,22 @@ var soundsTypes = [
 	"sound_hit"
 ]
 
+func _processForks(list):
+	var lastNonFork
+	var forks = []
+	
+	for item in list.duplicate():
+		if item.has("fork") && item.fork:
+			var fork = funcs.merge_dicts(item, lastNonFork)
+			fork.erase("fork")
+			forks.append(fork)
+			list.erase(item)
+		else:
+			lastNonFork = item
+	
+	for item in forks:
+		list.append(item)
+
 func _addFolder(path):
 	var list = filesystem.readJson(path.path_join("/misc.json"))
 	if list:
@@ -340,6 +356,7 @@ func _addFolder(path):
 	
 	list = filesystem.readJson(path.path_join("/sounds.json"))
 	if list:
+		_processForks(list)
 		for sound in list:
 			var audioStreamRandomizer = AudioStreamRandomizer.new()
 			
@@ -374,11 +391,16 @@ func _addFolder(path):
 
 	list = filesystem.readJson(path.path_join("/blocks.json"))
 	if list:
+		_processForks(list)
 		for item in list:
 			if item.has("sound"):
 				for soundkey in soundsTypes:
 					if not item.has(soundkey):
 						item[soundkey] = item.sound
+						
+			if item.has("sound_placeDestroy"):
+				item.sound_place = item.sound_placeDestroy
+				item.sound_destroy = item.sound_placeDestroy
 			
 			if item.has("texture"):
 				item.texture = loadResource(path.path_join(item.texture))

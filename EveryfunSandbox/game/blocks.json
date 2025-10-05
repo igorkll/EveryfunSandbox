@@ -7,12 +7,14 @@
 		"texture": "blocks/grass/texture.png",
 		"texture_mode": 0,
 		"texture_no_filter": true,
-		"sound": "grass"
+		"sound": "grass",
+		"sound_placeDestroy": "grass_placeDestroy"
 	},
 	{
 		"name": "stone",
 		"texture": "blocks/stone/texture.png",
 		"texture_mode": 1,
-		"sound": "stone"
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
 	}
 ]
