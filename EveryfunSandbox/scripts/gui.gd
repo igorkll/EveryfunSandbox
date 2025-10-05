@@ -35,6 +35,16 @@ func _attachButton(button, callback):
 	var buttonObj = game.mainNode.find_child(button, true, false)
 	buttonObj.pressed.connect(callback)
 	return buttonObj
+	
+func _attachOption(valuePath, optionName, callback):
+	var startValue = funcs.getNestedValue(game.settings, valuePath)
+	var optionButton = game.mainNode.find_child(optionName, true, false)
+	optionButton.selected = startValue
+	optionButton.item_selected.connect(func(value):
+		funcs.setNestedValue(game.settings, valuePath, value)
+		if callback != null:
+			callback.call(value)
+	)
 
 func _ready():
 	Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
@@ -45,6 +55,11 @@ func _ready():
 	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 100, 50], _audioSlider)
 	_attachSlider("audio.volume.Ambient", "ui_audio_Ambient", [0, 100, 50], _audioSlider)
 	_attachSlider("audio.volume.Effects", "ui_audio_Effects", [0, 100, 50], _audioSlider)
+	
+	_attachOption("graphic.quality", "ui_graphic_quality", func(value):
+		game.setGraphicQuality(value)
+		game.saveSettings()
+	)
 
 func _process(delta):
 	Continue_game.disabled = not saves.isWorldFullLoaded()

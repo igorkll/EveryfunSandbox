@@ -43,7 +43,6 @@ environment = SubResource("Environment_gv5m4")
 transform = Transform3D(0.79504, 0.332199, -0.507499, 2.97226e-08, 0.836688, 0.54768, 0.606558, -0.435427, 0.6652, 0, 0, 0)
 shadow_enabled = true
 shadow_bias = 0.01
-directional_shadow_max_distance = 256.0
 
 [node name="player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
@@ -178,13 +177,17 @@ metadata/_tab_index = 1
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="OptionButton" type="OptionButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer"]
+[node name="ui_graphic_quality" type="OptionButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer"]
 layout_mode = 2
-item_count = 2
-popup/item_0/text = "Low"
+item_count = 4
+popup/item_0/text = "Potato"
 popup/item_0/id = 0
-popup/item_1/text = "medium"
+popup/item_1/text = "Low"
 popup/item_1/id = 1
+popup/item_2/text = "Medium"
+popup/item_2/id = 2
+popup/item_3/text = "High"
+popup/item_3/id = 3
 
 [node name="Audio" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
 visible = false
