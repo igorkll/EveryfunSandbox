@@ -24,7 +24,7 @@ func isWorldFullLoaded() -> bool:
 	if currentWorldRuntimeData.fullLoaded:
 		return true
 	
-	if game.terrain.is_area_meshed(AABB(
+	if currentWorldRuntimeData.time > consts.minimal_load_time and game.terrain.is_area_meshed(AABB(
 		game.getVoxelPositionFromGlobalPosition(game.player.position) - consts.minimum_loading_radius_for_play,
 		game.getVoxelPositionFromGlobalPosition(game.player.position) + consts.minimum_loading_radius_for_play), 0):
 		currentWorldRuntimeData.fullLoaded = true
@@ -74,7 +74,8 @@ func open(savename) -> bool:
 	unload()
 	currentWorldName = savename
 	currentWorldRuntimeData = {
-		"fullLoaded": false
+		"fullLoaded": false,
+		"time": 0
 	}
 	
 	var terrainScript = preload("res://scripts/terrain.gd")
@@ -107,3 +108,6 @@ func create(savename) -> bool:
 func _process(delta):
 	if loadingGameMessage != null:
 		isWorldFullLoaded()
+		
+	if currentWorldRuntimeData:
+		currentWorldRuntimeData.time += delta
