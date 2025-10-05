@@ -61,22 +61,22 @@ var graphicSettingsPresets = [
 		"shadow_quality": 2048,
 		"shadow_distance": 64,
 		"sdfgi": false,
-		"bias": 0.025,
+		"bias": 0.1,
 		"normalBias": 2.0
 	},
 	{
 		"shadow_quality": 4096,
-		"shadow_distance": 100,
+		"shadow_distance": 96,
 		"sdfgi": false,
-		"bias": 0.025,
-		"normalBias": 2.0
+		"bias": 0.05,
+		"normalBias": 5.0
 	},
 	{
 		"shadow_quality": 16384,
 		"shadow_distance": 256,
-		"sdfgi": true,
+		"sdfgi": false,
 		"bias": 0.01,
-		"normalBias": 2.0
+		"normalBias": 10.0
 	}
 ]
 
