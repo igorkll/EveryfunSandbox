@@ -67,7 +67,7 @@ func cameraUpdate(yaw, pitch):
 	rotation_degrees.x = currentPitch
 	
 	position = defaultPosition + funcs.rotateVectorIn_xz(
-		Vector3(sin(shakeAnimationValue) * 0.05, abs(sin(shakeAnimationValue)) * -0.2, 0),
+		Vector3(sin(shakeAnimationValue) * 0.02, abs(sin(shakeAnimationValue)) * -0.03, 0),
 		-currentYaw
 	)
 

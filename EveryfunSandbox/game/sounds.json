@@ -14,7 +14,7 @@
 		"playback_mode": 0,
 		"random_pitch": 1.2,
 		"random_volume_offset_db": 3,
-		"volume_db": -10
+		"volume_db": -5
 	},
 	{
 		"name": "stone",
@@ -35,6 +35,6 @@
 		"playback_mode": 0,
 		"random_pitch": 1.2,
 		"random_volume_offset_db": 3,
-		"volume_db": -15
+		"volume_db": -5
 	}
 ]
