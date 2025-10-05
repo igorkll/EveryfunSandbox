@@ -123,9 +123,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 1
 
 [node name="Main" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -166,13 +167,24 @@ theme_override_font_sizes/font_size = 40
 text = "Save and exit"
 
 [node name="Game" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="OptionButton" type="OptionButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer"]
+layout_mode = 2
+item_count = 2
+popup/item_0/text = "Low"
+popup/item_0/id = 0
+popup/item_1/text = "medium"
+popup/item_1/id = 1
 
 [node name="Audio" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
 visible = false
@@ -295,8 +307,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -22.5
 offset_top = -22.5
-offset_right = 22.5
-offset_bottom = 22.5
+offset_right = -2.5
+offset_bottom = -2.5
 grow_horizontal = 2
 grow_vertical = 2
 

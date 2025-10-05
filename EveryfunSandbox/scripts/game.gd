@@ -35,6 +35,9 @@ var defaultSettings = {
 	},
 	"game": {
 		"autoSaveInterval": 60
+	},
+	"graphic": {
+		"quality": 0
 	}
 }
 
@@ -44,6 +47,9 @@ var ambientList = []
 var blockList = []
 var blockIDs = {}
 var blockItems = {}
+
+func setGraphicQuality(quality):
+	pass
 
 func loadResource(resourcePath):
 	return load(resourcePath)
@@ -148,6 +154,7 @@ func loadSettings():
 	settings.statistics.game_session_counter = settings.statistics.game_session_counter + 1;
 	
 	applyAudioSettings()
+	setGraphicQuality(settings.graphic.quality)
 
 func saveSettings():
 	filesystem.writeJson(consts.settings_path, settings)
