@@ -95,15 +95,19 @@ var distanceSettingsPresets = [
 	},
 	{
 		"distance": 256,
-		"lodDistance": 128
+		"lodDistance": 64
 	},
 	{
 		"distance": 512,
-		"lodDistance": 256
+		"lodDistance": 128
 	},
 	{
 		"distance": 1024,
-		"lodDistance": 256
+		"lodDistance": 128
+	},
+	{
+		"distance": 2048,
+		"lodDistance": 128
 	}
 ]
 
@@ -114,9 +118,6 @@ func setRenderDistance(index):
 	var voxelViewer = game.mainNode.find_child("VoxelViewer", true, false)
 	
 	voxelViewer.view_distance = distanceSettingsPreset.distance
-	if terrain:
-		terrain.view_distance = distanceSettingsPreset.distance
-		terrain.lod_distance = distanceSettingsPreset.lodDistance
 	view_distance = distanceSettingsPreset.distance
 	lod_distance = distanceSettingsPreset.lodDistance
 
