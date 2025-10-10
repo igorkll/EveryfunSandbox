@@ -36,7 +36,7 @@ sdfgi_normal_bias = 0.5
 sdfgi_probe_bias = 0.5
 volumetric_fog_length = 16.87
 adjustment_enabled = true
-adjustment_saturation = 1.7
+adjustment_saturation = 1.75
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 

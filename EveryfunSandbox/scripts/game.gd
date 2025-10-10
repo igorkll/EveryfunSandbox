@@ -388,6 +388,16 @@ var _textureModes = [
 		Vector2i(0, 0),
 		Vector2i(0, 1),
 		Vector2i(0, 1)
+	],
+	[ # UNIFORM_TOP
+		Vector2i(1, 2),
+		
+		Vector2i(0, 1),
+		Vector2i(0, 1),
+		Vector2i(0, 1),
+		Vector2i(0, 0),
+		Vector2i(0, 1),
+		Vector2i(0, 1)
 	]
 ]
 
@@ -396,7 +406,8 @@ var _textureModesNames = {
 	"UNIFORM": 1,
 	"UNIFORM_TOP_BOTTOM": 2,
 	"UNIFORM_SIDE": 3,
-	"UNIFORM_SIDE_TOP_BOTTOM": 4
+	"UNIFORM_SIDE_TOP_BOTTOM": 4,
+	"UNIFORM_TOP": 5
 }
 
 func _ready():
