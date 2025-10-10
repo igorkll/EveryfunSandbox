@@ -5,7 +5,7 @@
 	{
 		"name": "grass",
 		"texture": "blocks/grass/texture.png",
-		"texture_mode": "DIFFERENT_SIDES",
+		"texture_mode": "",
 		"texture_no_filter": true,
 		"sound": "grass",
 		"sound_placeDestroy": "grass_placeDestroy"
@@ -13,14 +13,14 @@
 	{
 		"name": "stone",
 		"texture": "blocks/stone/texture.png",
-		"texture_mode": "UNIFORM",
+		"texture_mode": 1,
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy"
 	},
 	{
 		"name": "bricks",
 		"texture": "blocks/bricks/texture.png",
-		"texture_mode": "UNIFORM",
+		"texture_mode": 1,
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy"
 	}

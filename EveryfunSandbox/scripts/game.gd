@@ -408,7 +408,7 @@ func _ready():
 	loadSettings()
 	saveSettings() # update session counter
 	
-	_addFolder("res://game")
+	_addFolder("res://game/main")
 	
 	blockLibrary = _getLibrary()
 	_initMusic()
@@ -562,7 +562,7 @@ func _getLibrary():
 				material.set_shader_parameter("no_filter", false)
 			
 			var textureModeIndex = block.get("texture_mode", 1)
-			if typeof(textureModeIndex) == TYPE_STRING:
+			if textureModeIndex is String:
 				textureModeIndex = _textureModesNames[textureModeIndex]
 			var textureMode = _textureModes[textureModeIndex]
 			blockModel = VoxelBlockyModelCube.new()
