@@ -336,8 +336,10 @@ func exit():
 
 var _shader = preload("res://shaders/blocks.gdshader")
 
+# map size: x y
+# texture pos: x- x+ y- y+ z- z+
 var _textureModes = [
-	[
+	[ # DIFFERENT_SIDES
 		Vector2i(3, 3),
 		
 		Vector2i(0, 1),
@@ -347,7 +349,7 @@ var _textureModes = [
 		Vector2i(1, 2),
 		Vector2i(1, 0)
 	],
-	[
+	[ # UNIFORM
 		Vector2i(1, 1),
 		
 		Vector2i(0, 0),
@@ -356,8 +358,46 @@ var _textureModes = [
 		Vector2i(0, 0),
 		Vector2i(0, 0),
 		Vector2i(0, 0)
+	],
+	[ # UNIFORM_TOP_BOTTOM
+		Vector2i(1, 3),
+		
+		Vector2i(0, 1),
+		Vector2i(0, 1),
+		Vector2i(0, 2),
+		Vector2i(0, 0),
+		Vector2i(0, 1),
+		Vector2i(0, 1)
+	],
+	[ # UNIFORM_SIDE
+		Vector2i(2, 1),
+		
+		Vector2i(0, 0),
+		Vector2i(1, 0),
+		Vector2i(0, 0),
+		Vector2i(0, 0),
+		Vector2i(0, 0),
+		Vector2i(0, 0)
+	],
+	[ # UNIFORM_SIDE_TOP_BOTTOM
+		Vector2i(2, 3),
+		
+		Vector2i(0, 1),
+		Vector2i(1, 1),
+		Vector2i(0, 2),
+		Vector2i(0, 0),
+		Vector2i(0, 1),
+		Vector2i(0, 1)
 	]
 ]
+
+var _textureModesNames = {
+	"DIFFERENT_SIDES": 0,
+	"UNIFORM": 1,
+	"UNIFORM_TOP_BOTTOM": 2,
+	"UNIFORM_SIDE": 3,
+	"UNIFORM_SIDE_TOP_BOTTOM": 4
+}
 
 func _ready():
 	mainNode = get_node("/root/main")
@@ -521,7 +561,10 @@ func _getLibrary():
 				material.set_shader_parameter("diff_texture", block.texture)
 				material.set_shader_parameter("no_filter", false)
 			
-			var textureMode = _textureModes[block.get("texture_mode", 1)]
+			var textureModeIndex = block.get("texture_mode", 1)
+			if typeof(textureModeIndex) == TYPE_STRING:
+				textureModeIndex = _textureModesNames[textureModeIndex]
+			var textureMode = _textureModes[textureModeIndex]
 			blockModel = VoxelBlockyModelCube.new()
 			blockModel.atlas_size_in_tiles = textureMode[0]
 			blockModel.set_material_override(0, material)
