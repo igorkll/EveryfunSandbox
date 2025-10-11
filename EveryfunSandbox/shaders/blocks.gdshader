@@ -1,7 +1,10 @@
 shader_type spatial;
+render_mode specular_schlick_ggx;
 
 uniform sampler2D diff_texture : filter_linear;
 uniform sampler2D diff_texture_no_filter : filter_nearest;
+uniform sampler2D material_texture : filter_linear;
+uniform sampler2D material_texture_no_filter : filter_nearest;
 uniform bool no_filter = false;
 
 void fragment() {
@@ -10,4 +13,14 @@ void fragment() {
 	} else {
 		ALBEDO = texture(diff_texture, UV).rgb;
 	}
+	
+	vec4 material_color;
+	if (no_filter) {
+	    material_color = texture(material_texture_no_filter, UV);
+	} else {
+		material_color = texture(material_texture, UV);
+	}
+	RIM = material_color.r;
+	ROUGHNESS = material_color.g;
+	METALLIC = material_color.b;
 }

@@ -557,6 +557,8 @@ func _addFolder(path):
 				blockItems[item.name] = item
 			
 			blockList.append(item)
+			
+var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
 
 func _getLibrary():
 	var library = VoxelBlockyLibrary.new()
@@ -566,11 +568,15 @@ func _getLibrary():
 		if block.has("texture"):
 			var material = ShaderMaterial.new()
 			material.shader = _shader
+			
+			var materialTexture = block.get("material", _defaultMaterialTexture)
 			if block.get("texture_no_filter", false):
 				material.set_shader_parameter("diff_texture_no_filter", block.texture)
+				material.set_shader_parameter("material_texture_no_filter", materialTexture)
 				material.set_shader_parameter("no_filter", true)
 			else:
 				material.set_shader_parameter("diff_texture", block.texture)
+				material.set_shader_parameter("material_texture", materialTexture)
 				material.set_shader_parameter("no_filter", false)
 			
 			var textureModeIndex = block.get("texture_mode", 1)
