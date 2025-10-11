@@ -1,27 +1,14 @@
 [
 	{
-		"name": "air"
+		"name": "test_DIFFERENT_SIDES",
+		"texture": "textures/DIFFERENT_SIDES.png",
+		"texture_mode": "DIFFERENT_SIDES",
+		"texture_no_filter": true
 	},
 	{
-		"name": "grass",
-		"texture": "blocks/grass/texture.png",
-		"texture_mode": "",
-		"texture_no_filter": true,
-		"sound": "grass",
-		"sound_placeDestroy": "grass_placeDestroy"
-	},
-	{
-		"name": "stone",
-		"texture": "blocks/stone/texture.png",
-		"texture_mode": 1,
-		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
-	},
-	{
-		"name": "bricks",
-		"texture": "blocks/bricks/texture.png",
-		"texture_mode": 1,
-		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"name": "test_DIFFERENT_SIDES",
+		"texture": "textures/DIFFERENT_SIDES.png",
+		"texture_mode": "DIFFERENT_SIDES",
+		"texture_no_filter": true
 	}
 ]

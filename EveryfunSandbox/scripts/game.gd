@@ -420,6 +420,7 @@ func _ready():
 	saveSettings() # update session counter
 	
 	_addFolder("res://game/main")
+	_addFolder("res://game/test")
 	
 	blockLibrary = _getLibrary()
 	_initMusic()
