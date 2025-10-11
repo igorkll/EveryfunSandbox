@@ -6,6 +6,7 @@ uniform sampler2D diff_texture_no_filter : filter_nearest;
 uniform sampler2D material_texture : filter_linear;
 uniform sampler2D material_texture_no_filter : filter_nearest;
 uniform bool no_filter = false;
+uniform bool no_material_filter = false;
 
 void fragment() {
 	if (no_filter) {
@@ -15,7 +16,7 @@ void fragment() {
 	}
 	
 	vec4 material_color;
-	if (no_filter) {
+	if (no_material_filter) {
 	    material_color = texture(material_texture_no_filter, UV);
 	} else {
 		material_color = texture(material_texture, UV);

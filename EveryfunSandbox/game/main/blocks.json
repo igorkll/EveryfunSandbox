@@ -7,6 +7,8 @@
 		"texture": "blocks/grass/texture.png",
 		"texture_mode": "UNIFORM_TOP",
 		"texture_no_filter": true,
+		"material": "materials/metal.png",
+		"material_no_filter": true,
 		"sound": "grass",
 		"sound_placeDestroy": "grass_placeDestroy"
 	},

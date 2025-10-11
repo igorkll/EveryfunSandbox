@@ -491,9 +491,15 @@ func _processForks(list):
 	
 	for item in forks:
 		list.append(item)
+		
+		
+func _readJson(path):
+	if not filesystem.isFile(path):
+		return
+	return filesystem.readJson(path)
 
 func _addFolder(path):
-	var list = filesystem.readJson(path.path_join("/misc.json"))
+	var list = _readJson(path.path_join("/misc.json"))
 	if list:
 		if list.has("the_first_music_in_the_first_played_sessions"):
 			for i in range(list["the_first_music_in_the_first_played_sessions"].size()):
@@ -501,7 +507,7 @@ func _addFolder(path):
 				list["the_first_music_in_the_first_played_sessions"][i] = path.path_join(musicPath)
 		miscData = funcs.merge_dicts(miscData, list)
 	
-	list = filesystem.readJson(path.path_join("/sounds.json"))
+	list = _readJson(path.path_join("/sounds.json"))
 	if list:
 		_processForks(list)
 		for sound in list:
@@ -526,17 +532,17 @@ func _addFolder(path):
 			
 			soundList[sound.name] = sound
 			
-	list = filesystem.readJson(path.path_join("/music.json"))
+	list = _readJson(path.path_join("/music.json"))
 	if list:
 		for music in list:
 			musicList.append(loadResource(path.path_join(music)))
 			
-	list = filesystem.readJson(path.path_join("/ambient.json"))
+	list = _readJson(path.path_join("/ambient.json"))
 	if list:
 		for ambient in list:
 			ambientList.append(loadResource(path.path_join(ambient)))
 
-	list = filesystem.readJson(path.path_join("/blocks.json"))
+	list = _readJson(path.path_join("/blocks.json"))
 	if list:
 		_processForks(list)
 		for item in list:
@@ -551,6 +557,9 @@ func _addFolder(path):
 			
 			if item.has("texture"):
 				item.texture = loadResource(path.path_join(item.texture))
+				
+			if item.has("material"):
+				item.material = loadResource(path.path_join(item.material))
 			
 			if item.has("name"):
 				blockIDs[item.name] = blockList.size()
@@ -570,13 +579,18 @@ func _getLibrary():
 			material.shader = _shader
 			
 			var materialTexture = block.get("material", _defaultMaterialTexture)
+			if block.get("material_no_filter", false):
+				material.set_shader_parameter("material_texture_no_filter", materialTexture)
+				material.set_shader_parameter("no_material_filter", true)
+			else:
+				material.set_shader_parameter("material_texture", materialTexture)
+				material.set_shader_parameter("no_material_filter", false)
+				
 			if block.get("texture_no_filter", false):
 				material.set_shader_parameter("diff_texture_no_filter", block.texture)
-				material.set_shader_parameter("material_texture_no_filter", materialTexture)
 				material.set_shader_parameter("no_filter", true)
 			else:
 				material.set_shader_parameter("diff_texture", block.texture)
-				material.set_shader_parameter("material_texture", materialTexture)
 				material.set_shader_parameter("no_filter", false)
 			
 			var textureModeIndex = block.get("texture_mode", 1)
