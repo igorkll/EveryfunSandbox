@@ -41,6 +41,6 @@
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "blocks/monitor/script.gd",
-		"rotationMode": "360"
+		"rotationMode": "360V"
 	}
 ]

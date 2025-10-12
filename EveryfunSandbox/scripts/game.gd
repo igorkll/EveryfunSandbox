@@ -352,7 +352,7 @@ func unloadBlock(position: Vector3i):
 func placeBlock(position: Vector3i, blockId: int, rotation=0):
 	var obj = blockList[blockId]
 	if obj.has("rotated"):
-		blockId = obj.rotated[rotation].id
+		blockId = obj.rotated[rotation % obj.rotated.size()].id
 		obj = blockList[blockId]
 	
 	terrain.voxel_tool.set_voxel(position, blockId)
@@ -465,10 +465,15 @@ var rotationModes = {
 		{y=2, r = Vector3i(0, -90 * 2, 0)},
 		{y=3, r = Vector3i(0, -90 * 3, 0)},
 		
-		{y=0, r = Vector3i(90, -90, 0)},
-		{y=1, r = Vector3i(90, -90, 0)},
-		{y=2, r = Vector3i(90, -90 * 2, 0)},
-		{y=3, r = Vector3i(90, -90 * 3, 0)}
+		{y=0, r = Vector3i(0, 0, 90)},
+		{y=1, r = Vector3i(0, -90, 90)},
+		{y=2, r = Vector3i(0, -90 * 2, 90)},
+		{y=3, r = Vector3i(0, -90 * 3, 90)},
+		
+		{y=0, r = Vector3i(0, 0, -90)},
+		{y=1, r = Vector3i(0, -90, -90)},
+		{y=2, r = Vector3i(0, -90 * 2, -90)},
+		{y=3, r = Vector3i(0, -90 * 3, -90)}
 	]
 }
 
