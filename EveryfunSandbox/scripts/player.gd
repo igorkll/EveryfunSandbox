@@ -146,6 +146,10 @@ func _physics_process(delta):
 		
 	# ---------------------------------- edit
 	
+	var result2 = game.terrain.voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
+	if result2:
+		game.getBlockDefaultRotation($camera)
+	
 	if not controlLock:
 		if Input.is_action_just_pressed("attack"):
 			var result = game.terrain.voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
@@ -156,7 +160,7 @@ func _physics_process(delta):
 			var result = game.terrain.voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and game.isCellFree(result.previous_position):
 				# game.placeBlock(result.previous_position, randi_range(1, game.blockList.size() - 1))
-				game.placeBlock(result.previous_position, 5, 8)
+				game.placeBlock(result.previous_position, 5, game.getBlockDefaultRotation($camera))
 	
 	# ---------------------------------- moving
 	

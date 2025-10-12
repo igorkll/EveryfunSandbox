@@ -348,6 +348,23 @@ func unloadBlock(position: Vector3i):
 	if _blockScripts.has(position):
 		_blockScripts[position].queue_free()
 		_blockScripts.erase(position)
+
+func getBlockDefaultRotation(camera: Camera3D) -> int:
+	var dir = -camera.global_transform.basis.z
+	var vertical_threshold = 0.8
+	
+	print(dir)
+	
+	var angle = atan2(dir.z, dir.x)
+	var rotation_index = int(round(angle / (PI / 2))) % 4
+	rotation_index = (rotation_index + 4) % 4
+
+	var result = rotation_index
+	if dir.y < -vertical_threshold:
+		result += 4
+	elif dir.y > vertical_threshold:
+		result += 8
+	return result
 	
 func placeBlock(position: Vector3i, blockId: int, rotation=0):
 	var obj = blockList[blockId]
