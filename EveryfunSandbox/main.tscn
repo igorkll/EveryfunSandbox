@@ -361,7 +361,7 @@ theme_override_constants/separation = 10
 [node name="HBoxContainer3" type="HBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="ui_use_hdr" type="CheckButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer3"]
+[node name="ui_graphic_hdr" type="CheckButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer3"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer3"]

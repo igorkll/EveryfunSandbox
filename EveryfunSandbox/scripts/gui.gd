@@ -46,6 +46,17 @@ func _attachOption(valuePath, optionName, callback):
 		if callback != null:
 			callback.call(value)
 	)
+	
+func _attachToggleOption(valuePath, optionName, callback):
+	var startValue = funcs.getNestedValue(game.settings, valuePath)
+	var optionButton = game.mainNode.find_child(optionName, true, false)
+	optionButton.button_pressed = startValue
+	optionButton.toggled.connect(func(value):
+		funcs.setNestedValue(game.settings, valuePath, value)
+		game.saveSettings()
+		if callback != null:
+			callback.call(value)
+	)
 
 func _ready():
 	Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
@@ -59,6 +70,8 @@ func _ready():
 	
 	_attachOption("graphic.quality", "ui_graphic_quality", game.setGraphicQuality)
 	_attachOption("graphic.distance", "ui_graphic_distance", game.setRenderDistance)
+	
+	_attachToggleOption("graphic.hdr", "ui_graphic_hdr", game.setHdrState)
 
 func _process(delta):
 	Continue_game.disabled = not saves.isWorldFullLoaded()

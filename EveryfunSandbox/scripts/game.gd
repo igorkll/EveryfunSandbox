@@ -135,6 +135,8 @@ func setGraphicQuality(quality):
 	worldEnv.environment.set_ssao_enabled(graphicSettingsPreset.ssao)
 	worldEnv.environment.set_ssil_enabled(graphicSettingsPreset.ssil)
 
+func setHdrState(hdr):
+	get_tree().root.set_use_hdr_2d(hdr)
 
 func loadResource(resourcePath):
 	return load(resourcePath)
@@ -241,6 +243,7 @@ func loadSettings():
 	applyAudioSettings()
 	setGraphicQuality(settings.graphic.quality)
 	setRenderDistance(settings.graphic.distance)
+	setHdrState(settings.graphic.hdr)
 
 func saveSettings():
 	filesystem.writeJson(consts.settings_path, settings)
