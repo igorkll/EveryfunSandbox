@@ -25,6 +25,7 @@ var halfPlayerSize
 var defaultPlayerPosition = position
 var isWalking = false
 var isSprinting = false
+var headbuttSound = true
 
 func _ready():
 	halfPlayerSize = $collision.shape.height / 2
@@ -184,8 +185,11 @@ func _physics_process(delta):
 		
 	if velocity.y > 0:
 		var voxel = getUpVoxelObj()
-		if voxel and voxel.has("sound_headbutt") and game.soundList.has(voxel.sound_headbutt):
+		if voxel and voxel.has("sound_headbutt") and game.soundList.has(voxel.sound_headbutt) and headbuttSound:
 			blockSound(game.soundList[voxel.sound_headbutt])
+			headbuttSound = false
+	elif velocity.y < 0:
+		headbuttSound = true
 	
 	var speed_mul = pow(velocity_drop, delta);
 	velocity.x *= speed_mul;
