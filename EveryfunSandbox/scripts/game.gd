@@ -347,10 +347,14 @@ func unloadBlock(position: Vector3i):
 		_blockScripts[position].queue_free()
 		_blockScripts.erase(position)
 	
-func placeBlock(position: Vector3i, blockId: int):
+func placeBlock(position: Vector3i, blockId: int, rotation=0):
+	var obj = blockList[blockId]
+	if obj.has("rotated"):
+		blockId = obj.rotated[rotation].id
+		obj = blockList[blockId]
+	
 	terrain.voxel_tool.set_voxel(position, blockId)
 	
-	var obj = blockList[blockId]
 	if obj.has("sound_place"):
 		playSound(game.soundList[obj.sound_place], Vector3(position) + Vector3(0.5, 0.5, 0.5), terrain)
 		
@@ -453,7 +457,9 @@ var rotationModes = {
 	"NONE": [
 	],
 	"360": [
-		""
+		{y=1},
+		{y=2},
+		{y=3}
 	]
 }
 
@@ -593,6 +599,7 @@ func _addFolder(path):
 	if list:
 		_processForks(list)
 		
+		var rotatedBlocks = []
 		for item in list:
 			if item.has("sound"):
 				for soundkey in soundsTypes:
@@ -616,11 +623,21 @@ func _addFolder(path):
 				item.script = path.path_join(item.script)
 				
 			if item.has("rotationMode"):
+				item.rotated = [item]
 				var rotationMode = rotationModes[item.rotationMode]
 				for rotation in rotationMode:
-					pass
-					
+					var rotated = item.duplicate(true)
+					rotated.rotated = item.rotated
+					rotated.rotation = rotation
+					rotatedBlocks.append(rotated)
+					item.rotated.append(rotated)
+			
+			item.id = blockList.size()
 			blockList.append(item)
+			
+		for rotatedBlock in rotatedBlocks:
+			rotatedBlock.id = blockList.size()
+			blockList.append(rotatedBlock)
 			
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
 
@@ -658,6 +675,8 @@ func _getLibrary():
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Y, textureMode[4])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Z, textureMode[5])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Z, textureMode[6])
+			
+			print(block.get("rotation"))
 		else:
 			blockModel = VoxelBlockyModelEmpty.new()
 		
