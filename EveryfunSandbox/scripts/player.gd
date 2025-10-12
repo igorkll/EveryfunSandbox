@@ -64,17 +64,18 @@ func findOptimalSpawnPosition():
 
 var findOptimalSpawnPositionTimer
 
+var currentData
+
 func init():
-	currentPlayerData = findPlayerData()
-	if currentPlayerData.has("position"):
-		position = currentPlayerData.position + Vector3(0, consts.player_spawn_vertical_offset, 0)
+	currentData = saves.getObjectData("player")
+	if currentData.has("position"):
+		position = currentData.position + Vector3(0, consts.player_spawn_vertical_offset, 0)
 	else:
 		findOptimalSpawnPositionTimer = timers.setInterval(func():
 			findOptimalSpawnPosition()
 		, 1)
 	inited = true
-	
-	
+	$camera.init()
 
 func _physics_process(delta):
 	if not inited || not saves.isWorldFullLoaded():
@@ -199,7 +200,7 @@ func _physics_process(delta):
 	
 	# ---------------------------------- update data
 	
-	currentPlayerData.position = position
+	currentData.position = position
 
 var walkSoundTimer
 var walkVoxelId
@@ -287,22 +288,6 @@ func _getVoxel(side):
 				return result
 
 # ------------------------------------------------- api
-
-var currentPlayerData
-var defaultPlayerData = {}
-
-func getNickname():
-	return "host"
-
-func getUniqueId():
-	return "host"
-
-func findPlayerData():
-	var id = getUniqueId()
-	if not saves.currentWorldData.playersData.has(id):
-		saves.currentWorldData.playersData[id] = {}
-	saves.currentWorldData.playersData[id] = funcs.merge_dicts(saves.currentWorldData.playersData[id], defaultPlayerData)
-	return saves.currentWorldData.playersData[id]
 
 func getDownVoxel():
 	return _getVoxel(Vector3.DOWN)

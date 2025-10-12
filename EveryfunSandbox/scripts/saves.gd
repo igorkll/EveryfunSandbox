@@ -5,7 +5,7 @@ var currentWorldRuntimeData
 var currentWorldData
 
 var defaultWorldData = {
-	"playersData": {}
+	"objectData": {}
 }
 
 var objects
@@ -41,6 +41,11 @@ func getPathInSave(path, savename=null):
 	
 func getSavePath(savename):
 	return ("user://saves").path_join(savename)
+	
+func getObjectData(key):
+	if not currentWorldData.objectData.has(key):
+		currentWorldData.objectData[key] = {}
+	return currentWorldData.objectData[key]
 
 func save(saveEndCallback=null) -> bool:
 	if currentWorldName == null || not isWorldFullLoaded() || currentWorldRuntimeData.has("voxelSaveCompletionTracker"):

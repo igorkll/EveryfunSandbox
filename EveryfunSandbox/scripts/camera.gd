@@ -12,6 +12,12 @@ var oldRotation = rotation
 var realPosition
 
 var shakeAnimationValue = 0
+var playerData
+
+func init():
+	playerData = get_parent().currentData
+	currentYaw = playerData.get("cameraYaw", 0)
+	currentPitch = playerData.get("cameraPitch", 0)
 
 func _input(event):
 	if !orbital:
@@ -51,6 +57,9 @@ func _process(delta):
 		var axises = game.getRightJoystickValues()
 		var mul = game.settings.control.joystick.sensitivity * delta * consts.base_joystick_camera_sensitivity
 		cameraUpdate(axises[0] * mul, axises[1] * mul)
+	
+	playerData.cameraYaw = currentYaw
+	playerData.cameraPitch = currentPitch
 
 func orbitalUpdate(delta=null):
 	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)
