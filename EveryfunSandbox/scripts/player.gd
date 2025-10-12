@@ -181,6 +181,11 @@ func _physics_process(delta):
 
 	if current_jump:
 		velocity.y += jump_acceleration
+		
+	if velocity.y > 0:
+		var voxel = getUpVoxelObj()
+		if voxel and voxel.has("sound_headbutt") and game.soundList.has(voxel.sound_headbutt):
+			blockSound(game.soundList[voxel.sound_headbutt])
 	
 	var speed_mul = pow(velocity_drop, delta);
 	velocity.x *= speed_mul;
@@ -273,7 +278,7 @@ func _getVoxel(side):
 	
 	for x in [-1, 1]:
 		for z in [-1, 1]:
-			result = _getVoxelWithOffset(side, Vector3(x, 0, z) * ($collision.shape.radius * sqrt(2)))
+			result = _getVoxelWithOffset(side, (Vector3(x, 0, z) * $collision.shape.radius) / sqrt(2))
 			if result:
 				return result
 
