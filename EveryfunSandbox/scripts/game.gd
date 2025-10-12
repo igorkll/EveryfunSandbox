@@ -366,6 +366,8 @@ func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
 func placeBlock(position: Vector3i, blockId: int, rotation=0):
 	var obj = blockList[blockId]
 	if obj.has("rotated"):
+		rotation = (int(rotation + obj.get("rotationBase", 0)) % 4) + (floor(rotation / 4) * 4)
+		
 		blockId = obj.rotated[rotation % obj.rotated.size()].id
 		obj = blockList[blockId]
 	
