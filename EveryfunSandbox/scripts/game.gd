@@ -449,6 +449,14 @@ var _textureModes = {
 	]
 }
 
+var rotationModes = {
+	"NONE": [
+	],
+	"360": [
+		""
+	]
+}
+
 func _ready():
 	mainNode = get_node("/root/main")
 	player = get_node("/root/main/player")
@@ -605,6 +613,9 @@ func _addFolder(path):
 				
 			if item.has("script"):
 				item.script = path.path_join(item.script)
+				
+			if item.has("rotationModes"):
+				pass
 			
 			blockList.append(item)
 			
