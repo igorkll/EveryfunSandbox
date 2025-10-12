@@ -21,6 +21,8 @@
 		"name": "grass_placeDestroy",
 		"volume_db": 40
 	},
+	
+	
 	{
 		"name": "stone",
 		"list": [
@@ -45,6 +47,38 @@
 	{
 		"fork": true,
 		"name": "stone_placeDestroy",
+		"volume_db": 40
+	},
+	
+	
+	{
+		"name": "metal",
+		"list": [
+			{
+				"path": "sounds/metal/1.mp3",
+				"weight": 1
+			},
+			{
+				"path": "sounds/metal/2.mp3",
+				"weight": 1
+			},
+			{
+				"path": "sounds/metal/3.mp3",
+				"weight": 1
+			},
+			{
+				"path": "sounds/metal/4.mp3",
+				"weight": 1
+			}
+		],
+		"playback_mode": 0,
+		"random_pitch": 1.2,
+		"random_volume_offset_db": 3,
+		"volume_db": 0
+	},
+	{
+		"fork": true,
+		"name": "metal_placeDestroy",
 		"volume_db": 40
 	}
 ]

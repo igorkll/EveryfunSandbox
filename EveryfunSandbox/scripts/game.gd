@@ -38,7 +38,8 @@ var defaultSettings = {
 	},
 	"graphic": {
 		"quality": 0,
-		"distance": 0
+		"distance": 0,
+		"hdr": true
 	}
 }
 

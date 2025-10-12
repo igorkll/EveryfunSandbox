@@ -7,8 +7,6 @@
 		"texture": "blocks/grass/texture.png",
 		"texture_mode": "UNIFORM_TOP",
 		"texture_no_filter": true,
-		"material": "materials/metal.png",
-		"material_no_filter": true,
 		"sound": "grass",
 		"sound_placeDestroy": "grass_placeDestroy"
 	},
@@ -25,5 +23,14 @@
 		"texture_mode": "UNIFORM",
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy"
+	},
+	{
+		"name": "metal",
+		"texture": "blocks/metal/texture.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"material_no_filter": true,
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy"
 	}
 ]
