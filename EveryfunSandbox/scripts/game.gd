@@ -626,7 +626,7 @@ func _addFolder(path):
 				item.rotated = [item]
 				var rotationMode = rotationModes[item.rotationMode]
 				for rotation in rotationMode:
-					var rotated = item.duplicate(true)
+					var rotated = item.duplicate(false)
 					rotated.rotated = item.rotated
 					rotated.rotation = rotation
 					rotatedBlocks.append(rotated)
@@ -675,8 +675,6 @@ func _getLibrary():
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Y, textureMode[4])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Z, textureMode[5])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Z, textureMode[6])
-			
-			print(block.get("rotation"))
 		else:
 			blockModel = VoxelBlockyModelEmpty.new()
 		
