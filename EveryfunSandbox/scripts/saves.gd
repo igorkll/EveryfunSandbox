@@ -5,7 +5,8 @@ var currentWorldRuntimeData
 var currentWorldData
 
 var defaultWorldData = {
-	"objectData": {}
+	"objectData": {},
+	"interactiveVoxelPositions": {}
 }
 
 var objects
@@ -102,7 +103,10 @@ func open(savename) -> bool:
 		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
 	
-	game.init()
+	for pos in currentWorldData.interactiveVoxelPositions:
+		game.loadBlock(pos, currentWorldData.interactiveVoxelPositions[pos])
+	
+	game.player.init()
 	
 	return true
 	

@@ -333,12 +333,14 @@ func getScale():
 	
 var _blockScripts = {}
 
-func loadBlock(position: Vector3i):
-	var obj = blockList[terrain.voxel_tool.get_voxel(position)]
+func loadBlock(position: Vector3i, blockId: int):
+	var obj = blockList[blockId]
 	if obj.has("script"):
 		var script = loadResource(obj.script)
 		var node = script.new()
 		node.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+		if obj.has("rotation"):
+			node.rotation_degrees = obj.rotation.r
 		terrain.add_child(node)
 		_blockScripts[position] = node
 		
@@ -358,7 +360,8 @@ func placeBlock(position: Vector3i, blockId: int, rotation=0):
 	if obj.has("sound_place"):
 		playSound(game.soundList[obj.sound_place], Vector3(position) + Vector3(0.5, 0.5, 0.5), terrain)
 		
-	loadBlock(position)
+	saves.currentWorldData.interactiveVoxelPositions[position] = blockId
+	loadBlock(position, blockId)
 		
 func destroyBlock(position: Vector3i):
 	var terrainPosition = Vector3(position) + Vector3(0.5, 0.5, 0.5)
@@ -366,7 +369,8 @@ func destroyBlock(position: Vector3i):
 	var obj = blockList[terrain.voxel_tool.get_voxel(position)]
 	if obj.has("sound_destroy"):
 		playSound(game.soundList[obj.sound_destroy], terrainPosition, terrain)
-		
+	
+	saves.currentWorldData.interactiveVoxelPositions.erase(position)
 	unloadBlock(position)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
@@ -378,11 +382,6 @@ func exit():
 		)
 	else:
 		get_tree().quit()
-		
-func init():
-	# terrain.mesh_block_entered.connect(loadBlock)
-	# terrain.mesh_block_exited.connect(unloadBlock)
-	player.init()
 
 # ------------------------------------------------- backend
 
@@ -457,9 +456,19 @@ var rotationModes = {
 	"NONE": [
 	],
 	"360": [
-		{y=1},
-		{y=2},
-		{y=3}
+		{y=1, r = Vector3i(0, -90, 0)},
+		{y=2, r = Vector3i(0, -90 * 2, 0)},
+		{y=3, r = Vector3i(0, -90 * 3, 0)}
+	],
+	"360V": [
+		{y=1, r = Vector3i(0, -90, 0)},
+		{y=2, r = Vector3i(0, -90 * 2, 0)},
+		{y=3, r = Vector3i(0, -90 * 3, 0)},
+		
+		{y=0, r = Vector3i(90, -90, 0)},
+		{y=1, r = Vector3i(90, -90, 0)},
+		{y=2, r = Vector3i(90, -90 * 2, 0)},
+		{y=3, r = Vector3i(90, -90 * 3, 0)}
 	]
 }
 
