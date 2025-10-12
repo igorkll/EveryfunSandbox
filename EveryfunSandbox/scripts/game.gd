@@ -42,7 +42,7 @@ var defaultSettings = {
 		"quality": 0,
 		"distance": 0,
 		"hdr": true,
-		"smoothing": false
+		"smoothing": true
 	}
 }
 
