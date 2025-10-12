@@ -104,7 +104,7 @@ func open(savename) -> bool:
 		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
 	
-	game.player.init()
+	game.init()
 	
 	return true
 	

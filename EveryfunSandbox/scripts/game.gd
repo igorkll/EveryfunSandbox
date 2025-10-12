@@ -333,8 +333,8 @@ func getScale():
 	
 var _blockScripts = {}
 
-func loadBlock(position: Vector3i, blockId: int):
-	var obj = blockList[blockId]
+func loadBlock(position: Vector3i):
+	var obj = blockList[terrain.voxel_tool.get_voxel(position)]
 	if obj.has("script"):
 		var script = loadResource(obj.script)
 		var node = script.new()
@@ -354,7 +354,7 @@ func placeBlock(position: Vector3i, blockId: int):
 	if obj.has("sound_place"):
 		playSound(game.soundList[obj.sound_place], Vector3(position) + Vector3(0.5, 0.5, 0.5), terrain)
 		
-	loadBlock(position, blockId)
+	loadBlock(position)
 		
 func destroyBlock(position: Vector3i):
 	var terrainPosition = Vector3(position) + Vector3(0.5, 0.5, 0.5)
@@ -374,6 +374,11 @@ func exit():
 		)
 	else:
 		get_tree().quit()
+		
+func init():
+	# terrain.mesh_block_entered.connect(loadBlock)
+	# terrain.mesh_block_exited.connect(unloadBlock)
+	player.init()
 
 # ------------------------------------------------- backend
 
