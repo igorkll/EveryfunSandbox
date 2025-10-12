@@ -1,6 +1,8 @@
 extends baseblock
 
 func _ready():
+	rotation_degrees.y += 180
+	
 	var plane := MeshInstance3D.new()
 	plane.mesh = PlaneMesh.new()
 	plane.scale = Vector3(0.5, 0.5, 0.5) * 0.8
