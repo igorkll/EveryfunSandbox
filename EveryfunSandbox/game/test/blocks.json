@@ -34,5 +34,13 @@
 		"texture": "textures/UNIFORM_TOP.png",
 		"texture_mode": "UNIFORM_TOP",
 		"texture_no_filter": true
+	},
+	
+	{
+		"name": "testDirection",
+		"texture": "textures/testDirection.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"script": "scripts/testDirection.gd",
+		"rotationMode": "360V"
 	}
 ]
