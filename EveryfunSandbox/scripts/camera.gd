@@ -12,12 +12,11 @@ var oldRotation = rotation
 var realPosition
 
 var shakeAnimationValue = 0
-var playerData
 
 func init():
-	playerData = get_parent().currentData
-	currentYaw = playerData.get("cameraYaw", 0)
-	currentPitch = playerData.get("cameraPitch", 0)
+	var player = get_parent()
+	currentYaw = player.currentData.get("cameraYaw", 0)
+	currentPitch = player.currentData.get("cameraPitch", 0)
 
 func _input(event):
 	if !orbital:
@@ -31,7 +30,10 @@ var _shakeEnd = false
 var isWalking = false
 func _process(delta):
 	var player = get_parent()
-	var interval = consts.step_sprint_interval if player.isSprinting else consts.step_interval
+	if not player.inited:
+		return
+	
+	var interval = player.stepInterval
 	
 	if not player.isWalking or not player.is_on_floor():
 		isWalking = false
@@ -58,8 +60,8 @@ func _process(delta):
 		var mul = game.settings.control.joystick.sensitivity * delta * consts.base_joystick_camera_sensitivity
 		cameraUpdate(axises[0] * mul, axises[1] * mul)
 	
-	playerData.cameraYaw = currentYaw
-	playerData.cameraPitch = currentPitch
+	player.currentData.cameraYaw = currentYaw
+	player.currentData.cameraPitch = currentPitch
 
 func orbitalUpdate(delta=null):
 	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)
