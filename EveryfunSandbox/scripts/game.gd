@@ -333,22 +333,29 @@ func getScale():
 	return get_tree().root.content_scale_factor
 	
 var _blockScripts = {}
+
+func loadBlock(position: Vector3i, blockName: String):
+	var obj = blockItems[blockName]
+	if obj.has("script"):
+		var script = loadResource(obj.script)
+		var node = script.new()
+		node.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+		terrain.add_child(node)
+		_blockScripts[position] = node
+		
+func unloadBlock(position: Vector3i):
+	if _blockScripts.has(position):
+		_blockScripts[position].queue_free()
+		_blockScripts.erase(position)
 	
 func placeBlock(position: Vector3i, blockName: String):
 	terrain.voxel_tool.set_voxel(position, blockIDs[blockName])
 	
-	var terrainPosition = Vector3(position) + Vector3(0.5, 0.5, 0.5)
-	
 	var obj = blockItems[blockName]
 	if obj.has("sound_place"):
-		playSound(game.soundList[obj.sound_place], terrainPosition, terrain)
+		playSound(game.soundList[obj.sound_place], Vector3(position) + Vector3(0.5, 0.5, 0.5), terrain)
 		
-	if obj.has("script"):
-		var script = loadResource(obj.script)
-		var node = script.new()
-		node.position = terrainPosition
-		terrain.add_child(node)
-		_blockScripts[position] = node
+	loadBlock(position, blockName)
 		
 func destroyBlock(position: Vector3i):
 	var terrainPosition = Vector3(position) + Vector3(0.5, 0.5, 0.5)
@@ -357,9 +364,7 @@ func destroyBlock(position: Vector3i):
 	if obj.has("sound_destroy"):
 		playSound(game.soundList[obj.sound_destroy], terrainPosition, terrain)
 		
-	if _blockScripts.has(position):
-		_blockScripts[position].queue_free()
-		_blockScripts.erase(position)
+	unloadBlock(position)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
 
