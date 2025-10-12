@@ -141,7 +141,9 @@ func setHdrState(hdr):
 	get_tree().root.set_use_hdr_2d(hdr)
 	
 func setWindowMode(mode):
-	if mode == 1:
+	if mode == 2:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	elif mode == 1:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
