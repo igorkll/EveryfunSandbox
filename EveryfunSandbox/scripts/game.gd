@@ -51,7 +51,6 @@ var musicList = []
 var ambientList = []
 var blockList = []
 var blockIDs = {}
-var blockItems = {}
 
 var graphicSettingsPresets = [
 	{
@@ -334,8 +333,8 @@ func getScale():
 	
 var _blockScripts = {}
 
-func loadBlock(position: Vector3i, blockName: String):
-	var obj = blockItems[blockName]
+func loadBlock(position: Vector3i, blockId: int):
+	var obj = blockList[blockId]
 	if obj.has("script"):
 		var script = loadResource(obj.script)
 		var node = script.new()
@@ -348,14 +347,14 @@ func unloadBlock(position: Vector3i):
 		_blockScripts[position].queue_free()
 		_blockScripts.erase(position)
 	
-func placeBlock(position: Vector3i, blockName: String):
-	terrain.voxel_tool.set_voxel(position, blockIDs[blockName])
+func placeBlock(position: Vector3i, blockId: int):
+	terrain.voxel_tool.set_voxel(position, blockId)
 	
-	var obj = blockItems[blockName]
+	var obj = blockList[blockId]
 	if obj.has("sound_place"):
 		playSound(game.soundList[obj.sound_place], Vector3(position) + Vector3(0.5, 0.5, 0.5), terrain)
 		
-	loadBlock(position, blockName)
+	loadBlock(position, blockId)
 		
 func destroyBlock(position: Vector3i):
 	var terrainPosition = Vector3(position) + Vector3(0.5, 0.5, 0.5)
@@ -607,7 +606,6 @@ func _addFolder(path):
 			
 			if item.has("name"):
 				blockIDs[item.name] = blockList.size()
-				blockItems[item.name] = item
 				
 			if item.has("script"):
 				item.script = path.path_join(item.script)
