@@ -332,7 +332,9 @@ func setScale(scale):
 func getScale():
 	return get_tree().root.content_scale_factor
 	
-func placeBlock(position, blockName):
+var _blockScripts = {}
+	
+func placeBlock(position: Vector3i, blockName: String):
 	terrain.voxel_tool.set_voxel(position, blockIDs[blockName])
 	
 	var obj = blockItems[blockName]
@@ -340,11 +342,22 @@ func placeBlock(position, blockName):
 		var globalPosition = getGlobalPositionFromVoxelPosition(position)
 		playSound(game.soundList[obj.sound_place], globalPosition)
 		
-func destroyBlock(position):
+	if obj.has("script"):
+		var script = loadResource(obj.script)
+		var node = script.new()
+		node.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+		terrain.add_child(node)
+		_blockScripts[position] = node
+		
+func destroyBlock(position: Vector3i):
 	var obj = blockList[terrain.voxel_tool.get_voxel(position)]
 	if obj.has("sound_destroy"):
 		var globalPosition = getGlobalPositionFromVoxelPosition(position)
 		playSound(game.soundList[obj.sound_destroy], globalPosition)
+		
+	if _blockScripts.has(position):
+		_blockScripts[position].queue_free()
+		_blockScripts.erase(position)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
 
@@ -588,6 +601,9 @@ func _addFolder(path):
 			if item.has("name"):
 				blockIDs[item.name] = blockList.size()
 				blockItems[item.name] = item
+				
+			if item.has("script"):
+				item.script = path.path_join(item.script)
 			
 			blockList.append(item)
 			

@@ -39,6 +39,7 @@
 		"texture_mode": "UNIFORM_SIDE",
 		"material": "materials/metal.png",
 		"sound": "metal",
-		"sound_placeDestroy": "metal_placeDestroy"
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "blocks/monitor/script.gd"
 	}
 ]
