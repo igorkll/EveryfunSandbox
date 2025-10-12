@@ -38,6 +38,7 @@ var defaultSettings = {
 	},
 	"graphic": {
 		"window": 0,
+		"vsync": 1,
 		"quality": 0,
 		"distance": 0,
 		"hdr": true
@@ -140,14 +141,13 @@ func setHdrState(hdr):
 	get_tree().root.set_use_hdr_2d(hdr)
 	
 func setWindowMode(mode):
-	var window = get_window()
-	match typeof(mode):
-		0:
-			window.mode = Window.MODE_FULLSCREEN
-		1:
-			window.mode = Window.MODE_WINDOWED
-		_:
-			window.mode = Window.MODE_WINDOWED
+	if mode == 1:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			
+func setVSyncMode(vsync):
+	DisplayServer.window_set_vsync_mode(vsync, 0)
 
 func loadResource(resourcePath):
 	return load(resourcePath)
@@ -256,6 +256,7 @@ func loadSettings():
 	setRenderDistance(settings.graphic.distance)
 	setHdrState(settings.graphic.hdr)
 	setWindowMode(settings.graphic.window)
+	setVSyncMode(settings.graphic.vsync)
 
 func saveSettings():
 	filesystem.writeJson(consts.settings_path, settings)
