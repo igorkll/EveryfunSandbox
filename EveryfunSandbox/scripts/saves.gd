@@ -90,10 +90,8 @@ func open(savename) -> bool:
 		"autoSaveTimer": 0
 	}
 	
-	var terrainScript = preload("res://scripts/terrain.gd")
-	var terrain = VoxelLodTerrain.new()
+	var terrain = preload("res://scripts/terrain.gd").new()
 	terrain.name = "terrain"
-	terrain.set_script(terrainScript)
 	objects.add_child(terrain)
 	terrain.init(getPathInSave("terrain.db"))
 	game.terrain = terrain
