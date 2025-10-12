@@ -349,8 +349,8 @@ func unloadBlock(position: Vector3i):
 		_blockScripts[position].queue_free()
 		_blockScripts.erase(position)
 
-func getBlockDefaultRotation(camera: Camera3D) -> int:
-	var dir = -camera.global_transform.basis.z
+func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
+	var dir = -globalCameraBasisZ
 	var vertical_threshold = 0.8
 	
 	var angle = atan2(dir.z, dir.x)
