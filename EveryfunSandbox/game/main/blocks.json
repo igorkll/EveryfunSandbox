@@ -29,7 +29,15 @@
 		"texture": "blocks/metal/texture.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
-		"material_no_filter": true,
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy"
+	},
+	
+	{
+		"name": "monitor",
+		"texture": "blocks/monitor/texture.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"material": "materials/metal.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy"
 	}
