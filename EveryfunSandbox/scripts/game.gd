@@ -353,12 +353,9 @@ func getBlockDefaultRotation(camera: Camera3D) -> int:
 	var dir = -camera.global_transform.basis.z
 	var vertical_threshold = 0.8
 	
-	print(dir)
-	
 	var angle = atan2(dir.z, dir.x)
-	var rotation_index = int(round(angle / (PI / 2))) % 4
-	rotation_index = (rotation_index + 4) % 4
-
+	var rotation_index = int(round(angle / (PI / 2)) + 2) % 4
+	
 	var result = rotation_index
 	if dir.y < -vertical_threshold:
 		result += 4
