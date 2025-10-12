@@ -74,6 +74,7 @@ func _ready():
 	_attachOption("graphic.window", "ui_window_mode", game.setWindowMode)
 	_attachOption("graphic.vsync", "ui_vsync_mode", game.setVSyncMode)
 	_attachToggleOption("graphic.hdr", "ui_graphic_hdr", game.setHdrState)
+	_attachToggleOption("graphic.smoothing", "ui_graphic_smoothing", game.setSmoothingState)
 
 func _process(delta):
 	Continue_game.disabled = not saves.isWorldFullLoaded()

@@ -41,7 +41,8 @@ var defaultSettings = {
 		"vsync": 1,
 		"quality": 0,
 		"distance": 0,
-		"hdr": true
+		"hdr": true,
+		"smoothing": false
 	}
 }
 
@@ -150,6 +151,9 @@ func setWindowMode(mode):
 			
 func setVSyncMode(vsync):
 	DisplayServer.window_set_vsync_mode(vsync, 0)
+	
+func setSmoothingState(smoothing):
+	get_tree().root.use_taa = smoothing
 
 func loadResource(resourcePath):
 	return load(resourcePath)
@@ -259,6 +263,7 @@ func loadSettings():
 	setHdrState(settings.graphic.hdr)
 	setWindowMode(settings.graphic.window)
 	setVSyncMode(settings.graphic.vsync)
+	setSmoothingState(settings.graphic.smoothing)
 
 func saveSettings():
 	filesystem.writeJson(consts.settings_path, settings)
