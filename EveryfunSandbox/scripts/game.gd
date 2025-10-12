@@ -592,6 +592,7 @@ func _addFolder(path):
 	list = _readJson(path.path_join("/blocks.json"))
 	if list:
 		_processForks(list)
+		
 		for item in list:
 			if item.has("sound"):
 				for soundkey in soundsTypes:
@@ -614,9 +615,11 @@ func _addFolder(path):
 			if item.has("script"):
 				item.script = path.path_join(item.script)
 				
-			if item.has("rotationModes"):
-				pass
-			
+			if item.has("rotationMode"):
+				var rotationMode = rotationModes[item.rotationMode]
+				for rotation in rotationMode:
+					pass
+					
 			blockList.append(item)
 			
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
