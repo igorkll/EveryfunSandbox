@@ -37,6 +37,7 @@ var defaultSettings = {
 		"autoSaveInterval": 60
 	},
 	"graphic": {
+		"window": 0,
 		"quality": 0,
 		"distance": 0,
 		"hdr": true
@@ -137,6 +138,16 @@ func setGraphicQuality(quality):
 
 func setHdrState(hdr):
 	get_tree().root.set_use_hdr_2d(hdr)
+	
+func setWindowMode(mode):
+	var window = get_window()
+	match typeof(mode):
+		0:
+			window.mode = Window.MODE_FULLSCREEN
+		1:
+			window.mode = Window.MODE_WINDOWED
+		_:
+			window.mode = Window.MODE_WINDOWED
 
 func loadResource(resourcePath):
 	return load(resourcePath)
@@ -244,6 +255,7 @@ func loadSettings():
 	setGraphicQuality(settings.graphic.quality)
 	setRenderDistance(settings.graphic.distance)
 	setHdrState(settings.graphic.hdr)
+	setWindowMode(settings.graphic.window)
 
 func saveSettings():
 	filesystem.writeJson(consts.settings_path, settings)

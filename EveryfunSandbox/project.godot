@@ -29,10 +29,6 @@ saves="*res://scripts/saves.gd"
 menu="*res://scripts/menu.gd"
 gui="*res://scripts/gui.gd"
 
-[display]
-
-window/size/mode=3
-
 [gui]
 
 theme/custom="uid://b1snsmkgncv41"

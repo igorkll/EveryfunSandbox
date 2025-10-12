@@ -71,6 +71,7 @@ func _ready():
 	_attachOption("graphic.quality", "ui_graphic_quality", game.setGraphicQuality)
 	_attachOption("graphic.distance", "ui_graphic_distance", game.setRenderDistance)
 	
+	_attachOption("graphic.window", "ui_window_mode", game.setWindowMode)
 	_attachToggleOption("graphic.hdr", "ui_graphic_hdr", game.setHdrState)
 
 func _process(delta):
