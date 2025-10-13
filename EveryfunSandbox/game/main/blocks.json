@@ -33,7 +33,7 @@
 		"sound_placeDestroy": "metal_placeDestroy"
 	},
 	{
-		"name": "metal",
+		"name": "polished_metal",
 		"texture": "blocks/metal/polished.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
@@ -42,16 +42,15 @@
 	},
 	{
 		"name": "mirror",
-		"texture": "blocks/mirror/texture.png",
+		"texture": "blocks/metal/normal.png",
 		"texture_mode": "UNIFORM",
-		"material": "blocks/mirror/material.png",
+		"material": "materials/metal.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
-		"script": "blocks/mirror/script.gd",
+		"script": "scripts/mirror.gd",
 		"rotationMode": "360V",
 		"multiblock": "PLANE"
 	},
-	
 	{
 		"name": "monitor",
 		"texture": "blocks/metal/polished.png",
@@ -59,7 +58,7 @@
 		"material": "materials/metal.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
-		"script": "blocks/monitor/script.gd",
+		"script": "scripts/monitor.gd",
 		"rotationMode": "360V"
 	}
 ]
