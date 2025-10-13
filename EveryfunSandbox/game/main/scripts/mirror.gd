@@ -19,8 +19,8 @@ func _ready():
 	viewport.add_child(camera)
 	camera.projection = Camera3D.PROJECTION_FRUSTUM
 	camera.position = position
-	camera.near = 0.5 - 0.1
-	camera.size = multiblockRelative.y - 0.2
+	camera.near = 0.5 - 0.2
+	camera.size = multiblockRelative.y - 0.4
 	camera.look_at(camera.position + Vector3(voxelDirection), Vector3(voxelDirectionUp))
 
 	var material := ShaderMaterial.new()
