@@ -7,6 +7,7 @@ var camera
 var blockLibrary
 var settings
 var miscData = {}
+var hdrState = false
 var muteAllExceptMusic = false
 
 var defaultSettings = {
@@ -118,7 +119,7 @@ var view_distance
 var lod_distance
 func setRenderDistance(index):
 	var distanceSettingsPreset = distanceSettingsPresets[index]
-	var voxelViewer = game.mainNode.find_child("VoxelViewer", true, false)
+	var voxelViewer = mainNode.find_child("VoxelViewer", true, false)
 	
 	voxelViewer.view_distance = distanceSettingsPreset.distance
 	view_distance = distanceSettingsPreset.distance
@@ -126,8 +127,8 @@ func setRenderDistance(index):
 
 func setGraphicQuality(quality):
 	var graphicSettingsPreset = graphicSettingsPresets[quality]
-	var worldLight = game.mainNode.find_child("worldLight", true, false)
-	var worldEnv = game.mainNode.find_child("worldEnv", true, false)
+	var worldLight = mainNode.find_child("worldLight", true, false)
+	var worldEnv = mainNode.find_child("worldEnv", true, false)
 	
 	RenderingServer.directional_shadow_atlas_set_size(graphicSettingsPreset.shadow_quality, true)
 	worldLight.directional_shadow_max_distance = graphicSettingsPreset.shadow_distance
@@ -138,7 +139,10 @@ func setGraphicQuality(quality):
 	worldEnv.environment.set_ssil_enabled(graphicSettingsPreset.ssil)
 
 func setHdrState(hdr):
+	hdrState = hdr
 	get_tree().root.set_use_hdr_2d(hdr)
+	for viewport in mainNode.find_children("*", "SubViewport", true, false):
+		viewport.set_use_hdr_2d(hdr)
 	
 func setWindowMode(mode):
 	if mode == 2:
