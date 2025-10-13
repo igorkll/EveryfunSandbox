@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btt28y26y2r8f"
-path="res://.godot/imported/texture.png-438e401de2936f6da48b3c9589f300c7.ctex"
+uid="uid://we2o3coc0i7m"
+path="res://.godot/imported/polished.png-7472e82cf72e0dc011bbe66298829192.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/monitor/texture.png"
-dest_files=["res://.godot/imported/texture.png-438e401de2936f6da48b3c9589f300c7.ctex"]
+source_file="res://game/main/blocks/metal/polished.png"
+dest_files=["res://.godot/imported/polished.png-7472e82cf72e0dc011bbe66298829192.ctex"]
 
 [params]
 

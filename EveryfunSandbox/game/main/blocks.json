@@ -26,7 +26,15 @@
 	},
 	{
 		"name": "metal",
-		"texture": "blocks/metal/texture.png",
+		"texture": "blocks/metal/normal.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy"
+	},
+	{
+		"name": "metal",
+		"texture": "blocks/metal/polished.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "metal",
@@ -35,13 +43,12 @@
 	
 	{
 		"name": "monitor",
-		"texture": "blocks/monitor/texture.png",
-		"texture_mode": "UNIFORM_SIDE",
+		"texture": "blocks/metal/polished.png",
+		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "blocks/monitor/script.gd",
-		"rotationMode": "360V",
-		"rotationBase": 2
+		"rotationMode": "360V"
 	}
 ]
