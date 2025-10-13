@@ -7,6 +7,7 @@ uniform sampler2D material_texture : filter_linear;
 uniform sampler2D material_texture_no_filter : filter_nearest;
 uniform bool no_filter = false;
 uniform bool no_material_filter = false;
+uniform bool use_normals = false;
 uniform float strength = 0.5;
 
 const float checkOffset = 1.0 / 512.0;
@@ -35,13 +36,15 @@ void fragment() {
 	METALLIC = material_color.b;
 	
 	// normal
-    float hL = get_luminance(texture(dif_texture, UV - vec2(checkOffset, 0.0)).rgb);
-    float hR = get_luminance(texture(dif_texture, UV + vec2(checkOffset, 0.0)).rgb);
-    float hD = get_luminance(texture(dif_texture, UV - vec2(0.0, checkOffset)).rgb);
-    float hU = get_luminance(texture(dif_texture, UV + vec2(0.0, checkOffset)).rgb);
+	if (use_normals) {
+	    float hL = get_luminance(texture(dif_texture, UV - vec2(checkOffset, 0.0)).rgb);
+	    float hR = get_luminance(texture(dif_texture, UV + vec2(checkOffset, 0.0)).rgb);
+	    float hD = get_luminance(texture(dif_texture, UV - vec2(0.0, checkOffset)).rgb);
+	    float hU = get_luminance(texture(dif_texture, UV + vec2(0.0, checkOffset)).rgb);
 
-    float dx = (hR - hL) * strength;
-    float dy = (hU - hD) * strength;
+	    float dx = (hR - hL) * strength;
+	    float dy = (hU - hD) * strength;
 
-    NORMAL = normalize(NORMAL + vec3(-dx, -dy, 0.0));
+	    NORMAL = normalize(NORMAL + vec3(-dx, -dy, 0.0));
+	}
 }

@@ -59,6 +59,7 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
+		"normals": false,
 		"bias": 0.1,
 		"normalBias": 2.0
 	},
@@ -68,6 +69,7 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
+		"normals": false,
 		"bias": 0.1,
 		"normalBias": 2.0
 	},
@@ -77,6 +79,7 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
+		"normals": true,
 		"bias": 0.05,
 		"normalBias": 5.0
 	},
@@ -86,6 +89,7 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": true,
 		"ssil": true,
+		"normals": true,
 		"bias": 0.01,
 		"normalBias": 10.0
 	}
@@ -114,6 +118,8 @@ var distanceSettingsPresets = [
 	}
 ]
 
+var _blockMaterials = []
+
 var view_distance
 var lod_distance
 func setRenderDistance(index):
@@ -123,6 +129,11 @@ func setRenderDistance(index):
 	voxelViewer.view_distance = distanceSettingsPreset.distance
 	view_distance = distanceSettingsPreset.distance
 	lod_distance = distanceSettingsPreset.lodDistance
+	
+func updateShaderParameters(quality):
+	var graphicSettingsPreset = graphicSettingsPresets[quality]
+	for _material in _blockMaterials:
+		_material.set_shader_parameter("use_normals", graphicSettingsPreset.normals)
 
 func setGraphicQuality(quality):
 	var graphicSettingsPreset = graphicSettingsPresets[quality]
@@ -136,6 +147,8 @@ func setGraphicQuality(quality):
 	worldEnv.environment.set_sdfgi_enabled(graphicSettingsPreset.sdfgi)
 	worldEnv.environment.set_ssao_enabled(graphicSettingsPreset.ssao)
 	worldEnv.environment.set_ssil_enabled(graphicSettingsPreset.ssil)
+	
+	updateShaderParameters(quality)
 
 func setHdrState(hdr):
 	get_tree().root.set_use_hdr_2d(hdr)
@@ -529,6 +542,8 @@ func _ready():
 	_initMusic()
 	_initAmbient()
 	_initGui()
+	
+	updateShaderParameters(settings.graphic.quality)
 
 func _initGui():
 	setScale(settings.gui.scale)
@@ -725,6 +740,8 @@ func _getLibrary():
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Y, textureMode[4])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Z, textureMode[5])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Z, textureMode[6])
+			
+			_blockMaterials.append(material)
 		else:
 			blockModel = VoxelBlockyModelEmpty.new()
 		
