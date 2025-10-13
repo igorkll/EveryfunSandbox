@@ -1,19 +1,20 @@
 shader_type spatial;
 render_mode specular_schlick_ggx;
 
-uniform sampler2D diff_texture : filter_linear;
-uniform sampler2D diff_texture_no_filter : filter_nearest;
+uniform sampler2D dif_texture : filter_linear;
+uniform sampler2D dif_texture_no_filter : filter_nearest;
 uniform sampler2D material_texture : filter_linear;
 uniform sampler2D material_texture_no_filter : filter_nearest;
 uniform bool no_filter = false;
 uniform bool no_material_filter = false;
+uniform float strength = 0.4;
 
 void fragment() {
 	vec4 color;
 	if (no_filter) {
-	    color = texture(diff_texture_no_filter, UV).rgba;
+	    color = texture(dif_texture_no_filter, UV).rgba;
 	} else {
-		color = texture(diff_texture, UV).rgba;
+		color = texture(dif_texture, UV).rgba;
 	}
 	
 	vec4 material_color;
@@ -27,5 +28,15 @@ void fragment() {
 	ROUGHNESS = material_color.g;
 	METALLIC = material_color.b;
 	
-	//ALPHA = color.a;
+	// normal
+	vec2 texel = vec2(1.0 / 512.0);
+    float hL = texture(dif_texture, UV - vec2(texel.x, 0.0)).r;
+    float hR = texture(dif_texture, UV + vec2(texel.x, 0.0)).r;
+    float hD = texture(dif_texture, UV - vec2(0.0, texel.y)).r;
+    float hU = texture(dif_texture, UV + vec2(0.0, texel.y)).r;
+
+    float dx = (hR - hL) * strength;
+    float dy = (hU - hD) * strength;
+
+    NORMAL = normalize(NORMAL + vec3(-dx, -dy, 0.0));
 }

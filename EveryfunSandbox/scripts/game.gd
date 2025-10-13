@@ -709,10 +709,10 @@ func _getLibrary():
 				material.set_shader_parameter("no_material_filter", false)
 				
 			if block.get("texture_no_filter", false):
-				material.set_shader_parameter("diff_texture_no_filter", block.texture)
+				material.set_shader_parameter("dif_texture_no_filter", block.texture)
 				material.set_shader_parameter("no_filter", true)
 			else:
-				material.set_shader_parameter("diff_texture", block.texture)
+				material.set_shader_parameter("dif_texture", block.texture)
 				material.set_shader_parameter("no_filter", false)
 			
 			var textureMode = _textureModes[block.get("texture_mode", 1)]
