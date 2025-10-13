@@ -47,6 +47,24 @@
 		"sound_placeDestroy": "metal_placeDestroy"
 	},
 	{
+		"name": "colored_stone_tiles",
+		"texture": "blocks/colored_stone_tiles.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/glass.png",
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy"
+	},
+	{
+		"name": "glass",
+		"texture": "blocks/glass.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/glass.png",
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy"
+	},
+	
+	
+	{
 		"name": "mirror",
 		"texture": "blocks/metal/normal.png",
 		"texture_mode": "UNIFORM",
