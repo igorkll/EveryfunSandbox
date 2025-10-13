@@ -17,7 +17,6 @@ func _ready():
 	var camera = Camera3D.new()
 	viewport.add_child(camera)
 	camera.position = position
-	camera.near = 0.5
 	camera.fov = 90
 	camera.look_at(position + Vector3(voxelDirection), Vector3(voxelDirectionUp))
 
