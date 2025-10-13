@@ -11,12 +11,17 @@ func _ready():
 	var viewport = SubViewport.new()
 	viewport.size = Vector2(512, 512)
 	viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
-	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 	add_child(viewport)
 	
 	var camera = Camera3D.new()
 	viewport.add_child(camera)
-	camera.look_at(Vector3(1,0,0), Vector3.UP)
+	camera.position = position
+	camera.near = 0.5
+	camera.fov = 45
+	camera.look_at(position + Vector3(voxelDirection).normalized(), Vector3.UP)
+	
+	game.destroyBlock(voxelPosition + voxelDirection)
 
 	var material := ShaderMaterial.new()
 	material.shader = preload("res://shaders/display.gdshader")
