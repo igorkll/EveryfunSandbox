@@ -349,9 +349,11 @@ func loadBlock(position: Vector3i, blockId: int):
 		node.position = childPos
 		node.voxelPosition = position
 		node.voxelDirection = Vector3i(1, 0, 0)
+		node.voxelDirectionUp = Vector3i(0, 1, 0)
 		if obj.has("rotation"):
 			node.rotation_degrees = obj.rotation.r
 			node.voxelDirection = obj.rotation.d
+			node.voxelDirectionUp = obj.rotation.u
 		attachBlockChild(position, node)
 		
 func unloadBlock(position: Vector3i):
@@ -483,24 +485,24 @@ var rotationModes = {
 	"NONE": [
 	],
 	"360": [
-		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1)},
-		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0)},
-		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1)}
+		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1), u = Vector3i(0, 1, 0)},
+		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0), u = Vector3i(0, 1, 0)},
+		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1), u = Vector3i(0, 1, 0)}
 	],
 	"360V": [
-		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1)},
-		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0)},
-		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1)},
+		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1), u = Vector3i(0, 1, 0)},
+		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0), u = Vector3i(0, 1, 0)},
+		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1), u = Vector3i(0, 1, 0)},
 		
-		{y=0, r = Vector3i(0, 0, 90), d = Vector3i(0, 1, 0)},
-		{y=1, r = Vector3i(0, -90, 90), d = Vector3i(0, 1, 0)},
-		{y=2, r = Vector3i(0, -90 * 2, 90), d = Vector3i(0, 1, 0)},
-		{y=3, r = Vector3i(0, -90 * 3, 90), d = Vector3i(0, 1, 0)},
+		{y=0, r = Vector3i(0, 0, 90), d = Vector3i(0, 1, 0), u = Vector3i(1, 0, 0)},
+		{y=1, r = Vector3i(0, -90, 90), d = Vector3i(0, 1, 0), u = Vector3i(0, 0, 1)},
+		{y=2, r = Vector3i(0, -90 * 2, 90), d = Vector3i(0, 1, 0), u = Vector3i(-1, 0, 0)},
+		{y=3, r = Vector3i(0, -90 * 3, 90), d = Vector3i(0, 1, 0), u = Vector3i(0, 0, -1)},
 		
-		{y=0, r = Vector3i(0, 0, -90), d = Vector3i(0, -1, 0)},
-		{y=1, r = Vector3i(0, -90, -90), d = Vector3i(0, -1, 0)},
-		{y=2, r = Vector3i(0, -90 * 2, -90), d = Vector3i(0, -1, 0)},
-		{y=3, r = Vector3i(0, -90 * 3, -90), d = Vector3i(0, -1, 0)}
+		{y=0, r = Vector3i(0, 0, -90), d = Vector3i(0, -1, 0), u = Vector3i(1, 0, 0)},
+		{y=1, r = Vector3i(0, -90, -90), d = Vector3i(0, -1, 0), u = Vector3i(0, 0, 1)},
+		{y=2, r = Vector3i(0, -90 * 2, -90), d = Vector3i(0, -1, 0), u = Vector3i(-1, 0, 0)},
+		{y=3, r = Vector3i(0, -90 * 3, -90), d = Vector3i(0, -1, 0), u = Vector3i(0, 0, -1)}
 	]
 }
 

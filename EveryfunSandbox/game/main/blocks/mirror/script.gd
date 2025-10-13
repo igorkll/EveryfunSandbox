@@ -19,9 +19,7 @@ func _ready():
 	camera.position = position
 	camera.near = 0.5
 	camera.fov = 45
-	camera.look_at(position + Vector3(voxelDirection).normalized(), Vector3.UP)
-	
-	game.destroyBlock(voxelPosition + voxelDirection)
+	camera.look_at(position + Vector3(voxelDirection), Vector3(voxelDirectionUp))
 
 	var material := ShaderMaterial.new()
 	material.shader = preload("res://shaders/display.gdshader")

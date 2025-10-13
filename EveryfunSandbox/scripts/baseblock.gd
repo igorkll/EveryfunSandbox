@@ -4,3 +4,4 @@ class_name baseblock
 var storageData = {}
 var voxelPosition: Vector3i
 var voxelDirection: Vector3i
+var voxelDirectionUp: Vector3i
