@@ -40,6 +40,15 @@
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy"
 	},
+	{
+		"name": "mirror",
+		"texture": "blocks/null.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/mirror.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"mirror": true
+	},
 	
 	{
 		"name": "monitor",

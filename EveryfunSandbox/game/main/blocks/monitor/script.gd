@@ -11,6 +11,6 @@ func _ready():
 	var material := ShaderMaterial.new()
 	material.shader = preload("res://shaders/display.gdshader")
 	material.set_shader_parameter("display_texture", get_tree().root.get_texture())
-	material.set_shader_parameter("display_x", 16)
-	material.set_shader_parameter("display_y", 16)
+	material.set_shader_parameter("display_x", 64)
+	material.set_shader_parameter("display_y", 64)
 	plane.material_override = material
