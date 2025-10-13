@@ -69,6 +69,7 @@ shape = SubResource("CapsuleShape3D_gv5m4")
 [node name="camera" type="Camera3D" parent="player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689, 0)
 fov = 80.0
+size = 0.1
 script = ExtResource("3_5vw27")
 
 [node name="VoxelViewer" type="VoxelViewer" parent="player/camera"]

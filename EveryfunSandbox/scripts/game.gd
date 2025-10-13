@@ -353,7 +353,7 @@ func loadBlock(position: Vector3i, blockId: int):
 		node.voxelDirection = Vector3i(1, 0, 0)
 		node.voxelDirectionUp = Vector3i(0, 1, 0)
 		
-		node.multiblock = Vector3i(5, 3, 1)
+		node.multiblock = Vector3i(1, 1, 1)
 		node.multiblockRelative = node.multiblock
 		
 		if obj.has("rotation"):
