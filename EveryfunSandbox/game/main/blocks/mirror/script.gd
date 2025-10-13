@@ -17,7 +17,7 @@ func _ready():
 	var camera = Camera3D.new()
 	viewport.add_child(camera)
 	camera.position = position
-	camera.fov = 90
+	camera.fov = rad_to_deg(2 * atan(multiblock.y / (2*0.25)))
 	camera.look_at(position + Vector3(voxelDirection), Vector3(voxelDirectionUp))
 
 	var material := ShaderMaterial.new()

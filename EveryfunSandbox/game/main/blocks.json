@@ -48,7 +48,8 @@
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "blocks/mirror/script.gd",
-		"rotationMode": "360V"
+		"rotationMode": "360V",
+		"multiblock": "PLANE"
 	},
 	
 	{

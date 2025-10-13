@@ -1,5 +1,4 @@
 shader_type spatial;
-render_mode unshaded;
 
 uniform sampler2D display_texture : filter_linear;
 uniform float display_x = 0;
@@ -13,4 +12,9 @@ void fragment() {
 	if (display_flip_x) uv.x = -uv.x;
 	if (display_flip_y) uv.y = -uv.y;
 	ALBEDO = texture(display_texture, uv * 0.998).rgb;
+	EMISSION = ALBEDO * 0.5;
+}
+
+void light() {
+	DIFFUSE_LIGHT = vec3(0, 0, 0);
 }
