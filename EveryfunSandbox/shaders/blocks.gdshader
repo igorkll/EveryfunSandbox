@@ -9,6 +9,10 @@ uniform bool no_filter = false;
 uniform bool no_material_filter = false;
 uniform float strength = 0.4;
 
+float get_luminance(vec3 color) {
+    return dot(color, vec3(0.2126, 0.7152, 0.0722));
+}
+
 void fragment() {
 	vec4 color;
 	if (no_filter) {
@@ -30,10 +34,10 @@ void fragment() {
 	
 	// normal
 	vec2 texel = vec2(1.0 / 512.0);
-    float hL = texture(dif_texture, UV - vec2(texel.x, 0.0)).r;
-    float hR = texture(dif_texture, UV + vec2(texel.x, 0.0)).r;
-    float hD = texture(dif_texture, UV - vec2(0.0, texel.y)).r;
-    float hU = texture(dif_texture, UV + vec2(0.0, texel.y)).r;
+    float hL = get_luminance(texture(dif_texture, UV - vec2(texel.x, 0.0)).rgb);
+    float hR = get_luminance(texture(dif_texture, UV + vec2(texel.x, 0.0)).rgb);
+    float hD = get_luminance(texture(dif_texture, UV - vec2(0.0, texel.y)).rgb);
+    float hU = get_luminance(texture(dif_texture, UV + vec2(0.0, texel.y)).rgb);
 
     float dx = (hR - hL) * strength;
     float dy = (hU - hD) * strength;
