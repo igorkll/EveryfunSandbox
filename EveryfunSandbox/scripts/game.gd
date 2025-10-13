@@ -351,17 +351,6 @@ func loadBlock(position: Vector3i, blockId: int):
 		if obj.has("rotation"):
 			node.rotation_degrees = obj.rotation.r
 		attachBlockChild(position, node)
-		terrain.add_child(node)
-		
-	if obj.get("mirror", false):
-		var node = ReflectionProbe.new()
-		node.position = childPos
-		node.enable_shadows = true
-		node.box_projection = true
-		node.blend_distance = 16
-		node.size = Vector3(60, 60, 60)
-		node.update_mode = ReflectionProbe.UPDATE_ALWAYS
-		attachBlockChild(position, node)
 		
 func unloadBlock(position: Vector3i):
 	if _blockChildren.has(position):

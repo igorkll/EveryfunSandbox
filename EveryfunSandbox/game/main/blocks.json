@@ -42,12 +42,13 @@
 	},
 	{
 		"name": "mirror",
-		"texture": "blocks/black.png",
+		"texture": "blocks/mirror/texture.png",
 		"texture_mode": "UNIFORM",
-		"material": "materials/mirror.png",
+		"material": "blocks/mirror/material.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
-		"mirror": true
+		"script": "blocks/mirror/script.gd",
+		"rotationMode": "360V"
 	},
 	
 	{
