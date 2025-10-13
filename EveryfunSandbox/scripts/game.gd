@@ -342,8 +342,8 @@ func loadBlock(position: Vector3i, blockId: int):
 		node.voxelPosition = position
 		if obj.has("rotation"):
 			node.rotation_degrees = obj.rotation.r
-		terrain.add_child(node)
 		_blockScripts[position] = node
+		terrain.add_child(node)
 		
 func unloadBlock(position: Vector3i):
 	if _blockScripts.has(position):
@@ -387,8 +387,8 @@ func destroyBlock(position: Vector3i):
 	if obj.has("sound_destroy"):
 		playSound(game.soundList[obj.sound_destroy], terrainPosition, terrain)
 	
-	saves.currentWorldData.interactiveVoxelPositions.erase(position)
 	unloadBlock(position)
+	saves.currentWorldData.interactiveVoxelPositions.erase(position)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
 
