@@ -18,10 +18,11 @@ func _ready():
 	viewport.add_child(camera)
 	camera.position = position
 	camera.near = 0.5
-	camera.fov = 45
+	camera.fov = 90
 	camera.look_at(position + Vector3(voxelDirection), Vector3(voxelDirectionUp))
 
 	var material := ShaderMaterial.new()
 	material.shader = preload("res://shaders/display.gdshader")
 	material.set_shader_parameter("display_texture", viewport.get_texture())
+	material.set_shader_parameter("display_flip_x", true)
 	plane.material_override = material
