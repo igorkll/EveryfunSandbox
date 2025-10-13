@@ -6,7 +6,13 @@
 		"name": "grass",
 		"texture": "blocks/grass/texture.png",
 		"texture_mode": "UNIFORM_TOP",
-		"texture_no_filter": true,
+		"sound": "grass",
+		"sound_placeDestroy": "grass_placeDestroy"
+	},
+	{
+		"name": "dirt",
+		"texture": "blocks/dirt.png",
+		"texture_mode": "UNIFORM",
 		"sound": "grass",
 		"sound_placeDestroy": "grass_placeDestroy"
 	},

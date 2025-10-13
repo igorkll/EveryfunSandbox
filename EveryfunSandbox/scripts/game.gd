@@ -7,7 +7,6 @@ var camera
 var blockLibrary
 var settings
 var miscData = {}
-var hdrState = false
 var muteAllExceptMusic = false
 
 var defaultSettings = {
@@ -139,10 +138,7 @@ func setGraphicQuality(quality):
 	worldEnv.environment.set_ssil_enabled(graphicSettingsPreset.ssil)
 
 func setHdrState(hdr):
-	hdrState = hdr
 	get_tree().root.set_use_hdr_2d(hdr)
-	for viewport in mainNode.find_children("*", "SubViewport", true, false):
-		viewport.set_use_hdr_2d(hdr)
 	
 func setWindowMode(mode):
 	if mode == 2:

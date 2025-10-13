@@ -12,7 +12,7 @@ func _ready():
 	viewport.size = Vector2(512 * (float(multiblockRelative.x) / float(multiblockRelative.y)), 512)
 	viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 	viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
-	viewport.set_use_hdr_2d(game.hdrState)
+	viewport.set_use_hdr_2d(true)
 	add_child(viewport)
 	
 	var camera = Camera3D.new()
