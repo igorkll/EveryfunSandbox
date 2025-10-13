@@ -20,7 +20,7 @@ func _ready():
 	camera.position = position
 	# camera.fov = rad_to_deg(2 * atan(multiblock.y / (2*0.5)))
 	camera.near = 0.5
-	camera.size = 0.5
+	camera.size = 1
 	camera.look_at(camera.position + Vector3(voxelDirection), Vector3(voxelDirectionUp))
 
 	var material := ShaderMaterial.new()
