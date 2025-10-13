@@ -357,7 +357,9 @@ func loadBlock(position: Vector3i, blockId: int):
 		var node = ReflectionProbe.new()
 		node.position = childPos
 		node.enable_shadows = true
-		node.size = Vector3(1.5, 1.5, 1.5)
+		node.box_projection = true
+		node.blend_distance = 16
+		node.size = Vector3(60, 60, 60)
 		node.update_mode = ReflectionProbe.UPDATE_ALWAYS
 		attachBlockChild(position, node)
 		
