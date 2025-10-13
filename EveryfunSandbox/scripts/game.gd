@@ -339,6 +339,7 @@ func loadBlock(position: Vector3i, blockId: int):
 		var script = loadResource(obj.script)
 		var node = script.new()
 		node.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+		node.voxelPosition = position
 		if obj.has("rotation"):
 			node.rotation_degrees = obj.rotation.r
 		terrain.add_child(node)

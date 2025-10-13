@@ -21,7 +21,7 @@ void fragment() {
 	} else {
 		material_color = texture(material_texture, UV);
 	}
-	RIM = material_color.r;
+	EMISSION = ALBEDO * material_color.r * 2.0;
 	ROUGHNESS = material_color.g;
 	METALLIC = material_color.b;
 }

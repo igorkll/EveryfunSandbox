@@ -34,6 +34,7 @@ ssil_radius = 1.0
 sdfgi_read_sky_light = false
 sdfgi_normal_bias = 0.5
 sdfgi_probe_bias = 0.5
+glow_enabled = true
 volumetric_fog_length = 16.87
 adjustment_enabled = true
 adjustment_saturation = 1.75
