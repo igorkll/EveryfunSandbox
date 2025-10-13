@@ -42,7 +42,7 @@
 	},
 	{
 		"name": "mirror",
-		"texture": "blocks/null.png",
+		"texture": "blocks/black.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/mirror.png",
 		"sound": "metal",

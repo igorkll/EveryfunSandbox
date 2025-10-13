@@ -335,8 +335,9 @@ var _blockChildren = {}
 
 func attachBlockChild(position, child):
 	if not _blockChildren.has(position):
-		_blockChildren[position] = {}
+		_blockChildren[position] = []
 	_blockChildren[position].append(child)
+	terrain.add_child(child)
 
 func loadBlock(position: Vector3i, blockId: int):
 	var obj = blockList[blockId]
@@ -349,14 +350,16 @@ func loadBlock(position: Vector3i, blockId: int):
 		node.voxelPosition = position
 		if obj.has("rotation"):
 			node.rotation_degrees = obj.rotation.r
-		attachBlockChild(_blockChildren[position], node)
+		attachBlockChild(position, node)
 		terrain.add_child(node)
 		
 	if obj.get("mirror", false):
 		var node = ReflectionProbe.new()
 		node.position = childPos
-		
-		attachBlockChild(_blockChildren[position], node)
+		node.enable_shadows = true
+		node.size = Vector3(1.5, 1.5, 1.5)
+		node.update_mode = ReflectionProbe.UPDATE_ALWAYS
+		attachBlockChild(position, node)
 		
 func unloadBlock(position: Vector3i):
 	if _blockChildren.has(position):
