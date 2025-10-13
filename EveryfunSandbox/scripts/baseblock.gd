@@ -8,3 +8,4 @@ var voxelDirection: Vector3i
 var voxelDirectionUp: Vector3i
 
 var multiblock: Vector3i
+var multiblockRelative: Vector3i

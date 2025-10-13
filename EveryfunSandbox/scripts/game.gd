@@ -346,14 +346,21 @@ func loadBlock(position: Vector3i, blockId: int):
 	if obj.has("script"):
 		var script = loadResource(obj.script)
 		var node = script.new()
+		
 		node.position = childPos
+		
 		node.voxelPosition = position
 		node.voxelDirection = Vector3i(1, 0, 0)
 		node.voxelDirectionUp = Vector3i(0, 1, 0)
+		
+		node.multiblock = Vector3i(5, 3, 1)
+		node.multiblockRelative = node.multiblock
+		
 		if obj.has("rotation"):
 			node.rotation_degrees = obj.rotation.r
 			node.voxelDirection = obj.rotation.d
 			node.voxelDirectionUp = obj.rotation.u
+		
 		attachBlockChild(position, node)
 		
 func unloadBlock(position: Vector3i):

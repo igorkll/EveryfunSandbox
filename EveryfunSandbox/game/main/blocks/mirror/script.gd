@@ -3,13 +3,13 @@ extends baseblock
 func _ready():
 	var plane := MeshInstance3D.new()
 	plane.mesh = PlaneMesh.new()
-	plane.scale = Vector3(0.5, 0.5, 0.5)
+	plane.scale = Vector3(0.5 * multiblockRelative.x, 0.5, 0.5 * multiblockRelative.y)
 	plane.rotation_degrees = Vector3(90, 0, -90)
 	plane.position = Vector3(0.501, 0, 0)
 	add_child(plane)
 	
 	var viewport = SubViewport.new()
-	viewport.size = Vector2(512, 512)
+	viewport.size = Vector2(512 * (float(multiblockRelative.x) / float(multiblockRelative.y)), 512)
 	viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 	viewport.render_target_update_mode = SubViewport.UPDATE_WHEN_VISIBLE
 	add_child(viewport)
@@ -17,7 +17,7 @@ func _ready():
 	var camera = Camera3D.new()
 	viewport.add_child(camera)
 	camera.position = position
-	camera.fov = rad_to_deg(2 * atan(multiblock.y / (2*0.25)))
+	camera.fov = rad_to_deg(2 * atan(multiblock.y / (2*0.5)))
 	camera.look_at(position + Vector3(voxelDirection), Vector3(voxelDirectionUp))
 
 	var material := ShaderMaterial.new()

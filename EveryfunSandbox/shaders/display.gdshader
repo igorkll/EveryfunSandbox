@@ -12,7 +12,7 @@ void fragment() {
 	if (display_flip_x) uv.x = -uv.x;
 	if (display_flip_y) uv.y = -uv.y;
 	ALBEDO = texture(display_texture, uv * 0.998).rgb;
-	EMISSION = ALBEDO * 0.5;
+	EMISSION = ALBEDO * 0.4;
 }
 
 void light() {
