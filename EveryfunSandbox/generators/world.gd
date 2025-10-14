@@ -17,7 +17,7 @@ func _init():
 		lnoise.seed = 1000 + (i * 20)
 		noise.append(lnoise)
 		
-	noise[1].noise_type = FastNoise2.TYPE_ENCODED_NODE_TREE 
+	noise[1].noise_type = FastNoise2.TYPE_VALUE 
 
 func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var size = buffer.get_size()
