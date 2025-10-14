@@ -6,6 +6,9 @@ var resources = []
 var dirtOffset = 3
 var dirtHeight = 16
 
+var cavePercent = 0.3
+var caveScale = 0.25
+
 func _init():
 	resources = [
 		[0.05, game.blockIDs["glass"]],
@@ -36,8 +39,8 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 				var noiseValue = (noise[0].get_noise_2d_single(Vector2i(worldPos.x, worldPos.z)) + 1) / 2
 				var terrainHeight = round(noiseValue * 15)
 
-				var caveNoiseValue = (noise[1].get_noise_3d_single(worldPos) + 1) / 2
-				if caveNoiseValue < 0.2:
+				var caveNoiseValue = (noise[1].get_noise_3d_single(worldPos / caveScale) + 1) / 2
+				if caveNoiseValue < cavePercent:
 					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
 				elif worldPos.y == terrainHeight:
 					buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
