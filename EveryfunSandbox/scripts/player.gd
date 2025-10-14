@@ -60,6 +60,8 @@ func findOptimalSpawnPosition():
 	
 	if not positionFinded:
 		position = defaultPlayerPosition
+	else:
+		return true
 
 var findOptimalSpawnPositionTimer
 
@@ -71,7 +73,9 @@ func init():
 		position = currentData.position + Vector3(0, consts.player_spawn_vertical_offset, 0)
 	else:
 		findOptimalSpawnPositionTimer = timers.setInterval(func():
-			findOptimalSpawnPosition()
+			if findOptimalSpawnPosition() && findOptimalSpawnPositionTimer:
+				timers.clearTimeout(findOptimalSpawnPositionTimer)
+				findOptimalSpawnPositionTimer = null
 		, 1)
 	inited = true
 	$camera.init()
