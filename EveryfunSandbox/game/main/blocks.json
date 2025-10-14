@@ -5,7 +5,7 @@
 	{
 		"name": "grass",
 		"texture": "blocks/grass/texture.png",
-		"texture_mode": "UNIFORM_TOP",
+		"texture_mode": "UNIFORM_TOP_BOTTOM",
 		"sound": "grass",
 		"sound_placeDestroy": "grass_placeDestroy"
 	},
