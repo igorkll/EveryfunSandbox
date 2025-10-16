@@ -165,7 +165,7 @@ func _physics_process(delta):
 			var result = game.terrain.voxel_tool.raycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and game.isCellFree(result.previous_position):
 				# game.placeBlock(result.previous_position, randi_range(1, game.blockList.size() - 1))
-				game.placeBlock(result.previous_position, 9, game.getBlockDefaultRotation($camera.global_transform.basis.z))
+				game.placeBlock(result.previous_position, 14, game.getBlockDefaultRotation($camera.global_transform.basis.z))
 	
 	# ---------------------------------- moving
 	
