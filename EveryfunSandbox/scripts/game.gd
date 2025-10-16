@@ -395,34 +395,6 @@ func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
 	elif dir.y > vertical_threshold:
 		result += 8
 	return result
-	
-func placeBlock(position: Vector3i, blockId: int, rotation=0):
-	var obj = blockList[blockId]
-	if obj.has("rotated"):
-		rotation = (int(rotation + obj.get("rotationBase", 0)) % 4) + (floor(rotation / 4) * 4)
-		
-		blockId = obj.rotated[rotation % obj.rotated.size()].id
-		obj = blockList[blockId]
-	
-	terrain.voxel_tool.set_voxel(position, blockId)
-	
-	if obj.has("sound_place"):
-		playSound(game.soundList[obj.sound_place], Vector3(position) + Vector3(0.5, 0.5, 0.5), terrain)
-		
-	saves.currentWorldData.interactiveVoxelPositions[position] = blockId
-	loadBlock(position, blockId)
-		
-func destroyBlock(position: Vector3i):
-	var terrainPosition = Vector3(position) + Vector3(0.5, 0.5, 0.5)
-	
-	var obj = blockList[terrain.voxel_tool.get_voxel(position)]
-	if obj.has("sound_destroy"):
-		playSound(game.soundList[obj.sound_destroy], terrainPosition, terrain)
-	
-	unloadBlock(position)
-	saves.currentWorldData.interactiveVoxelPositions.erase(position)
-	
-	terrain.voxel_tool.set_voxel(position, 0)
 
 func exit():
 	if saves.isWorldFullLoaded():

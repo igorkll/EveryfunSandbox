@@ -92,6 +92,9 @@
 		"material": "materials/metal.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
-		"script": "scripts/explosive.gd"
+		"script": "scripts/explosive.gd",
+		"script_data": {
+			"explosiveLevel": 3
+		}
 	}
 ]
