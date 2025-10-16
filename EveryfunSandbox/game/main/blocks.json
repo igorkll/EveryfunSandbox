@@ -84,5 +84,14 @@
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "scripts/monitor.gd",
 		"rotationMode": "360V"
+	},
+	{
+		"name": "explosive",
+		"texture": "blocks/explosive.png",
+		"texture_mode": "UNIFORM_TOP_BOTTOM",
+		"material": "materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/explosive.gd"
 	}
 ]
