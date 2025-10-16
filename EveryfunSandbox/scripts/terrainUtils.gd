@@ -30,3 +30,6 @@ func destroyBlock(position: Vector3i, withSound=true):
 	saves.currentWorldData.interactiveVoxelPositions.erase(position)
 	
 	game.terrain.voxel_tool.set_voxel(position, 0)
+
+func useBlock(position: Vector3i):
+	var qwe = saves.currentWorldData.interactiveVoxelPositions.get(position)
