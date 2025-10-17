@@ -6,7 +6,7 @@ var currentWorldData
 
 var defaultWorldData = {
 	"objectData": {},
-	"interactiveVoxelPositions": {}
+	"interactiveVoxels": {}
 }
 
 var objects
@@ -103,9 +103,6 @@ func open(savename) -> bool:
 		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
 	
-	for pos in currentWorldData.interactiveVoxelPositions:
-		terrainUtils.loadBlock(pos, currentWorldData.interactiveVoxelPositions[pos])
-	
 	game.player.init()
 	
 	return true
@@ -124,21 +121,25 @@ func create(savename) -> bool:
 var _logicChunkSize = Vector3i(32, 32, 32)
 var _loadedInteractiveVoxels = []
 
-func regInteractiveVoxel(position, blockId):
+func regInteractiveVoxel(position, blockId, storageData=null):
+	if storageData == null:
+		storageData = {}
+	
 	var chunkPosition = position / _logicChunkSize
-	if not currentWorldData.interactiveVoxelPositions.has(chunkPosition):
-		currentWorldData.interactiveVoxelPositions[chunkPosition] = {}
+	if not currentWorldData.interactiveVoxels.has(chunkPosition):
+		currentWorldData.interactiveVoxels[chunkPosition] = {}
 	
 	if blockId != null:
-		currentWorldData.interactiveVoxelPositions[chunkPosition][position] = blockId
+		currentWorldData.interactiveVoxels[chunkPosition][position] = [blockId, storageData]
 	else:
-		currentWorldData.interactiveVoxelPositions[chunkPosition].erase(position)
+		currentWorldData.interactiveVoxels[chunkPosition].erase(position)
 		
 func __updateLoadedInteractiveVoxels(loadersPositions):
 	for loaderPosition in loadersPositions:
 		loaderPosition /= _logicChunkSize
-		var chunkVoxels = currentWorldData.interactiveVoxelPositions[loaderPosition]
-		
+		var chunkVoxels = currentWorldData.interactiveVoxelPositions.get(loaderPosition)
+		for interactiveVoxel in chunkVoxels:
+			terrainUtils.loadBlock(interactiveVoxel, interactiveVoxel[0], interactiveVoxel[1])
 
 func __checkAutosave():
 	if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:

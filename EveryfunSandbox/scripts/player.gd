@@ -35,7 +35,7 @@ func checkOptimalSpawnPosition(raycastPosition) -> bool:
 	print("try", raycastPosition)
 	if result:
 		print("OPTIMAL", result.previous_position)
-		position = game.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3i(0, halfPlayerSize + consts.player_spawn_vertical_offset, 0))
+		position = terrainUtils.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3i(0, halfPlayerSize + consts.player_spawn_vertical_offset, 0))
 		return true
 	return false
 
