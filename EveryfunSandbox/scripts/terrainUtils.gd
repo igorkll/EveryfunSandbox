@@ -63,7 +63,6 @@ func placeBlock(position: Vector3i, blockId: int, rotation=0, withSound=true):
 	var obj = game.blockList[blockId]
 	if obj.has("rotated"):
 		rotation = (int(rotation + obj.get("rotationBase", 0)) % 4) + (floor(rotation / 4) * 4)
-		
 		blockId = obj.rotated[rotation % obj.rotated.size()].id
 		obj = game.blockList[blockId]
 	
@@ -73,7 +72,7 @@ func placeBlock(position: Vector3i, blockId: int, rotation=0, withSound=true):
 		game.playSound(game.soundList[obj.sound_place], getGlobalPositionFromVoxelPosition(position))
 	
 	if terrain == game.terrain:
-		saves.currentWorldData.interactiveVoxelPositions[position] = blockId
+		saves.regInteractiveVoxel(position, blockId)
 	loadBlock(position, blockId)
 		
 func destroyBlock(position: Vector3i, withSound=true):
@@ -85,7 +84,7 @@ func destroyBlock(position: Vector3i, withSound=true):
 	
 	unloadBlock(position)
 	if terrain == game.terrain:
-		saves.currentWorldData.interactiveVoxelPositions.erase(position)
+		saves.regInteractiveVoxel(position, null)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
 

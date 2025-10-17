@@ -118,6 +118,48 @@ func create(savename) -> bool:
 		return false
 	filesystem.makeDirectory(getSavePath(savename))
 	return open(savename)
+	
+# ---------------------------------------------------------------
+
+var _logicChunkSize = Vector3i(32, 32, 32)
+var _loadedInteractiveVoxels = []
+
+func regInteractiveVoxel(position, blockId):
+	var chunkPosition = position / _logicChunkSize
+	if not currentWorldData.interactiveVoxelPositions.has(chunkPosition):
+		currentWorldData.interactiveVoxelPositions[chunkPosition] = {}
+	
+	if blockId != null:
+		currentWorldData.interactiveVoxelPositions[chunkPosition][position] = blockId
+	else:
+		currentWorldData.interactiveVoxelPositions[chunkPosition].erase(position)
+		
+func __updateLoadedInteractiveVoxels(loadersPositions):
+	for loaderPosition in loadersPositions:
+		loaderPosition /= _logicChunkSize
+		var chunkVoxels = currentWorldData.interactiveVoxelPositions[loaderPosition]
+		
+
+func __checkAutosave():
+	if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:
+		currentWorldRuntimeData.autoSaveTimer = 0
+		save()
+	
+	if currentWorldRuntimeData.has("voxelSaveCompletionTracker") && currentWorldRuntimeData.voxelSaveCompletionTracker.is_complete():
+		currentWorldRuntimeData.savingProcessMessage.task_end()
+		game.gameMessage("Game saved!")
+		
+		if currentWorldRuntimeData.saveEndCallback:
+			currentWorldRuntimeData.saveEndCallback.call()
+		
+		currentWorldRuntimeData.erase("voxelSaveCompletionTracker")
+		currentWorldRuntimeData.erase("savingProcessMessage")
+		currentWorldRuntimeData.erase("saveEndCallback")
+		
+func __checkLoaded():
+	var loadersPositions = []
+	
+	__updateLoadedInteractiveVoxels(loadersPositions)
 
 func _process(delta):
 	if loadingGameMessage != null:
@@ -127,18 +169,8 @@ func _process(delta):
 		currentWorldRuntimeData.time += delta
 		currentWorldRuntimeData.autoSaveTimer += delta
 
-		if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:
-			currentWorldRuntimeData.autoSaveTimer = 0
-			save()
+		__checkAutosave()
+		__checkLoaded()
 		
-		if currentWorldRuntimeData.has("voxelSaveCompletionTracker") && currentWorldRuntimeData.voxelSaveCompletionTracker.is_complete():
-			currentWorldRuntimeData.savingProcessMessage.task_end()
-			game.gameMessage("Game saved!")
-			
-			if currentWorldRuntimeData.saveEndCallback:
-				currentWorldRuntimeData.saveEndCallback.call()
-			
-			currentWorldRuntimeData.erase("voxelSaveCompletionTracker")
-			currentWorldRuntimeData.erase("savingProcessMessage")
-			currentWorldRuntimeData.erase("saveEndCallback")
-			
+
+	
