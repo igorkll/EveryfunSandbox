@@ -44,3 +44,9 @@ func rotateVectorIn_xz(vec: Vector3, angle_degrees: float) -> Vector3:
 	var z = vec.x * sin_a + vec.z * cos_a
 	
 	return Vector3(x, vec.y, z)
+	
+func vec3_to_vec3i(v: Vector3) -> Vector3i:
+	return Vector3i(v.round())
+	
+func vec3_to_vec3i_up(v: Vector3) -> Vector3i:
+	return Vector3i(v.ceil())

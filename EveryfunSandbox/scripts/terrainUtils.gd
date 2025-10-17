@@ -23,17 +23,19 @@ func getBlockChildren(position):
 	else:
 		return []
 
-func loadBlock(position: Vector3i, blockId: int, storageData=null):
+func loadBlock(position: Vector3i, blockId: int, storageData=null) -> bool:
 	var terrain = game.terrain
 	
 	if terrain.blockChildren.has(position):
-		return
+		return false
 	
 	if storageData == null:
 		storageData = {}
 	
 	var obj = game.blockList[blockId]
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+	
+	var isInteractive = false
 	
 	if obj.has("script"):
 		var script = game.loadResource(obj.script)
@@ -55,6 +57,9 @@ func loadBlock(position: Vector3i, blockId: int, storageData=null):
 			node.voxelDirectionUp = obj.rotation.u
 		
 		attachBlockChild(position, node)
+		isInteractive = true
+		
+	return isInteractive
 		
 func unloadBlock(position: Vector3i):
 	var terrain = game.terrain
@@ -81,9 +86,11 @@ func placeBlock(position: Vector3i, blockId: int, rotation=0, withSound=true, st
 	if withSound && obj.has("sound_place"):
 		game.playSound(game.soundList[obj.sound_place], getGlobalPositionFromVoxelPosition(position))
 	
-	if terrain == game.terrain:
-		saves.regInteractiveVoxel(position, blockId, storageData)
-	loadBlock(position, blockId, storageData)
+	var isInteractive = loadBlock(position, blockId, storageData)
+	if isInteractive:
+		if terrain == game.terrain:
+			saves.regInteractiveVoxel(position, blockId, storageData)
+	
 		
 func destroyBlock(position: Vector3i, withSound=true):
 	var terrain = game.terrain
