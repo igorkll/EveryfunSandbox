@@ -70,9 +70,10 @@ func placeBlock(position: Vector3i, blockId: int, rotation=0, withSound=true):
 	terrain.voxel_tool.set_voxel(position, blockId)
 	
 	if withSound && obj.has("sound_place"):
-		game.playSound(game.soundList[obj.sound_place], getGlobalPositionFromVoxelPosition(position), game.terrain)
-		
-	saves.currentWorldData.interactiveVoxelPositions[position] = blockId
+		game.playSound(game.soundList[obj.sound_place], getGlobalPositionFromVoxelPosition(position))
+	
+	if terrain == game.terrain:
+		saves.currentWorldData.interactiveVoxelPositions[position] = blockId
 	loadBlock(position, blockId)
 		
 func destroyBlock(position: Vector3i, withSound=true):
@@ -80,10 +81,11 @@ func destroyBlock(position: Vector3i, withSound=true):
 	
 	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
 	if withSound && obj.has("sound_destroy"):
-		game.playSound(game.soundList[obj.sound_destroy], getGlobalPositionFromVoxelPosition(position), game.terrain)
+		game.playSound(game.soundList[obj.sound_destroy], getGlobalPositionFromVoxelPosition(position))
 	
 	unloadBlock(position)
-	saves.currentWorldData.interactiveVoxelPositions.erase(position)
+	if terrain == game.terrain:
+		saves.currentWorldData.interactiveVoxelPositions.erase(position)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
 
