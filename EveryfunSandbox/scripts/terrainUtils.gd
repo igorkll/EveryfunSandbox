@@ -26,6 +26,9 @@ func getBlockChildren(position):
 func loadBlock(position: Vector3i, blockId: int, storageData=null):
 	var terrain = game.terrain
 	
+	if terrain.blockChildren.has(position):
+		return
+	
 	if storageData == null:
 		storageData = {}
 	

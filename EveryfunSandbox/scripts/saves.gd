@@ -119,13 +119,16 @@ func create(savename) -> bool:
 # ---------------------------------------------------------------
 
 var _logicChunkSize = Vector3i(32, 32, 32)
-var _loadedInteractiveVoxels = []
+var _loadedChunks = {}
 
-func regInteractiveVoxel(position, blockId, storageData=null):
+func __getChunkPosition(position: Vector3i):
+	return position / _logicChunkSize
+
+func regInteractiveVoxel(position: Vector3i, blockId, storageData=null):
 	if storageData == null:
 		storageData = {}
 	
-	var chunkPosition = position / _logicChunkSize
+	var chunkPosition = __getChunkPosition(position)
 	if not currentWorldData.interactiveVoxels.has(chunkPosition):
 		currentWorldData.interactiveVoxels[chunkPosition] = {}
 	
@@ -135,11 +138,17 @@ func regInteractiveVoxel(position, blockId, storageData=null):
 		currentWorldData.interactiveVoxels[chunkPosition].erase(position)
 		
 func __updateLoadedInteractiveVoxels(loadersPositions):
+	var currentLoadedChunks = []
 	for loaderPosition in loadersPositions:
-		loaderPosition /= _logicChunkSize
-		var chunkVoxels = currentWorldData.interactiveVoxelPositions.get(loaderPosition)
-		for interactiveVoxel in chunkVoxels:
-			terrainUtils.loadBlock(interactiveVoxel, interactiveVoxel[0], interactiveVoxel[1])
+		currentLoadedChunks.append(loaderPosition)
+		var chunkPosition = __getChunkPosition(Vector3i(loaderPosition))
+		if not _loadedChunks.has(chunkPosition):
+			# _loadedChunks[chunkPosition] = true
+			var chunkVoxels = currentWorldData.interactiveVoxels.get(chunkPosition)
+			if chunkVoxels:
+				for interactiveVoxelPosition in chunkVoxels:
+					var interactiveVoxel = chunkVoxels[interactiveVoxelPosition]
+					terrainUtils.loadBlock(interactiveVoxelPosition, interactiveVoxel[0], interactiveVoxel[1])
 
 func __checkAutosave():
 	if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:
@@ -159,7 +168,7 @@ func __checkAutosave():
 		
 func __checkLoaded():
 	var loadersPositions = []
-	
+	loadersPositions.append(game.camera.position)
 	__updateLoadedInteractiveVoxels(loadersPositions)
 
 func _process(delta):
