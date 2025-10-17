@@ -1,6 +1,7 @@
 extends VoxelLodTerrain
 
 var world_generator = preload("res://generators/world.gd")
+var blockChildren = {}
 var voxel_tool
 var loadedTime = 0
 

@@ -323,44 +323,6 @@ func setScale(scale):
 	
 func getScale():
 	return get_tree().root.content_scale_factor
-	
-var _blockChildren = {}
-
-func attachBlockChild(position, child):
-	if not _blockChildren.has(position):
-		_blockChildren[position] = []
-	_blockChildren[position].append(child)
-	terrain.add_child(child)
-
-func loadBlock(position: Vector3i, blockId: int):
-	var obj = blockList[blockId]
-	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
-	
-	if obj.has("script"):
-		var script = loadResource(obj.script)
-		var node = script.new()
-		
-		node.position = childPos
-		
-		node.voxelPosition = position
-		node.voxelDirection = Vector3i(1, 0, 0)
-		node.voxelDirectionUp = Vector3i(0, 1, 0)
-		
-		node.multiblock = Vector3i(1, 1, 1)
-		node.multiblockRelative = node.multiblock
-		
-		if obj.has("rotation"):
-			node.rotation_degrees = obj.rotation.r
-			node.voxelDirection = obj.rotation.d
-			node.voxelDirectionUp = obj.rotation.u
-		
-		attachBlockChild(position, node)
-		
-func unloadBlock(position: Vector3i):
-	if _blockChildren.has(position):
-		for obj in _blockChildren[position]:
-			obj.queue_free()
-		_blockChildren.erase(position)
 
 func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
 	var dir = -globalCameraBasisZ

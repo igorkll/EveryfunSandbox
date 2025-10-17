@@ -104,7 +104,7 @@ func open(savename) -> bool:
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
 	
 	for pos in currentWorldData.interactiveVoxelPositions:
-		game.loadBlock(pos, currentWorldData.interactiveVoxelPositions[pos])
+		terrainUtils.loadBlock(pos, currentWorldData.interactiveVoxelPositions[pos])
 	
 	game.player.init()
 	
