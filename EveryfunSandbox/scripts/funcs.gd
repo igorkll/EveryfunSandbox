@@ -44,7 +44,14 @@ func rotateVectorIn_xz(vec: Vector3, angle_degrees: float) -> Vector3:
 	var z = vec.x * sin_a + vec.z * cos_a
 	
 	return Vector3(x, vec.y, z)
-	
+
+# окозалось что Vector3i по умалчанию делает гребаное отбрасывание дробной части
+# а не округление вниз
+# что создавало ПИЗДЕЦ с отрицательными числами
+# тупо полтора часа слитых в унитаз
+func vec3_to_vec3i_down(v: Vector3) -> Vector3i:
+	return Vector3i(v.floor())
+
 func vec3_to_vec3i(v: Vector3) -> Vector3i:
 	return Vector3i(v.round())
 	

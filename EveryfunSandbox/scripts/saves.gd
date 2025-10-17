@@ -136,17 +136,8 @@ func regInteractiveVoxel(position: Vector3i, blockId, storageData=null):
 		currentWorldData.interactiveVoxels[chunkPosition][position] = [blockId, storageData]
 	else:
 		currentWorldData.interactiveVoxels[chunkPosition].erase(position)
-		
-	print(chunkPosition)
-	print(position)
 
 func __updateLoadedInteractiveVoxels(loadersPositions):
-	# print(currentWorldData.interactiveVoxels)
-	# print(_loadedChunks)
-	# print(terrainUtils.getVoxelPositionFromGlobalPosition(loadersPositions[0]))
-	# print(__getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(loadersPositions[0])))
-	# print(currentWorldData.interactiveVoxels[__getChunkPosition(loadersPositions[0])])
-	
 	var currentLoadedChunks = {}
 	for loaderPosition in loadersPositions:
 		var chunkPosition = __getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(loaderPosition))
@@ -154,10 +145,8 @@ func __updateLoadedInteractiveVoxels(loadersPositions):
 		
 		if not _loadedChunks.has(chunkPosition):
 			_loadedChunks[chunkPosition] = true
-			print("L ", chunkPosition)
 			
 			var chunkVoxels = currentWorldData.interactiveVoxels.get(chunkPosition)
-			print(chunkVoxels)
 			if chunkVoxels:
 				for interactiveVoxelPosition in chunkVoxels:
 					var interactiveVoxel = chunkVoxels[interactiveVoxelPosition]
@@ -166,10 +155,8 @@ func __updateLoadedInteractiveVoxels(loadersPositions):
 	for loadedChunk in _loadedChunks:
 		if not currentLoadedChunks.has(loadedChunk):
 			_loadedChunks.erase(loadedChunk)
-			print("U ", loadedChunk)
 			
 			var chunkVoxels = currentWorldData.interactiveVoxels.get(loadedChunk)
-			print(chunkVoxels)
 			if chunkVoxels:
 				for interactiveVoxelPosition in chunkVoxels:
 					terrainUtils.unloadBlock(interactiveVoxelPosition)

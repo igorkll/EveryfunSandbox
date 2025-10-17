@@ -124,7 +124,7 @@ func canUseBlock(position: Vector3i) -> bool:
 func getVoxelPositionFromGlobalPosition(position: Vector3) -> Vector3i:
 	var terrain = game.terrain
 	
-	return Vector3i(position - terrain.global_transform.origin)
+	return funcs.vec3_to_vec3i_down(position - terrain.global_transform.origin)
 
 func getGlobalPositionFromVoxelPosition(position: Vector3i) -> Vector3:
 	var terrain = game.terrain
