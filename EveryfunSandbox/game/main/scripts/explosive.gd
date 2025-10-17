@@ -4,4 +4,4 @@ func _ready():
 	pass
 
 func _use():
-	print("A")
+	game.playSound(game.soundList["explosion"], position)
