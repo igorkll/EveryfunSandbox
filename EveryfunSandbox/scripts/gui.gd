@@ -67,6 +67,7 @@ func _ready():
 	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 100, 50], _audioSlider)
 	_attachSlider("audio.volume.Ambient", "ui_audio_Ambient", [0, 100, 50], _audioSlider)
 	_attachSlider("audio.volume.Effects", "ui_audio_Effects", [0, 100, 50], _audioSlider)
+	_attachSlider("audio.volume.Interactive blocks", "ui_audio_Interactive", [0, 100, 50], _audioSlider)
 	
 	_attachOption("graphic.quality", "ui_graphic_quality", game.setGraphicQuality)
 	_attachOption("graphic.distance", "ui_graphic_distance", game.setRenderDistance)
