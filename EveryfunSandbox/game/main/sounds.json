@@ -14,12 +14,12 @@
 		"playback_mode": 0,
 		"random_pitch": 1.2,
 		"random_volume_offset_db": 3,
-		"volume_db": 20
+		"volume_db": 3
 	},
 	{
 		"fork": true,
 		"name": "grass_placeDestroy",
-		"volume_db": 40
+		"volume_db": 10
 	},
 	
 	
@@ -47,7 +47,7 @@
 	{
 		"fork": true,
 		"name": "stone_placeDestroy",
-		"volume_db": 40
+		"volume_db": 10
 	},
 	
 	
@@ -79,7 +79,7 @@
 	{
 		"fork": true,
 		"name": "metal_placeDestroy",
-		"volume_db": 40
+		"volume_db": 10
 	},
 	
 	
@@ -99,7 +99,7 @@
 	{
 		"fork": true,
 		"name": "glass_placeDestroy",
-		"volume_db": 40
+		"volume_db": 10
 	},
 	
 	
@@ -118,6 +118,6 @@
 		"playback_mode": 0,
 		"random_pitch": 1.2,
 		"random_volume_offset_db": 3,
-		"volume_db": 100
+		"volume_db": 20
 	}
 ]

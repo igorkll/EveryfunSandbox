@@ -188,13 +188,13 @@ func initAudioStream(audioPlayer, settings=null):
 	audioPlayer.unit_size = settings.get("unit_size", consts.default_sound_unit_size)
 	audioPlayer.max_distance = settings.get("max_distance", consts.default_sound_max_distance)
 	audioPlayer.volume_db = settings.get("volume_db", 0)
-	audioPlayer.max_db = 100
+	audioPlayer.max_db = settings.get("max_db", settings.get("volume_db", 0))
 
 func playSound(sound, position: Vector3, parent=null, channel="Effects"):
 	var audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.bus = channel
 	audioPlayer.stream = sound.stream
-	initAudioStream(sound)
+	initAudioStream(audioPlayer, sound)
 	
 	audioPlayer.position = position
 	if parent:
