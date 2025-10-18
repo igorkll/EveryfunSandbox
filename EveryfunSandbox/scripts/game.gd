@@ -541,6 +541,7 @@ func _checkVariants(blockVariants, item):
 			variantItem.variantsList = item.variantsList
 			variantItem.currentVariant = currentVariant
 			item.variantsList.append(variantItem)
+			blockVariants.append(variantItem)
 			currentVariant += 1
 
 func _addFolder(path):
