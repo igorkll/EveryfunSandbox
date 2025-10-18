@@ -8,7 +8,7 @@ uniform sampler2D material_texture_no_filter : filter_nearest;
 uniform bool no_filter = false;
 uniform bool no_material_filter = false;
 uniform bool use_normals = false;
-uniform float strength = 0.5;
+uniform float strength = 0.7;
 
 const float checkOffset = 1.0 / 512.0;
 
