@@ -24,7 +24,7 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 		return
 	
 	if storageData == null:
-		storageData = {}
+		storageData = game.getDefaultStorageData(blockId)
 	
 	var obj = game.blockList[blockId]
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
@@ -60,10 +60,6 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 			node.voxelDirectionUp = obj.rotation.u
 		
 		attachBlockChild(terrain, position, node)
-	
-func isInteractive(terrain, blockId: int) -> bool:
-	var obj = game.blockList[blockId]
-	return obj.has("script")
 		
 func unloadBlock(terrain, position: Vector3i):
 	if terrain.blockChildren.has(position):
@@ -73,7 +69,7 @@ func unloadBlock(terrain, position: Vector3i):
 
 func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, withSound=true, storageData=null):
 	if storageData == null:
-		storageData = {}
+		storageData = game.getDefaultStorageData(blockId)
 	
 	blockId = game.getVariantBlockId(blockId, rotation, variant)
 	var item = game.blockList[blockId]
@@ -83,7 +79,7 @@ func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0
 	if withSound && item.has("sound_place"):
 		game.playSound(game.soundList[item.sound_place], getGlobalPositionFromVoxelPosition(terrain, position))
 	
-	if isInteractive(terrain, blockId):
+	if game.isInteractive(blockId):
 		saves.regInteractiveVoxel(terrain, position, blockId, storageData)
 	
 	if saves.isInteractiveChunkBlockLoaded(position):

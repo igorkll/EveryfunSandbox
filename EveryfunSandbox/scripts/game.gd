@@ -359,6 +359,28 @@ func exit():
 		)
 	else:
 		get_tree().quit()
+		
+func blockScriptRequest(blockId: int, methodName, ...args):
+	var obj = game.blockList[blockId]
+	if obj.has("script"):
+		var script = game.loadResource(obj.script)
+		if script.has_method(methodName):
+			return script.callv(methodName, args)
+			
+func isBlockScriptMethod(blockId: int, methodName):
+	var obj = game.blockList[blockId]
+	if obj.has("script"):
+		var script = game.loadResource(obj.script)
+		return script.has_method(methodName)
+			
+func getDefaultStorageData(blockId: int):
+	if isBlockScriptMethod(blockId, "_requestDefaultStorageData"):
+		return blockScriptRequest(blockId, "_requestDefaultStorageData")
+	return {}
+	
+func isInteractive(blockId: int) -> bool:
+	var obj = game.blockList[blockId]
+	return obj.has("script")
 
 # ------------------------------------------------- backend
 
