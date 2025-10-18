@@ -40,6 +40,7 @@
 		"name": "testDirection",
 		"texture": "textures/testDirection.png",
 		"texture_mode": "UNIFORM_SIDE",
+		"texture_mode": "UNIFORM",
 		"script": "scripts/testDirection.gd",
 		"rotationMode": "360V"
 	},
@@ -47,6 +48,7 @@
 		"name": "testStorage",
 		"texture": "textures/UNIFORM.png",
 		"texture_mode": "UNIFORM",
+		"texture_no_filter": true,
 		"script": "scripts/testStorage.gd"
 	},
 	{
