@@ -185,6 +185,7 @@ func __checkLoaded():
 	var chunkLoadingDistance = game.view_distance / _interactiveChunkSize
 	if chunkLoadingDistance < 1:
 		chunkLoadingDistance = 1
+	chunkLoadingDistance = 2
 	
 	var duplicatedLoadersPositions
 	if chunkLoadingDistance > 1:
@@ -193,7 +194,12 @@ func __checkLoaded():
 			for iy in range(chunkLoadingDistance):
 				for iz in range(chunkLoadingDistance):
 					for pos in loadersPositions:
-						duplicatedLoadersPositions.append(pos + Vector3(ix, iy, iz))
+						var loaderPosition = pos + (Vector3(ix, iy, iz) * _interactiveChunkSize)
+						var offset = (_interactiveChunkSize * chunkLoadingDistance) / 2
+						loaderPosition.x -= offset
+						loaderPosition.y -= offset
+						loaderPosition.z -= offset
+						duplicatedLoadersPositions.append(loaderPosition)
 	elif chunkLoadingDistance == 1:
 		duplicatedLoadersPositions = loadersPositions
 	else:
