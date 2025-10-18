@@ -11,9 +11,6 @@ var defaultWorldData = {
 
 var objects
 var loadingGameMessage
-
-func _ready():
-	objects = get_node("/root/main/objects")
 	
 func isWorldLoaded() -> bool:
 	return currentWorldName != null
@@ -115,10 +112,13 @@ func create(savename) -> bool:
 		return false
 	filesystem.makeDirectory(getSavePath(savename))
 	return open(savename)
-	
+
+func isInteractiveChunkBlockLoaded(position: Vector3i):
+	return _loadedChunks.has(__getChunkPosition(position))
+
 # ---------------------------------------------------------------
 
-var _interactiveChunkSize = 8
+var _interactiveChunkSize = 32
 var _loadedChunks = {}
 
 func __getChunkPosition(position: Vector3i) -> Vector3i:
@@ -181,7 +181,32 @@ func __checkAutosave():
 func __checkLoaded():
 	var loadersPositions = []
 	loadersPositions.append(game.camera.global_position)
-	__updateLoadedInteractiveVoxels(loadersPositions)
+	
+	var chunkLoadingDistance = game.view_distance / _interactiveChunkSize
+	if chunkLoadingDistance < 1:
+		chunkLoadingDistance = 1
+	
+	var duplicatedLoadersPositions
+	if chunkLoadingDistance > 1:
+		duplicatedLoadersPositions = []
+		for ix in range(chunkLoadingDistance):
+			for iy in range(chunkLoadingDistance):
+				for iz in range(chunkLoadingDistance):
+					for pos in loadersPositions:
+						duplicatedLoadersPositions.append(pos + Vector3(ix, iy, iz))
+	elif chunkLoadingDistance == 1:
+		duplicatedLoadersPositions = loadersPositions
+	else:
+		duplicatedLoadersPositions = []
+	__updateLoadedInteractiveVoxels(duplicatedLoadersPositions)
+
+func __per_second():
+	if currentWorldRuntimeData:
+		__checkLoaded()
+
+func _ready():
+	objects = get_node("/root/main/objects")
+	timers.setInterval(__per_second, 1)
 
 func _process(delta):
 	if loadingGameMessage != null:
@@ -192,7 +217,4 @@ func _process(delta):
 		currentWorldRuntimeData.autoSaveTimer += delta
 
 		__checkAutosave()
-		__checkLoaded()
-		
-
 	
