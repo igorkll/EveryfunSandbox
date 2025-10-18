@@ -43,6 +43,7 @@ func loadBlock(position: Vector3i, blockId: int, storageData=null):
 		node.storageData = storageData
 		
 		node.voxelPosition = position
+		node.voxelRotation = 0
 		node.voxelDirection = Vector3i(1, 0, 0)
 		node.voxelDirectionUp = Vector3i(0, 1, 0)
 		
@@ -51,6 +52,7 @@ func loadBlock(position: Vector3i, blockId: int, storageData=null):
 		
 		if obj.has("rotation"):
 			node.rotation_degrees = obj.rotation.r
+			node.voxelRotation = obj.currentRotation
 			node.voxelDirection = obj.rotation.d
 			node.voxelDirectionUp = obj.rotation.u
 		

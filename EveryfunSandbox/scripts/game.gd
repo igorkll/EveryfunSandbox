@@ -530,6 +530,10 @@ func _readJson(path):
 		return
 	return filesystem.readJson(path)
 
+func _checkVariants(blockVariants, item):
+	if item.has("variants"):
+		pass
+
 func _addFolder(path):
 	var list = _readJson(path.path_join("/misc.json"))
 	if list:
@@ -578,6 +582,7 @@ func _addFolder(path):
 	if list:
 		_processForks(list)
 		
+		var blockVariants = []
 		var rotatedBlocks = []
 		for item in list:
 			if item.has("sound"):
@@ -602,21 +607,31 @@ func _addFolder(path):
 				item.script = path.path_join(item.script)
 				
 			if item.has("rotationMode"):
+				item.currentRotation = 0
 				item.rotated = [item]
 				var rotationMode = rotationModes[item.rotationMode]
+				var currentRotation = 1
 				for rotation in rotationMode:
 					var rotated = item.duplicate(false)
 					rotated.rotated = item.rotated
+					rotated.currentRotation = currentRotation
 					rotated.rotation = rotation
 					rotatedBlocks.append(rotated)
 					item.rotated.append(rotated)
+					currentRotation += 1
 			
 			item.id = blockList.size()
+			_checkVariants(blockVariants, item)
 			blockList.append(item)
 			
 		for rotatedBlock in rotatedBlocks:
 			rotatedBlock.id = blockList.size()
+			_checkVariants(blockVariants, rotatedBlock)
 			blockList.append(rotatedBlock)
+			
+		for blockVariant in blockVariants:
+			blockVariant.id = blockList.size()
+			blockList.append(blockVariant)
 			
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
 
