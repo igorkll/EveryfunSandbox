@@ -1,6 +1,5 @@
 extends Node
 
-# обьеденяет все ключи, dict1 приоритетнее
 func merge_dicts(dict1: Dictionary, dict2: Dictionary) -> Dictionary:
 	var result = dict2.duplicate(true)
 	for key in dict1.keys():

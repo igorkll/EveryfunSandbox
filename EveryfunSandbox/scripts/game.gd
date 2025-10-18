@@ -537,12 +537,34 @@ func _checkVariants(blockVariants, item):
 	if item.has("variants"):
 		var currentVariant = 1
 		for variant in item["variants"]:
-			var variantItem = funcs.merge_dicts(variant, item)
+			var variantItem = item.merged(variant, true)
 			variantItem.variantsList = item.variantsList
 			variantItem.currentVariant = currentVariant
 			item.variantsList.append(variantItem)
 			blockVariants.append(variantItem)
 			currentVariant += 1
+			
+func _prepairItem(item, path):
+	if item.has("sound"):
+		for soundkey in soundsTypes:
+			if not item.has(soundkey):
+				item[soundkey] = item.sound
+				
+	if item.has("sound_placeDestroy"):
+		item.sound_place = item.sound_placeDestroy
+		item.sound_destroy = item.sound_placeDestroy
+	
+	if item.has("texture"):
+		item.texture = loadResource(path.path_join(item.texture))
+		
+	if item.has("material"):
+		item.material = loadResource(path.path_join(item.material))
+	
+	if item.has("name"):
+		blockIDs[item.name] = blockList.size()
+		
+	if item.has("script"):
+		item.script = path.path_join(item.script)
 
 func _addFolder(path):
 	var list = _readJson(path.path_join("/misc.json"))
@@ -595,29 +617,14 @@ func _addFolder(path):
 		var blockVariants = []
 		var rotatedBlocks = []
 		for item in list:
-			if item.has("sound"):
-				for soundkey in soundsTypes:
-					if not item.has(soundkey):
-						item[soundkey] = item.sound
-						
-			if item.has("sound_placeDestroy"):
-				item.sound_place = item.sound_placeDestroy
-				item.sound_destroy = item.sound_placeDestroy
+			item.id = blockList.size()
+			item.baseId = item.id
 			
-			if item.has("texture"):
-				item.texture = loadResource(path.path_join(item.texture))
-				
-			if item.has("material"):
-				item.material = loadResource(path.path_join(item.material))
-			
-			if item.has("name"):
-				blockIDs[item.name] = blockList.size()
-				
-			if item.has("script"):
-				item.script = path.path_join(item.script)
-				
 			item.currentRotation = 0
 			item.rotated = [item]
+			
+			_checkVariants(blockVariants, item)
+			_prepairItem(item, path)
 			
 			if item.has("rotationMode"):
 				var rotationMode = rotationModes[item.rotationMode]
@@ -631,9 +638,6 @@ func _addFolder(path):
 					item.rotated.append(rotated)
 					currentRotation += 1
 			
-			item.id = blockList.size()
-			item.baseId = item.id
-			_checkVariants(blockVariants, item)
 			blockList.append(item)
 			
 		for rotatedBlock in rotatedBlocks:
@@ -643,6 +647,7 @@ func _addFolder(path):
 			
 		for blockVariant in blockVariants:
 			blockVariant.id = blockList.size()
+			_prepairItem(blockVariant, path)
 			blockList.append(blockVariant)
 			
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
