@@ -35,6 +35,7 @@ func __initAudioPlayer(audioPlayer):
 
 func __disk_end():
 	audioPlayerEffect.stream = eff_border
+	audioPlayerEffect.play()
 
 
 func _ready():
@@ -45,14 +46,15 @@ func _ready():
 	audioPlayer.bus = "Grammophone"
 	__initAudioPlayer(audioPlayer)
 	audioPlayer.connect("finished", __disk_end)
+	node.add_child(audioPlayer)
 	
 	audioPlayerEffect = AudioStreamPlayer3D.new()
 	audioPlayerEffect.bus = "Effects"
 	__initAudioPlayer(audioPlayerEffect)
+	node.add_child(audioPlayerEffect)
 	
 	__updateSound()
 
-	node.add_child(audioPlayer)
 	add_child(node)
 
 func _process(delta):
