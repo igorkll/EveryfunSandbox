@@ -55,6 +55,7 @@ func _ready():
 	audioPlayerEffect = AudioStreamPlayer3D.new()
 	audioPlayerEffect.bus = "Effects"
 	game.initAudioStream(audioPlayerEffect)
+	audioPlayerEffect.attenuation_filter_cutoff_hz = 20500
 	audioPlayerEffect.connect("finished", __effect_end)
 	node.add_child(audioPlayerEffect)
 	
