@@ -1,6 +1,6 @@
 extends baseblock
 
-var sinDestortion = 2
+var sinDestortion = 1
 
 var defaultStorageData = {
 	rpm = 78.26
@@ -24,7 +24,7 @@ func _ready():
 	audioPlayer.play()
 
 func _process(delta):
-	rotationCount += delta * storageData.rpm
+	rotationCount += (delta * storageData.rpm) / 60
 	__updateSound()
 
 func _requestDefaultStorageData():
