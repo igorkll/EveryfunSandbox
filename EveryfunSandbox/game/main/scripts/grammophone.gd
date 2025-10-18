@@ -28,6 +28,10 @@ func __play(path):
 func __stop():
 	audioPlayer.stop()
 	audioPlayerEffect.stop()
+	
+func __onFileSelected(path):
+	if path:
+		__play(path)
 
 func __disk_end():
 	pass
@@ -68,4 +72,4 @@ func _requestDefaultStorageData():
 	return defaultStorageData
 
 func _use():
-	game.requestFile([consts.extfilter_audio], __play)
+	game.requestFile([consts.extfilter_audio], __onFileSelected)
