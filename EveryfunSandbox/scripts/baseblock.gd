@@ -10,12 +10,22 @@ var voxelDirection: Vector3i
 var voxelDirectionUp: Vector3i
 
 var voxelBaseBlockId: int
-var voxelBlockId: int
 var voxelBaseBlockItem: Dictionary
+
+var voxelBlockId: int
 var voxelBlockItem: Dictionary
 
 var multiblock: Vector3i
 var multiblockRelative: Vector3i
 
 func getVariantsCount():
-	return voxelBaseBlockItem.variantsList.len()
+	return voxelBlockItem.variantsList.size()
+
+func getVariant():
+	return voxelBlockItem.currentVariant
+
+func setVariant(variant):
+	voxelBlockItem.currentVariant = variant
+	voxelBlockItem = voxelBlockItem.variantsList[variant]
+	voxelBlockId = voxelBlockItem.id
+	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)

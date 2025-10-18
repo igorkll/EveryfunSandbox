@@ -531,13 +531,17 @@ func _readJson(path):
 	return filesystem.readJson(path)
 
 func _checkVariants(blockVariants, item):
+	item.currentVariant = 0
 	item.variantsList = [item]
 	
 	if item.has("variants"):
+		var currentVariant = 1
 		for variant in item["variants"]:
 			var variantItem = funcs.merge_dicts(item, variant)
 			variantItem.variantsList = item.variantsList
+			variantItem.currentVariant = currentVariant
 			item.variantsList.append(variantItem)
+			currentVariant += 1
 
 func _addFolder(path):
 	var list = _readJson(path.path_join("/misc.json"))

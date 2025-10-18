@@ -49,8 +49,9 @@ func loadBlock(position: Vector3i, blockId: int, storageData=null):
 		node.voxelDirectionUp = Vector3i(0, 1, 0)
 		
 		node.voxelBaseBlockId = obj.baseId
-		node.voxelBlockId = blockId
 		node.voxelBaseBlockItem = game.blockList[obj.baseId]
+		
+		node.voxelBlockId = blockId
 		node.voxelBlockItem = obj
 		
 		node.multiblock = Vector3i(1, 1, 1)
