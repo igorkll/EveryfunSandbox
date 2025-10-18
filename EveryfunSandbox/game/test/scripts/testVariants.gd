@@ -1,4 +1,4 @@
 extends baseblock
 
 func _use():
-	pass
+	setVariant(1 - getVariant())

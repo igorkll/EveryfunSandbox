@@ -45,12 +45,20 @@
 	},
 	{
 		"name": "testStorage",
-		"texture": "textures/testStorage/disabled.png",
+		"texture": "textures/UNIFORM.png",
 		"texture_mode": "UNIFORM",
-		"script": "scripts/testStorage.gd",
+		"script": "scripts/testStorage.gd"
+	},
+	{
+		"name": "testVariants",
+		"texture": "textures/testVariants/disabled.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"texture_no_filter": true,
+		"rotationMode": "360V",
+		"script": "scripts/testVariants.gd",
 		"variants": [
 			{
-				"texture": "textures/testStorage/enabled.png"
+				"texture": "textures/testVariants/enabled.png"
 			}
 		]
 	}
