@@ -559,9 +559,6 @@ func _prepairItem(item, path):
 		
 	if item.has("material"):
 		item.material = loadResource(path.path_join(item.material))
-	
-	if item.has("name"):
-		blockIDs[item.name] = blockList.size()
 		
 	if item.has("script"):
 		item.script = path.path_join(item.script)
@@ -619,12 +616,13 @@ func _addFolder(path):
 		for item in list:
 			item.id = blockList.size()
 			item.baseId = item.id
+			if item.has("name"):
+				blockIDs[item.name] = item.id
 			
 			item.currentRotation = 0
 			item.rotated = [item]
 			
 			_checkVariants(blockVariants, item)
-			_prepairItem(item, path)
 			
 			if item.has("rotationMode"):
 				var rotationMode = rotationModes[item.rotationMode]
@@ -638,11 +636,13 @@ func _addFolder(path):
 					item.rotated.append(rotated)
 					currentRotation += 1
 			
+			_prepairItem(item, path)
 			blockList.append(item)
 			
 		for rotatedBlock in rotatedBlocks:
 			rotatedBlock.id = blockList.size()
 			_checkVariants(blockVariants, rotatedBlock)
+			_prepairItem(rotatedBlock, path)
 			blockList.append(rotatedBlock)
 			
 		for blockVariant in blockVariants:

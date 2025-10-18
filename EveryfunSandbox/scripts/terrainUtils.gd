@@ -36,7 +36,6 @@ func loadBlock(position: Vector3i, blockId: int, storageData=null):
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	
 	if obj.has("script"):
-		print(obj.script)
 		var script = game.loadResource(obj.script)
 		var node = script.new()
 		
@@ -80,7 +79,7 @@ func unloadBlock(position: Vector3i):
 			obj.queue_free()
 		terrain.blockChildren.erase(position)
 
-func placeBlock(position: Vector3i, blockId: int, rotation=0, variant=1, withSound=true, storageData=null):
+func placeBlock(position: Vector3i, blockId: int, rotation=0, variant=0, withSound=true, storageData=null):
 	var terrain = game.terrain
 	
 	if storageData == null:
