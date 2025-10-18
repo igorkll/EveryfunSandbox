@@ -35,7 +35,7 @@ func checkOptimalSpawnPosition(raycastPosition) -> bool:
 	print("try", raycastPosition)
 	if result:
 		print("OPTIMAL", result.previous_position)
-		position = terrainUtils.getGlobalPositionFromVoxelPosition(result.previous_position + Vector3i(0, halfPlayerSize + consts.player_spawn_vertical_offset, 0))
+		position = terrainUtils.getGlobalPositionFromVoxelPosition(game.terrain, result.previous_position + Vector3i(0, halfPlayerSize + consts.player_spawn_vertical_offset, 0))
 		return true
 	return false
 
@@ -159,17 +159,17 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("attack"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result:
-				terrainUtils.destroyBlock(result[1].position)
+				terrainUtils.destroyBlock(game.terrain, result[1].position)
 				
 		if Input.is_action_just_pressed("place"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
-			if result and terrainUtils.isCellFree(result[1].previous_position):
-				terrainUtils.placeBlock(result[1].previous_position, game.blockIDs["explosive"], game.getBlockDefaultRotation($camera.global_transform.basis.z))
+			if result and terrainUtils.isCellFree(game.terrain, result[1].previous_position):
+				terrainUtils.placeBlock(game.terrain, result[1].previous_position, game.blockIDs["explosive"], game.getBlockDefaultRotation($camera.global_transform.basis.z))
 				
 		if Input.is_action_just_pressed("use"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result:
-				terrainUtils.useBlock(result[1].position)
+				terrainUtils.useBlock(game.terrain, result[1].position)
 	
 	# ---------------------------------- moving
 	

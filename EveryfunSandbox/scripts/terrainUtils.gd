@@ -7,25 +7,19 @@ func blockRaycast(position, direction, maxDistance):
 	if result:
 		return [terrain, result]
 		
-func attachBlockChild(position, child):
-	var terrain = game.terrain
-	
+func attachBlockChild(terrain, position, child):
 	if not terrain.blockChildren.has(position):
 		terrain.blockChildren[position] = []
 	terrain.blockChildren[position].append(child)
 	terrain.add_child(child)
 	
-func getBlockChildren(position):
-	var terrain = game.terrain
-	
+func getBlockChildren(terrain, position):
 	if terrain.blockChildren.has(position):
 		return terrain.blockChildren[position]
 	else:
 		return []
 
-func loadBlock(position: Vector3i, blockId: int, storageData=null):
-	var terrain = game.terrain
-	
+func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 	if terrain.blockChildren.has(position):
 		return
 	
@@ -64,25 +58,19 @@ func loadBlock(position: Vector3i, blockId: int, storageData=null):
 			node.voxelDirection = obj.rotation.d
 			node.voxelDirectionUp = obj.rotation.u
 		
-		attachBlockChild(position, node)
+		attachBlockChild(terrain, position, node)
 	
-func isInteractive(blockId: int) -> bool:
-	var terrain = game.terrain
-	
+func isInteractive(terrain, blockId: int) -> bool:
 	var obj = game.blockList[blockId]
 	return obj.has("script")
 		
-func unloadBlock(position: Vector3i):
-	var terrain = game.terrain
-	
+func unloadBlock(terrain, position: Vector3i):
 	if terrain.blockChildren.has(position):
 		for obj in terrain.blockChildren[position]:
 			obj.queue_free()
 		terrain.blockChildren.erase(position)
 
-func placeBlock(position: Vector3i, blockId: int, rotation=0, variant=0, withSound=true, storageData=null):
-	var terrain = game.terrain
-	
+func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, withSound=true, storageData=null):
 	if storageData == null:
 		storageData = {}
 	
@@ -92,28 +80,26 @@ func placeBlock(position: Vector3i, blockId: int, rotation=0, variant=0, withSou
 	terrain.voxel_tool.set_voxel(position, blockId)
 	
 	if withSound && item.has("sound_place"):
-		game.playSound(game.soundList[item.sound_place], getGlobalPositionFromVoxelPosition(position))
+		game.playSound(game.soundList[item.sound_place], getGlobalPositionFromVoxelPosition(terrain, position))
 	
-	if isInteractive(blockId):
+	if isInteractive(terrain, blockId):
 		saves.regInteractiveVoxel(terrain, position, blockId, storageData)
 	
 	if saves.isInteractiveChunkBlockLoaded(position):
-		loadBlock(position, blockId, storageData)
+		loadBlock(terrain, position, blockId, storageData)
 
-func destroyBlock(position: Vector3i, withSound=true):
-	var terrain = game.terrain
-	
+func destroyBlock(terrain, position: Vector3i, withSound=true):
 	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
 	if withSound && obj.has("sound_destroy"):
-		game.playSound(game.soundList[obj.sound_destroy], getGlobalPositionFromVoxelPosition(position))
+		game.playSound(game.soundList[obj.sound_destroy], getGlobalPositionFromVoxelPosition(terrain, position))
 	
-	unloadBlock(position)
+	unloadBlock(terrain, position)
 	saves.regInteractiveVoxel(terrain, position, null)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
 
-func useBlock(position: Vector3i) -> bool:
-	var children = getBlockChildren(position)
+func useBlock(terrain, position: Vector3i) -> bool:
+	var children = getBlockChildren(terrain, position)
 	var used = false
 	for child in children:
 		if child.has_method("_use"):
@@ -121,31 +107,27 @@ func useBlock(position: Vector3i) -> bool:
 			used = true
 	return used
 	
-func canUseBlock(position: Vector3i) -> bool:
-	var children = getBlockChildren(position)
+func canUseBlock(terrain, position: Vector3i) -> bool:
+	var children = getBlockChildren(terrain, position)
 	for child in children:
 		if child.has_method("_use"):
 			return true
 	return false
 
-func getVoxelPositionFromGlobalPosition(position: Vector3) -> Vector3i:
-	var terrain = game.terrain
-	
+func getVoxelPositionFromGlobalPosition(terrain, position: Vector3) -> Vector3i:
 	return funcs.vec3_to_vec3i_down(position - terrain.global_transform.origin)
 
-func getGlobalPositionFromVoxelPosition(position: Vector3i) -> Vector3:
-	var terrain = game.terrain
-	
+func getGlobalPositionFromVoxelPosition(terrain, position: Vector3i) -> Vector3:
 	return terrain.global_transform.origin + Vector3(position.x, position.y, position.z) + Vector3(0.5, 0.5, 0.5)
 
-func isCellFree(position: Vector3i) -> bool:
+func isCellFree(terrain, position: Vector3i) -> bool:
 	var space_state = get_tree().current_scene.get_world_3d().direct_space_state
 	var query = PhysicsShapeQueryParameters3D.new()
 	
 	var shape = BoxShape3D.new()
 	shape.size = Vector3(0.8, 0.8, 0.8)
 	query.shape = shape
-	query.transform = Transform3D(Basis(), getGlobalPositionFromVoxelPosition(position))
+	query.transform = Transform3D(Basis(), getGlobalPositionFromVoxelPosition(terrain, position))
 	query.collide_with_areas = true
 	query.collide_with_bodies = true
 	

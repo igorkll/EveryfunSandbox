@@ -35,4 +35,4 @@ func setVariant(variant):
 func destroy():
 	voxelTerrain.voxel_tool.set_voxel(voxelPosition, 0)
 	saves.changeInteractiveVoxel(voxelTerrain, position, 0)
-	terrainUtils.destroyBlock(position, false)
+	terrainUtils.destroyBlock(game.terrain, position, false)

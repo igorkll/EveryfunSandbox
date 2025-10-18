@@ -23,8 +23,8 @@ func isWorldFullLoaded() -> bool:
 		return true
 	
 	if currentWorldRuntimeData.time > consts.minimal_load_time and game.terrain.is_area_meshed(AABB(
-		terrainUtils.getVoxelPositionFromGlobalPosition(game.player.position) - consts.minimum_loading_radius_for_play,
-		terrainUtils.getVoxelPositionFromGlobalPosition(game.player.position) + consts.minimum_loading_radius_for_play), 0):
+		terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position) - consts.minimum_loading_radius_for_play,
+		terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position) + consts.minimum_loading_radius_for_play), 0):
 		currentWorldRuntimeData.fullLoaded = true
 		if loadingGameMessage != null:
 			loadingGameMessage.task_end()
@@ -163,7 +163,7 @@ func changeInteractiveVoxel(terrain, position: Vector3i, blockId):
 func __updateLoadedInteractiveVoxels(loadersPositions):
 	var currentLoadedChunks = {}
 	for loaderPosition in loadersPositions:
-		var chunkPosition = __getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(loaderPosition))
+		var chunkPosition = __getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, loaderPosition))
 		currentLoadedChunks[chunkPosition] = true
 		
 		if not _loadedChunks.has(chunkPosition):
@@ -173,7 +173,7 @@ func __updateLoadedInteractiveVoxels(loadersPositions):
 			if chunkVoxels:
 				for interactiveVoxelPosition in chunkVoxels:
 					var interactiveVoxel = chunkVoxels[interactiveVoxelPosition]
-					terrainUtils.loadBlock(interactiveVoxelPosition, interactiveVoxel[0], interactiveVoxel[1])
+					terrainUtils.loadBlock(game.terrain, interactiveVoxelPosition, interactiveVoxel[0], interactiveVoxel[1])
 					
 	for loadedChunk in _loadedChunks:
 		if not currentLoadedChunks.has(loadedChunk):
@@ -182,7 +182,7 @@ func __updateLoadedInteractiveVoxels(loadersPositions):
 			var chunkVoxels = currentWorldData.interactiveVoxels.get(loadedChunk)
 			if chunkVoxels:
 				for interactiveVoxelPosition in chunkVoxels:
-					terrainUtils.unloadBlock(interactiveVoxelPosition)
+					terrainUtils.unloadBlock(game.terrain, interactiveVoxelPosition)
 
 
 func __checkAutosave():
