@@ -6,6 +6,7 @@ var storageData = {}
 var voxelTerrain
 var voxelPosition: Vector3i
 var voxelRotation: int
+var voxelVariant: int
 var voxelDirection: Vector3i
 var voxelDirectionUp: Vector3i
 
@@ -25,7 +26,8 @@ func getVariant():
 	return voxelBlockItem.currentVariant
 
 func setVariant(variant):
-	voxelBlockItem = voxelBlockItem.variantsList[variant]
-	voxelBlockId = voxelBlockItem.id
+	voxelVariant = variant
+	voxelBlockId = game.getVariantBlockId(voxelBlockId, voxelRotation, voxelVariant)
+	voxelBlockItem = game.blockList[voxelBlockId]
 	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)
 	saves.changeInteractiveVoxel(voxelTerrain, position, voxelBlockId)

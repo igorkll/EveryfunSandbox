@@ -337,6 +337,15 @@ func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
 	elif dir.y > vertical_threshold:
 		result += 8
 	return result
+	
+func getVariantBlockId(blockId, rotation=0, variant=0):
+	var obj = game.blockList[blockId]
+	if obj.has("rotated"):
+		rotation = (int(rotation + obj.get("rotationBase", 0)) % 4) + (floor(rotation / 4) * 4)
+		blockId = obj.rotated[rotation % obj.rotated.size()].id
+		obj = game.blockList[blockId]
+	
+	return obj.variantsList[variant].id
 
 func exit():
 	if saves.isWorldFullLoaded():

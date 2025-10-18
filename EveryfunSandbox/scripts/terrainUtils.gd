@@ -45,6 +45,7 @@ func loadBlock(position: Vector3i, blockId: int, storageData=null):
 		node.voxelTerrain = terrain
 		node.voxelPosition = position
 		node.voxelRotation = 0
+		node.voxelVariant = obj.currentVariant
 		node.voxelDirection = Vector3i(1, 0, 0)
 		node.voxelDirectionUp = Vector3i(0, 1, 0)
 		
@@ -85,19 +86,13 @@ func placeBlock(position: Vector3i, blockId: int, rotation=0, variant=0, withSou
 	if storageData == null:
 		storageData = {}
 	
-	var obj = game.blockList[blockId]
-	if obj.has("rotated"):
-		rotation = (int(rotation + obj.get("rotationBase", 0)) % 4) + (floor(rotation / 4) * 4)
-		blockId = obj.rotated[rotation % obj.rotated.size()].id
-		obj = game.blockList[blockId]
-	
-	obj = obj.variantsList[variant]
-	blockId = obj.id
+	blockId = game.getVariantBlockId(blockId, rotation, variant)
+	var item = game.blockList[blockId]
 	
 	terrain.voxel_tool.set_voxel(position, blockId)
 	
-	if withSound && obj.has("sound_place"):
-		game.playSound(game.soundList[obj.sound_place], getGlobalPositionFromVoxelPosition(position))
+	if withSound && item.has("sound_place"):
+		game.playSound(game.soundList[item.sound_place], getGlobalPositionFromVoxelPosition(position))
 	
 	if isInteractive(blockId):
 		saves.regInteractiveVoxel(terrain, position, blockId, storageData)
