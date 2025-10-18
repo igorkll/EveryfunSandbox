@@ -169,7 +169,16 @@ func setSmoothingState(smoothing):
 	get_tree().root.use_taa = smoothing
 
 func loadResource(resourcePath):
-	return load(resourcePath)
+	if resourcePath.begins_with("res://") or resourcePath.begins_with("user://"):
+		return load(resourcePath)
+	else:
+		var extension = resourcePath.get_extension()
+		if extension == "mp3":
+			return AudioStreamMP3.load_from_file(resourcePath)
+		elif extension == "wav":
+			return AudioStreamWAV.load_from_file(resourcePath)
+		elif extension == "ogg":
+			return AudioStreamOggVorbis.load_from_file(resourcePath)
 	
 func initAudioStream(audioPlayer, settings=null):
 	if settings == null:

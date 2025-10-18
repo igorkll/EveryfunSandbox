@@ -13,8 +13,7 @@ func __updateSound():
 	audioPlayer.pitch_scale = (storageData.rpm + (sin(rotationCount * PI * 2) * sinDestortion)) / defaultStorageData.rpm
 
 func __loadStream(path):
-	print(path)
-	audioPlayer.stream = load(path)
+	audioPlayer.stream = game.loadResource(path)
 	audioPlayer.play()
 
 func _ready():
