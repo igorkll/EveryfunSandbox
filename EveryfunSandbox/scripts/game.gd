@@ -428,28 +428,29 @@ var rotationModes = {
 	"NONE": [
 	],
 	"360": [
-		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1), u = Vector3i(0, 1, 0)},
-		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0), u = Vector3i(0, 1, 0)},
-		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1), u = Vector3i(0, 1, 0)}
+		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1), u = Vector3i(0, 1, 0), q = 0},
+		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0), u = Vector3i(0, 1, 0), q = 1},
+		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1), u = Vector3i(0, 1, 0), q = 2}
 	],
 	"360V": [
-		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1), u = Vector3i(0, 1, 0)},
-		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0), u = Vector3i(0, 1, 0)},
-		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1), u = Vector3i(0, 1, 0)},
+		{y=0, r = Vector3i(0, 0, 90), d = Vector3i(0, 1, 0), u = Vector3i(-1, 0, 0), q = 0},
+		{y=1, r = Vector3i(0, -90, 90), d = Vector3i(0, 1, 0), u = Vector3i(0, 0, -1), q = 0},
+		{y=2, r = Vector3i(0, -90 * 2, 90), d = Vector3i(0, 1, 0), u = Vector3i(1, 0, 0), q = 0},
+		{y=3, r = Vector3i(0, -90 * 3, 90), d = Vector3i(0, 1, 0), u = Vector3i(0, 0, 1), q = 0},
 		
-		{y=0, r = Vector3i(0, 0, 90), d = Vector3i(0, 1, 0), u = Vector3i(-1, 0, 0)},
-		{y=1, r = Vector3i(0, -90, 90), d = Vector3i(0, 1, 0), u = Vector3i(0, 0, -1)},
-		{y=2, r = Vector3i(0, -90 * 2, 90), d = Vector3i(0, 1, 0), u = Vector3i(1, 0, 0)},
-		{y=3, r = Vector3i(0, -90 * 3, 90), d = Vector3i(0, 1, 0), u = Vector3i(0, 0, 1)},
-		
-		{y=0, r = Vector3i(0, 0, -90), d = Vector3i(0, -1, 0), u = Vector3i(-1, 0, 0)},
-		{y=1, r = Vector3i(0, -90, -90), d = Vector3i(0, -1, 0), u = Vector3i(0, 0, -1)},
-		{y=2, r = Vector3i(0, -90 * 2, -90), d = Vector3i(0, -1, 0), u = Vector3i(1, 0, 0)},
-		{y=3, r = Vector3i(0, -90 * 3, -90), d = Vector3i(0, -1, 0), u = Vector3i(0, 0, 1)}
+		{y=0, r = Vector3i(0, 0, -90), d = Vector3i(0, -1, 0), u = Vector3i(-1, 0, 0), q = 0},
+		{y=1, r = Vector3i(0, -90, -90), d = Vector3i(0, -1, 0), u = Vector3i(0, 0, -1), q = 0},
+		{y=2, r = Vector3i(0, -90 * 2, -90), d = Vector3i(0, -1, 0), u = Vector3i(1, 0, 0), q = 0},
+		{y=3, r = Vector3i(0, -90 * 3, -90), d = Vector3i(0, -1, 0), u = Vector3i(0, 0, 1), q = 0}
 	]
 }
 
 func _ready():
+	var array_360_modes = rotationModes["360"].duplicate()
+	array_360_modes.reverse()
+	for rotationMode_360 in array_360_modes:
+		rotationModes["360V"].insert(0, rotationMode_360)
+	
 	mainNode = get_node("/root/main")
 	player = get_node("/root/main/player")
 	camera = get_node("/root/main/player/camera")
@@ -695,6 +696,10 @@ func _getLibrary():
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Y, textureMode[4])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Z, textureMode[5])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Z, textureMode[6])
+			if block.has("rotation"):
+				blockModel.mesh_ortho_rotation_index = block.rotation.q
+			else:
+				blockModel.mesh_ortho_rotation_index = 0
 			
 			_blockMaterials.append(material)
 		else:
