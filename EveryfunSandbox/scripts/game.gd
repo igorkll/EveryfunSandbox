@@ -393,13 +393,12 @@ func isInteractive(blockId: int) -> bool:
 	var obj = game.blockList[blockId]
 	return obj.has("script")
 	
-func requestFile(extensions, callback):
+func requestFile(filters, callback):
 	var dialog := FileDialog.new()
 	dialog.access = FileDialog.ACCESS_FILESYSTEM
 	dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	dialog.filters = []
-	for extension in extensions:
-		dialog.filters.append("*." + extension + "; " + extension)
+	for filter in filters:
+		dialog.add_filter(filter[0], filter[1])
 	add_child(dialog)
 	dialog.popup_centered()
 

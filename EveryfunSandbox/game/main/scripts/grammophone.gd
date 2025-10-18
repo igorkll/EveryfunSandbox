@@ -39,4 +39,4 @@ func _requestDefaultStorageData():
 	return defaultStorageData
 
 func _use():
-	game.requestFile(consts.extlist_audio, __loadStream)
+	game.requestFile([consts.extfilter_audio], __loadStream)
