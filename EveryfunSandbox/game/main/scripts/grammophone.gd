@@ -14,11 +14,13 @@ var audioPlayerEffect: AudioStreamPlayer3D
 var rotationCount = 0
 
 func __updateSound():
-	audioPlayer.pitch_scale = (storageData.rpm + (sin(rotationCount * PI * 2) * sinDestortion)) / defaultStorageData.rpm
+	var pitch = (storageData.rpm + (sin(rotationCount * PI * 2) * sinDestortion)) / defaultStorageData.rpm
+	audioPlayer.pitch_scale = pitch
+	audioPlayerEffect.pitch_scale = pitch
 
 func __play(path):
 	audioPlayerEffect.stream = eff_bg
-	audioPlayerEffect.volume_db = 10
+	audioPlayerEffect.volume_db = 5
 	audioPlayerEffect.play()
 	
 	audioPlayer.stream = game.loadResource(path)

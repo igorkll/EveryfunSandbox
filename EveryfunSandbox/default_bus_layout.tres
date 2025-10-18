@@ -31,15 +31,15 @@ band_db/16000_hz = -60.0
 
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_g28q7"]
 resource_name = "LowPassFilter"
-cutoff_hz = 7000.0
-resonance = 0.62
+cutoff_hz = 6732.0
+resonance = 0.75
 db = 3
 
 [sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_j3pel"]
 resource_name = "Distortion"
-pre_gain = 7.3
+pre_gain = 10.0
 keep_hf_hz = 20500.0
-post_gain = -7.3
+post_gain = -10.0
 
 [sub_resource type="AudioEffectFilter" id="AudioEffectFilter_j3pel"]
 resource_name = "Filter"
@@ -49,7 +49,7 @@ db = 3
 
 [sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_j3pel"]
 resource_name = "HighPassFilter"
-cutoff_hz = 250.0
+cutoff_hz = 384.0
 resonance = 1.0
 db = 3
 
