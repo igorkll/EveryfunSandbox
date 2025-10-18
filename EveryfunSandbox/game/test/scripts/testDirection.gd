@@ -1,4 +1,4 @@
-extends Node3D
+extends baseblock
 
 func _ready():
 	var node = Node3D.new()

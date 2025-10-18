@@ -531,8 +531,13 @@ func _readJson(path):
 	return filesystem.readJson(path)
 
 func _checkVariants(blockVariants, item):
+	item.variantsList = [item]
+	
 	if item.has("variants"):
-		pass
+		for variant in item["variants"]:
+			var variantItem = funcs.merge_dicts(item, variant)
+			variantItem.variantsList = item.variantsList
+			item.variantsList.append(variantItem)
 
 func _addFolder(path):
 	var list = _readJson(path.path_join("/misc.json"))
@@ -606,9 +611,10 @@ func _addFolder(path):
 			if item.has("script"):
 				item.script = path.path_join(item.script)
 				
+			item.currentRotation = 0
+			item.rotated = [item]
+			
 			if item.has("rotationMode"):
-				item.currentRotation = 0
-				item.rotated = [item]
 				var rotationMode = rotationModes[item.rotationMode]
 				var currentRotation = 1
 				for rotation in rotationMode:
@@ -621,6 +627,7 @@ func _addFolder(path):
 					currentRotation += 1
 			
 			item.id = blockList.size()
+			item.baseId = item.id
 			_checkVariants(blockVariants, item)
 			blockList.append(item)
 			

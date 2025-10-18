@@ -164,7 +164,7 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("place"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and terrainUtils.isCellFree(result[1].previous_position):
-				terrainUtils.placeBlock(result[1].previous_position, 9, game.getBlockDefaultRotation($camera.global_transform.basis.z))
+				terrainUtils.placeBlock(result[1].previous_position, game.blockIDs["testStorage"], game.getBlockDefaultRotation($camera.global_transform.basis.z))
 				
 		if Input.is_action_just_pressed("use"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
