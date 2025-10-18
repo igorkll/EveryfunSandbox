@@ -20,4 +20,4 @@ func explode(position, explosiveLevel):
 		explosionState.iterations -= 1
 		if explosionState.iterations < 1:
 			return true
-	, 0.1)
+	, 0.01)
