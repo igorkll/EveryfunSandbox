@@ -155,4 +155,6 @@ occlusion_culling/use_occlusion_culling=true
 
 [voxel]
 
-threads/count/minimum=4
+threads/count/minimum=2
+threads/count/ratio_over_max=0.8
+threads/main/time_budget_ms=16
