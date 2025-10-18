@@ -429,8 +429,8 @@ var rotationModes = {
 	],
 	"360": [
 		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1), u = Vector3i(0, 1, 0), q = 0},
-		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0), u = Vector3i(0, 1, 0), q = 1},
-		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1), u = Vector3i(0, 1, 0), q = 2}
+		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0), u = Vector3i(0, 1, 0), q = 5},
+		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1), u = Vector3i(0, 1, 0), q = 4}
 	],
 	"360V": [
 		{y=0, r = Vector3i(0, 0, 90), d = Vector3i(0, 1, 0), u = Vector3i(-1, 0, 0), q = 0},
