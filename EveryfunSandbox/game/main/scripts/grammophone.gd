@@ -1,6 +1,6 @@
 extends baseblock
 
-var sinDestortion = 1
+var sinDestortion = 0.5
 
 var defaultStorageData = {
 	rpm = 78.26
@@ -17,7 +17,6 @@ func _ready():
 	audioPlayer.bus = "Grammophone"
 	audioPlayer.stream = preload("res://game/main/music/8.mp3")
 	game.initAudioStream(audioPlayer)
-	audioPlayer.volume_db = -20
 	__updateSound()
 
 	add_child(audioPlayer)

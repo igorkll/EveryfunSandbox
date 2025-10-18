@@ -18,6 +18,7 @@ var defaultSettings = {
 			"Master": 1,
 			"Music": 0.3,
 			"Ambient": 0.2,
+			"Interactive blocks": 1,
 			"Effects": 1
 		}
 	},

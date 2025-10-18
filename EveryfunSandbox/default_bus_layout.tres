@@ -8,22 +8,29 @@ room_size = 0.5
 resource_name = "LowPassFilter"
 cutoff_hz = 4000.0
 
+[sub_resource type="AudioEffectEQ10" id="AudioEffectEQ10_j3pel"]
+resource_name = "EQ10"
+band_db/31_hz = -60.0
+band_db/62_hz = -60.0
+band_db/125_hz = -60.0
+band_db/250_hz = -60.0
+band_db/500_hz = -43.9
+band_db/1000_hz = -0.7
+band_db/2000_hz = -0.3
+band_db/4000_hz = 7.6
+band_db/8000_hz = -52.0
+band_db/16000_hz = -60.0
+
 [sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_j3pel"]
 resource_name = "Distortion"
-pre_gain = 8.63
+pre_gain = 15.3
 keep_hf_hz = 20500.0
-
-[sub_resource type="AudioEffectEQ" id="AudioEffectEQ_j3pel"]
-resource_name = "EQ"
-band_db/32_hz = -60.0
-band_db/100_hz = -48.0
-band_db/320_hz = -8.8
-band_db/1000_hz = 5.9
-band_db/3200_hz = 17.4
-band_db/10000_hz = -56.9
+post_gain = -15.3
 
 [sub_resource type="AudioEffectFilter" id="AudioEffectFilter_j3pel"]
 resource_name = "Filter"
+cutoff_hz = 5952.0
+resonance = 0.7
 
 [resource]
 bus/1/name = &"NotMusic"
@@ -54,15 +61,21 @@ bus/4/mute = false
 bus/4/bypass_fx = false
 bus/4/volume_db = 0.0
 bus/4/send = &"NotMusic"
-bus/5/name = &"Grammophone"
+bus/5/name = &"Interactive blocks"
 bus/5/solo = false
 bus/5/mute = false
 bus/5/bypass_fx = false
 bus/5/volume_db = 0.0
 bus/5/send = &"NotMusic"
-bus/5/effect/0/effect = SubResource("AudioEffectDistortion_j3pel")
-bus/5/effect/0/enabled = true
-bus/5/effect/1/effect = SubResource("AudioEffectEQ_j3pel")
-bus/5/effect/1/enabled = true
-bus/5/effect/2/effect = SubResource("AudioEffectFilter_j3pel")
-bus/5/effect/2/enabled = true
+bus/6/name = &"Grammophone"
+bus/6/solo = false
+bus/6/mute = false
+bus/6/bypass_fx = false
+bus/6/volume_db = 0.0
+bus/6/send = &"Interactive blocks"
+bus/6/effect/0/effect = SubResource("AudioEffectEQ10_j3pel")
+bus/6/effect/0/enabled = true
+bus/6/effect/1/effect = SubResource("AudioEffectDistortion_j3pel")
+bus/6/effect/1/enabled = true
+bus/6/effect/2/effect = SubResource("AudioEffectFilter_j3pel")
+bus/6/effect/2/enabled = true
