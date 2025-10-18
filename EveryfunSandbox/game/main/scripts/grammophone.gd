@@ -6,8 +6,7 @@ var defaultStorageData = {
 	rpm = 78.26
 }
 
-var eff_bg = preload("res://game/main/sounds/grammophone/background.mp3")
-var eff_border = preload("res://game/main/sounds/grammophone/disk_border.mp3")
+var effectSound = preload("res://game/main/sounds/grammophone/effect.mp3")
 
 var audioPlayer: AudioStreamPlayer3D
 var audioPlayerEffect: AudioStreamPlayer3D
@@ -19,7 +18,7 @@ func __updateSound():
 	audioPlayerEffect.pitch_scale = pitch
 
 func __play(path):
-	audioPlayerEffect.stream = eff_bg
+	audioPlayerEffect.stream = effectSound
 	audioPlayerEffect.volume_db = 5
 	audioPlayerEffect.play()
 	
@@ -31,9 +30,7 @@ func __stop():
 	audioPlayerEffect.stop()
 
 func __disk_end():
-	audioPlayerEffect.stream = eff_border
-	audioPlayerEffect.volume_db = 0
-	audioPlayerEffect.play()
+	pass
 	
 func __effect_end():
 	audioPlayerEffect.play()

@@ -398,6 +398,7 @@ func requestFile(filters, callback):
 	var dialog := FileDialog.new()
 	dialog.access = FileDialog.ACCESS_FILESYSTEM
 	dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	dialog.use_native_dialog = true
 	for filter in filters:
 		dialog.add_filter(filter[0], filter[1])
 	add_child(dialog)
