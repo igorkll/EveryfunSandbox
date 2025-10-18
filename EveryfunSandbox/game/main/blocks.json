@@ -116,6 +116,7 @@
 		"material": "materials/metal.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
-		"script": "scripts/grammophone.gd"
+		"script": "scripts/grammophone.gd",
+		"rotationMode": "360"
 	}
 ]

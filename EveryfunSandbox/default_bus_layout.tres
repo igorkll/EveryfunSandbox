@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=7 format=3 uid="uid://bghwuxbmls1k8"]
+[gd_resource type="AudioBusLayout" load_steps=8 format=3 uid="uid://bghwuxbmls1k8"]
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
 resource_name = "Reverb"
@@ -37,6 +37,12 @@ post_gain = -7.3
 resource_name = "Filter"
 cutoff_hz = 7426.0
 gain = 0.0
+db = 3
+
+[sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_j3pel"]
+resource_name = "HighPassFilter"
+cutoff_hz = 250.0
+resonance = 1.0
 db = 3
 
 [resource]
@@ -88,3 +94,5 @@ bus/6/effect/2/effect = SubResource("AudioEffectDistortion_j3pel")
 bus/6/effect/2/enabled = true
 bus/6/effect/3/effect = SubResource("AudioEffectFilter_j3pel")
 bus/6/effect/3/enabled = true
+bus/6/effect/4/effect = SubResource("AudioEffectHighPassFilter_j3pel")
+bus/6/effect/4/enabled = true

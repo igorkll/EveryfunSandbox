@@ -17,6 +17,9 @@ func _ready():
 	audioPlayer.bus = "Grammophone"
 	audioPlayer.stream = preload("res://game/main/music/8.mp3")
 	game.initAudioStream(audioPlayer)
+	audioPlayer.emission_angle_enabled = true
+	audioPlayer.emission_angle_degrees = 45
+	audioPlayer.emission_angle_filter_attenuation_db = -30
 	__updateSound()
 
 	add_child(audioPlayer)
