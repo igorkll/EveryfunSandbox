@@ -1,5 +1,7 @@
 extends Node
 
+var tps_60 = 1.0 / 60.0
+
 func setTimeout(callback: Callable, delay_seconds: float) -> Timer:
 	var timer = Timer.new()
 	timer.wait_time = delay_seconds
