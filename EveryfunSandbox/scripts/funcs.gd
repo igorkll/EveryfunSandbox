@@ -57,3 +57,12 @@ func vec3_to_vec3i(v: Vector3) -> Vector3i:
 	
 func vec3_to_vec3i_up(v: Vector3) -> Vector3i:
 	return Vector3i(v.ceil())
+
+func getRandomDirection() -> Vector3:
+	var u = randf_range(-1.0, 1.0)
+	var theta = randf() * TAU
+	var r = sqrt(max(0.0, 1.0 - u * u))
+	var x = r * cos(theta)
+	var y = r * sin(theta)
+	var z = u
+	return Vector3(x, y, z)

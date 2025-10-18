@@ -2,6 +2,7 @@ extends Node3D
 class_name baseblock
 
 var storageData = {}
+var scriptData = {}
 
 var voxelTerrain
 var voxelPosition: Vector3i

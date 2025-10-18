@@ -35,6 +35,7 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 		
 		node.position = childPos
 		node.storageData = storageData
+		node.scriptData = obj.get("script_data", {})
 		
 		node.voxelTerrain = terrain
 		node.voxelPosition = position

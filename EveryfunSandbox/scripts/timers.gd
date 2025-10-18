@@ -17,7 +17,8 @@ func setInterval(callback: Callable, delay_seconds: float) -> Timer:
 	timer.wait_time = delay_seconds
 	timer.autostart = true
 	timer.timeout.connect(func(): 
-		callback.call()
+		if callback.call():
+			clearTimeout(timer)
 	)
 	get_tree().root.add_child.call_deferred(timer)
 	return timer
