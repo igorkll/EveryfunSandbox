@@ -28,3 +28,4 @@ func setVariant(variant):
 	voxelBlockItem = voxelBlockItem.variantsList[variant]
 	voxelBlockId = voxelBlockItem.id
 	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)
+	saves.changeInteractiveVoxel(voxelTerrain, position, voxelBlockId)

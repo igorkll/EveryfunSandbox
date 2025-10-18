@@ -79,7 +79,7 @@ func unloadBlock(position: Vector3i):
 			obj.queue_free()
 		terrain.blockChildren.erase(position)
 
-func placeBlock(position: Vector3i, blockId: int, rotation=0, withSound=true, storageData=null):
+func placeBlock(position: Vector3i, blockId: int, rotation=0, variant=0, withSound=true, storageData=null):
 	var terrain = game.terrain
 	
 	if storageData == null:
@@ -96,13 +96,12 @@ func placeBlock(position: Vector3i, blockId: int, rotation=0, withSound=true, st
 	if withSound && obj.has("sound_place"):
 		game.playSound(game.soundList[obj.sound_place], getGlobalPositionFromVoxelPosition(position))
 	
-	if terrain == game.terrain && isInteractive(blockId):
-		saves.regInteractiveVoxel(position, blockId, storageData)
+	if isInteractive(blockId):
+		saves.regInteractiveVoxel(terrain, position, blockId, storageData)
 	
 	if saves.isInteractiveChunkBlockLoaded(position):
 		loadBlock(position, blockId, storageData)
-	
-		
+
 func destroyBlock(position: Vector3i, withSound=true):
 	var terrain = game.terrain
 	
@@ -111,8 +110,7 @@ func destroyBlock(position: Vector3i, withSound=true):
 		game.playSound(game.soundList[obj.sound_destroy], getGlobalPositionFromVoxelPosition(position))
 	
 	unloadBlock(position)
-	if terrain == game.terrain:
-		saves.regInteractiveVoxel(position, null)
+	saves.regInteractiveVoxel(terrain, position, null)
 	
 	terrain.voxel_tool.set_voxel(position, 0)
 
