@@ -5,3 +5,4 @@ func _ready():
 
 func _use():
 	game.playSound(game.soundList["explosion"], position)
+	destroy()

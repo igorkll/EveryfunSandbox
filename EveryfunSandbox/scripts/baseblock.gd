@@ -31,3 +31,8 @@ func setVariant(variant):
 	voxelBlockItem = game.blockList[voxelBlockId]
 	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)
 	saves.changeInteractiveVoxel(voxelTerrain, position, voxelBlockId)
+
+func destroy():
+	voxelTerrain.voxel_tool.set_voxel(voxelPosition, 0)
+	saves.changeInteractiveVoxel(voxelTerrain, position, 0)
+	terrainUtils.destroyBlock(position, false)
