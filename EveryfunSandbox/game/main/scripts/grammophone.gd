@@ -13,6 +13,9 @@ func __updateSound():
 	audioPlayer.pitch_scale = (storageData.rpm + (sin(rotationCount * PI * 2) * sinDestortion)) / defaultStorageData.rpm
 
 func _ready():
+	var node = Node3D.new()
+	node.rotation_degrees = Vector3(90, 0, -90)
+	
 	audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.bus = "Grammophone"
 	audioPlayer.stream = preload("res://game/main/music/8.mp3")
@@ -22,7 +25,8 @@ func _ready():
 	audioPlayer.emission_angle_filter_attenuation_db = -30
 	__updateSound()
 
-	add_child(audioPlayer)
+	node.add_child(audioPlayer)
+	add_child(node)
 	audioPlayer.play()
 
 func _process(delta):
