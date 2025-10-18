@@ -18,7 +18,8 @@ func __updateSound():
 
 func __play(path):
 	audioPlayerEffect.stream = eff_bg
-	audioPlayerEffect.volume_db = 25
+	audioPlayerEffect.volume_db = 15
+	audioPlayerEffect.max_db = 15
 	audioPlayerEffect.play()
 	
 	audioPlayer.stream = game.loadResource(path)
@@ -27,16 +28,13 @@ func __play(path):
 func __stop():
 	audioPlayer.stop()
 	audioPlayerEffect.stop()
-	
-func __initAudioPlayer(audioPlayer):
-	game.initAudioStream(audioPlayer)
-	audioPlayer.emission_angle_enabled = true
-	audioPlayer.emission_angle_degrees = 45
-	audioPlayer.emission_angle_filter_attenuation_db = -30
 
 func __disk_end():
 	audioPlayerEffect.stream = eff_border
 	audioPlayerEffect.volume_db = 0
+	audioPlayerEffect.play()
+	
+func __effect_end():
 	audioPlayerEffect.play()
 
 
@@ -46,13 +44,17 @@ func _ready():
 	
 	audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.bus = "Grammophone"
-	__initAudioPlayer(audioPlayer)
+	game.initAudioStream(audioPlayer)
+	audioPlayer.emission_angle_enabled = true
+	audioPlayer.emission_angle_degrees = 45
+	audioPlayer.emission_angle_filter_attenuation_db = -30
 	audioPlayer.connect("finished", __disk_end)
 	node.add_child(audioPlayer)
 	
 	audioPlayerEffect = AudioStreamPlayer3D.new()
 	audioPlayerEffect.bus = "Effects"
-	__initAudioPlayer(audioPlayerEffect)
+	game.initAudioStream(audioPlayerEffect)
+	audioPlayerEffect.connect("finished", __effect_end)
 	node.add_child(audioPlayerEffect)
 	
 	__updateSound()
