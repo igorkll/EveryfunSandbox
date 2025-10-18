@@ -20,3 +20,5 @@ var default_scale_on_1080 = 1.5
 
 var default_sound_unit_size = 16
 var default_sound_max_distance = 60
+
+var extlist_audio = [".mp3", ".wav", ".ogg", ".flac"]

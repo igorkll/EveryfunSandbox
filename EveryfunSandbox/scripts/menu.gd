@@ -27,6 +27,14 @@ func switchUI(ui):
 			game.player.setControlLock(false)
 			game.setMouseEnabled(false)
 			game.setMuteAllExceptMusic(false)
+		2:
+			menuUI.visible = false
+			gameUI.visible = false
+			
+			game.camera.setOrbital(false)
+			game.player.setControlLock(true)
+			game.setMouseEnabled(true)
+			game.setMuteAllExceptMusic(false)
 
 func _ready():
 	menuUI = game.mainNode.find_child("menuUI", true, false)

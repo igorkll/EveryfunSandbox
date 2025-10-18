@@ -12,13 +12,17 @@ var rotationCount = 0
 func __updateSound():
 	audioPlayer.pitch_scale = (storageData.rpm + (sin(rotationCount * PI * 2) * sinDestortion)) / defaultStorageData.rpm
 
+func __loadStream(path):
+	print(path)
+	audioPlayer.stream = load(path)
+	audioPlayer.play()
+
 func _ready():
 	var node = Node3D.new()
 	node.rotation_degrees = Vector3(0, -90, 0)
 	
 	audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.bus = "Grammophone"
-	audioPlayer.stream = preload("res://game/main/music/8.mp3")
 	game.initAudioStream(audioPlayer)
 	audioPlayer.emission_angle_enabled = true
 	audioPlayer.emission_angle_degrees = 45
@@ -27,7 +31,6 @@ func _ready():
 
 	node.add_child(audioPlayer)
 	add_child(node)
-	audioPlayer.play()
 
 func _process(delta):
 	rotationCount += (delta * storageData.rpm) / 60
@@ -35,3 +38,6 @@ func _process(delta):
 
 func _requestDefaultStorageData():
 	return defaultStorageData
+
+func _use():
+	game.requestFile(consts.extlist_audio, __loadStream)

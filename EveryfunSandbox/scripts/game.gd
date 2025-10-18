@@ -383,6 +383,22 @@ func getDefaultStorageData(blockId: int):
 func isInteractive(blockId: int) -> bool:
 	var obj = game.blockList[blockId]
 	return obj.has("script")
+	
+func requestFile(extensions, callback):
+	var dialog := FileDialog.new()
+	dialog.access = FileDialog.ACCESS_FILESYSTEM
+	dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	dialog.filters = []
+	for extension in extensions:
+		dialog.filters.append("*." + extension + "; " + extension)
+	add_child(dialog)
+	dialog.popup_centered()
+
+	menu.switchUI(2)
+	dialog.file_selected.connect(func(path):
+		menu.switchUI(1)
+		callback.call(path)
+	)
 
 # ------------------------------------------------- backend
 
