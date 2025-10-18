@@ -99,6 +99,15 @@ func destroyBlock(terrain, position: Vector3i, withSound=true):
 	
 	terrain.voxel_tool.set_voxel(position, 0)
 
+func callBlock(terrain, position: Vector3i, method, ...args) -> bool:
+	var children = getBlockChildren(terrain, position)
+	var result = false
+	for child in children:
+		if child.has_method(method):
+			if child.callv(method, args):
+				result = true
+	return result
+
 func useBlock(terrain, position: Vector3i) -> bool:
 	var children = getBlockChildren(terrain, position)
 	var used = false
