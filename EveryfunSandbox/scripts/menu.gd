@@ -3,6 +3,7 @@ extends Node
 var menuUI
 var gameUI
 
+var toggleTimeout = 0
 var currentUI
 
 func switchUI(ui):
@@ -49,8 +50,12 @@ func _ready():
 func _process(delta):
 	if not saves.isWorldFullLoaded():
 		switchUI(0)
-	elif Input.is_action_just_pressed("menu"):
+	elif Input.is_action_just_pressed("menu") && toggleTimeout <= 0:
 		if currentUI == 1:
 			switchUI(0)
 		else:
 			switchUI(1)
+	
+	toggleTimeout -= delta
+	if toggleTimeout < 0:
+		toggleTimeout = 0

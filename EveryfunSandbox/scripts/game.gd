@@ -411,6 +411,7 @@ func requestFile(filters, callback):
 		callback.call(path)
 	)
 	dialog.canceled.connect(func():
+		menu.toggleTimeout = 1.0 / 30.0
 		menu.switchUI(1)
 		callback.call(null)
 	)
