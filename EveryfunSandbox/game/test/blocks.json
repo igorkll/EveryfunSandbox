@@ -42,5 +42,16 @@
 		"texture_mode": "UNIFORM_SIDE",
 		"script": "scripts/testDirection.gd",
 		"rotationMode": "360V"
+	},
+	{
+		"name": "testStorage",
+		"texture": "textures/testStorage/disabled.png",
+		"texture_mode": "UNIFORM",
+		"script": "scripts/testStorage.gd",
+		"variants": [
+			{
+				"texture": "textures/testStorage/enabled.png"
+			}
+		]
 	}
 ]
