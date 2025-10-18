@@ -17,3 +17,6 @@ var player_mul_crouch = 0.5
 var player_mul_sprint = 2
 
 var default_scale_on_1080 = 1.5
+
+var default_sound_unit_size = 16
+var default_sound_max_distance = 60

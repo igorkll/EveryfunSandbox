@@ -108,5 +108,14 @@
 		"script_data": {
 			"explosiveLevel": 150
 		}
+	},
+	{
+		"name": "grammophone",
+		"texture": "blocks/metal/normal.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/grammophone.gd"
 	}
 ]

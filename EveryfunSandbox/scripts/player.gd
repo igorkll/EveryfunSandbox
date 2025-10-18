@@ -164,7 +164,7 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("place"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and terrainUtils.isCellFree(game.terrain, result[1].previous_position):
-				terrainUtils.placeBlock(game.terrain, result[1].previous_position, game.blockIDs["nuclear_explosive"], game.getBlockDefaultRotation($camera.global_transform.basis.z))
+				terrainUtils.placeBlock(game.terrain, result[1].previous_position, game.blockIDs["grammophone"], game.getBlockDefaultRotation($camera.global_transform.basis.z))
 				
 		if Input.is_action_just_pressed("use"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)

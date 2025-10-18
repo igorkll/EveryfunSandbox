@@ -18,6 +18,10 @@ boot_splash/image="uid://2dvpirsyultl"
 config/icon="uid://dmm0c18k048ss"
 boot_splash/minimum_display_time=2000
 
+[audio]
+
+general/3d_panning_strength=0.75
+
 [autoload]
 
 consts="*res://scripts/consts.gd"
