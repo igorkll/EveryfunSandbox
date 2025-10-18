@@ -25,7 +25,6 @@ func getVariant():
 	return voxelBlockItem.currentVariant
 
 func setVariant(variant):
-	voxelBlockItem.currentVariant = variant
 	voxelBlockItem = voxelBlockItem.variantsList[variant]
 	voxelBlockId = voxelBlockItem.id
 	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)
