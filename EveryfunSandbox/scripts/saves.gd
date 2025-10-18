@@ -129,23 +129,27 @@ func regInteractiveVoxel(terrain, position: Vector3i, blockId, storageData=null)
 		storageData = {}
 	
 	var chunkPosition = __getChunkPosition(position)
-	if not currentWorldData.interactiveVoxels.has(chunkPosition):
-		currentWorldData.interactiveVoxels[chunkPosition] = {}
-	
 	if blockId != null:
+		if not currentWorldData.interactiveVoxels.has(chunkPosition):
+			currentWorldData.interactiveVoxels[chunkPosition] = {}
 		currentWorldData.interactiveVoxels[chunkPosition][position] = [blockId, storageData]
-	else:
+	elif currentWorldData.interactiveVoxels.has(chunkPosition):
 		currentWorldData.interactiveVoxels[chunkPosition].erase(position)
+		if currentWorldData.interactiveVoxels[chunkPosition].is_empty():
+			currentWorldData.interactiveVoxels.erase(chunkPosition)
+	
 		
 func changeInteractiveVoxel(terrain, position: Vector3i, blockId):
 	var chunkPosition = __getChunkPosition(position)
-	if not currentWorldData.interactiveVoxels.has(chunkPosition):
-		currentWorldData.interactiveVoxels[chunkPosition] = {}
 	
 	if blockId != null:
+		if not currentWorldData.interactiveVoxels.has(chunkPosition):
+			currentWorldData.interactiveVoxels[chunkPosition] = {}
 		currentWorldData.interactiveVoxels[chunkPosition][position][0] = blockId
-	else:
+	elif currentWorldData.interactiveVoxels.has(chunkPosition):
 		currentWorldData.interactiveVoxels[chunkPosition].erase(position)
+		if currentWorldData.interactiveVoxels[chunkPosition].is_empty():
+			currentWorldData.interactiveVoxels.erase(chunkPosition)
 
 func __updateLoadedInteractiveVoxels(loadersPositions):
 	var currentLoadedChunks = {}
@@ -192,10 +196,9 @@ func __checkLoaded():
 	var loadersPositions = []
 	loadersPositions.append(game.camera.global_position)
 	
-	var chunkLoadingDistance = game.view_distance / _interactiveChunkSize
+	var chunkLoadingDistance = floor((game.view_distance * 2) / _interactiveChunkSize)
 	if chunkLoadingDistance < 1:
 		chunkLoadingDistance = 1
-	chunkLoadingDistance = 2
 	
 	var duplicatedLoadersPositions
 	if chunkLoadingDistance > 1:
