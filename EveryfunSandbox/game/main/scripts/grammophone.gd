@@ -14,7 +14,7 @@ func __updateSound():
 
 func _ready():
 	var node = Node3D.new()
-	node.rotation_degrees = Vector3(90, 0, -90)
+	node.rotation_degrees = Vector3(0, -90, 0)
 	
 	audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.bus = "Grammophone"
