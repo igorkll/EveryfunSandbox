@@ -94,7 +94,19 @@
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "scripts/explosive.gd",
 		"script_data": {
-			"explosiveLevel": 3
+			"explosiveLevel": 5
+		}
+	},
+	{
+		"name": "nuclear_explosive",
+		"texture": "blocks/nuclear_explosive/texture.png",
+		"texture_mode": "UNIFORM",
+		"material": "blocks/nuclear_explosive/material.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/explosive.gd",
+		"script_data": {
+			"explosiveLevel": 150
 		}
 	}
 ]

@@ -1,5 +1,4 @@
 shader_type spatial;
-render_mode specular_schlick_ggx;
 
 uniform sampler2D dif_texture : filter_linear;
 uniform sampler2D dif_texture_no_filter : filter_nearest;
