@@ -537,7 +537,7 @@ func _checkVariants(blockVariants, item):
 	if item.has("variants"):
 		var currentVariant = 1
 		for variant in item["variants"]:
-			var variantItem = funcs.merge_dicts(item, variant)
+			var variantItem = funcs.merge_dicts(variant, item)
 			variantItem.variantsList = item.variantsList
 			variantItem.currentVariant = currentVariant
 			item.variantsList.append(variantItem)
