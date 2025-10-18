@@ -200,17 +200,15 @@ func __checkLoaded():
 	var duplicatedLoadersPositions
 	if chunkLoadingDistance > 1:
 		duplicatedLoadersPositions = []
-		print("-------------")
 		for ix in range(chunkLoadingDistance):
 			for iy in range(chunkLoadingDistance):
 				for iz in range(chunkLoadingDistance):
 					for pos in loadersPositions:
 						var loaderPosition = pos + (Vector3(ix, iy, iz) * _interactiveChunkSize)
-						var offset = (_interactiveChunkSize * chunkLoadingDistance) / 2
+						var offset = (_interactiveChunkSize / 2) * (chunkLoadingDistance - 1)
 						loaderPosition.x -= offset
 						loaderPosition.y -= offset
 						loaderPosition.z -= offset
-						print(game.camera.global_position, " ", loaderPosition)
 						duplicatedLoadersPositions.append(loaderPosition)
 	elif chunkLoadingDistance == 1:
 		duplicatedLoadersPositions = loadersPositions
