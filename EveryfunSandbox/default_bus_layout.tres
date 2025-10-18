@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=8 format=3 uid="uid://bghwuxbmls1k8"]
+[gd_resource type="AudioBusLayout" load_steps=10 format=3 uid="uid://bghwuxbmls1k8"]
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
 resource_name = "Reverb"
@@ -7,6 +7,14 @@ room_size = 0.5
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_j3pel"]
 resource_name = "LowPassFilter"
 cutoff_hz = 4000.0
+
+[sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_j3pel"]
+resource_name = "StereoEnhance"
+pan_pullout = 0.0
+
+[sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_g28q7"]
+resource_name = "StereoEnhance"
+pan_pullout = 0.0
 
 [sub_resource type="AudioEffectEQ10" id="AudioEffectEQ10_j3pel"]
 resource_name = "EQ10"
@@ -74,12 +82,16 @@ bus/4/mute = false
 bus/4/bypass_fx = false
 bus/4/volume_db = 0.0
 bus/4/send = &"NotMusic"
+bus/4/effect/0/effect = SubResource("AudioEffectStereoEnhance_j3pel")
+bus/4/effect/0/enabled = true
 bus/5/name = &"Interactive blocks"
 bus/5/solo = false
 bus/5/mute = false
 bus/5/bypass_fx = false
 bus/5/volume_db = 0.0
 bus/5/send = &"NotMusic"
+bus/5/effect/0/effect = SubResource("AudioEffectStereoEnhance_g28q7")
+bus/5/effect/0/enabled = true
 bus/6/name = &"Grammophone"
 bus/6/solo = false
 bus/6/mute = false

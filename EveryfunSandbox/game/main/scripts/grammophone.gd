@@ -18,6 +18,7 @@ func __updateSound():
 
 func __play(path):
 	audioPlayerEffect.stream = eff_bg
+	audioPlayerEffect.volume_db = 25
 	audioPlayerEffect.play()
 	
 	audioPlayer.stream = game.loadResource(path)
@@ -35,6 +36,7 @@ func __initAudioPlayer(audioPlayer):
 
 func __disk_end():
 	audioPlayerEffect.stream = eff_border
+	audioPlayerEffect.volume_db = 0
 	audioPlayerEffect.play()
 
 
