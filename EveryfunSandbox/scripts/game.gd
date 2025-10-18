@@ -363,15 +363,16 @@ func exit():
 func blockScriptRequest(blockId: int, methodName, ...args):
 	var obj = game.blockList[blockId]
 	if obj.has("script"):
-		var script = game.loadResource(obj.script)
+		var script = game.loadResource(obj.script).new()
 		if script.has_method(methodName):
 			return script.callv(methodName, args)
 			
 func isBlockScriptMethod(blockId: int, methodName):
 	var obj = game.blockList[blockId]
 	if obj.has("script"):
-		var script = game.loadResource(obj.script)
+		var script = game.loadResource(obj.script).new()
 		return script.has_method(methodName)
+	return false
 			
 func getDefaultStorageData(blockId: int):
 	if isBlockScriptMethod(blockId, "_requestDefaultStorageData"):
