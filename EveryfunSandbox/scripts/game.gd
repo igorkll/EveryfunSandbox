@@ -777,11 +777,12 @@ func _getLibrary():
 				if mesh_instance.size() > 0:
 					mesh = mesh_instance[0].mesh
 			
-			print(mesh)
+			blockModel.mesh = mesh
 			for i in range(mesh.get_surface_count()):
 				mesh.surface_set_material(i, material)
-			blockModel.mesh = mesh
-					
+				blockModel.set_mesh_collision_enabled(i, block.get("mesh_collision", true))
+				
+			
 		elif block.has("texture"):
 			var material = _getMaterial(block)
 			
@@ -804,6 +805,8 @@ func _getLibrary():
 			else:
 				blockModel.mesh_ortho_rotation_index = 0
 		
+		blockModel.transparency_index = block.get("transparency_index", 0)
+		blockModel.culls_neighbors = block.get("culls_neighbors", true)
 		library.add_model(blockModel)
 	
 	return library
