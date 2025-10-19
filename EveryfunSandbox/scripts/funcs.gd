@@ -73,3 +73,6 @@ func checksum_dict(data: Dictionary, keys: Array) -> int:
 		if data.has(k):
 			text += str(k) + ":" + str(data[k]) + ";"
 	return hash(text)
+
+func is_number(value) -> bool:
+	return value is int or value is float

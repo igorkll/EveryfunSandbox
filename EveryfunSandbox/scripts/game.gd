@@ -8,6 +8,7 @@ var blockLibrary
 var settings
 var miscData = {}
 var muteAllExceptMusic = false
+var transparency_material
 
 var defaultSettings = {
 	"statistics": {
@@ -508,6 +509,11 @@ var rotationModes = {
 }
 
 func _ready():
+	transparency_material = StandardMaterial3D.new()
+	transparency_material.albedo_color = Color(1,1,1,0)
+	transparency_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	transparency_material.flags_transparent = true
+
 	var array_360_modes = rotationModes["360"].duplicate()
 	array_360_modes.reverse()
 	for rotationMode_360 in array_360_modes:
@@ -780,12 +786,15 @@ func _getLibrary():
 			blockModel.mesh = mesh
 			var mesh_collision_enabled = block.get("mesh_collision", true)
 			for i in range(mesh.get_surface_count()):
-				mesh.surface_set_material(i, material)
-				
 				var _mesh_collision_enabled = mesh_collision_enabled
-				if mesh_collision_enabled is int:
+				if funcs.is_number(mesh_collision_enabled):
 					_mesh_collision_enabled = mesh_collision_enabled == i
 				blockModel.set_mesh_collision_enabled(i, _mesh_collision_enabled)
+				
+				if block.get("hide_collision") && _mesh_collision_enabled:
+					mesh.surface_set_material(i, transparency_material)
+				else:
+					mesh.surface_set_material(i, material)
 				
 			blockModel.collision_aabbs = [AABB(Vector3(0, 0, 0), Vector3(1, 1, 1))]
 		elif block.has("texture"):
