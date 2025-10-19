@@ -112,7 +112,7 @@
 	{
 		"name": "grammophone",
 		"texture": "blocks/grammophone/texture.png",
-		"mesh": "blocks/grammophone/mesh.fbx",
+		"mesh": "blocks/grammophone/mesh.obj",
 		"material": "blocks/grammophone/material.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",

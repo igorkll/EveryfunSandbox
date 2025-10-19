@@ -127,6 +127,9 @@ func getGlobalPositionFromVoxelPosition(terrain, position: Vector3i) -> Vector3:
 	return terrain.global_transform.origin + Vector3(position.x, position.y, position.z) + Vector3(0.5, 0.5, 0.5)
 
 func isCellFree(terrain, position: Vector3i) -> bool:
+	if terrain.voxel_tool.get_voxel(position) != 0:
+		return false
+	
 	var space_state = get_tree().current_scene.get_world_3d().direct_space_state
 	var query = PhysicsShapeQueryParameters3D.new()
 	

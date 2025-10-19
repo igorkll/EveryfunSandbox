@@ -627,7 +627,9 @@ func _prepairItem(item, path):
 		item.sound_destroy = item.sound_placeDestroy
 		
 	if item.has("mesh"):
-		item.mesh = loadResource(path.path_join(item.mesh)).instantiate()
+		item.mesh = loadResource(path.path_join(item.mesh))
+		if item.mesh is PackedScene:
+			item.mesh = item.mesh.instantiate()
 	
 	if item.has("texture"):
 		item.texture = loadResource(path.path_join(item.texture))
@@ -767,15 +769,19 @@ func _getLibrary():
 			
 			blockModel = VoxelBlockyModelMesh.new()
 			
-			var scene = block.mesh
-			if scene:
-				var mesh_instance = scene.find_children("", "MeshInstance3D", true)
+			var mesh
+			if block.mesh is Mesh:
+				mesh = block.mesh
+			else:
+				var mesh_instance = block.mesh.find_children("", "MeshInstance3D", true)
 				if mesh_instance.size() > 0:
-					var mesh = mesh_instance[0].mesh
-					print(mesh)
-					for i in range(mesh.get_surface_count()):
-						mesh.surface_set_material(i, material)
-					blockModel.mesh = mesh
+					mesh = mesh_instance[0].mesh
+			
+			print(mesh)
+			for i in range(mesh.get_surface_count()):
+				mesh.surface_set_material(i, material)
+			blockModel.mesh = mesh
+					
 		elif block.has("texture"):
 			var material = _getMaterial(block)
 			
