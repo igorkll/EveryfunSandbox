@@ -116,6 +116,7 @@
 		"mesh_collision": 1,
 		"hide_collision": true,
 		"material": "blocks/grammophone/material.png",
+		"normal": "blocks/grammophone/normal.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "scripts/grammophone.gd",

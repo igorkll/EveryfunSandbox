@@ -59,7 +59,7 @@ func _ready():
 	game.initAudioStream(audioPlayerEffect)
 	audioPlayerEffect.attenuation_filter_cutoff_hz = 20500
 	audioPlayerEffect.unit_size = 30
-	audioPlayerEffect.max_db = 20
+	audioPlayerEffect.max_db = 10
 	audioPlayerEffect.connect("finished", __effect_end)
 	node.add_child(audioPlayerEffect)
 	

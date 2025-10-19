@@ -8,6 +8,9 @@ uniform sampler2D material_texture : filter_linear;
 uniform sampler2D material_texture_no_filter : filter_nearest;
 uniform bool no_material_filter = false;
 
+uniform sampler2D normals_texture : filter_linear;
+uniform bool use_normals_texture = false;
+
 uniform bool auto_normals = false;
 
 const float checkOffset = 1.0 / 512.0;
@@ -37,7 +40,12 @@ void fragment() {
 	METALLIC = material_color.b;
 	
 	// normal
-	if (auto_normals) {
+	if (use_normals_texture) {
+		vec3 normal = texture(normals_texture, UV).rgb;
+	    normal *= 2.0;
+	    normal -= 1.0;
+		NORMAL = normalize(NORMAL + normal);
+	} else if (auto_normals) {
 	    float hL = get_luminance(texture(dif_texture, UV - vec2(checkOffset, 0.0)).rgb);
 	    float hR = get_luminance(texture(dif_texture, UV + vec2(checkOffset, 0.0)).rgb);
 	    float hD = get_luminance(texture(dif_texture, UV - vec2(0.0, checkOffset)).rgb);

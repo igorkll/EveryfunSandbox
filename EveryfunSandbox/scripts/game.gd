@@ -643,6 +643,9 @@ func _prepairItem(item, path):
 	if item.has("material"):
 		item.material = loadResource(path.path_join(item.material))
 		
+	if item.has("normal"):
+		item.normal = loadResource(path.path_join(item.normal))
+		
 	if item.has("script"):
 		item.script = path.path_join(item.script)
 
@@ -753,6 +756,10 @@ func _getMaterial(block):
 	else:
 		material.set_shader_parameter("material_texture", materialTexture)
 		material.set_shader_parameter("no_material_filter", false)
+		
+	if block.has("normal"):
+		material.set_shader_parameter("normals_texture", block.normal)
+		material.set_shader_parameter("use_normals_texture", true)
 		
 	if block.get("texture_no_filter", false):
 		material.set_shader_parameter("dif_texture_no_filter", block.texture)
