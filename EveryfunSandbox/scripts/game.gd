@@ -32,11 +32,11 @@ var defaultSettings = {
 		}
 	},
 	"gui": {
-		"scale": 1
+		"scale": 1,
+		"useNativeFileDialog": true
 	},
 	"game": {
-		"autoSaveInterval": 60,
-		"useNativeDialog": true
+		"autoSaveInterval": 60
 	},
 	"graphic": {
 		"window": 0,
@@ -399,7 +399,7 @@ func requestFile(filters, callback):
 	var dialog := FileDialog.new()
 	dialog.access = FileDialog.ACCESS_FILESYSTEM
 	dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	dialog.use_native_dialog = settings.game.useNativeDialog
+	dialog.use_native_dialog = settings.gui.useNativeFileDialog
 	for filter in filters:
 		dialog.add_filter(filter[0], filter[1])
 	add_child(dialog)
