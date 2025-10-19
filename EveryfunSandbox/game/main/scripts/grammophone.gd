@@ -6,7 +6,7 @@ var defaultStorageData = {
 	rpm = 78.26
 }
 
-var effectSound = preload("res://game/main/sounds/grammophone/effect.mp3")
+var effectSound = preload("res://game/main/blocks/grammophone/effect.mp3")
 
 var audioPlayer: AudioStreamPlayer3D
 var audioPlayerEffect: AudioStreamPlayer3D
@@ -35,12 +35,10 @@ func __onFileSelected(path):
 
 func __disk_end():
 	pass
-	
-func __effect_end():
-	audioPlayerEffect.play()
-
 
 func _ready():
+	effectSound.loop = true
+	
 	var node = Node3D.new()
 	node.rotation_degrees = Vector3(0, -90, 0)
 	
@@ -60,7 +58,6 @@ func _ready():
 	audioPlayerEffect.attenuation_filter_cutoff_hz = 20500
 	audioPlayerEffect.unit_size = 30
 	audioPlayerEffect.max_db = 10
-	audioPlayerEffect.connect("finished", __effect_end)
 	node.add_child(audioPlayerEffect)
 	
 	__updateSound()
