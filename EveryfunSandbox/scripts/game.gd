@@ -61,7 +61,7 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
-		"normals": false,
+		"auto_normals": false,
 		"bias": 0.1,
 		"normalBias": 2.0
 	},
@@ -71,7 +71,7 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
-		"normals": false,
+		"auto_normals": false,
 		"bias": 0.1,
 		"normalBias": 2.0
 	},
@@ -81,7 +81,7 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
-		"normals": true,
+		"auto_normals": true,
 		"bias": 0.05,
 		"normalBias": 5.0
 	},
@@ -91,7 +91,7 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": true,
 		"ssil": true,
-		"normals": true,
+		"auto_normals": true,
 		"bias": 0.01,
 		"normalBias": 10.0
 	}
@@ -135,7 +135,7 @@ func setRenderDistance(index):
 func updateShaderParameters(quality):
 	var graphicSettingsPreset = graphicSettingsPresets[quality]
 	for _material in _blockMaterials:
-		_material.set_shader_parameter("use_normals", graphicSettingsPreset.normals)
+		_material.set_shader_parameter("auto_normals", graphicSettingsPreset.auto_normals)
 
 func setGraphicQuality(quality):
 	var graphicSettingsPreset = graphicSettingsPresets[quality]

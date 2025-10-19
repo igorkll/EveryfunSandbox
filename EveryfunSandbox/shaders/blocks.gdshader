@@ -2,14 +2,16 @@ shader_type spatial;
 
 uniform sampler2D dif_texture : filter_linear;
 uniform sampler2D dif_texture_no_filter : filter_nearest;
+uniform bool no_filter = false;
+
 uniform sampler2D material_texture : filter_linear;
 uniform sampler2D material_texture_no_filter : filter_nearest;
-uniform bool no_filter = false;
 uniform bool no_material_filter = false;
-uniform bool use_normals = false;
-uniform float strength = 0.7;
+
+uniform bool auto_normals = false;
 
 const float checkOffset = 1.0 / 512.0;
+const float strength = 0.7;
 
 float get_luminance(vec3 color) {
     return dot(color, vec3(0.2126, 0.7152, 0.0722));
@@ -35,7 +37,7 @@ void fragment() {
 	METALLIC = material_color.b;
 	
 	// normal
-	if (use_normals) {
+	if (auto_normals) {
 	    float hL = get_luminance(texture(dif_texture, UV - vec2(checkOffset, 0.0)).rgb);
 	    float hR = get_luminance(texture(dif_texture, UV + vec2(checkOffset, 0.0)).rgb);
 	    float hD = get_luminance(texture(dif_texture, UV - vec2(0.0, checkOffset)).rgb);
