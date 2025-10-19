@@ -50,7 +50,7 @@ func _ready():
 	audioPlayer.emission_angle_enabled = true
 	audioPlayer.emission_angle_degrees = 45
 	audioPlayer.emission_angle_filter_attenuation_db = -30
-	audioPlayer.max_db = 40
+	audioPlayer.max_db = 30
 	audioPlayer.connect("finished", __disk_end)
 	node.add_child(audioPlayer)
 	
