@@ -778,11 +778,16 @@ func _getLibrary():
 					mesh = mesh_instance[0].mesh
 			
 			blockModel.mesh = mesh
+			var mesh_collision_enabled = block.get("mesh_collision", true)
 			for i in range(mesh.get_surface_count()):
 				mesh.surface_set_material(i, material)
-				blockModel.set_mesh_collision_enabled(i, block.get("mesh_collision", true))
 				
-			
+				var _mesh_collision_enabled = mesh_collision_enabled
+				if mesh_collision_enabled is int:
+					_mesh_collision_enabled = mesh_collision_enabled == i
+				blockModel.set_mesh_collision_enabled(i, _mesh_collision_enabled)
+				
+			blockModel.collision_aabbs = [AABB(Vector3(0, 0, 0), Vector3(1, 1, 1))]
 		elif block.has("texture"):
 			var material = _getMaterial(block)
 			
