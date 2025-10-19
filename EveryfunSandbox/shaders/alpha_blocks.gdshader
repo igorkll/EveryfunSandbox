@@ -38,7 +38,7 @@ void fragment() {
 	EMISSION = ALBEDO * material_color.r * 2.0;
 	ROUGHNESS = material_color.g;
 	METALLIC = material_color.b;
-	// ALPHA = color.a;
+	ALPHA = color.a;
 	
 	// normal
 	if (use_normals_texture) {

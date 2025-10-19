@@ -420,7 +420,8 @@ func requestFile(filters, callback):
 
 # ------------------------------------------------- backend
 
-var _shader = preload("res://shaders/blocks.gdshader")
+var _blocks_shader = preload("res://shaders/blocks.gdshader")
+var _alpha_blocks_shader = preload("res://shaders/alpha_blocks.gdshader")
 
 # map size: x y
 # texture pos: x- x+ y- y+ z- z+
@@ -747,7 +748,10 @@ func _getMaterial(block):
 		return _materialCache[cachename]
 	
 	var material = ShaderMaterial.new()
-	material.shader = _shader
+	if block.get("use_alpha", false):
+		material.shader = _alpha_blocks_shader
+	else:
+		material.shader = _blocks_shader
 	
 	var materialTexture = block.get("material", _defaultMaterialTexture)
 	if block.get("material_no_filter", false):
@@ -826,7 +830,7 @@ func _getLibrary():
 			else:
 				blockModel.mesh_ortho_rotation_index = 0
 		
-		blockModel.transparency_index = block.get("transparency_index", 0)
+		blockModel.transparency_index = block.get("transparency_index", 1 if block.get("use_alpha", false) else 0)
 		blockModel.culls_neighbors = block.get("culls_neighbors", true)
 		library.add_model(blockModel)
 	

@@ -59,6 +59,7 @@
 		"texture": "blocks/glass.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/glass.png",
+		"use_alpha": true,
 		"sound": "glass",
 		"sound_placeDestroy": "glass_placeDestroy"
 	},
