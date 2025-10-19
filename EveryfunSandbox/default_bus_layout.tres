@@ -25,7 +25,7 @@ band_db/250_hz = -60.0
 band_db/500_hz = -43.9
 band_db/1000_hz = -36.7
 band_db/2000_hz = 1.7
-band_db/4000_hz = 12.7
+band_db/4000_hz = 20.9
 band_db/8000_hz = -36.8
 band_db/16000_hz = -60.0
 
