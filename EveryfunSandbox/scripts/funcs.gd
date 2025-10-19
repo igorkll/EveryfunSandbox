@@ -66,3 +66,10 @@ func getRandomDirection() -> Vector3:
 	var y = r * sin(theta)
 	var z = u
 	return Vector3(x, y, z)
+
+func checksum_dict(data: Dictionary, keys: Array) -> int:
+	var text = ""
+	for k in keys:
+		if data.has(k):
+			text += str(k) + ":" + str(data[k]) + ";"
+	return hash(text)

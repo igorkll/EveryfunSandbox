@@ -625,10 +625,13 @@ func _prepairItem(item, path):
 	if item.has("sound_placeDestroy"):
 		item.sound_place = item.sound_placeDestroy
 		item.sound_destroy = item.sound_placeDestroy
+		
+	if item.has("mesh"):
+		item.mesh = loadResource(path.path_join(item.mesh)).instantiate()
 	
 	if item.has("texture"):
 		item.texture = loadResource(path.path_join(item.texture))
-		
+
 	if item.has("material"):
 		item.material = loadResource(path.path_join(item.material))
 		
@@ -724,29 +727,57 @@ func _addFolder(path):
 			
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
 
+var _materialCache = {}
+var _materialCacheNames = ["material", "material_no_filter", "texture", "texture_no_filter"]
+
+func _getMaterial(block):
+	var cachename = funcs.checksum_dict(block, _materialCacheNames)
+	if _materialCache.has(cachename):
+		return _materialCache[cachename]
+	
+	var material = ShaderMaterial.new()
+	material.shader = _shader
+	
+	var materialTexture = block.get("material", _defaultMaterialTexture)
+	if block.get("material_no_filter", false):
+		material.set_shader_parameter("material_texture_no_filter", materialTexture)
+		material.set_shader_parameter("no_material_filter", true)
+	else:
+		material.set_shader_parameter("material_texture", materialTexture)
+		material.set_shader_parameter("no_material_filter", false)
+		
+	if block.get("texture_no_filter", false):
+		material.set_shader_parameter("dif_texture_no_filter", block.texture)
+		material.set_shader_parameter("no_filter", true)
+	else:
+		material.set_shader_parameter("dif_texture", block.texture)
+		material.set_shader_parameter("no_filter", false)
+	
+	_materialCache[cachename] = material
+	_blockMaterials.append(material)
+	return material
+
 func _getLibrary():
 	var library = VoxelBlockyLibrary.new()
 	
 	for block in blockList:
 		var blockModel
-		if block.has("texture"):
-			var material = ShaderMaterial.new()
-			material.shader = _shader
+		if block.has("mesh"):
+			var material = _getMaterial(block)
 			
-			var materialTexture = block.get("material", _defaultMaterialTexture)
-			if block.get("material_no_filter", false):
-				material.set_shader_parameter("material_texture_no_filter", materialTexture)
-				material.set_shader_parameter("no_material_filter", true)
-			else:
-				material.set_shader_parameter("material_texture", materialTexture)
-				material.set_shader_parameter("no_material_filter", false)
-				
-			if block.get("texture_no_filter", false):
-				material.set_shader_parameter("dif_texture_no_filter", block.texture)
-				material.set_shader_parameter("no_filter", true)
-			else:
-				material.set_shader_parameter("dif_texture", block.texture)
-				material.set_shader_parameter("no_filter", false)
+			blockModel = VoxelBlockyModelMesh.new()
+			
+			var scene = block.mesh
+			if scene:
+				var mesh_instance = scene.find_children("", "MeshInstance3D", true)
+				if mesh_instance.size() > 0:
+					var mesh = mesh_instance[0].mesh
+					print(mesh)
+					for i in range(mesh.get_surface_count()):
+						mesh.surface_set_material(i, material)
+					blockModel.mesh = mesh
+		elif block.has("texture"):
+			var material = _getMaterial(block)
 			
 			var textureMode = _textureModes[block.get("texture_mode", 1)]
 			blockModel = VoxelBlockyModelCube.new()
@@ -758,14 +789,14 @@ func _getLibrary():
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Y, textureMode[4])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Z, textureMode[5])
 			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Z, textureMode[6])
+		else:
+			blockModel = VoxelBlockyModelEmpty.new()
+		
+		if blockModel is not VoxelBlockyModelEmpty:
 			if block.has("rotation"):
 				blockModel.mesh_ortho_rotation_index = block.rotation.q
 			else:
 				blockModel.mesh_ortho_rotation_index = 0
-			
-			_blockMaterials.append(material)
-		else:
-			blockModel = VoxelBlockyModelEmpty.new()
 		
 		library.add_model(blockModel)
 	

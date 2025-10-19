@@ -111,9 +111,9 @@
 	},
 	{
 		"name": "grammophone",
-		"texture": "blocks/metal/normal.png",
-		"texture_mode": "UNIFORM",
-		"material": "materials/metal.png",
+		"texture": "blocks/grammophone/texture.png",
+		"mesh": "blocks/grammophone/mesh.fbx",
+		"material": "blocks/grammophone/material.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "scripts/grammophone.gd",
