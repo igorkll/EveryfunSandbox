@@ -50,7 +50,7 @@ func _ready():
 	audioPlayer.emission_angle_enabled = true
 	audioPlayer.emission_angle_degrees = 45
 	audioPlayer.emission_angle_filter_attenuation_db = -30
-	audioPlayer.max_db = 10
+	audioPlayer.max_db = 40
 	audioPlayer.connect("finished", __disk_end)
 	node.add_child(audioPlayer)
 	
@@ -58,7 +58,8 @@ func _ready():
 	audioPlayerEffect.bus = "Interactive blocks"
 	game.initAudioStream(audioPlayerEffect)
 	audioPlayerEffect.attenuation_filter_cutoff_hz = 20500
-	audioPlayerEffect.max_db = 100
+	audioPlayerEffect.unit_size = 30
+	audioPlayerEffect.max_db = 20
 	audioPlayerEffect.connect("finished", __effect_end)
 	node.add_child(audioPlayerEffect)
 	
