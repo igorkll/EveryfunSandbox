@@ -9,7 +9,7 @@ func __explode():
 	destroy()
 
 func _use():
-	__explode()
+	timers.setTimeout(__explode, 4)
 	
 func _explode():
 	__explode()

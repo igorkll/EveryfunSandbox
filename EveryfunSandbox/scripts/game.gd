@@ -181,14 +181,15 @@ func loadResource(resourcePath):
 		elif extension == "ogg":
 			return AudioStreamOggVorbis.load_from_file(resourcePath)
 	
-func initAudioStream(audioPlayer, settings=null):
+func initAudioStream(audioPlayer: AudioStreamPlayer3D, settings=null):
 	if settings == null:
 		settings = {}
 	
+	audioPlayer.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_SQUARE_DISTANCE
 	audioPlayer.unit_size = settings.get("unit_size", consts.default_sound_unit_size)
 	audioPlayer.max_distance = settings.get("max_distance", consts.default_sound_max_distance)
 	audioPlayer.volume_db = settings.get("volume_db", 0)
-	audioPlayer.max_db = settings.get("max_db", settings.get("volume_db", 0))
+	audioPlayer.max_db = settings.get("max_db", 3)
 
 func playSound(sound, position: Vector3, parent=null, channel="Effects"):
 	var audioPlayer = AudioStreamPlayer3D.new()

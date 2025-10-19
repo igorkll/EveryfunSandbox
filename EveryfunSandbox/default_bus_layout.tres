@@ -29,12 +29,6 @@ band_db/4000_hz = 20.9
 band_db/8000_hz = -36.8
 band_db/16000_hz = -60.0
 
-[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_g28q7"]
-resource_name = "LowPassFilter"
-cutoff_hz = 6732.0
-resonance = 0.75
-db = 3
-
 [sub_resource type="AudioEffectDistortion" id="AudioEffectDistortion_j3pel"]
 resource_name = "Distortion"
 pre_gain = 10.0
@@ -45,6 +39,12 @@ post_gain = -10.0
 resource_name = "Filter"
 cutoff_hz = 7426.0
 gain = 0.0
+db = 3
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_g28q7"]
+resource_name = "LowPassFilter"
+cutoff_hz = 6732.0
+resonance = 0.75
 db = 3
 
 [sub_resource type="AudioEffectHighPassFilter" id="AudioEffectHighPassFilter_j3pel"]
@@ -100,11 +100,11 @@ bus/6/volume_db = 0.0
 bus/6/send = &"Interactive blocks"
 bus/6/effect/0/effect = SubResource("AudioEffectEQ10_j3pel")
 bus/6/effect/0/enabled = true
-bus/6/effect/1/effect = SubResource("AudioEffectLowPassFilter_g28q7")
+bus/6/effect/1/effect = SubResource("AudioEffectDistortion_j3pel")
 bus/6/effect/1/enabled = true
-bus/6/effect/2/effect = SubResource("AudioEffectDistortion_j3pel")
+bus/6/effect/2/effect = SubResource("AudioEffectFilter_j3pel")
 bus/6/effect/2/enabled = true
-bus/6/effect/3/effect = SubResource("AudioEffectFilter_j3pel")
+bus/6/effect/3/effect = SubResource("AudioEffectLowPassFilter_g28q7")
 bus/6/effect/3/enabled = true
 bus/6/effect/4/effect = SubResource("AudioEffectHighPassFilter_j3pel")
 bus/6/effect/4/enabled = true
