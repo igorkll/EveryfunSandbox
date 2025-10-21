@@ -75,7 +75,7 @@ func _process(delta):
 	elif Input.is_action_just_pressed("menu") && toggleTimeout <= 0:
 		if currentUI != 2:
 			if currentUI == 3:
-				
+				switchUI(0)
 			elif currentUI == 1:
 				switchUI(0)
 			else:
