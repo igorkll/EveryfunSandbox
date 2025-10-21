@@ -1,6 +1,7 @@
 extends Node
 
 var menuUI
+var showTextUI
 var gameUI
 
 var toggleTimeout = 0
@@ -11,17 +12,19 @@ func switchUI(ui):
 		return
 	currentUI = ui
 	
+	menuUI.visible = false
+	gameUI.visible = false
+	showTextUI.visible = false
+	
 	match ui:
 		0:
 			menuUI.visible = true
-			gameUI.visible = false
 			
 			game.camera.setOrbital(true)
 			game.player.setControlLock(true)
 			game.setMouseEnabled(true)
 			game.setMuteAllExceptMusic(true)
 		1:
-			menuUI.visible = false
 			gameUI.visible = true
 			
 			game.camera.setOrbital(false)
@@ -29,21 +32,26 @@ func switchUI(ui):
 			game.setMouseEnabled(false)
 			game.setMuteAllExceptMusic(false)
 		2:
-			menuUI.visible = false
-			gameUI.visible = false
-			
 			game.camera.setOrbital(false)
 			game.player.setControlLock(true)
 			game.setMouseEnabled(true)
 			game.setMuteAllExceptMusic(false)
+		3:
+			showTextUI.visible = true
 			
-func showText():
-	
+			game.camera.setOrbital(true)
+			game.player.setControlLock(true)
+			game.setMouseEnabled(true)
+			game.setMuteAllExceptMusic(true)
+			
+func showText(text):
+	game.mainNode.find_child("ui_showText_label", true, false).text = text
 	switchUI(3)
 
 func _ready():
 	menuUI = game.mainNode.find_child("menuUI", true, false)
 	gameUI = game.mainNode.find_child("gameUI", true, false)
+	showTextUI = game.mainNode.find_child("showTextUI", true, false)
 	switchUI(0)
 	
 	if saves.exists("test"):

@@ -37,7 +37,8 @@ var defaultSettings = {
 		"useNativeFileDialog": true
 	},
 	"game": {
-		"autoSaveInterval": 60
+		"autoSaveInterval": 60,
+		"muteOnMenu": 60
 	},
 	"graphic": {
 		"window": 0,

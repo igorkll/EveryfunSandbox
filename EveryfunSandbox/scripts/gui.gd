@@ -107,7 +107,7 @@ func _Save_pressed():
 	saves.save()
 
 func _Credits_pressed():
-	pass
+	menu.showText("TEST")
 	
 func _Done_pressed():
 	menu.switchUI(1)
