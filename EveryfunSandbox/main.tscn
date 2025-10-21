@@ -218,10 +218,15 @@ metadata/_tab_index = 1
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="ui_worlds_list" type="VScrollBar" parent="gui/Control/MarginContainer/menuUI/TabContainer/Worlds/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Worlds/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 1
 size_flags_vertical = 3
+
+[node name="ui_worlds_list" type="VBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Worlds/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Worlds/VBoxContainer"]
 layout_mode = 2
