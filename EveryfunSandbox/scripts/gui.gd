@@ -83,7 +83,7 @@ func _ready():
 	_attachButtons("esc_done", _EscDone_pressed)
 	
 	_attachSlider("game.autoSaveInterval", "ui_game_autoSaveInterval", [10, 60 * 30], _audioSlider)
-	_attachToggleOption("game.muteOnMenu", "ui_game_muteOnMenu", func():
+	_attachToggleOption("game.muteOnMenu", "ui_game_muteOnMenu", func(unused):
 		game.setMuteAllExceptMusic(game.muteAllExceptMusic))
 	
 	_attachSlider("gui.scale", "ui_gui_uiScale", [0.25, 4], _audioSlider)
