@@ -350,25 +350,48 @@ metadata/_tab_index = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick"]
 layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer"]
-layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label4" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/HBoxContainer"]
+[node name="GridContainer" type="GridContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 4
+
+[node name="Label4" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/GridContainer"]
 layout_mode = 2
 text = "Sensitivity"
 
-[node name="ui_control_joystick_sensitivity" type="HSlider" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/HBoxContainer"]
+[node name="ui_control_joystick_sensitivity" type="HSlider" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 
-[node name="ui_control_joystick_sensitivity_label" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/HBoxContainer"]
+[node name="ui_control_joystick_sensitivity_label" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="ui_control_joystick_sensitivity_reset" type="TextureButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/HBoxContainer"]
+[node name="ui_control_joystick_sensitivity_reset" type="TextureButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+texture_normal = ExtResource("5_272bh")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label5" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Deadzone"
+
+[node name="ui_control_joystick_deadzone" type="HSlider" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="ui_control_joystick_deadzone_label" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="ui_control_joystick_deadzone_reset" type="TextureButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Control/TabContainer/Joystick/VBoxContainer/GridContainer"]
 custom_minimum_size = Vector2(23, 23)
 layout_mode = 2
 texture_normal = ExtResource("5_272bh")

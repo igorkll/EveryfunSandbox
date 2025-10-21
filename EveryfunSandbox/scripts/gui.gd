@@ -39,8 +39,9 @@ func _audioSlider(sliderName, value, force, released):
 	if sliderName == "ui_gui_uiScale":
 		if released:
 			game.setScale(value)
-	elif sliderName.begins_with("ui_audio_") && not force:
-		game.applyAudioSettings()
+	elif not force:
+		if sliderName.begins_with("ui_audio_"):
+			game.applyAudioSettings()
 		
 func _attachButton(button, callback):
 	var buttonObj = game.mainNode.find_child(button, true, false)
@@ -103,6 +104,10 @@ func _ready():
 	_attachOption("graphic.vsync", "ui_vsync_mode", game.setVSyncMode)
 	_attachToggleOption("graphic.hdr", "ui_graphic_hdr", game.setHdrState)
 	_attachToggleOption("graphic.smoothing", "ui_graphic_smoothing", game.setSmoothingState)
+	
+	_attachSlider("control.mouse.sensitivity", "ui_control_mouse_sensitivity", [0, 2], _audioSlider)
+	_attachSlider("control.joystick.sensitivity", "ui_control_joystick_sensitivity", [0, 2], _audioSlider)
+	_attachSlider("control.joystick.deadzone", "ui_control_joystick_deadzone", [0, 0.5], _audioSlider)
 
 func _process(delta):
 	Continue_game.disabled = not saves.isWorldFullLoaded()
