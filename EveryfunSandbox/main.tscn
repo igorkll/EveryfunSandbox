@@ -243,8 +243,7 @@ stretch_mode = 0
 
 [node name="ui_game_muteOnMenu" type="CheckBox" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer"]
 layout_mode = 2
-text = "Use native file dialog
-"
+text = "Mute on menu"
 
 [node name="Gui" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
 visible = false

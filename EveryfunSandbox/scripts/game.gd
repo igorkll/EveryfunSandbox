@@ -251,7 +251,7 @@ func applyAudioSettings():
 	game.setAudioChannelVolume("NotMusic", 0 if muteAllExceptMusic else 1)
 	
 func setMuteAllExceptMusic(mute):
-	muteAllExceptMusic = mute
+	muteAllExceptMusic = mute && game.settings.game.muteOnMenu
 	applyAudioSettings()
 
 func defaultSettingsInit():
