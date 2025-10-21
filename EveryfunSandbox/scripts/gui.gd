@@ -26,7 +26,7 @@ func _attachSlider(valuePath, sliderName, range, callback=null):
 	resetButton.pressed.connect(func():
 		slider.value = funcs.getNestedValue(game.defaultSettings, valuePath) * 100
 		if callback != null:
-			callback.call(sliderName, slider.value / 100, false, false)
+			callback.call(sliderName, slider.value / 100, false, true)
 	)
 
 func _audioSlider(sliderName, value, force, released):
