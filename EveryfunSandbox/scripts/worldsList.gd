@@ -2,7 +2,7 @@ extends Node
 
 var ui_worlds_list
 
-func addWorldToList():
+func addWorldToList(worldName):
 	pass
 
 func updateWorldsList():

@@ -55,3 +55,19 @@ func readObj(path):
 	
 func writeObj(path, data):
 	writeFileBytes(path, var_to_bytes(data))
+
+func list(path):
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var folder_list = []
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and file_name != "." and file_name != "..":
+				folder_list.append(file_name)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+		
+		return folder_list
+	else:
+		return []
