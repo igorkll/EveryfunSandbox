@@ -195,6 +195,13 @@ size_flags_vertical = 8
 theme_override_font_sizes/font_size = 40
 text = "Credits"
 
+[node name="ui_License" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 40
+text = "License"
+
 [node name="Game" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
 visible = false
 layout_mode = 2

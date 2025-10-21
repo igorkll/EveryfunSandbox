@@ -75,6 +75,7 @@ func _ready():
 	_attachButton("ui_Exit", _Exit_pressed)
 	_attachButton("ui_Save", _Save_pressed)
 	_attachButton("ui_Credits", _Credits_pressed)
+	_attachButton("ui_License", _License_pressed)
 	_attachButtons("esc_done", _EscDone_pressed)
 	
 	_attachSlider("game.autoSaveInterval", "ui_game_autoSaveInterval", [10, 60 * 30], _audioSlider)
@@ -112,6 +113,9 @@ func _Save_pressed():
 
 func _Credits_pressed():
 	menu.showText(filesystem.readFile("res://gui/CREDITS.txt"))
+	
+func _License_pressed():
+	menu.showText(filesystem.readFile("res://gui/LICENSE.txt"))
 	
 func _EscDone_pressed():
 	menu.switchUI(menu.backTo)
