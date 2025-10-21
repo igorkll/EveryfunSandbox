@@ -192,7 +192,8 @@ func __checkAutosave():
 	
 	if currentWorldRuntimeData.has("voxelSaveCompletionTracker") && currentWorldRuntimeData.voxelSaveCompletionTracker.is_complete():
 		currentWorldRuntimeData.savingProcessMessage.task_end()
-		game.gameMessage("Game saved!")
+		if game.settings.gui.showSaveLabel:
+			game.gameMessage("Game saved!")
 		
 		if currentWorldRuntimeData.saveEndCallback:
 			currentWorldRuntimeData.saveEndCallback.call()

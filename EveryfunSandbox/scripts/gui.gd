@@ -77,8 +77,12 @@ func _ready():
 	_attachButton("ui_Credits", _Credits_pressed)
 	_attachButtons("esc_done", _EscDone_pressed)
 	
+	_attachSlider("game.autoSaveInterval", "ui_game_autoSaveInterval", [10, 60 * 30], _audioSlider)
+	_attachToggleOption("game.muteOnMenu", "ui_game_muteOnMenu", null)
+	
 	_attachSlider("gui.scale", "ui_gui_uiScale", [0.25, 4], _audioSlider)
 	_attachToggleOption("gui.useNativeFileDialog", "ui_gui_useNativeFileDialog", null)
+	_attachToggleOption("gui.showSaveLabel", "ui_gui_showSaveLabel", null)
 	
 	_attachSlider("audio.volume.Master", "ui_audio_Master", [0, 2], _audioSlider)
 	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 2], _audioSlider)

@@ -34,11 +34,12 @@ var defaultSettings = {
 	},
 	"gui": {
 		"scale": 1,
-		"useNativeFileDialog": true
+		"useNativeFileDialog": true,
+		"showSaveLabel": true
 	},
 	"game": {
 		"autoSaveInterval": 60,
-		"muteOnMenu": 60
+		"muteOnMenu": true
 	},
 	"graphic": {
 		"window": 0,

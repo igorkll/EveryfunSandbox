@@ -204,6 +204,37 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 metadata/_tab_index = 1
 
+[node name="VBoxContainer" type="VBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Autosave interval"
+
+[node name="ui_game_autoSaveInterval" type="HSlider" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="ui_game_autoSaveInterval_label" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="ui_game_autoSaveInterval_reset" type="TextureButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 2
+texture_normal = ExtResource("5_272bh")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="ui_game_muteOnMenu" type="CheckBox" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer"]
+layout_mode = 2
+text = "Use native file dialog
+"
+
 [node name="Gui" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
@@ -241,6 +272,11 @@ stretch_mode = 0
 [node name="ui_gui_useNativeFileDialog" type="CheckBox" parent="gui/Control/MarginContainer/menuUI/TabContainer/Gui/VBoxContainer"]
 layout_mode = 2
 text = "Use native file dialog
+"
+
+[node name="ui_gui_showSaveLabel" type="CheckBox" parent="gui/Control/MarginContainer/menuUI/TabContainer/Gui/VBoxContainer"]
+layout_mode = 2
+text = "Show save label
 "
 
 [node name="Audio" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
