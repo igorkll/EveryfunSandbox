@@ -83,6 +83,9 @@ func cameraUpdate(yaw, pitch):
 	)
 
 func setOrbital(newOrbital):
+	if newOrbital == orbital:
+		return
+	
 	orbital = newOrbital
 	orbitalValue = 0
 	if orbital:

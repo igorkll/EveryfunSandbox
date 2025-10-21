@@ -532,7 +532,7 @@ MULTILINE
 SHOW TEXT"
 horizontal_alignment = 1
 
-[node name="done" type="Button" parent="gui/Control/MarginContainer/showTextUI/MarginContainer/VBoxContainer"]
+[node name="esc_done" type="Button" parent="gui/Control/MarginContainer/showTextUI/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8

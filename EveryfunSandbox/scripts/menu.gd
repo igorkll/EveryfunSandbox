@@ -6,6 +6,7 @@ var gameUI
 
 var toggleTimeout = 0
 var currentUI
+var backTo
 
 func fullLock():
 	game.camera.setOrbital(true)
@@ -56,6 +57,7 @@ func switchUI(ui):
 func showText(text):
 	var backToMenu = currentUI == 0 || currentUI == 3
 	game.mainNode.find_child("ui_showText_label", true, false).text = text
+	backTo = 0 if backToMenu else 1
 	switchUI(3 if backToMenu else 4)
 
 func _ready():
