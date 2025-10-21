@@ -43,6 +43,11 @@ func _attachButton(button, callback):
 	buttonObj.pressed.connect(callback)
 	return buttonObj
 	
+func _attachButtons(button, callback):
+	var buttonsList = game.mainNode.find_children(button, "Button", true, false)
+	for buttonObj in buttonsList:
+		buttonObj.pressed.connect(callback)
+	
 func _attachOption(valuePath, optionName, callback):
 	var startValue = funcs.getNestedValue(game.settings, valuePath)
 	var optionButton = game.mainNode.find_child(optionName, true, false)
@@ -70,6 +75,7 @@ func _ready():
 	_attachButton("ui_Exit", _Exit_pressed)
 	_attachButton("ui_Save", _Save_pressed)
 	_attachButton("ui_Credits", _Credits_pressed)
+	_attachButtons("done", _Done_pressed)
 	
 	_attachSlider("gui.scale", "ui_gui_uiScale", [0.25, 4], _audioSlider)
 	_attachToggleOption("gui.useNativeFileDialog", "ui_gui_useNativeFileDialog", null)
@@ -102,3 +108,6 @@ func _Save_pressed():
 
 func _Credits_pressed():
 	pass
+	
+func _Done_pressed():
+	menu.switchUI(1)
