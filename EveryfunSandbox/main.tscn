@@ -145,10 +145,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 2
+current_tab = 0
 
 [node name="Main" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -188,14 +187,18 @@ size_flags_vertical = 8
 theme_override_font_sizes/font_size = 40
 text = "Save and exit"
 
-[node name="ui_Credits" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="ui_Credits" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_font_sizes/font_size = 40
 text = "Credits"
 
-[node name="ui_License" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main/VBoxContainer"]
+[node name="ui_License" type="Button" parent="gui/Control/MarginContainer/menuUI/TabContainer/Main/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -216,6 +219,7 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="Label4" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -243,6 +247,7 @@ text = "Use native file dialog
 "
 
 [node name="Gui" type="MarginContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -255,6 +260,7 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="gui/Control/MarginContainer/menuUI/TabContainer/Gui/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="Label4" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Gui/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -533,6 +539,7 @@ layout_mode = 2
 text = "Smoothing"
 
 [node name="showTextUI" type="Panel" parent="gui/Control/MarginContainer"]
+visible = false
 material = ExtResource("4_kek77")
 layout_mode = 2
 
