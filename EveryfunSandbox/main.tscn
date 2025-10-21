@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=15 format=3 uid="uid://bw0m6x1agdhve"]
 
 [ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/player.gd" id="2_272bh"]
 [ext_resource type="Script" uid="uid://cnv5mi67jr1go" path="res://scripts/camera.gd" id="3_5vw27"]
@@ -42,6 +42,12 @@ adjustment_saturation = 1.75
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_dwbse"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
 shader = ExtResource("5_4c57u")
@@ -480,6 +486,58 @@ layout_mode = 2
 [node name="Label" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer5"]
 layout_mode = 2
 text = "Smoothing"
+
+[node name="showTextUI" type="Panel" parent="gui/Control/MarginContainer"]
+material = ExtResource("4_kek77")
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="gui/Control/MarginContainer/showTextUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="gui/Control/MarginContainer/showTextUI/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Panel" type="Panel" parent="gui/Control/MarginContainer/showTextUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_272bh")
+
+[node name="MarginContainer" type="MarginContainer" parent="gui/Control/MarginContainer/showTextUI/MarginContainer/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ui_showText_label" type="Label" parent="gui/Control/MarginContainer/showTextUI/MarginContainer/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "TEST
+MULTILINE
+SHOW TEXT"
+horizontal_alignment = 1
+
+[node name="done" type="Button" parent="gui/Control/MarginContainer/showTextUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 40
+text = "Done"
 
 [node name="gameUI" type="Control" parent="gui/Control"]
 layout_mode = 1
