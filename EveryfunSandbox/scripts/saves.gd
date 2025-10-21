@@ -119,8 +119,7 @@ func isInteractiveChunkBlockLoaded(position: Vector3i):
 	return _loadedChunks.has(__getChunkPosition(position))
 	
 func list():
-	# savesFolderPath
-	pass
+	return filesystem.list(savesFolderPath)
 
 # ---------------------------------------------------------------
 

@@ -1,10 +1,15 @@
 extends Node
 
+var worldCardBase = preload("res://worldCard.tscn")
+
 var defaultWorldName = "default world"
 var ui_worlds_list
 
 func addWorldToList(worldName):
-	pass
+	var worldCard = worldCardBase.instantiate()
+	
+	
+	ui_worlds_list.add_child(worldCard)
 
 func updateWorldsList():
 	for child in ui_worlds_list.get_children():
@@ -12,13 +17,17 @@ func updateWorldsList():
 		
 	for worldName in saves.list():
 		addWorldToList(worldName)
+		
+	addWorldToList("1")
+	addWorldToList("2")
+	addWorldToList("3")
 
 func openDefaultWorld():
-	if game.settings.selectedWorld != null:
-		if saves.exists(game.settings.selectedWorld):
-			saves.open(game.settings.selectedWorld)
+	if game.settings.data.selectedWorld != null:
+		if saves.exists(game.settings.data.selectedWorld):
+			saves.open(game.settings.data.selectedWorld)
 		else:
-			game.settings.selectedWorld = null
+			game.settings.data.selectedWorld = null
 			game.saveSettings()
 			openDefaultWorld()
 	elif saves.exists(defaultWorldName):
