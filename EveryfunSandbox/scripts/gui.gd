@@ -1,6 +1,7 @@
 extends Node
 
-var Continue_game
+var _Continue_game
+var _Save_game
 var audio_Master
 
 func _attachSlider(valuePath, sliderName, range, callback=null):
@@ -76,9 +77,9 @@ func _attachToggleOption(valuePath, optionName, callback):
 	)
 
 func _ready():
-	Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
+	_Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
 	_attachButton("ui_Exit", _Exit_pressed)
-	_attachButton("ui_Save", _Save_pressed)
+	_Save_game = _attachButton("ui_Save", _Save_pressed)
 	_attachButton("ui_Credits", _Credits_pressed)
 	_attachButton("ui_License", _License_pressed)
 	_attachButtons("esc_done", _EscDone_pressed)
@@ -110,7 +111,9 @@ func _ready():
 	_attachSlider("control.joystick.deadzone", "ui_control_joystick_deadzone", [0, 0.5], _audioSlider)
 
 func _process(delta):
-	Continue_game.disabled = not saves.isWorldFullLoaded()
+	var worldLoaded = saves.isWorldFullLoaded()
+	_Continue_game.disabled = not worldLoaded
+	_Save_game.disabled = not worldLoaded
 
 func _Continue_game_pressed():
 	menu.switchUI(1)
