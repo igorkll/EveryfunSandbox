@@ -34,6 +34,7 @@ menu="*res://scripts/menu.gd"
 gui="*res://scripts/gui.gd"
 advanced="*res://scripts/advanced.gd"
 terrainUtils="*res://scripts/terrainUtils.gd"
+worldsList="*res://scripts/worldsList.gd"
 
 [display]
 

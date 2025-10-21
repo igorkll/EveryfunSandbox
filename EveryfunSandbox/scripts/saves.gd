@@ -1,5 +1,7 @@
 extends Node
 
+var savesFolderPath = "user://saves"
+
 var currentWorldName
 var currentWorldRuntimeData
 var currentWorldData
@@ -35,10 +37,10 @@ func isWorldFullLoaded() -> bool:
 func getPathInSave(path, savename=null):
 	if savename == null:
 		savename = currentWorldName
-	return ("user://saves").path_join(savename).path_join(path)
+	return savesFolderPath.path_join(savename).path_join(path)
 	
 func getSavePath(savename):
-	return ("user://saves").path_join(savename)
+	return savesFolderPath.path_join(savename)
 	
 func getObjectData(key):
 	if not currentWorldData.objectData.has(key):
@@ -115,6 +117,10 @@ func create(savename) -> bool:
 
 func isInteractiveChunkBlockLoaded(position: Vector3i):
 	return _loadedChunks.has(__getChunkPosition(position))
+	
+func list():
+	# savesFolderPath
+	pass
 
 # ---------------------------------------------------------------
 
