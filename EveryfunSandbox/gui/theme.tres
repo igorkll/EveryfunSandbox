@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://b1snsmkgncv41"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://b1snsmkgncv41"]
 
 [ext_resource type="SystemFont" uid="uid://gok2hr8le2jk" path="res://gui/font.tres" id="1_qgmjj"]
+[ext_resource type="StyleBox" uid="uid://dl6543hloytd5" path="res://gui/buttons.tres" id="2_jlndv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qgmjj"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -10,6 +11,12 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [resource]
+Button/colors/font_color = Color(16.638432, 16.638432, 16.638432, 1)
 Button/font_sizes/font_size = 20
 Button/fonts/font = ExtResource("1_qgmjj")
+Button/styles/disabled = ExtResource("2_jlndv")
+Button/styles/focus = ExtResource("2_jlndv")
+Button/styles/hover = ExtResource("2_jlndv")
+Button/styles/normal = ExtResource("2_jlndv")
+Button/styles/pressed = ExtResource("2_jlndv")
 Panel/styles/panel = SubResource("StyleBoxFlat_qgmjj")
