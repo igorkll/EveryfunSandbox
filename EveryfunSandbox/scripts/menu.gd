@@ -7,6 +7,23 @@ var gameUI
 var toggleTimeout = 0
 var currentUI
 
+func fullLock():
+	game.camera.setOrbital(true)
+	game.player.setControlLock(true)
+	game.setMouseEnabled(true)
+	game.setMuteAllExceptMusic(true)
+	
+func fullUnlock():
+	game.camera.setOrbital(false)
+	game.player.setControlLock(false)
+	game.setMouseEnabled(false)
+	game.setMuteAllExceptMusic(false)
+	
+func liteLock():
+	fullUnlock()
+	game.player.setControlLock(true)
+	game.setMouseEnabled(true)
+
 func switchUI(ui):
 	if currentUI == ui:
 		return
@@ -19,34 +36,27 @@ func switchUI(ui):
 	match ui:
 		0:
 			menuUI.visible = true
+			fullLock()
 			
-			game.camera.setOrbital(true)
-			game.player.setControlLock(true)
-			game.setMouseEnabled(true)
-			game.setMuteAllExceptMusic(true)
 		1:
 			gameUI.visible = true
+			fullUnlock()
 			
-			game.camera.setOrbital(false)
-			game.player.setControlLock(false)
-			game.setMouseEnabled(false)
-			game.setMuteAllExceptMusic(false)
 		2:
-			game.camera.setOrbital(false)
-			game.player.setControlLock(true)
-			game.setMouseEnabled(true)
-			game.setMuteAllExceptMusic(false)
+			liteLock()
+			
 		3:
 			showTextUI.visible = true
+			fullLock()
 			
-			game.camera.setOrbital(true)
-			game.player.setControlLock(true)
-			game.setMouseEnabled(true)
-			game.setMuteAllExceptMusic(true)
+		4:
+			showTextUI.visible = true
+			liteLock()
 			
 func showText(text):
+	var backToMenu = currentUI == 0 || currentUI == 3
 	game.mainNode.find_child("ui_showText_label", true, false).text = text
-	switchUI(3)
+	switchUI(3 if backToMenu else 4)
 
 func _ready():
 	menuUI = game.mainNode.find_child("menuUI", true, false)
@@ -64,7 +74,9 @@ func _process(delta):
 		switchUI(0)
 	elif Input.is_action_just_pressed("menu") && toggleTimeout <= 0:
 		if currentUI != 2:
-			if currentUI == 1:
+			if currentUI == 3:
+				
+			elif currentUI == 1:
 				switchUI(0)
 			else:
 				switchUI(1)
