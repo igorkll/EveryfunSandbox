@@ -80,12 +80,7 @@ func init():
 	inited = true
 	$camera.init()
 
-var t
 func _physics_process(delta):
-	if t:
-		t.task_end()
-	t = game.gameMessage(str(Engine.get_frames_per_second()), null, true)
-	
 	if not inited || not saves.isWorldFullLoaded():
 		return
 	

@@ -11,11 +11,18 @@ func setNestedValue(path, value):
 		path = path.substr(1)
 	funcs.setNestedValue(tbl, path, value)
 	
-func getNestedValue(path):
-	var tbl = game.settings
+func getNestedValue(path, default=false):
+	var tbl
 	if path.begins_with("&"):
-		tbl = saves.currentWorldData
+		if default:
+			tbl = saves.defaultWorldData
+		else:
+			tbl = saves.currentWorldData
 		path = path.substr(1)
+	elif default:
+		tbl = game.defaultSettings
+	else:
+		tbl = game.settings
 	return funcs.getNestedValue(tbl, path)
 
 func _attachSlider(valuePath, sliderName, range, callback=null):
@@ -39,12 +46,14 @@ func _attachSlider(valuePath, sliderName, range, callback=null):
 	
 	var resetButton = game.mainNode.find_child(sliderName + "_reset", true, false)
 	resetButton.pressed.connect(func():
-		slider.value = getNestedValue(valuePath) * 100
+		slider.value = getNestedValue(valuePath, true) * 100
 		if callback != null:
 			callback.call(sliderName, slider.value / 100, false, true)
 	)
 
-func _audioSlider(sliderName, value, force, released):
+func _updateSlider(sliderName, value, force, released):
+	print(sliderName, value, force, released)
+	
 	var label = game.mainNode.find_child(sliderName + "_label", true, false)
 	if sliderName == "ui_game_autoSaveInterval":
 		label.text = str(roundi(value)) + " seconds"
@@ -94,6 +103,8 @@ func _attachToggleOption(valuePath, optionName, callback):
 			callback.call(value)
 	)
 
+var ui_debug_panel
+
 func _ready():
 	_Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
 	_attachButton("ui_Exit", _Exit_pressed)
@@ -102,19 +113,19 @@ func _ready():
 	_attachButton("ui_License", _License_pressed)
 	_attachButtons("esc_done", _EscDone_pressed)
 	
-	_attachSlider("game.autoSaveInterval", "ui_game_autoSaveInterval", [10, 60 * 30], _audioSlider)
+	_attachSlider("game.autoSaveInterval", "ui_game_autoSaveInterval", [10, 60 * 30], _updateSlider)
 	_attachToggleOption("game.muteOnMenu", "ui_game_muteOnMenu", func(unused):
 		game.setMuteAllExceptMusic(game.muteAllExceptMusic))
 	
-	_attachSlider("gui.scale", "ui_gui_uiScale", [0.25, 4], _audioSlider)
+	_attachSlider("gui.scale", "ui_gui_uiScale", [0.25, 4], _updateSlider)
 	_attachToggleOption("gui.useNativeFileDialog", "ui_gui_useNativeFileDialog", null)
 	_attachToggleOption("gui.showSaveLabel", "ui_gui_showSaveLabel", null)
 	
-	_attachSlider("audio.volume.Master", "ui_audio_Master", [0, 2], _audioSlider)
-	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 2], _audioSlider)
-	_attachSlider("audio.volume.Ambient", "ui_audio_Ambient", [0, 2], _audioSlider)
-	_attachSlider("audio.volume.Effects", "ui_audio_Effects", [0, 2], _audioSlider)
-	_attachSlider("audio.volume.Interactive blocks", "ui_audio_Interactive", [0, 2], _audioSlider)
+	_attachSlider("audio.volume.Master", "ui_audio_Master", [0, 2], _updateSlider)
+	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 2], _updateSlider)
+	_attachSlider("audio.volume.Ambient", "ui_audio_Ambient", [0, 2], _updateSlider)
+	_attachSlider("audio.volume.Effects", "ui_audio_Effects", [0, 2], _updateSlider)
+	_attachSlider("audio.volume.Interactive blocks", "ui_audio_Interactive", [0, 2], _updateSlider)
 	
 	_attachOption("graphic.quality", "ui_graphic_quality", game.setGraphicQuality)
 	_attachOption("graphic.distance", "ui_graphic_distance", game.setRenderDistance)
@@ -124,16 +135,23 @@ func _ready():
 	_attachToggleOption("graphic.hdr", "ui_graphic_hdr", game.setHdrState)
 	_attachToggleOption("graphic.smoothing", "ui_graphic_smoothing", game.setSmoothingState)
 	
-	_attachSlider("control.mouse.sensitivity", "ui_control_mouse_sensitivity", [0, 2], _audioSlider)
-	_attachSlider("control.joystick.sensitivity", "ui_control_joystick_sensitivity", [0, 2], _audioSlider)
-	_attachSlider("control.joystick.deadzone", "ui_control_joystick_deadzone", [0, 0.5], _audioSlider)
+	_attachSlider("control.mouse.sensitivity", "ui_control_mouse_sensitivity", [0, 2], _updateSlider)
+	_attachSlider("control.joystick.sensitivity", "ui_control_joystick_sensitivity", [0, 2], _updateSlider)
+	_attachSlider("control.joystick.deadzone", "ui_control_joystick_deadzone", [0, 0.5], _updateSlider)
 	
 	signals.connect("world_open", _on_world_open)
+	
+	ui_debug_panel = game.mainNode.find_child("ui_debug_panel", true, false)
 
 func _process(delta):
 	var worldLoaded = saves.isWorldFullLoaded()
 	_Continue_game.disabled = not worldLoaded
 	_Save_game.disabled = not worldLoaded
+	
+	if saves.isWorldLoaded():
+		ui_debug_panel.visible = saves.currentWorldData.debug.debugInfo
+	else:
+		ui_debug_panel.visible = false
 
 var _worldLoaded = false
 func _on_world_open(worldName):

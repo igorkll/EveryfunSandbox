@@ -1,7 +1,5 @@
 shader_type canvas_item;
 
-const vec4 color = vec4(0.6, 0.6, 0.6, 1);
-const vec4 progressColor = vec4(0.2, 0.2, 0.8, 1);
 const float alpha = 0.4;
 const int blur_steps = 8;
 const float blur_size = 0.01;
@@ -9,6 +7,8 @@ const float anim_speed = 8.0;
 const float anim_stretch = 8.0;
 
 uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+uniform vec4 color = vec4(0.6, 0.6, 0.6, 1);
+uniform vec4 progressColor = vec4(0.2, 0.2, 0.8, 1);
 uniform float timeout = 0.0;
 uniform bool processAnimation = false;
 
