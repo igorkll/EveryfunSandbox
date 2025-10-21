@@ -76,3 +76,7 @@ func checksum_dict(data: Dictionary, keys: Array) -> int:
 
 func is_number(value) -> bool:
 	return value is int or value is float
+
+func round_to(num: float, digits: int) -> float:
+	var factor = pow(10.0, digits)
+	return round(num * factor) / factor

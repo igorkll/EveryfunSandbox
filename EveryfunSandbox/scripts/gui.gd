@@ -104,6 +104,8 @@ func _attachToggleOption(valuePath, optionName, callback):
 	)
 
 var ui_debug_panel
+var ui_debug_fps
+var ui_debug_position
 
 func _ready():
 	_Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
@@ -142,6 +144,8 @@ func _ready():
 	signals.connect("world_open", _on_world_open)
 	
 	ui_debug_panel = game.mainNode.find_child("ui_debug_panel", true, false)
+	ui_debug_fps = game.mainNode.find_child("ui_debug_fps", true, false)
+	ui_debug_position = game.mainNode.find_child("ui_debug_position", true, false)
 
 func _process(delta):
 	var worldLoaded = saves.isWorldFullLoaded()
@@ -150,6 +154,8 @@ func _process(delta):
 	
 	if saves.isWorldLoaded():
 		ui_debug_panel.visible = saves.currentWorldData.debug.debugInfo
+		ui_debug_fps.text = str(Engine.get_frames_per_second())
+		ui_debug_position.text = str(funcs.round_to(game.player.position.x, 1)) + " " + str(funcs.round_to(game.player.position.y, 1)) + " " + str(funcs.round_to(game.player.position.z, 1))
 	else:
 		ui_debug_panel.visible = false
 

@@ -142,7 +142,7 @@ theme_override_constants/margin_bottom = 30
 
 [node name="ui_debug_panel" type="Panel" parent="gui/Control/MarginContainer3"]
 material = SubResource("ShaderMaterial_4c57u")
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
