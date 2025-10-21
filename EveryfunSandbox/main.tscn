@@ -227,7 +227,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 
 [node name="ui_game_autoSaveInterval_label" type="Label" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 
 [node name="ui_game_autoSaveInterval_reset" type="TextureButton" parent="gui/Control/MarginContainer/menuUI/TabContainer/Game/VBoxContainer/HBoxContainer"]

@@ -31,11 +31,15 @@ func _attachSlider(valuePath, sliderName, range, callback=null):
 
 func _audioSlider(sliderName, value, force, released):
 	var label = game.mainNode.find_child(sliderName + "_label", true, false)
-	label.text = str(roundi(value * 100)) + "%"
+	if sliderName == "ui_game_autoSaveInterval":
+		label.text = str(roundi(value)) + " seconds"
+	else:
+		label.text = str(roundi(value * 100)) + "%"
+	
 	if sliderName == "ui_gui_uiScale":
 		if released:
 			game.setScale(value)
-	elif not force:
+	elif sliderName.begins_with("ui_audio_") && not force:
 		game.applyAudioSettings()
 		
 func _attachButton(button, callback):
