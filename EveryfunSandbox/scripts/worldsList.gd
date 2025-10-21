@@ -20,8 +20,6 @@ func updateWorldsList():
 	addWorldToList("1")
 	addWorldToList("2")
 	addWorldToList("3")
-	
-	ui_worlds_list.queue_sort()
 
 func openDefaultWorld():
 	if game.settings.data.selectedWorld != null:
