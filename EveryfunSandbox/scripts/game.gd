@@ -14,6 +14,9 @@ var defaultSettings = {
 	"statistics": {
 		"game_session_counter": 0
 	},
+	"data": {
+		"selectedWorld": null
+	},
 	"audio": {
 		"volume": {
 			"Master": 1,

@@ -65,11 +65,6 @@ func _ready():
 	gameUI = game.mainNode.find_child("gameUI", true, false)
 	showTextUI = game.mainNode.find_child("showTextUI", true, false)
 	switchUI(0)
-	
-	if saves.exists("test"):
-		saves.open("test")
-	else:
-		saves.create("test")
 
 func _process(delta):
 	if not saves.isWorldFullLoaded():
