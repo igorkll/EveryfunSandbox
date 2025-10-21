@@ -1,7 +1,15 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b1snsmkgncv41"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://b1snsmkgncv41"]
 
 [ext_resource type="SystemFont" uid="uid://gok2hr8le2jk" path="res://gui/font.tres" id="1_qgmjj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qgmjj"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [resource]
 Button/font_sizes/font_size = 20
 Button/fonts/font = ExtResource("1_qgmjj")
+Panel/styles/panel = SubResource("StyleBoxFlat_qgmjj")

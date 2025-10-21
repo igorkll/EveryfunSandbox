@@ -107,7 +107,7 @@ func _Save_pressed():
 	saves.save()
 
 func _Credits_pressed():
-	menu.showText("TEST")
+	menu.showText(filesystem.readFile("res://gui/CREDITS.txt"))
 	
 func _EscDone_pressed():
 	menu.switchUI(menu.backTo)
