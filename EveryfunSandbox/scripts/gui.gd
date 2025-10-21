@@ -6,29 +6,36 @@ var audio_Master
 func _attachSlider(valuePath, sliderName, range, callback=null):
 	var startValue = funcs.getNestedValue(game.settings, valuePath)
 	var slider = game.mainNode.find_child(sliderName, true, false)
-	slider.min_value = range[0]
-	slider.max_value = range[1]
-	slider.value = startValue * range[2]
+	slider.min_value = range[0] * 100
+	slider.max_value = range[1] * 100
+	slider.value = startValue * 100
 	slider.value_changed.connect(func(value):
-		value /= range[2]
+		value /= 100
 		funcs.setNestedValue(game.settings, valuePath, value)
 		game.saveSettings()
 		if callback != null:
-			callback.call(sliderName, value, false)
+			callback.call(sliderName, value, false, false)
 	)
-	callback.call(sliderName, startValue, true)
+	slider.drag_ended.connect(func(value):
+		if callback != null:
+			callback.call(sliderName, slider.value / 100, false, true)
+	)
+	callback.call(sliderName, startValue, true, false)
 	
 	var resetButton = game.mainNode.find_child(sliderName + "_reset", true, false)
 	resetButton.pressed.connect(func():
-		slider.value = funcs.getNestedValue(game.defaultSettings, valuePath) * range[2]
+		slider.value = funcs.getNestedValue(game.defaultSettings, valuePath) * 100
 		if callback != null:
-			callback.call(sliderName, slider.value / range[2], false)
+			callback.call(sliderName, slider.value / 100, false, false)
 	)
 
-func _audioSlider(sliderName, value, force):
+func _audioSlider(sliderName, value, force, released):
 	var label = game.mainNode.find_child(sliderName + "_label", true, false)
 	label.text = str(roundi(value * 100)) + "%"
-	if not force:
+	if sliderName == "ui_gui_uiScale":
+		if released:
+			game.setScale(value)
+	elif not force:
 		game.applyAudioSettings()
 		
 func _attachButton(button, callback):
@@ -62,12 +69,16 @@ func _ready():
 	Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
 	_attachButton("ui_Exit", _Exit_pressed)
 	_attachButton("ui_Save", _Save_pressed)
+	_attachButton("ui_Credits", _Credits_pressed)
 	
-	_attachSlider("audio.volume.Master", "ui_audio_Master", [0, 100, 50], _audioSlider)
-	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 100, 50], _audioSlider)
-	_attachSlider("audio.volume.Ambient", "ui_audio_Ambient", [0, 100, 50], _audioSlider)
-	_attachSlider("audio.volume.Effects", "ui_audio_Effects", [0, 100, 50], _audioSlider)
-	_attachSlider("audio.volume.Interactive blocks", "ui_audio_Interactive", [0, 100, 50], _audioSlider)
+	_attachSlider("gui.scale", "ui_gui_uiScale", [0.25, 4], _audioSlider)
+	_attachToggleOption("gui.useNativeFileDialog", "ui_gui_useNativeFileDialog", null)
+	
+	_attachSlider("audio.volume.Master", "ui_audio_Master", [0, 2], _audioSlider)
+	_attachSlider("audio.volume.Music", "ui_audio_Music", [0, 2], _audioSlider)
+	_attachSlider("audio.volume.Ambient", "ui_audio_Ambient", [0, 2], _audioSlider)
+	_attachSlider("audio.volume.Effects", "ui_audio_Effects", [0, 2], _audioSlider)
+	_attachSlider("audio.volume.Interactive blocks", "ui_audio_Interactive", [0, 2], _audioSlider)
 	
 	_attachOption("graphic.quality", "ui_graphic_quality", game.setGraphicQuality)
 	_attachOption("graphic.distance", "ui_graphic_distance", game.setRenderDistance)
@@ -88,3 +99,6 @@ func _Exit_pressed():
 	
 func _Save_pressed():
 	saves.save()
+
+func _Credits_pressed():
+	pass
