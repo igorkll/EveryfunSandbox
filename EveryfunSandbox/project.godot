@@ -24,6 +24,7 @@ general/3d_panning_strength=0.75
 
 [autoload]
 
+signals="*res://scripts/signals.gd"
 consts="*res://scripts/consts.gd"
 funcs="*res://scripts/funcs.gd"
 timers="*res://scripts/timers.gd"

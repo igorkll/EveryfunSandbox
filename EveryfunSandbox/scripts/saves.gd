@@ -8,7 +8,12 @@ var currentWorldData
 
 var defaultWorldData = {
 	"objectData": {},
-	"interactiveVoxels": {}
+	"interactiveVoxels": {},
+	"debug": {
+		"debugInfo": false,
+		"allowFly": false,
+		"allowCheats": false
+	}
 }
 
 var objects
@@ -103,6 +108,7 @@ func open(savename) -> bool:
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
 	
 	game.player.init()
+	signals.emit_signal("world_open", savename)
 	
 	return true
 	

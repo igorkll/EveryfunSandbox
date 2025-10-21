@@ -4,15 +4,29 @@ var _Continue_game
 var _Save_game
 var audio_Master
 
+func setNestedValue(path, value):
+	var tbl = game.settings
+	if path.begins_with("&"):
+		tbl = saves.currentWorldData
+		path = path.substr(1)
+	funcs.setNestedValue(tbl, path, value)
+	
+func getNestedValue(path):
+	var tbl = game.settings
+	if path.begins_with("&"):
+		tbl = saves.currentWorldData
+		path = path.substr(1)
+	return funcs.getNestedValue(tbl, path)
+
 func _attachSlider(valuePath, sliderName, range, callback=null):
-	var startValue = funcs.getNestedValue(game.settings, valuePath)
+	var startValue = getNestedValue(valuePath)
 	var slider = game.mainNode.find_child(sliderName, true, false)
 	slider.min_value = range[0] * 100
 	slider.max_value = range[1] * 100
 	slider.value = startValue * 100
 	slider.value_changed.connect(func(value):
 		value /= 100
-		funcs.setNestedValue(game.settings, valuePath, value)
+		setNestedValue(valuePath, value)
 		game.saveSettings()
 		if callback != null:
 			callback.call(sliderName, value, false, false)
@@ -25,7 +39,7 @@ func _attachSlider(valuePath, sliderName, range, callback=null):
 	
 	var resetButton = game.mainNode.find_child(sliderName + "_reset", true, false)
 	resetButton.pressed.connect(func():
-		slider.value = funcs.getNestedValue(game.defaultSettings, valuePath) * 100
+		slider.value = getNestedValue(valuePath) * 100
 		if callback != null:
 			callback.call(sliderName, slider.value / 100, false, true)
 	)
@@ -55,22 +69,26 @@ func _attachButtons(button, callback):
 		buttonObj.pressed.connect(callback)
 	
 func _attachOption(valuePath, optionName, callback):
-	var startValue = funcs.getNestedValue(game.settings, valuePath)
+	var startValue = getNestedValue(valuePath)
 	var optionButton = game.mainNode.find_child(optionName, true, false)
 	optionButton.selected = startValue
 	optionButton.item_selected.connect(func(value):
-		funcs.setNestedValue(game.settings, valuePath, value)
+		setNestedValue(valuePath, value)
 		game.saveSettings()
 		if callback != null:
 			callback.call(value)
 	)
-	
+
+func _updateToggleOption(valuePath, optionName):
+	var optionButton = game.mainNode.find_child(optionName, true, false)
+	optionButton.button_pressed = getNestedValue(valuePath)
+
 func _attachToggleOption(valuePath, optionName, callback):
-	var startValue = funcs.getNestedValue(game.settings, valuePath)
+	var startValue = getNestedValue(valuePath)
 	var optionButton = game.mainNode.find_child(optionName, true, false)
 	optionButton.button_pressed = startValue
 	optionButton.toggled.connect(func(value):
-		funcs.setNestedValue(game.settings, valuePath, value)
+		setNestedValue(valuePath, value)
 		game.saveSettings()
 		if callback != null:
 			callback.call(value)
@@ -109,11 +127,25 @@ func _ready():
 	_attachSlider("control.mouse.sensitivity", "ui_control_mouse_sensitivity", [0, 2], _audioSlider)
 	_attachSlider("control.joystick.sensitivity", "ui_control_joystick_sensitivity", [0, 2], _audioSlider)
 	_attachSlider("control.joystick.deadzone", "ui_control_joystick_deadzone", [0, 0.5], _audioSlider)
+	
+	signals.connect("world_open", _on_world_open)
 
 func _process(delta):
 	var worldLoaded = saves.isWorldFullLoaded()
 	_Continue_game.disabled = not worldLoaded
 	_Save_game.disabled = not worldLoaded
+
+var _worldLoaded = false
+func _on_world_open(worldName):
+	if _worldLoaded:
+		_updateToggleOption("&debug.debugInfo", "ui_debug_debugInfo")
+		_updateToggleOption("&debug.allowFly", "ui_debug_allowFly")
+		_updateToggleOption("&debug.allowCheats", "ui_debug_allowCheats")
+	else:
+		_attachToggleOption("&debug.debugInfo", "ui_debug_debugInfo", null)
+		_attachToggleOption("&debug.allowFly", "ui_debug_allowFly", null)
+		_attachToggleOption("&debug.allowCheats", "ui_debug_allowCheats", null)
+	_worldLoaded = true
 
 func _Continue_game_pressed():
 	menu.switchUI(1)
