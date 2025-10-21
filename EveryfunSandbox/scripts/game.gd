@@ -323,7 +323,7 @@ func getTriggerJoystickValues():
 	var joystickValues = getJoystickValues()
 	return [joystickValues[4], joystickValues[5]]
 	
-var gameMessageBase = preload("res://gameMessage.tscn")
+var gameMessageBase = preload("res://gui/gameMessage.tscn")
 var gameMessagesContainer
 
 # minShowTime can be used to delay deleting an item. for example, if you need to display a process that can run very quickly (and then you don't need to immediately delete the label), or it can take a long time (and then you need to remove it immediately when the process is completed)
