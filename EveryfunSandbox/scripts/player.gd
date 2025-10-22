@@ -25,7 +25,7 @@ var isWalking = false
 var headbuttSound = true
 
 var stepInterval
-var flyState = true
+var flyState = false
 
 func _ready():
 	halfPlayerSize = $collision.shape.height / 2

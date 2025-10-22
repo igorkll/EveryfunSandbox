@@ -426,7 +426,7 @@ func requestFile(filters, callback):
 	)
 
 var _pressedCounter = {}
-var multiplePressTimeout = 100
+var multiplePressTimeout = 200
 
 func is_action_multiple_pressed(actionName, count=2):
 	var counter
