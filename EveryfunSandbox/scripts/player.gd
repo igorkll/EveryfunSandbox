@@ -141,7 +141,7 @@ func _physics_process(delta):
 		stepInterval = consts.step_interval
 	if flyState:
 		_move_acceleration *= consts.player_mul_fly
-		stepInterval *= consts.player_mul_fly
+		stepInterval /= consts.player_mul_fly
 	
 	if isWalking:
 		onWalking()
