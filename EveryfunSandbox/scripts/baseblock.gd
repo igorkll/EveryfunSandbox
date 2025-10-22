@@ -31,7 +31,7 @@ func setVariantAndColor(variant, color):
 	voxelBlockItem = game.blockList[voxelBlockId]
 	
 	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)
-	saves.changeInteractiveVoxel(voxelTerrain, position, voxelBlockId)
+	saves.changeInteractiveVoxel(voxelTerrain, voxelPosition, voxelBlockId)
 
 func getVariantsCount():
 	return voxelBlockItem.baseVariantsCount
