@@ -12,6 +12,7 @@ uniform sampler2D normals_texture : filter_linear;
 uniform bool use_normals_texture = false;
 
 uniform bool auto_normals = false;
+uniform vec4 tint_color = vec4(1, 1, 1, 1);
 
 const float checkOffset = 1.0 / 512.0;
 const float strength = 0.7;
@@ -34,6 +35,8 @@ void fragment() {
 	} else {
 		material_color = texture(material_texture, UV);
 	}
+	
+	color *= tint_color;
 	ALBEDO = vec3(color.r, color.g, color.b);
 	EMISSION = ALBEDO * material_color.r * 2.0;
 	ROUGHNESS = material_color.g;

@@ -674,7 +674,7 @@ func _checkVariants(blockVariants, item):
 			for paintedColor in consts.palette:
 				var variantItem = duplicateItem(oldVariantItem)
 				
-				variantItem.painted = paintedColor
+				variantItem.painted = Color(paintedColor)
 				if variantItem.has("lights"):
 					for lightObj in variantItem.lights:
 						lightObj.color = lightObj.get("color", paintedColor)
@@ -802,7 +802,7 @@ func _addFolder(path):
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
 
 var _materialCache = {}
-var _materialCacheNames = ["material", "material_no_filter", "texture", "texture_no_filter", "normal", "use_alpha"]
+var _materialCacheNames = ["material", "material_no_filter", "texture", "texture_no_filter", "normal", "use_alpha", "painted"]
 
 func _getMaterial(block):
 	block.use_alpha = block.get("use_alpha", false)
@@ -828,13 +828,16 @@ func _getMaterial(block):
 	if block.has("normal"):
 		material.set_shader_parameter("normals_texture", block.normal)
 		material.set_shader_parameter("use_normals_texture", true)
-		
+	
 	if block.get("texture_no_filter", false):
 		material.set_shader_parameter("dif_texture_no_filter", block.texture)
 		material.set_shader_parameter("no_filter", true)
 	else:
 		material.set_shader_parameter("dif_texture", block.texture)
 		material.set_shader_parameter("no_filter", false)
+	
+	if block.has("painted"):
+		material.set_shader_parameter("tint_color", block.painted)
 	
 	_materialCache[cachename] = material
 	_blockMaterials.append(material)
