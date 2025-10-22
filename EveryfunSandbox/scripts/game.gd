@@ -364,7 +364,7 @@ func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
 		result += 8
 	return result
 	
-func getVariantBlockId(blockId, rotation=0, variant=0):
+func getVariantBlockId(blockId, rotation=0, variant=0, color=0):
 	var obj = game.blockList[blockId]
 	if obj.has("rotated"):
 		rotation = (int(rotation + obj.get("rotationBase", 0)) % 4) + (floor(rotation / 4) * 4)
@@ -402,7 +402,7 @@ func getDefaultStorageData(blockId: int):
 	
 func isInteractive(blockId: int) -> bool:
 	var obj = game.blockList[blockId]
-	return obj.has("script")
+	return obj.has("script") || obj.has("lights")
 	
 func requestFile(filters, callback):
 	var dialog := FileDialog.new()
@@ -656,6 +656,8 @@ func duplicateItem(item):
 
 func _checkVariants(blockVariants, item):
 	item.currentVariant = 0
+	item.baseVariant = 0
+	item.colorVariant = 0
 	item.variantsList = [item]
 	
 	var currentVariant = 1
@@ -664,6 +666,7 @@ func _checkVariants(blockVariants, item):
 			var variantItem = item.merged(variant, true)
 			variantItem.variantsList = item.variantsList
 			variantItem.currentVariant = currentVariant
+			variantItem.baseVariant = currentVariant
 			item.variantsList.append(variantItem)
 			blockVariants.append(variantItem)
 			currentVariant += 1
@@ -671,6 +674,7 @@ func _checkVariants(blockVariants, item):
 	if item.get("paintable", false):
 		var variantsList = item.variantsList.duplicate(false)
 		for oldVariantItem in variantsList:
+			var colorVariant = 1
 			for paintedColor in consts.palette:
 				var variantItem = duplicateItem(oldVariantItem)
 				
@@ -681,9 +685,12 @@ func _checkVariants(blockVariants, item):
 				
 				variantItem.variantsList = variantItem.variantsList
 				variantItem.currentVariant = currentVariant
+				variantItem.baseVariant = oldVariantItem.baseVariant
+				variantItem.colorVariant = colorVariant
 				item.variantsList.append(variantItem)
 				blockVariants.append(variantItem)
 				currentVariant += 1
+				colorVariant += 1
 			
 func _prepairItem(item, path):
 	if item.has("sound"):
