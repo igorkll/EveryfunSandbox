@@ -822,6 +822,7 @@ func _getLibrary():
 			var material = _getMaterial(block)
 			
 			blockModel = VoxelBlockyModelMesh.new()
+			blockModel.collision_aabbs = [AABB(Vector3(0, 0, 0), Vector3(1, 1, 1))]
 			
 			var mesh
 			if block.mesh is Mesh:
@@ -830,8 +831,8 @@ func _getLibrary():
 				var mesh_instance = block.mesh.find_children("", "MeshInstance3D", true)
 				if mesh_instance.size() > 0:
 					mesh = mesh_instance[0].mesh
-			
 			blockModel.mesh = mesh
+			
 			var mesh_collision_enabled = block.get("mesh_collision", true)
 			for i in range(mesh.get_surface_count()):
 				var _mesh_collision_enabled = mesh_collision_enabled
@@ -843,8 +844,6 @@ func _getLibrary():
 					mesh.surface_set_material(i, transparency_material)
 				else:
 					mesh.surface_set_material(i, material)
-				
-			blockModel.collision_aabbs = [AABB(Vector3(0, 0, 0), Vector3(1, 1, 1))]
 		elif block.has("texture"):
 			var material = _getMaterial(block)
 			
