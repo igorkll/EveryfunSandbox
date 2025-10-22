@@ -8,6 +8,8 @@ var voxelTerrain
 var voxelPosition: Vector3i
 var voxelRotation: int
 var voxelVariant: int
+var voxelBaseVariant: int
+var voxelColorVariant: int
 var voxelDirection: Vector3i
 var voxelDirectionUp: Vector3i
 
@@ -28,12 +30,10 @@ func getVariant():
 
 func setVariant(variant):
 	voxelVariant = variant
-	voxelBlockId = game.getVariantBlockId(voxelBlockId, voxelRotation, voxelVariant)
+	voxelBlockId = game.getVariantBlockId(voxelBaseBlockId, voxelRotation, voxelVariant)
 	voxelBlockItem = game.blockList[voxelBlockId]
 	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)
 	saves.changeInteractiveVoxel(voxelTerrain, position, voxelBlockId)
 
 func destroy():
-	voxelTerrain.voxel_tool.set_voxel(voxelPosition, 0)
-	saves.changeInteractiveVoxel(voxelTerrain, position, 0)
-	terrainUtils.destroyBlock(game.terrain, position, false)
+	terrainUtils.destroyBlock(voxelTerrain, voxelPosition, false)

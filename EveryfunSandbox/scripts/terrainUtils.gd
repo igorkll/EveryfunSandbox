@@ -41,6 +41,8 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 		node.voxelPosition = position
 		node.voxelRotation = 0
 		node.voxelVariant = obj.currentVariant
+		node.voxelBaseVariant = obj.baseVariant
+		node.voxelColorVariant = obj.colorVariant
 		node.voxelDirection = Vector3i(1, 0, 0)
 		node.voxelDirectionUp = Vector3i(0, 1, 0)
 		
@@ -92,11 +94,11 @@ func unloadBlock(terrain, position: Vector3i):
 			obj.queue_free()
 		terrain.blockChildren.erase(position)
 
-func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, withSound=true, storageData=null):
+func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, color=0, withSound=true, storageData=null):
 	if storageData == null:
 		storageData = game.getDefaultStorageData(blockId)
 	
-	blockId = game.getVariantBlockId(blockId, rotation, variant)
+	blockId = game.getVariantBlockId(blockId, rotation, variant, color)
 	var item = game.blockList[blockId]
 	
 	terrain.voxel_tool.set_voxel(position, blockId)
