@@ -100,8 +100,6 @@ func _physics_process(delta):
 	var _move_acceleration = move_acceleration
 	var direction = Vector3.ZERO	
 	isWalking = false
-	if flyState:
-		_move_acceleration *= consts.player_mul_fly
 	if not controlLock:
 		var joystickWalk = game.getLeftJoystickValues()
 		
@@ -141,6 +139,9 @@ func _physics_process(delta):
 			stepInterval = consts.step_interval
 	else:
 		stepInterval = consts.step_interval
+	if flyState:
+		_move_acceleration *= consts.player_mul_fly
+		stepInterval *= consts.player_mul_fly
 	
 	if isWalking:
 		onWalking()
