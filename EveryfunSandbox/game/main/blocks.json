@@ -64,6 +64,21 @@
 		"sound_placeDestroy": "glass_placeDestroy"
 	},
 	
+	{
+		"name": "glow",
+		"texture": "blocks/glow.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/glow.png",
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy",
+		"lights": [
+			{
+				"type": "OmniLight",
+				"color": "#ff0000"
+			}
+		]
+	},
+	
 	
 	{
 		"name": "mirror",

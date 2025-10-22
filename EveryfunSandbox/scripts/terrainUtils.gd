@@ -61,6 +61,31 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 		
 		attachBlockChild(terrain, position, node)
 		
+	if obj.has("lights"):
+		for lightData in obj.lights:
+			var lightObj
+			match lightData.type:
+				"OmniLight":
+					lightObj = OmniLight3D.new()
+					lightObj.omni_attenuation = lightData.get("omni_attenuation", lightObj.omni_attenuation)
+					lightObj.omni_range = lightData.get("omni_range", lightObj.omni_range)
+					lightObj.omni_shadow_mode = lightData.get("omni_shadow_mode", lightObj.omni_shadow_mode)
+
+				"SpotLight":
+					lightObj = SpotLight3D.new()
+					lightObj.spot_angle = lightData.get("spot_angle", lightObj.spot_angle)
+					lightObj.spot_angle_attenuation = lightData.get("spot_angle_attenuation", lightObj.spot_angle_attenuation)
+					lightObj.spot_attenuation = lightData.get("spot_attenuation", lightObj.spot_attenuation)
+					lightObj.spot_range = lightData.get("spot_range", lightObj.spot_range)
+				_:
+					print("unknown light type")
+					
+			lightObj.shadow_enabled = true
+			lightObj.light_color = Color(lightData.get("color", "#ffffff"))
+			
+			lightObj.position = childPos
+			attachBlockChild(terrain, position, lightObj)
+		
 func unloadBlock(terrain, position: Vector3i):
 	if terrain.blockChildren.has(position):
 		for obj in terrain.blockChildren[position]:
