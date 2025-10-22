@@ -7,6 +7,7 @@ var loadedTime = 0
 
 func init(terrainPath):
 	threaded_update_enabled = true
+	# streaming_system = VoxelLodTerrain.STREAMING_SYSTEM_CLIPBOX
 	
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = game.blockLibrary
