@@ -644,12 +644,22 @@ func _readJson(path):
 		return
 	return filesystem.readJson(path)
 
+func duplicateItem(item):
+	var oldVariantsList = item.variantsList
+	var oldRotatedList = item.rotated
+	item.variantsList = null
+	item.rotated = null
+	var duplicatedItem = item.duplicate(true)
+	item.variantsList = oldVariantsList
+	item.rotated = oldRotatedList
+	return duplicatedItem
+
 func _checkVariants(blockVariants, item):
 	item.currentVariant = 0
 	item.variantsList = [item]
 	
+	var currentVariant = 1
 	if item.has("variants"):
-		var currentVariant = 1
 		for variant in item["variants"]:
 			var variantItem = item.merged(variant, true)
 			variantItem.variantsList = item.variantsList
@@ -657,6 +667,23 @@ func _checkVariants(blockVariants, item):
 			item.variantsList.append(variantItem)
 			blockVariants.append(variantItem)
 			currentVariant += 1
+			
+	if item.get("paintable", false):
+		var variantsList = item.variantsList.duplicate(false)
+		for oldVariantItem in variantsList:
+			for paintedColor in consts.palette:
+				var variantItem = duplicateItem(oldVariantItem)
+				
+				variantItem.painted = paintedColor
+				if variantItem.has("lights"):
+					for lightObj in variantItem.lights:
+						lightObj.color = lightObj.get("color", paintedColor)
+				
+				variantItem.variantsList = variantItem.variantsList
+				variantItem.currentVariant = currentVariant
+				item.variantsList.append(variantItem)
+				blockVariants.append(variantItem)
+				currentVariant += 1
 			
 func _prepairItem(item, path):
 	if item.has("sound"):

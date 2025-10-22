@@ -7,7 +7,11 @@ var fall_speed_mul = 2.5
 var velocity_drop = 0.0005
 var jump_budget = 0.02
 
+var step_interval = 0.4
+
 var max_interact_distance = 10
+
+
 
 var current_jump = false
 var current_jump_budget = 0
@@ -24,7 +28,8 @@ var defaultPlayerPosition = position
 var isWalking = false
 var headbuttSound = true
 
-var stepInterval
+
+var _stepInterval
 var flyState = false
 
 func _ready():
@@ -98,6 +103,7 @@ func _physics_process(delta):
 		flyState = false
 
 	var _move_acceleration = move_acceleration
+	_stepInterval = step_interval
 	var direction = Vector3.ZERO	
 	isWalking = false
 	if not controlLock:
@@ -127,21 +133,18 @@ func _physics_process(delta):
 			if flyState:
 				if Input.is_action_pressed("sprint"):
 					_move_acceleration *= consts.player_mul_sprint
-					stepInterval = consts.step_sprint_interval
+					_stepInterval /= consts.player_mul_sprint
 				velocity.y -= _move_acceleration * delta
 			else:
 				_move_acceleration *= consts.player_mul_crouch
-				stepInterval = consts.step_crouch_interval
+				_stepInterval /= consts.player_mul_crouch
 		elif Input.is_action_pressed("sprint"):
 			_move_acceleration *= consts.player_mul_sprint
-			stepInterval = consts.step_sprint_interval
-		else:
-			stepInterval = consts.step_interval
-	else:
-		stepInterval = consts.step_interval
+			_stepInterval /= consts.player_mul_sprint
+
 	if flyState:
 		_move_acceleration *= consts.player_mul_fly
-		stepInterval /= consts.player_mul_fly
+		_stepInterval /= consts.player_mul_fly
 	
 	if isWalking:
 		onWalking()
@@ -262,14 +265,14 @@ func onWalking():
 				walkVoxelId = voxelId
 				
 				walkSoundTimer = Timer.new()
-				walkSoundTimer.wait_time = stepInterval / 2
+				walkSoundTimer.wait_time = _stepInterval / 2
 				walkSoundTimer.one_shot = true
 				walkSoundTimer.timeout.connect(func(): 
 					walkSoundTimer.queue_free()
 					walkSoundTimer = RandomIntervalTimer.new()
 					add_child(walkSoundTimer)
 					
-					walkSoundTimer.interval = sound.get("interval", stepInterval)
+					walkSoundTimer.interval = sound.get("interval", _stepInterval)
 					walkSoundTimer.random_interval = 0.05
 					
 					walkSoundTimer.start(blockSound.bind(sound))
@@ -283,7 +286,7 @@ func onWalking():
 		stopWalkTimer()
 				
 	if walkSoundTimer and walkSoundTimer is RandomIntervalTimer:
-		walkSoundTimer.interval = currentWalkSound.get("interval", stepInterval)
+		walkSoundTimer.interval = currentWalkSound.get("interval", _stepInterval)
 
 func onStopWalk():
 	stopWalkTimer()

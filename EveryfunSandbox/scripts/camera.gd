@@ -33,7 +33,7 @@ func _process(delta):
 	if not player.inited:
 		return
 	
-	var interval = player.stepInterval
+	var interval = player._stepInterval
 	
 	if not player.isWalking or not player.is_on_floor():
 		isWalking = false
