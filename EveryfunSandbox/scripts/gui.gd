@@ -52,8 +52,6 @@ func _attachSlider(valuePath, sliderName, range, callback=null):
 	)
 
 func _updateSlider(sliderName, value, force, released):
-	print(sliderName, value, force, released)
-	
 	var label = game.mainNode.find_child(sliderName + "_label", true, false)
 	if sliderName == "ui_game_autoSaveInterval":
 		label.text = str(roundi(value)) + " seconds"
