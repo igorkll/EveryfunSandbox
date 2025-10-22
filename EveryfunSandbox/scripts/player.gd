@@ -25,6 +25,7 @@ var isWalking = false
 var headbuttSound = true
 
 var stepInterval
+var flyState = true
 
 func _ready():
 	halfPlayerSize = $collision.shape.height / 2
@@ -186,7 +187,8 @@ func _physics_process(delta):
 
 	var on_floor = is_on_floor()
 	if not on_floor:
-		velocity += get_gravity() * delta * fall_speed_mul
+		if not flyState:
+			velocity += get_gravity() * delta * fall_speed_mul
 	elif not _on_floor:
 		var voxel = getDownVoxelObj()
 		if voxel and voxel.has("sound_jump") and game.soundList.has(voxel.sound_jump):
@@ -207,6 +209,8 @@ func _physics_process(delta):
 	
 	var speed_mul = pow(velocity_drop, delta);
 	velocity.x *= speed_mul;
+	if flyState:
+		velocity.y *= speed_mul;
 	velocity.z *= speed_mul;
 	
 	move_and_slide()
