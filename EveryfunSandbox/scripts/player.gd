@@ -120,6 +120,8 @@ func _physics_process(delta):
 		if Input.is_action_pressed("crouch"):
 			_move_acceleration *= consts.player_mul_crouch
 			stepInterval = consts.step_crouch_interval
+			if flyState:
+				velocity.y -= _move_acceleration * delta
 		elif Input.is_action_pressed("sprint"):
 			_move_acceleration *= consts.player_mul_sprint
 			stepInterval = consts.step_sprint_interval
@@ -134,7 +136,7 @@ func _physics_process(delta):
 		onStopWalk()
 	_walk = isWalking
 	
-	if not controlLock && Input.is_action_pressed("jump") && is_on_floor():
+	if not controlLock && Input.is_action_pressed("jump") && (flyState || is_on_floor()):
 		if not current_jump:
 			current_jump_budget = jump_budget
 		current_jump = true
@@ -197,7 +199,10 @@ func _physics_process(delta):
 	_on_floor = on_floor
 
 	if current_jump:
-		velocity.y += jump_acceleration
+		if flyState:
+			velocity.y += _move_acceleration * delta
+		else:
+			velocity.y += jump_acceleration
 		
 	if velocity.y > 0:
 		var voxel = getUpVoxelObj()
