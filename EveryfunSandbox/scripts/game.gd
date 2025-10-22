@@ -775,15 +775,17 @@ func _addFolder(path):
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
 
 var _materialCache = {}
-var _materialCacheNames = ["material", "material_no_filter", "texture", "texture_no_filter"]
+var _materialCacheNames = ["material", "material_no_filter", "texture", "texture_no_filter", "normal", "use_alpha"]
 
 func _getMaterial(block):
+	block.use_alpha = block.get("use_alpha", false)
+	
 	var cachename = funcs.checksum_dict(block, _materialCacheNames)
 	if _materialCache.has(cachename):
 		return _materialCache[cachename]
 	
 	var material = ShaderMaterial.new()
-	if block.get("use_alpha", false):
+	if block["use_alpha"]:
 		material.shader = _alpha_blocks_shader
 	else:
 		material.shader = _blocks_shader
