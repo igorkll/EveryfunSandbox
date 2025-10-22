@@ -22,18 +22,34 @@ var voxelBlockItem: Dictionary
 var multiblock: Vector3i
 var multiblockRelative: Vector3i
 
-func getVariantsCount():
-	return voxelBlockItem.variantsList.size()
-
-func getVariant():
-	return voxelBlockItem.currentVariant
-
-func setVariant(variant):
-	voxelVariant = variant
-	voxelBlockId = game.getVariantBlockId(voxelBaseBlockId, voxelRotation, voxelVariant)
+func setVariantAndColor(variant, color):
+	voxelVariant = game.getVariantFromVariantAndColor(voxelBaseBlockId, variant, color)
+	voxelBaseVariant = variant
+	voxelColorVariant = color
+	
+	voxelBlockId = game.getVariantBlockId(voxelBaseBlockId, voxelRotation, variant, color)
 	voxelBlockItem = game.blockList[voxelBlockId]
+	
 	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)
 	saves.changeInteractiveVoxel(voxelTerrain, position, voxelBlockId)
+
+func getVariantsCount():
+	return voxelBlockItem.baseVariantsCount
+	
+func getColorsCount():
+	return voxelBlockItem.colorVariantsCount
+	
+func getVariant():
+	return voxelBaseVariant
+	
+func getColor():
+	return voxelColorVariant
+	
+func setVariant(variant):
+	setVariantAndColor(variant, voxelColorVariant)
+	
+func setColor(color):
+	setVariantAndColor(voxelBaseVariant, color)
 
 func destroy():
 	terrainUtils.destroyBlock(voxelTerrain, voxelPosition, false)

@@ -363,8 +363,16 @@ func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
 	elif dir.y > vertical_threshold:
 		result += 8
 	return result
+
+func getVariantFromVariantAndColor(blockId, variant=0, color=0):
+	var obj = game.blockList[blockId]
+	for variantObj in obj.variantsList:
+		if variantObj.baseVariant == variant && variantObj.colorVariant == color:
+			return variantObj.currentVariant
 	
 func getVariantBlockId(blockId, rotation=0, variant=0, color=0):
+	variant = getVariantFromVariantAndColor(blockId, variant, color)
+	
 	var obj = game.blockList[blockId]
 	if obj.has("rotated"):
 		rotation = (int(rotation + obj.get("rotationBase", 0)) % 4) + (floor(rotation / 4) * 4)
@@ -689,7 +697,7 @@ func _checkVariants(blockVariants, item):
 					for lightObj in variantItem.lights:
 						lightObj.color = lightObj.get("color", paintedColor)
 				
-				variantItem.variantsList = variantItem.variantsList
+				variantItem.variantsList = item.variantsList
 				variantItem.currentVariant = currentVariant
 				variantItem.baseVariant = oldVariantItem.baseVariant
 				variantItem.colorVariant = colorVariant
