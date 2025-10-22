@@ -425,6 +425,34 @@ func requestFile(filters, callback):
 		callback.call(null)
 	)
 
+var _pressedCounter = {}
+var multiplePressTimeout = 100
+
+func is_action_multiple_pressed(actionName, count=2):
+	var counter
+	if not _pressedCounter.has(actionName):
+		counter = [false, 0, -1]
+		_pressedCounter[actionName] = counter
+	else:
+		counter = _pressedCounter[actionName]
+	
+	var returnState = false
+	
+	var state = Input.is_action_pressed(actionName)
+	if state && !counter[0]:
+		var time = Time.get_ticks_msec()
+		if counter[2] < 0 || time - counter[2] > multiplePressTimeout:
+			counter[1] = 0
+		counter[2] = time
+		
+		counter[1] += 1
+		if counter[1] >= count:
+			returnState = true
+			counter[1] = 0
+	counter[0] = state
+	
+	return returnState
+
 # ------------------------------------------------- backend
 
 var _blocks_shader = preload("res://shaders/blocks.gdshader")

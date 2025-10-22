@@ -90,6 +90,12 @@ func _physics_process(delta):
 		findOptimalSpawnPositionTimer = null
 	
 	# ---------------------------------- moving control
+	
+	if saves.currentWorldData.debug.allowFly:
+		if not controlLock && game.is_action_multiple_pressed("jump"):
+			flyState = not flyState
+	else:
+		flyState = false
 
 	var _move_acceleration = move_acceleration
 	var direction = Vector3.ZERO	
