@@ -118,10 +118,14 @@ func _physics_process(delta):
 			isWalking = true
 		
 		if Input.is_action_pressed("crouch"):
-			_move_acceleration *= consts.player_mul_crouch
-			stepInterval = consts.step_crouch_interval
 			if flyState:
+				if Input.is_action_pressed("sprint"):
+					_move_acceleration *= consts.player_mul_sprint
+					stepInterval = consts.step_sprint_interval
 				velocity.y -= _move_acceleration * delta
+			else:
+				_move_acceleration *= consts.player_mul_crouch
+				stepInterval = consts.step_crouch_interval
 		elif Input.is_action_pressed("sprint"):
 			_move_acceleration *= consts.player_mul_sprint
 			stepInterval = consts.step_sprint_interval
