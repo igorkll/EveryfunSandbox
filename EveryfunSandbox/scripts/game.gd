@@ -658,6 +658,12 @@ func _checkVariants(blockVariants, item):
 	item.currentVariant = 0
 	item.baseVariant = 0
 	item.colorVariant = 0
+	item.baseVariantsCount = 1
+	item.colorVariantsCount = 1
+	if item.has("variants"):
+		item.baseVariantsCount += item["variants"].size()
+	if item.get("paintable", false):
+		item.colorVariantsCount += consts.palette.size()
 	item.variantsList = [item]
 	
 	var currentVariant = 1
