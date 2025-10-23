@@ -51,8 +51,8 @@
 		"texture": "blocks/colored_stone_tiles.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/glass.png",
-		"sound": "glass",
-		"sound_placeDestroy": "glass_placeDestroy"
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
 	},
 	{
 		"name": "glass",

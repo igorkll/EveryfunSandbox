@@ -7,7 +7,7 @@
 [ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="5_4c57u"]
 [ext_resource type="Texture2D" uid="uid://b2sglyqv0msja" path="res://gui/logo.png" id="5_5vw27"]
 [ext_resource type="Texture2D" uid="uid://g53q31spitlm" path="res://gui/resetValue.png" id="5_272bh"]
-[ext_resource type="Texture2D" uid="uid://b1500kk1trgkb" path="res://gui/crosspiece.png" id="6_efxa6"]
+[ext_resource type="Texture2D" uid="uid://du7nm0bvtfk18" path="res://gui/crosspiece/normal.png" id="8_5vw27"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_272bh"]
 ground_color = Color(0.6901961, 0.7294118, 0.8117647, 1)
@@ -845,7 +845,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("6_efxa6")
+texture = ExtResource("8_5vw27")
 
 [node name="TextureRect" type="TextureRect" parent="gui/Control"]
 layout_mode = 0

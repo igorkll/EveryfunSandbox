@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b1500kk1trgkb"
-path="res://.godot/imported/crosspiece.png-7ad0f11b5c2566c714e6f9589db3ea48.ctex"
+uid="uid://c68tyydqcx3j4"
+path="res://.godot/imported/testPaint.png-86c137c46899a2b0756329c8c00fb534.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gui/crosspiece.png"
-dest_files=["res://.godot/imported/crosspiece.png-7ad0f11b5c2566c714e6f9589db3ea48.ctex"]
+source_file="res://game/test/textures/testPaint.png"
+dest_files=["res://.godot/imported/testPaint.png-86c137c46899a2b0756329c8c00fb534.ctex"]
 
 [params]
 

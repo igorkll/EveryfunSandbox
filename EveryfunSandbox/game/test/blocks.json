@@ -62,5 +62,11 @@
 				"texture": "textures/testVariants/enabled.png"
 			}
 		]
+	},
+	{
+		"name": "testPaint",
+		"texture": "textures/testPaint.png",
+		"texture_mode": "UNIFORM_TOP",
+		"script": "scripts/testPaint.gd"
 	}
 ]
