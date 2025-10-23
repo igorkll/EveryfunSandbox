@@ -229,9 +229,9 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 			script.voxelDirection = newVoxelItem.rotation.d
 			script.voxelDirectionUp = newVoxelItem.rotation.u
 		else:
-			script.voxelRotation = newVoxelItem.currentRotation
-			script.voxelDirection = newVoxelItem.rotation.d
-			script.voxelDirectionUp = newVoxelItem.rotation.u
+			script.voxelRotation = 0
+			script.voxelDirection = Vector3(1, 0, 0)
+			script.voxelDirectionUp = Vector3(0, 1, 0)
 	
 	loadBlock(terrain, position, newVoxelId)
 	
