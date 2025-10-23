@@ -655,8 +655,8 @@ func _readJson(path):
 func duplicateItem(item):
 	var oldVariantsList = item.variantsList
 	var oldRotatedList = item.rotated
-	item.variantsList = null
-	item.rotated = null
+	item.erase("variantsList")
+	item.erase("rotated")
 	var duplicatedItem = item.duplicate(true)
 	item.variantsList = oldVariantsList
 	item.rotated = oldRotatedList
