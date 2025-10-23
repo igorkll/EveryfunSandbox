@@ -147,8 +147,14 @@ func getGraphicSettingsPresets(quality=null):
 
 func updateGraphicParameters(quality):
 	var graphicSettingsPreset = getGraphicSettingsPresets(quality)
+	
 	for _material in _blockMaterials:
 		_material.set_shader_parameter("auto_normals", graphicSettingsPreset.auto_normals)
+		
+	for child in allTerrainNodes:
+		if child is OmniLight3D || child is SpotLight3D:
+			child.shadow_bias = graphicSettingsPreset.bias
+			child.shadow_normal_bias = graphicSettingsPreset.normalBias
 
 func setGraphicQuality(quality):
 	var graphicSettingsPreset = getGraphicSettingsPresets(quality)
