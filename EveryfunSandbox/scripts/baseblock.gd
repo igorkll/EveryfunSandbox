@@ -57,5 +57,8 @@ func setColor(color):
 func setRotation(rotation):
 	setRotationAndVariantAndColor(rotation, voxelBaseVariant, voxelColorVariant)
 
-func setVoxelMetadata():
-	pass
+func setVoxelMetadata(data):
+	terrainUtils.setVoxelMetadata(voxelTerrain, voxelPosition, data)
+
+func getVoxelMetadata():
+	return terrainUtils.getVoxelMetadata(voxelTerrain, voxelPosition)
