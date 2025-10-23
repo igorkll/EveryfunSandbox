@@ -30,9 +30,14 @@ func isWorldFullLoaded() -> bool:
 	if currentWorldRuntimeData.fullLoaded:
 		return true
 	
-	if currentWorldRuntimeData.time > consts.minimal_load_time and game.terrain.voxel_tool.is_area_editable(AABB(
-		terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position) - consts.minimum_loading_radius_for_play,
-		terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position) + consts.minimum_loading_radius_for_play)):
+	if currentWorldRuntimeData.time > consts.minimal_load_time and terrainUtils.isMinimalAreaLoaded(game.terrain,
+		terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position)):
+		if not currentWorldRuntimeData.has("fullLoadedTimer"):
+			currentWorldRuntimeData.fullLoadedTimer = 0
+	else:
+		currentWorldRuntimeData.erase("fullLoadedTimer")
+			
+	if currentWorldRuntimeData.has("fullLoadedTimer") and currentWorldRuntimeData.fullLoadedTimer >= consts.load_time_delay:
 		currentWorldRuntimeData.fullLoaded = true
 		if loadingGameMessage != null:
 			loadingGameMessage.task_end()
@@ -260,6 +265,8 @@ func _process(delta):
 	if currentWorldRuntimeData:
 		currentWorldRuntimeData.time += delta
 		currentWorldRuntimeData.autoSaveTimer += delta
+		if currentWorldRuntimeData.has("fullLoadedTimer"):
+			currentWorldRuntimeData.fullLoadedTimer += delta
 
 		__checkAutosave()
 	

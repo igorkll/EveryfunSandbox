@@ -227,6 +227,12 @@ func isCellFree(terrain, position: Vector3i) -> bool:
 	var results = space_state.intersect_shape(query)
 	return results.size() == 0
 
+func isMinimalAreaLoaded(terrain, position):
+	var aabb = AABB(
+		position - (consts.minimum_loading_radius_for_play / 2),
+		consts.minimum_loading_radius_for_play)
+	return terrain.voxel_tool.is_area_editable(aabb)
+
 func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, variant, color):
 	var voxelId = terrain.voxel_tool.get_voxel(position)
 	var newVoxelId = game.getVariantBlockId(voxelId, rotation, variant, color)
