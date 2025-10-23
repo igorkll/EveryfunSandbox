@@ -19,13 +19,29 @@ func deleteBlockChild(terrain, position, child):
 	child.queue_free()
 	game.allTerrainNodes.erase(child)
 	
+func deleteBlockChildrenWithTypes(terrain, position, types):
+	var children = terrain.blockChildren.get(position)
+	if children:
+		for i in range(children.size() - 1, -1, -1):
+			var child = children[i]
+			if child.get_class() in types:
+				deleteBlockChild(terrain, position, child)
+				
+func deleteBlockChildrenWithScript(terrain, position):
+	var children = terrain.blockChildren.get(position)
+	if children:
+		for i in range(children.size() - 1, -1, -1):
+			var child = children[i]
+			if child.get_script() != null:
+				deleteBlockChild(terrain, position, child)
+	
 func getBlockChildren(terrain, position):
 	if terrain.blockChildren.has(position):
 		return terrain.blockChildren[position]
 	else:
 		return []
 		
-func updateChildrenRotation(terrain, position, blockId=null):
+func _updateChildrenRotation(terrain, position, blockId=null):
 	if blockId == null:
 		blockId = terrain.voxel_tool.get_voxel(position)
 	
@@ -67,8 +83,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var children = getBlockChildren(terrain, position)
 	
 	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)):
-		if children.size() >= 1:
-			deleteBlockChild(terrain, position, children[0])
+		deleteBlockChildrenWithScript(terrain, position)
 		
 		var script = game.loadResource(obj.script)
 		var node = script.new()
@@ -98,12 +113,8 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 			node.voxelDirectionUp = obj.rotation.u
 		
 		attachBlockChild(terrain, position, node)
-		
-	for i in range(children.size() - 1, -1, -1):
-		var child = children[i]
-		if child is OmniLight3D || child is SpotLight3D:
-			deleteBlockChild(terrain, position, child)
 	
+	deleteBlockChildrenWithTypes(terrain, position, ["OmniLight3D", "SpotLight3D"])
 	if obj.has("lights"):
 		for lightData in obj.lights:
 			var lightObj
@@ -132,7 +143,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 			lightObj.position = childPos + lightData.get("position", Vector3(0, 0, 0))
 			attachBlockChild(terrain, position, lightObj)
 			
-	updateChildrenRotation(terrain, position, blockId)
+	_updateChildrenRotation(terrain, position, blockId)
 		
 func unloadBlock(terrain, position: Vector3i):
 	if terrain.blockChildren.has(position):
