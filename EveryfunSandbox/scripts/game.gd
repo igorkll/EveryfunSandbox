@@ -768,7 +768,9 @@ func _prepairItem(item, path):
 	if item.has("script"):
 		item.script = path.path_join(item.script)
 		
-func _addBlockList(path, jsonPath):
+func _addBlockList(jsonPath):
+	var path = jsonPath.get_base_dir()
+	
 	var list = _readJson(jsonPath)
 	if list:
 		_processForks(list)
@@ -858,12 +860,12 @@ func _addFolder(path):
 		for ambient in list:
 			ambientList.append(loadResource(path.path_join(ambient)))
 
-	_addBlockList(path, path.path_join("/blocks.json"))
+	_addBlockList(path.path_join("/blocks.json"))
 	
 	list = _readJson(path.path_join("/blockLists.json"))
 	if list:
 		for blockList in list:
-			_addBlockList(path, path.path_join(blockList))
+			_addBlockList(path.path_join(blockList))
 			
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
 

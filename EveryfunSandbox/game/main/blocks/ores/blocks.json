@@ -1,0 +1,10 @@
+[
+	{
+		"name": "gold",
+		"texture": "gold.png",
+		"texture_mode": "UNIFORM",
+		"material": "material.png",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
+	}
+]
