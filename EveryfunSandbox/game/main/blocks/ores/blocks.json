@@ -4,6 +4,7 @@
 		"texture": "gold.png",
 		"texture_mode": "UNIFORM",
 		"material": "material.png",
+		"normal": "normal.png",
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy"
 	}

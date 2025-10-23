@@ -15,7 +15,7 @@ uniform bool auto_normals = false;
 uniform vec4 tint_color = vec4(1, 1, 1, 1);
 
 const float checkOffset = 1.0 / 512.0;
-const float strength = 0.7;
+const float strength = 0.1;
 
 float get_luminance(vec3 color) {
     return dot(color, vec3(0.2126, 0.7152, 0.0722));
@@ -48,7 +48,7 @@ void fragment() {
 		vec3 normal = texture(normals_texture, UV).rgb;
 	    normal *= 2.0;
 	    normal -= 1.0;
-		NORMAL = normalize(NORMAL + normal);
+		NORMAL_MAP = NORMAL + vec3(0, 0, 1);
 	} else if (auto_normals) {
 	    float hL = get_luminance(texture(dif_texture, UV - vec2(checkOffset, 0.0)).rgb);
 	    float hR = get_luminance(texture(dif_texture, UV + vec2(checkOffset, 0.0)).rgb);
@@ -58,6 +58,6 @@ void fragment() {
 	    float dx = (hR - hL) * strength;
 	    float dy = (hU - hD) * strength;
 
-	    NORMAL = normalize(NORMAL + vec3(-dx, -dy, 0.0));
+	    NORMAL_MAP = normalize(vec3(-dx, -dy, 0.0));
 	}
 }
