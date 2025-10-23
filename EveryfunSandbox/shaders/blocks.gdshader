@@ -41,7 +41,6 @@ void fragment() {
 	EMISSION = ALBEDO * material_color.r * 2.0;
 	ROUGHNESS = material_color.g;
 	METALLIC = material_color.b;
-	SPECULAR = 1.0;
 	// ALPHA = color.a;
 	
 	// normal
