@@ -18,6 +18,20 @@ func getBlockChildren(terrain, position):
 		return terrain.blockChildren[position]
 	else:
 		return []
+		
+func updateChildrenRotation(terrain, position, blockId=null):
+	if blockId == null:
+		blockId = terrain.voxel_tool.get_voxel(position)
+	
+	var voxelItem = game.blockList[blockId]
+	var children = getBlockChildren(terrain, position)
+
+	if voxelItem.has("rotation"):
+		for child in children:
+			child.rotation_degrees = voxelItem.rotation.r
+	else:
+		for child in children:
+			child.rotation_degrees = Vector3(0, 0, 0)
 
 func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 	if terrain.blockChildren.has(position):
@@ -53,7 +67,6 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 		node.voxelBlockItem = obj
 		
 		if obj.has("rotation"):
-			node.rotation_degrees = obj.rotation.r
 			node.voxelRotation = obj.currentRotation
 			node.voxelDirection = obj.rotation.d
 			node.voxelDirectionUp = obj.rotation.u
@@ -84,6 +97,8 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 			
 			lightObj.position = childPos
 			attachBlockChild(terrain, position, lightObj)
+			
+	updateChildrenRotation(terrain, position, blockId)
 		
 func unloadBlock(terrain, position: Vector3i):
 	if terrain.blockChildren.has(position):
@@ -192,15 +207,15 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 		script.voxelBlockItem = newVoxelItem
 		
 		if newVoxelItem.has("rotation"):
-			script.rotation_degrees = newVoxelItem.rotation.r
 			script.voxelRotation = newVoxelItem.currentRotation
 			script.voxelDirection = newVoxelItem.rotation.d
 			script.voxelDirectionUp = newVoxelItem.rotation.u
 		else:
-			script.rotation_degrees = Vector3(0, 0, 0)
 			script.voxelRotation = newVoxelItem.currentRotation
 			script.voxelDirection = newVoxelItem.rotation.d
 			script.voxelDirectionUp = newVoxelItem.rotation.u
+	
+	updateChildrenRotation(terrain, position, newVoxelId)
 
 func setVariantAndColor(terrain, position: Vector3i, variant, color):
 	setRotationAndVariantAndColor(terrain, position, getRotationCount(terrain, position), variant, color)
