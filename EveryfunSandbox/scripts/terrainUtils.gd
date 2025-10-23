@@ -12,10 +12,12 @@ func attachBlockChild(terrain, position, child):
 		terrain.blockChildren[position] = []
 	terrain.blockChildren[position].append(child)
 	terrain.add_child(child)
+	game.allTerrainNodes.append(child)
 	
 func deleteBlockChild(terrain, position, child):
 	terrain.blockChildren[position].erase(child)
 	child.queue_free()
+	game.allTerrainNodes.erase(child)
 	
 func getBlockChildren(terrain, position):
 	if terrain.blockChildren.has(position):
@@ -120,9 +122,12 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 					lightObj.spot_range = lightData.get("spot_range", lightObj.spot_range)
 				_:
 					print("unknown light type")
-					
+			
+			var graphicSettingsPreset = game.getGraphicSettingsPresets()
 			lightObj.shadow_enabled = true
 			lightObj.light_color = Color(lightData.get("color", "#ffffff"))
+			lightObj.shadow_bias = graphicSettingsPreset.bias
+			lightObj.shadow_normal_bias = graphicSettingsPreset.normalBias
 			
 			lightObj.position = childPos + lightData.get("position", Vector3(0, 0, 0))
 			attachBlockChild(terrain, position, lightObj)
@@ -132,6 +137,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 func unloadBlock(terrain, position: Vector3i):
 	if terrain.blockChildren.has(position):
 		for obj in terrain.blockChildren[position]:
+			game.allTerrainNodes.erase(obj)
 			obj.queue_free()
 		terrain.blockChildren.erase(position)
 

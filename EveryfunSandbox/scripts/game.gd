@@ -10,6 +10,8 @@ var miscData = {}
 var muteAllExceptMusic = false
 var transparency_material
 
+var allTerrainNodes = []
+
 var defaultSettings = {
 	"statistics": {
 		"game_session_counter": 0
@@ -138,13 +140,18 @@ func setRenderDistance(index):
 	view_distance = distanceSettingsPreset.distance
 	lod_distance = distanceSettingsPreset.lodDistance
 	
-func updateShaderParameters(quality):
-	var graphicSettingsPreset = graphicSettingsPresets[quality]
+func getGraphicSettingsPresets(quality=null):
+	if quality == null:
+		quality = settings.graphic.quality
+	return graphicSettingsPresets[quality]
+
+func updateGraphicParameters(quality):
+	var graphicSettingsPreset = getGraphicSettingsPresets(quality)
 	for _material in _blockMaterials:
 		_material.set_shader_parameter("auto_normals", graphicSettingsPreset.auto_normals)
 
 func setGraphicQuality(quality):
-	var graphicSettingsPreset = graphicSettingsPresets[quality]
+	var graphicSettingsPreset = getGraphicSettingsPresets(quality)
 	var worldLight = mainNode.find_child("worldLight", true, false)
 	var worldEnv = mainNode.find_child("worldEnv", true, false)
 	
@@ -156,7 +163,7 @@ func setGraphicQuality(quality):
 	worldEnv.environment.set_ssao_enabled(graphicSettingsPreset.ssao)
 	worldEnv.environment.set_ssil_enabled(graphicSettingsPreset.ssil)
 	
-	updateShaderParameters(quality)
+	updateGraphicParameters(quality)
 
 func setHdrState(hdr):
 	get_tree().root.set_use_hdr_2d(hdr)
@@ -586,7 +593,7 @@ func _ready():
 	_initAmbient()
 	_initGui()
 	
-	updateShaderParameters(settings.graphic.quality)
+	updateGraphicParameters(settings.graphic.quality)
 	setCrosspiece("normal")
 
 func _initGui():
