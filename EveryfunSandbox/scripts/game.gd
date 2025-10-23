@@ -611,9 +611,9 @@ func _ready():
 	
 	sceneTree.quit_on_go_back = false
 	sceneTree.auto_accept_quit = false
-	sceneTree.connect("close_requested", _on_close_requested)
+	sceneTree.root.connect("close_requested", _on_close_requested)
 	
-func _on_about_to_quit():
+func _on_close_requested():
 	print("ASD")
 	saves.save()
 
