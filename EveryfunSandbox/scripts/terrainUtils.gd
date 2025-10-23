@@ -13,6 +13,10 @@ func attachBlockChild(terrain, position, child):
 	terrain.blockChildren[position].append(child)
 	terrain.add_child(child)
 	
+func deleteBlockChild(terrain, position, child):
+	terrain.blockChildren[position].erase(child)
+	child.queue_free()
+	
 func getBlockChildren(terrain, position):
 	if terrain.blockChildren.has(position):
 		return terrain.blockChildren[position]
@@ -61,6 +65,9 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var children = getBlockChildren(terrain, position)
 	
 	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)):
+		if children.size() >= 1:
+			deleteBlockChild(terrain, position, children[0])
+		
 		var script = game.loadResource(obj.script)
 		var node = script.new()
 		
@@ -90,6 +97,11 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 		
 		attachBlockChild(terrain, position, node)
 		
+	for i in range(children.size() - 1, -1, -1):
+		var child = children[i]
+		if child is OmniLight3D || child is SpotLight3D:
+			deleteBlockChild(terrain, position, child)
+	
 	if obj.has("lights"):
 		for lightData in obj.lights:
 			var lightObj
