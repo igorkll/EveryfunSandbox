@@ -160,6 +160,13 @@ func setGraphicQuality(quality):
 
 func setHdrState(hdr):
 	get_tree().root.set_use_hdr_2d(hdr)
+
+var _crosspiece
+func setCrosspiece(name):
+	if _crosspiece == name:
+		return
+	_crosspiece = name
+	mainNode.find_child("crosspiece", true, false).texture = loadResource(("res://gui/crosspiece").path_join(name + ".png"))
 	
 func setWindowMode(mode):
 	if mode == 2:
@@ -580,6 +587,7 @@ func _ready():
 	_initGui()
 	
 	updateShaderParameters(settings.graphic.quality)
+	setCrosspiece("normal")
 
 func _initGui():
 	setScale(settings.gui.scale)
