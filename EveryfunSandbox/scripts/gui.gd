@@ -160,13 +160,11 @@ func _process(delta):
 var _worldLoaded = false
 func _on_world_open(worldName):
 	if _worldLoaded:
-		_updateToggleOption("&debug.debugInfo", "ui_debug_debugInfo")
-		_updateToggleOption("&debug.allowFly", "ui_debug_allowFly")
-		_updateToggleOption("&debug.allowCheats", "ui_debug_allowCheats")
+		for name in saves.defaultWorldData.debug:
+			_updateToggleOption("&debug." + name, "ui_debug_" + name)
 	else:
-		_attachToggleOption("&debug.debugInfo", "ui_debug_debugInfo", null)
-		_attachToggleOption("&debug.allowFly", "ui_debug_allowFly", null)
-		_attachToggleOption("&debug.allowCheats", "ui_debug_allowCheats", null)
+		for name in saves.defaultWorldData.debug:
+			_attachToggleOption("&debug." + name, "ui_debug_" + name, null)
 	_worldLoaded = true
 
 func _Continue_game_pressed():

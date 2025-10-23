@@ -31,6 +31,7 @@ var headbuttSound = true
 
 var _stepInterval
 var flyState = false
+var disableCollisionState = false
 
 func _ready():
 	halfPlayerSize = $collision.shape.height / 2
@@ -178,7 +179,7 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("place"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and terrainUtils.isCellFree(game.terrain, result[1].previous_position):
-				terrainInteractions.placeBlock(game.terrain, result[1].previous_position, game.blockIDs["grammophone"], game.getBlockDefaultRotation($camera.global_transform.basis.z))
+				terrainInteractions.placeBlock(game.terrain, result[1].previous_position, game.blockIDs["glow"], game.getBlockDefaultRotation($camera.global_transform.basis.z))
 			
 		var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 		if result && terrainUtils.canUseBlock(game.terrain, result[1].position):
@@ -191,6 +192,9 @@ func _physics_process(delta):
 		game.setCrosspiece("normal")
 	
 	# ---------------------------------- moving
+	
+	disableCollisionState = saves.currentWorldData.debug.disableCollisionOnFly && flyState
+	$collision.disabled = disableCollisionState
 	
 	var camera_basis = $camera.global_transform.basis
 	var camera_direction = -camera_basis.z
@@ -297,6 +301,8 @@ func onStopWalk():
 	stopWalkTimer()
 
 func blockSound(sound):
+	if disableCollisionState:
+		return
 	game.playSound(sound, global_transform.origin - Vector3(0, halfPlayerSize, 0))
 
 func _getVoxelWithOffset(side, offset):

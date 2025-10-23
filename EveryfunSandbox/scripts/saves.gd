@@ -12,6 +12,7 @@ var defaultWorldData = {
 	"debug": {
 		"debugInfo": false,
 		"allowFly": false,
+		"disableCollisionOnFly": false,
 		"allowCheats": false
 	}
 }

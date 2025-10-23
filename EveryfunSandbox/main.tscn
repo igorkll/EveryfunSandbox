@@ -321,6 +321,10 @@ text = "Show debug info"
 layout_mode = 2
 text = "Allow fly"
 
+[node name="ui_debug_disableCollisionOnFly" type="CheckBox" parent="gui/Control/MarginContainer/menuUI/TabContainer/Debug/VBoxContainer"]
+layout_mode = 2
+text = "Disable collision on fly"
+
 [node name="ui_debug_allowCheats" type="CheckBox" parent="gui/Control/MarginContainer/menuUI/TabContainer/Debug/VBoxContainer"]
 layout_mode = 2
 text = "Allow cheats"
