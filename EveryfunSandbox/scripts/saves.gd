@@ -152,8 +152,12 @@ func regInteractiveVoxel(terrain, position: Vector3i, blockId, storageData=null)
 		currentWorldData.interactiveVoxels[chunkPosition].erase(position)
 		if currentWorldData.interactiveVoxels[chunkPosition].is_empty():
 			currentWorldData.interactiveVoxels.erase(chunkPosition)
+			
+func getInteractiveVoxel(terrain, position: Vector3i):
+	var chunkPosition = __getChunkPosition(position)
+	if currentWorldData.interactiveVoxels.has(chunkPosition):
+		return currentWorldData.interactiveVoxels[chunkPosition].get(position)
 	
-		
 func changeInteractiveVoxel(terrain, position: Vector3i, blockId):
 	if blockId == 0:
 		blockId = null

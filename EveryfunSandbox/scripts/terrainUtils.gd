@@ -37,17 +37,30 @@ func updateChildrenRotation(terrain, position, blockId=null):
 			child.rotation_degrees += funcs.arr_to_Vector3(voxelItem.lights[lightIndex].get("rotation", [0, 0, 0]))
 			lightIndex += 1
 
-func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
-	if terrain.blockChildren.has(position):
-		return
+func _getScriptChecksum(obj):
+	return hash([obj.get("script"), obj.get("script_data"), obj.get("script_temp")])
+
+func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
+	if blockId == null || storageData == null:
+		var voxel = saves.getInteractiveVoxel(terrain, position)
+		if voxel:
+			if blockId == null:
+				blockId = voxel[0]
+			if storageData == null:
+				storageData = voxel[1]
+		else:
+			if blockId == null:
+				return
+			if storageData == null:
+				storageData = game.getDefaultStorageData(blockId)
 	
-	if storageData == null:
-		storageData = game.getDefaultStorageData(blockId)
-	
+	var exists = terrain.blockChildren.has(position)
 	var obj = game.blockList[blockId]
+	var oldObj = game.blockList[terrain.voxel_tool.get_voxel(position)]
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+	var children = getBlockChildren(terrain, position)
 	
-	if obj.has("script"):
+	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)):
 		var script = game.loadResource(obj.script)
 		var node = script.new()
 		
@@ -188,9 +201,6 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 	var voxelId = terrain.voxel_tool.get_voxel(position)
 	var newVoxelId = game.getVariantBlockId(voxelId, rotation, variant, color)
 	
-	terrain.voxel_tool.set_voxel(position, newVoxelId)
-	saves.changeInteractiveVoxel(terrain, position, newVoxelId)
-	
 	var script = getBlockScript(terrain, position)
 	if script:
 		var newVoxelItem = game.blockList[newVoxelId]
@@ -211,10 +221,13 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 			script.voxelDirection = newVoxelItem.rotation.d
 			script.voxelDirectionUp = newVoxelItem.rotation.u
 	
-	updateChildrenRotation(terrain, position, newVoxelId)
+	loadBlock(terrain, position, newVoxelId)
+	
+	terrain.voxel_tool.set_voxel(position, newVoxelId)
+	saves.changeInteractiveVoxel(terrain, position, newVoxelId)
 
 func setVariantAndColor(terrain, position: Vector3i, variant, color):
-	setRotationAndVariantAndColor(terrain, position, getRotationsCount(terrain, position), variant, color)
+	setRotationAndVariantAndColor(terrain, position, getRotation(terrain, position), variant, color)
 
 func getVariantsCount(terrain, position: Vector3i):
 	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
