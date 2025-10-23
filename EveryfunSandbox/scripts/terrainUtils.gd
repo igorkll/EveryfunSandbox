@@ -123,16 +123,16 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 			match lightData.type:
 				"OmniLight":
 					lightObj = OmniLight3D.new()
-					lightObj.omni_attenuation = lightData.get("omni_attenuation", lightObj.omni_attenuation)
-					lightObj.omni_range = lightData.get("omni_range", lightObj.omni_range)
-					lightObj.omni_shadow_mode = lightData.get("omni_shadow_mode", lightObj.omni_shadow_mode)
+					lightObj.omni_shadow_mode = OmniLight3D.SHADOW_DUAL_PARABOLOID
+					lightObj.omni_attenuation = lightData.get("attenuation", lightObj.omni_attenuation)
+					lightObj.omni_range = lightData.get("range", lightObj.omni_range)
 
 				"SpotLight":
 					lightObj = SpotLight3D.new()
-					lightObj.spot_angle = lightData.get("spot_angle", lightObj.spot_angle)
-					lightObj.spot_angle_attenuation = lightData.get("spot_angle_attenuation", lightObj.spot_angle_attenuation)
-					lightObj.spot_attenuation = lightData.get("spot_attenuation", lightObj.spot_attenuation)
-					lightObj.spot_range = lightData.get("spot_range", lightObj.spot_range)
+					lightObj.spot_angle = lightData.get("angle", lightObj.spot_angle)
+					lightObj.spot_angle_attenuation = lightData.get("angle_attenuation", lightObj.spot_angle_attenuation)
+					lightObj.spot_attenuation = lightData.get("attenuation", lightObj.spot_attenuation)
+					lightObj.spot_range = lightData.get("range", lightObj.spot_range)
 				_:
 					print("unknown light type")
 			
