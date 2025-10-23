@@ -78,6 +78,22 @@
 		],
 		"paintable": true
 	},
+	{
+		"name": "lamp",
+		"texture": "blocks/lamp/texture.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"material": "blocks/lamp/material.png",
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy",
+		"lights": [
+			{
+				"type": "SpotLight",
+				"rotation": [0, -30, 0]
+			}
+		],
+		"paintable": true,
+		"rotationMode": "360V"
+	},
 	
 	
 	{

@@ -80,3 +80,6 @@ func is_number(value) -> bool:
 func round_to(num: float, digits: int) -> float:
 	var factor = pow(10.0, digits)
 	return round(num * factor) / factor
+
+func arr_to_Vector3(arr):
+	return Vector3(arr[0], arr[1], arr[2])

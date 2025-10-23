@@ -26,12 +26,16 @@ func updateChildrenRotation(terrain, position, blockId=null):
 	var voxelItem = game.blockList[blockId]
 	var children = getBlockChildren(terrain, position)
 
-	if voxelItem.has("rotation"):
-		for child in children:
+	var lightIndex = 0
+	for child in children:
+		if voxelItem.has("rotation"):
 			child.rotation_degrees = voxelItem.rotation.r
-	else:
-		for child in children:
+		else:
 			child.rotation_degrees = Vector3(0, 0, 0)
+		
+		if child is OmniLight3D || child is SpotLight3D:
+			child.rotation_degrees += funcs.arr_to_Vector3(voxelItem.lights[lightIndex].get("rotation", [0, 0, 0]))
+			lightIndex += 1
 
 func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 	if terrain.blockChildren.has(position):
@@ -95,7 +99,7 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 			lightObj.shadow_enabled = true
 			lightObj.light_color = Color(lightData.get("color", "#ffffff"))
 			
-			lightObj.position = childPos
+			lightObj.position = childPos + lightData.get("position", Vector3(0, 0, 0))
 			attachBlockChild(terrain, position, lightObj)
 			
 	updateChildrenRotation(terrain, position, blockId)
