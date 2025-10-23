@@ -29,9 +29,9 @@ func isWorldFullLoaded() -> bool:
 	if currentWorldRuntimeData.fullLoaded:
 		return true
 	
-	if currentWorldRuntimeData.time > consts.minimal_load_time and game.terrain.is_area_meshed(AABB(
+	if currentWorldRuntimeData.time > consts.minimal_load_time and game.terrain.voxel_tool.is_area_editable(AABB(
 		terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position) - consts.minimum_loading_radius_for_play,
-		terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position) + consts.minimum_loading_radius_for_play), 0):
+		terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position) + consts.minimum_loading_radius_for_play)):
 		currentWorldRuntimeData.fullLoaded = true
 		if loadingGameMessage != null:
 			loadingGameMessage.task_end()

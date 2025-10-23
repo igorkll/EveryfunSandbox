@@ -169,3 +169,47 @@ func isCellFree(terrain, position: Vector3i) -> bool:
 	
 	var results = space_state.intersect_shape(query)
 	return results.size() == 0
+
+func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, variant, color):
+	var voxelId = terrain.voxel_tool.get_voxel(position)
+	
+	var newVoxelId = game.getVariantBlockId(voxelId, rotation, variant, color)
+	
+	terrain.voxel_tool.set_voxel(position, newVoxelId)
+	saves.changeInteractiveVoxel(terrain, position, newVoxelId)
+
+func setVariantAndColor(terrain, position: Vector3i, variant, color):
+	setRotationAndVariantAndColor(terrain, position, getRotationCount(terrain, position), variant, color)
+
+func getVariantsCount(terrain, position: Vector3i):
+	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	return obj.baseVariantsCount
+	
+func getColorsCount(terrain, position: Vector3i):
+	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	return obj.colorVariantsCount
+	
+func getRotationCount(terrain, position: Vector3i):
+	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	return obj.rotationCount
+	
+func getVariant(terrain, position: Vector3i):
+	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	return obj.baseVariant
+	
+func getColor(terrain, position: Vector3i):
+	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	return obj.colorVariant
+	
+func getRotation(terrain, position: Vector3i):
+	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	return obj.currentRotation
+	
+func setVariant(terrain, position: Vector3i, variant):
+	setVariantAndColor(terrain, position, variant, getColor(terrain, position))
+	
+func setColor(terrain, position: Vector3i, color):
+	setVariantAndColor(terrain, position, getVariant(terrain, position), color)
+	
+func setRotation(terrain, position: Vector3i, rotation):
+	setRotationAndVariantAndColor(terrain, position, rotation, getVariant(terrain, position), getColor(terrain, position))

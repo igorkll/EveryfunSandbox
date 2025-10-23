@@ -22,6 +22,9 @@ var voxelBlockItem: Dictionary
 var multiblock: Vector3i
 var multiblockRelative: Vector3i
 
+func destroy():
+	terrainUtils.destroyBlock(voxelTerrain, voxelPosition, false)
+
 func setVariantAndColor(variant, color):
 	voxelVariant = game.getVariantFromVariantAndColor(voxelBaseBlockId, variant, color)
 	voxelBaseVariant = variant
@@ -51,5 +54,5 @@ func setVariant(variant):
 func setColor(color):
 	setVariantAndColor(voxelBaseVariant, color)
 
-func destroy():
-	terrainUtils.destroyBlock(voxelTerrain, voxelPosition, false)
+func setVoxelMetadata():
+	pass
