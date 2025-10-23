@@ -45,10 +45,7 @@ void fragment() {
 	
 	// normal
 	if (use_normals_texture) {
-		vec3 normal = texture(normals_texture, UV).rgb;
-	    normal *= 2.0;
-	    normal -= 1.0;
-		NORMAL_MAP = NORMAL + vec3(0, 0, 1);
+		NORMAL_MAP = texture(normals_texture, UV).rgb;
 	} else if (auto_normals) {
 	    float hL = get_luminance(texture(dif_texture, UV - vec2(checkOffset, 0.0)).rgb);
 	    float hR = get_luminance(texture(dif_texture, UV + vec2(checkOffset, 0.0)).rgb);
