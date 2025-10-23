@@ -243,6 +243,9 @@ func _physics_process(delta):
 		velocity.y *= speed_mul;
 	velocity.z *= speed_mul;
 	
+	if not terrainUtils.isMinimalAreaLoaded(game.terrain, terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, game.player.position)):
+		velocity = Vector3(0, 0, 0)
+	
 	move_and_slide()
 	
 	# ---------------------------------- update data
