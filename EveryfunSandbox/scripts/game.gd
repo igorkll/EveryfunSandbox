@@ -1,5 +1,6 @@
 extends Node
 
+var sceneTree
 var mainNode
 var terrain
 var player
@@ -177,7 +178,7 @@ func setGraphicQuality(quality):
 	updateGraphicParameters(quality)
 
 func setHdrState(hdr):
-	get_tree().root.set_use_hdr_2d(hdr)
+	sceneTree.root.set_use_hdr_2d(hdr)
 
 var _crosspiece
 func setCrosspiece(name):
@@ -198,7 +199,7 @@ func setVSyncMode(vsync):
 	DisplayServer.window_set_vsync_mode(vsync, 0)
 	
 func setSmoothingState(smoothing):
-	get_tree().root.use_taa = smoothing
+	sceneTree.root.use_taa = smoothing
 
 func loadResource(resourcePath):
 	if resourcePath.begins_with("res://") or resourcePath.begins_with("user://"):
@@ -370,10 +371,10 @@ func gameMessage(text, timeout=4, processAnimation=false, minShowTime=null):
 	return message
 	
 func setScale(scale):
-	get_tree().root.content_scale_factor = scale
+	sceneTree.root.content_scale_factor = scale
 	
 func getScale():
-	return get_tree().root.content_scale_factor
+	return sceneTree.root.content_scale_factor
 
 func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
 	var dir = -globalCameraBasisZ
@@ -409,10 +410,10 @@ func getVariantBlockId(blockId, rotation=0, variant=0, color=0):
 func exit():
 	if saves.isWorldFullLoaded():
 		saves.save(func():
-			get_tree().quit()
+			sceneTree.quit()
 		)
 	else:
-		get_tree().quit()
+		sceneTree.quit()
 		
 func blockScriptRequest(blockId: int, methodName, ...args):
 	var obj = game.blockList[blockId]
@@ -578,6 +579,12 @@ var rotationModes = {
 }
 
 func _ready():
+	sceneTree = get_tree()
+	mainNode = get_node("/root/main")
+	player = get_node("/root/main/player")
+	camera = get_node("/root/main/player/camera")
+	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
+	
 	transparency_material = StandardMaterial3D.new()
 	transparency_material.albedo_color = Color(1,1,1,0)
 	transparency_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -587,11 +594,6 @@ func _ready():
 	array_360_modes.reverse()
 	for rotationMode_360 in array_360_modes:
 		rotationModes["360V"].insert(0, rotationMode_360)
-	
-	mainNode = get_node("/root/main")
-	player = get_node("/root/main/player")
-	camera = get_node("/root/main/player/camera")
-	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
 	
 	loadSettings()
 	saveSettings() # update session counter
@@ -606,6 +608,14 @@ func _ready():
 	
 	updateGraphicParameters(settings.graphic.quality)
 	setCrosspiece("normal")
+	
+	sceneTree.quit_on_go_back = false
+	sceneTree.auto_accept_quit = false
+	sceneTree.connect("close_requested", _on_close_requested)
+	
+func _on_about_to_quit():
+	print("ASD")
+	saves.save()
 
 func _initGui():
 	setScale(settings.gui.scale)
