@@ -25,15 +25,10 @@ func destroy():
 	terrainUtils.destroyBlock(voxelTerrain, voxelPosition, false)
 
 func setVariantAndColor(variant, color):
-	voxelVariant = game.getVariantFromVariantAndColor(voxelBaseBlockId, variant, color)
-	voxelBaseVariant = variant
-	voxelColorVariant = color
+	terrainUtils.setVariantAndColor(voxelTerrain, voxelPosition, variant, color)
 	
-	voxelBlockId = game.getVariantBlockId(voxelBaseBlockId, voxelRotation, variant, color)
-	voxelBlockItem = game.blockList[voxelBlockId]
-	
-	voxelTerrain.voxel_tool.set_voxel(voxelPosition, voxelBlockId)
-	saves.changeInteractiveVoxel(voxelTerrain, voxelPosition, voxelBlockId)
+func setRotationAndVariantAndColor(rotation, variant, color):
+	terrainUtils.setRotationAndVariantAndColor(voxelTerrain, voxelPosition, rotation, variant, color)
 
 func getVariantsCount():
 	return voxelBlockItem.baseVariantsCount
@@ -47,11 +42,17 @@ func getVariant():
 func getColor():
 	return voxelColorVariant
 	
+func getRotation():
+	return voxelRotation
+	
 func setVariant(variant):
 	setVariantAndColor(variant, voxelColorVariant)
 	
 func setColor(color):
 	setVariantAndColor(voxelBaseVariant, color)
+	
+func setRotation(rotation):
+	setRotationAndVariantAndColor(rotation, voxelBaseVariant, voxelColorVariant)
 
 func setVoxelMetadata():
 	pass
