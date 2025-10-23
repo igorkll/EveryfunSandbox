@@ -13,10 +13,6 @@ uniform bool use_normals_texture = false;
 
 uniform vec4 tint_color = vec4(1, 1, 1, 1);
 
-float get_luminance(vec3 color) {
-    return dot(color, vec3(0.2126, 0.7152, 0.0722));
-}
-
 void fragment() {
 	vec4 color;
 	if (no_filter) {

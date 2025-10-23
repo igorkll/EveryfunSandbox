@@ -70,7 +70,6 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
-		"auto_normals": false,
 		"bias": 0.1,
 		"normalBias": 2.0
 	},
@@ -80,7 +79,6 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
-		"auto_normals": false,
 		"bias": 0.1,
 		"normalBias": 2.0
 	},
@@ -90,7 +88,6 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": false,
 		"ssil": false,
-		"auto_normals": true,
 		"bias": 0.05,
 		"normalBias": 5.0
 	},
@@ -100,7 +97,6 @@ var graphicSettingsPresets = [
 		"sdfgi": false,
 		"ssao": true,
 		"ssil": true,
-		"auto_normals": true,
 		"bias": 0.01,
 		"normalBias": 10.0
 	}
@@ -154,9 +150,6 @@ func applyLightGraphicSettings(light, quality=null):
 
 func updateGraphicParameters(quality):
 	var graphicSettingsPreset = getGraphicSettingsPresets(quality)
-	
-	for _material in _blockMaterials:
-		_material.set_shader_parameter("auto_normals", graphicSettingsPreset.auto_normals)
 		
 	for child in allTerrainNodes:
 		if child is OmniLight3D || child is SpotLight3D:
