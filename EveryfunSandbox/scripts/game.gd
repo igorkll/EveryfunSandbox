@@ -614,8 +614,7 @@ func _ready():
 	sceneTree.root.connect("close_requested", _on_close_requested)
 	
 func _on_close_requested():
-	print("ASD")
-	saves.save()
+	exit()
 
 func _initGui():
 	setScale(settings.gui.scale)
