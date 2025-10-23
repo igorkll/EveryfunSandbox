@@ -3,7 +3,25 @@
 		"name": "gold",
 		"texture": "gold.png",
 		"texture_mode": "UNIFORM",
-		"material": "material.png",
+		"material": "materials/metal.png",
+		"normal": "normal.png",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
+	},
+	{
+		"name": "lazuli",
+		"texture": "lazuli.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/stone.png",
+		"normal": "normal.png",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
+	},
+	{
+		"name": "uranium",
+		"texture": "uranium.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/glow.png",
 		"normal": "normal.png",
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy"
