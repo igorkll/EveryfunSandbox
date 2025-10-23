@@ -50,14 +50,16 @@ func _updateChildrenRotation(terrain, position, blockId=null):
 
 	var lightIndex = 0
 	for child in children:
+		var rotations = []
+		
 		if voxelItem.has("rotation"):
-			child.rotation_degrees = voxelItem.rotation.r
-		else:
-			child.rotation_degrees = Vector3(0, 0, 0)
+			rotations.append(voxelItem.rotation.r)
 		
 		if child is OmniLight3D || child is SpotLight3D:
-			child.rotation_degrees += funcs.arr_to_Vector3(voxelItem.lights[lightIndex].get("rotation", [0, 0, 0]))
+			rotations.append(funcs.arr_to_Vector3(voxelItem.lights[lightIndex].get("rotation", [0, 0, 0])))
 			lightIndex += 1
+			
+		child.rotation_degrees = funcs.combine_rotations_deg(rotations)
 
 func _getScriptChecksum(obj):
 	return hash([obj.get("script"), obj.get("script_data"), obj.get("script_temp")])

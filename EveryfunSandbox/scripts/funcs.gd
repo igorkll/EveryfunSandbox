@@ -83,3 +83,13 @@ func round_to(num: float, digits: int) -> float:
 
 func arr_to_Vector3(arr):
 	return Vector3(arr[0], arr[1], arr[2])
+
+func combine_rotations_deg(rotations: Array) -> Vector3:
+	var q_combined = Quaternion()
+
+	for rot_deg in rotations:
+		var rot_rad = rot_deg * deg_to_rad(1)
+		var q = Quaternion.from_euler(rot_rad)
+		q_combined *= q
+
+	return q_combined.get_euler() * rad_to_deg(1)
