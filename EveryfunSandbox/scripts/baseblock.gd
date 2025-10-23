@@ -6,10 +6,12 @@ var scriptData = {}
 
 var voxelTerrain
 var voxelPosition: Vector3i
-var voxelRotation: int
+
 var voxelVariant: int
 var voxelBaseVariant: int
 var voxelColorVariant: int
+
+var voxelRotation: int
 var voxelDirection: Vector3i
 var voxelDirectionUp: Vector3i
 
@@ -18,9 +20,6 @@ var voxelBaseBlockItem: Dictionary
 
 var voxelBlockId: int
 var voxelBlockItem: Dictionary
-
-var multiblock: Vector3i
-var multiblockRelative: Vector3i
 
 func destroy():
 	terrainUtils.destroyBlock(voxelTerrain, voxelPosition, false)

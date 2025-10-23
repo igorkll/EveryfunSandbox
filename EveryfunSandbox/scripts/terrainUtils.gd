@@ -52,9 +52,6 @@ func loadBlock(terrain, position: Vector3i, blockId: int, storageData=null):
 		node.voxelBlockId = blockId
 		node.voxelBlockItem = obj
 		
-		node.multiblock = Vector3i(1, 1, 1)
-		node.multiblockRelative = node.multiblock
-		
 		if obj.has("rotation"):
 			node.rotation_degrees = obj.rotation.r
 			node.voxelRotation = obj.currentRotation
@@ -146,6 +143,12 @@ func canUseBlock(terrain, position: Vector3i) -> bool:
 		if child.has_method("_use"):
 			return true
 	return false
+	
+func getBlockScript(terrain, position: Vector3i):
+	var children = getBlockChildren(terrain, position)
+	for child in children:
+		if child.get_script() != null:
+			return child
 
 func getVoxelPositionFromGlobalPosition(terrain, position: Vector3) -> Vector3i:
 	return funcs.vec3_to_vec3i_down(position - terrain.global_transform.origin)
@@ -172,11 +175,32 @@ func isCellFree(terrain, position: Vector3i) -> bool:
 
 func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, variant, color):
 	var voxelId = terrain.voxel_tool.get_voxel(position)
-	
 	var newVoxelId = game.getVariantBlockId(voxelId, rotation, variant, color)
 	
 	terrain.voxel_tool.set_voxel(position, newVoxelId)
 	saves.changeInteractiveVoxel(terrain, position, newVoxelId)
+	
+	var script = getBlockScript(terrain, position)
+	if script:
+		var newVoxelItem = game.blockList[newVoxelId]
+		
+		script.voxelVariant = game.getVariantFromVariantAndColor(voxelId, variant, color)
+		script.voxelBaseVariant = variant
+		script.voxelColorVariant = color
+		
+		script.voxelBlockId = newVoxelId
+		script.voxelBlockItem = newVoxelItem
+		
+		if newVoxelItem.has("rotation"):
+			script.rotation_degrees = newVoxelItem.rotation.r
+			script.voxelRotation = newVoxelItem.currentRotation
+			script.voxelDirection = newVoxelItem.rotation.d
+			script.voxelDirectionUp = newVoxelItem.rotation.u
+		else:
+			script.rotation_degrees = Vector3(0, 0, 0)
+			script.voxelRotation = newVoxelItem.currentRotation
+			script.voxelDirection = newVoxelItem.rotation.d
+			script.voxelDirectionUp = newVoxelItem.rotation.u
 
 func setVariantAndColor(terrain, position: Vector3i, variant, color):
 	setRotationAndVariantAndColor(terrain, position, getRotationCount(terrain, position), variant, color)
