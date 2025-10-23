@@ -121,13 +121,13 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 		for lightData in obj.lights:
 			var lightObj
 			match lightData.type:
-				"OmniLight":
+				"omni":
 					lightObj = OmniLight3D.new()
 					lightObj.omni_shadow_mode = OmniLight3D.SHADOW_DUAL_PARABOLOID
 					lightObj.omni_attenuation = lightData.get("attenuation", lightObj.omni_attenuation)
 					lightObj.omni_range = lightData.get("range", lightObj.omni_range)
 
-				"SpotLight":
+				"spot":
 					lightObj = SpotLight3D.new()
 					lightObj.spot_angle = lightData.get("angle", lightObj.spot_angle)
 					lightObj.spot_angle_attenuation = lightData.get("angle_attenuation", lightObj.spot_angle_attenuation)
@@ -139,8 +139,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 			var graphicSettingsPreset = game.getGraphicSettingsPresets()
 			lightObj.shadow_enabled = true
 			lightObj.light_color = Color(lightData.get("color", "#ffffff"))
-			lightObj.shadow_bias = graphicSettingsPreset.bias
-			lightObj.shadow_normal_bias = graphicSettingsPreset.normalBias
+			game.applyLightGraphicSettings(lightObj)
 			
 			lightObj.position = childPos + lightData.get("position", Vector3(0, 0, 0))
 			attachBlockChild(terrain, position, lightObj)
