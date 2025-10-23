@@ -789,7 +789,7 @@ func _addFolder(path):
 			if item.has("name"):
 				blockIDs[item.name] = item.id
 			
-			item.rotationCount = 1
+			item.rotationsCount = 1
 			item.currentRotation = 0
 			item.rotated = [item]
 			
@@ -806,7 +806,7 @@ func _addFolder(path):
 					rotatedBlocks.append(rotated)
 					item.rotated.append(rotated)
 					currentRotation += 1
-				item.rotationCount = currentRotation
+				item.rotationsCount = currentRotation
 			
 			_prepairItem(item, path)
 			blockList.append(item)

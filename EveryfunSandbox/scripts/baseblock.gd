@@ -22,7 +22,7 @@ var voxelBlockId: int
 var voxelBlockItem: Dictionary
 
 func destroy():
-	terrainUtils.destroyBlock(voxelTerrain, voxelPosition, false)
+	terrainUtils.destroyBlock(voxelTerrain, voxelPosition)
 
 func setVariantAndColor(variant, color):
 	terrainUtils.setVariantAndColor(voxelTerrain, voxelPosition, variant, color)
@@ -35,6 +35,9 @@ func getVariantsCount():
 	
 func getColorsCount():
 	return voxelBlockItem.colorVariantsCount
+	
+func getRotationsCount():
+	return voxelBlockItem.rotationsCount
 	
 func getVariant():
 	return voxelBaseVariant

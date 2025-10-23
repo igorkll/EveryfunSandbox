@@ -106,17 +106,13 @@ func unloadBlock(terrain, position: Vector3i):
 			obj.queue_free()
 		terrain.blockChildren.erase(position)
 
-func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, color=0, withSound=true, storageData=null):
+func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, color=0, storageData=null):
 	if storageData == null:
 		storageData = game.getDefaultStorageData(blockId)
 	
 	blockId = game.getVariantBlockId(blockId, rotation, variant, color)
-	var item = game.blockList[blockId]
 	
 	terrain.voxel_tool.set_voxel(position, blockId)
-	
-	if withSound && item.has("sound_place"):
-		game.playSound(game.soundList[item.sound_place], getGlobalPositionFromVoxelPosition(terrain, position))
 	
 	if game.isInteractive(blockId):
 		saves.regInteractiveVoxel(terrain, position, blockId, storageData)
@@ -124,15 +120,11 @@ func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0
 	if saves.isInteractiveChunkBlockLoaded(position):
 		loadBlock(terrain, position, blockId, storageData)
 
-func destroyBlock(terrain, position: Vector3i, withSound=true):
-	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
-	if withSound && obj.has("sound_destroy"):
-		game.playSound(game.soundList[obj.sound_destroy], getGlobalPositionFromVoxelPosition(terrain, position))
-	
+func destroyBlock(terrain, position: Vector3i):
 	unloadBlock(terrain, position)
 	saves.regInteractiveVoxel(terrain, position, null)
-	
 	terrain.voxel_tool.set_voxel(position, 0)
+	setVoxelMetadata(terrain, position, null)
 
 func callBlock(terrain, position: Vector3i, method, ...args) -> bool:
 	var children = getBlockChildren(terrain, position)
@@ -218,7 +210,7 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 	updateChildrenRotation(terrain, position, newVoxelId)
 
 func setVariantAndColor(terrain, position: Vector3i, variant, color):
-	setRotationAndVariantAndColor(terrain, position, getRotationCount(terrain, position), variant, color)
+	setRotationAndVariantAndColor(terrain, position, getRotationsCount(terrain, position), variant, color)
 
 func getVariantsCount(terrain, position: Vector3i):
 	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
@@ -228,9 +220,9 @@ func getColorsCount(terrain, position: Vector3i):
 	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
 	return obj.colorVariantsCount
 	
-func getRotationCount(terrain, position: Vector3i):
+func getRotationsCount(terrain, position: Vector3i):
 	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
-	return obj.rotationCount
+	return obj.rotationsCount
 	
 func getVariant(terrain, position: Vector3i):
 	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
@@ -252,3 +244,9 @@ func setColor(terrain, position: Vector3i, color):
 	
 func setRotation(terrain, position: Vector3i, rotation):
 	setRotationAndVariantAndColor(terrain, position, rotation, getVariant(terrain, position), getColor(terrain, position))
+
+func setVoxelMetadata(terrain, position: Vector3i, data):
+	terrain.voxel_tool.set_voxel_metadata(position, data)
+
+func getVoxelMetadata(terrain, position: Vector3i):
+	return terrain.voxel_tool.get_voxel_metadata(position)
