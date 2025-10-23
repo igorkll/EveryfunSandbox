@@ -767,6 +767,52 @@ func _prepairItem(item, path):
 		
 	if item.has("script"):
 		item.script = path.path_join(item.script)
+		
+func _addBlockList(path, jsonPath):
+	var list = _readJson(jsonPath)
+	if list:
+		_processForks(list)
+		
+		var blockVariants = []
+		var rotatedBlocks = []
+		for item in list:
+			item.id = blockList.size()
+			item.baseId = item.id
+			if item.has("name"):
+				blockIDs[item.name] = item.id
+			
+			item.rotationsCount = 1
+			item.currentRotation = 0
+			item.rotated = [item]
+			
+			_checkVariants(blockVariants, item)
+			
+			if item.has("rotationMode"):
+				var rotationMode = rotationModes[item.rotationMode]
+				var currentRotation = 1
+				for rotation in rotationMode:
+					var rotated = item.duplicate(false)
+					rotated.rotated = item.rotated
+					rotated.currentRotation = currentRotation
+					rotated.rotation = rotation
+					rotatedBlocks.append(rotated)
+					item.rotated.append(rotated)
+					currentRotation += 1
+				item.rotationsCount = currentRotation
+			
+			_prepairItem(item, path)
+			blockList.append(item)
+			
+		for rotatedBlock in rotatedBlocks:
+			rotatedBlock.id = blockList.size()
+			_checkVariants(blockVariants, rotatedBlock)
+			_prepairItem(rotatedBlock, path)
+			blockList.append(rotatedBlock)
+			
+		for blockVariant in blockVariants:
+			blockVariant.id = blockList.size()
+			_prepairItem(blockVariant, path)
+			blockList.append(blockVariant)
 
 func _addFolder(path):
 	var list = _readJson(path.path_join("/misc.json"))
@@ -812,50 +858,12 @@ func _addFolder(path):
 		for ambient in list:
 			ambientList.append(loadResource(path.path_join(ambient)))
 
-	list = _readJson(path.path_join("/blocks.json"))
+	_addBlockList(path, path.path_join("/blocks.json"))
+	
+	list = _readJson(path.path_join("/blockLists.json"))
 	if list:
-		_processForks(list)
-		
-		var blockVariants = []
-		var rotatedBlocks = []
-		for item in list:
-			item.id = blockList.size()
-			item.baseId = item.id
-			if item.has("name"):
-				blockIDs[item.name] = item.id
-			
-			item.rotationsCount = 1
-			item.currentRotation = 0
-			item.rotated = [item]
-			
-			_checkVariants(blockVariants, item)
-			
-			if item.has("rotationMode"):
-				var rotationMode = rotationModes[item.rotationMode]
-				var currentRotation = 1
-				for rotation in rotationMode:
-					var rotated = item.duplicate(false)
-					rotated.rotated = item.rotated
-					rotated.currentRotation = currentRotation
-					rotated.rotation = rotation
-					rotatedBlocks.append(rotated)
-					item.rotated.append(rotated)
-					currentRotation += 1
-				item.rotationsCount = currentRotation
-			
-			_prepairItem(item, path)
-			blockList.append(item)
-			
-		for rotatedBlock in rotatedBlocks:
-			rotatedBlock.id = blockList.size()
-			_checkVariants(blockVariants, rotatedBlock)
-			_prepairItem(rotatedBlock, path)
-			blockList.append(rotatedBlock)
-			
-		for blockVariant in blockVariants:
-			blockVariant.id = blockList.size()
-			_prepairItem(blockVariant, path)
-			blockList.append(blockVariant)
+		for blockList in list:
+			_addBlockList(path, path.path_join(blockList))
 			
 var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
 

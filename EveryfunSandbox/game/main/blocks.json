@@ -4,7 +4,7 @@
 	},
 	{
 		"name": "grass",
-		"texture": "blocks/grass/texture.png",
+		"texture": "blocks/grass.png",
 		"texture_mode": "UNIFORM_TOP_BOTTOM",
 		"sound": "grass",
 		"sound_placeDestroy": "grass_placeDestroy"
@@ -18,21 +18,21 @@
 	},
 	{
 		"name": "stone",
-		"texture": "blocks/stone/texture.png",
+		"texture": "blocks/stone.png",
 		"texture_mode": "UNIFORM",
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy"
 	},
 	{
 		"name": "bricks",
-		"texture": "blocks/bricks/texture.png",
+		"texture": "blocks/bricks.png",
 		"texture_mode": "UNIFORM",
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy"
 	},
 	{
 		"name": "metal",
-		"texture": "blocks/metal/normal.png",
+		"texture": "blocks/metal.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "metal",
@@ -40,7 +40,7 @@
 	},
 	{
 		"name": "polished_metal",
-		"texture": "blocks/metal/polished.png",
+		"texture": "blocks/polished_metal.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "metal",
@@ -100,7 +100,7 @@
 	
 	{
 		"name": "mirror",
-		"texture": "blocks/metal/normal.png",
+		"texture": "blocks/metal.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "metal",
@@ -111,7 +111,7 @@
 	},
 	{
 		"name": "monitor",
-		"texture": "blocks/metal/polished.png",
+		"texture": "blocks/polished_metal.png",
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "metal",
