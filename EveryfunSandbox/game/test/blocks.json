@@ -73,11 +73,17 @@
 	
 	{
 		"name": "testTempScript",
-		"texture": "textures/testDirection.png",
+		"texture": "textures/testVariants/disabled.png",
 		"texture_mode": "UNIFORM_SIDE",
+		"texture_no_filter": true,
 		"rotationMode": "360V",
-		"script": "scripts/testDirection.gd",
+		"script": "scripts/testVariants.gd",
 		"script_temp": true,
-		"script_default_usage": true
+		"script_default_usage": true,
+		"variants": [
+			{
+				"texture": "textures/testVariants/enabled.png"
+			}
+		]
 	}
 ]
