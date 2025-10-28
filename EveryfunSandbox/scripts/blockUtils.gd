@@ -55,7 +55,7 @@ func getInfo(blockId: int):
 	
 func isInteractive(blockId: int) -> bool:
 	var obj = list_id2obj[blockId]
-	return obj.has("script") || obj.has("lights")
+	return (obj.has("script") && !obj.has("script_temp")) || obj.has("lights")
 	
 # ------------------------------------------------- backend
 

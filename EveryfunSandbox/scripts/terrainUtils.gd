@@ -1,13 +1,13 @@
 extends Node
 
-func blockRaycast(position, direction, maxDistance):
+func blockRaycast(position: Vector3, direction, maxDistance):
 	var terrain = game.terrain
 	
 	var result = terrain.voxel_tool.raycast(position, direction, maxDistance)
 	if result:
 		return [terrain, result]
 		
-func attachBlockChild(terrain, position, child):
+func attachBlockChild(terrain, position: Vector3i, child):
 	if not terrain.blockChildren.has(position):
 		terrain.blockChildren[position] = []
 	terrain.blockChildren[position].append(child)
@@ -19,7 +19,7 @@ func deleteBlockChild(terrain, position, child):
 	child.queue_free()
 	game.allTerrainNodes.erase(child)
 	
-func deleteBlockChildrenWithTypes(terrain, position, types):
+func deleteBlockChildrenWithTypes(terrain, position: Vector3i, types):
 	var children = terrain.blockChildren.get(position)
 	if children:
 		for i in range(children.size() - 1, -1, -1):
@@ -27,7 +27,7 @@ func deleteBlockChildrenWithTypes(terrain, position, types):
 			if child.get_class() in types:
 				deleteBlockChild(terrain, position, child)
 				
-func deleteBlockChildrenWithScript(terrain, position):
+func deleteBlockChildrenWithScript(terrain, position: Vector3i):
 	var children = terrain.blockChildren.get(position)
 	if children:
 		for i in range(children.size() - 1, -1, -1):
@@ -35,13 +35,20 @@ func deleteBlockChildrenWithScript(terrain, position):
 			if child.get_script() != null:
 				deleteBlockChild(terrain, position, child)
 	
-func getBlockChildren(terrain, position):
+func getBlockChildren(terrain, position: Vector3i):
 	if terrain.blockChildren.has(position):
 		return terrain.blockChildren[position]
 	else:
 		return []
 		
-func _updateChildrenRotation(terrain, position, blockId=null):
+func isBlockChildrenWithScriptExists(terrain, position: Vector3i):
+	if terrain.blockChildren.has(position):
+		for child in terrain.blockChildren[position]:
+			if child.get_script() != null:
+				return true
+	return false
+		
+func _updateChildrenRotation(terrain, position: Vector3i, blockId=null):
 	if blockId == null:
 		blockId = terrain.voxel_tool.get_voxel(position)
 	
@@ -63,8 +70,8 @@ func _updateChildrenRotation(terrain, position, blockId=null):
 
 func _getScriptChecksum(obj):
 	return hash([obj.get("script"), obj.get("script_data"), obj.get("script_temp")])
-
-func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
+	
+func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=null):
 	if blockId == null || storageData == null:
 		var voxel = saves.getInteractiveVoxel(terrain, position)
 		if voxel:
@@ -77,6 +84,47 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 				return
 			if storageData == null:
 				storageData = blockUtils.getDefaultStorageData(blockId)
+	return [blockId, storageData]
+
+func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
+	var loadBlockData = _getLoadBlockData(terrain, position, blockId, storageData)
+	blockId = loadBlockData[0]
+	storageData = loadBlockData[1]
+	
+	var obj = blockUtils.list_id2obj[blockId]
+	var script = game.loadResource(obj.script)
+	var node = script.new()
+	
+	node.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+	node.storageData = storageData
+	node.scriptData = obj.get("script_data", {})
+	
+	node.voxelTerrain = terrain
+	node.voxelPosition = position
+	node.voxelRotation = 0
+	node.voxelVariant = obj.currentVariant
+	node.voxelBaseVariant = obj.baseVariant
+	node.voxelColorVariant = obj.colorVariant
+	node.voxelDirection = Vector3i(1, 0, 0)
+	node.voxelDirectionUp = Vector3i(0, 1, 0)
+	
+	node.voxelBaseBlockId = obj.baseId
+	node.voxelBaseBlockItem = blockUtils.list_id2obj[obj.baseId]
+	
+	node.voxelBlockId = blockId
+	node.voxelBlockItem = obj
+	
+	if obj.has("rotation"):
+		node.voxelRotation = obj.currentRotation
+		node.voxelDirection = obj.rotation.d
+		node.voxelDirectionUp = obj.rotation.u
+	
+	attachBlockChild(terrain, position, node)
+
+func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
+	var loadBlockData = _getLoadBlockData(terrain, position, blockId, storageData)
+	blockId = loadBlockData[0]
+	storageData = loadBlockData[1]
 	
 	var exists = terrain.blockChildren.has(position)
 	var obj = blockUtils.list_id2obj[blockId]
@@ -84,37 +132,9 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	var children = getBlockChildren(terrain, position)
 	
-	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)):
+	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.has("script_temp") or isBlockChildrenWithScriptExists(terrain, position)):
 		deleteBlockChildrenWithScript(terrain, position)
-		
-		var script = game.loadResource(obj.script)
-		var node = script.new()
-		
-		node.position = childPos
-		node.storageData = storageData
-		node.scriptData = obj.get("script_data", {})
-		
-		node.voxelTerrain = terrain
-		node.voxelPosition = position
-		node.voxelRotation = 0
-		node.voxelVariant = obj.currentVariant
-		node.voxelBaseVariant = obj.baseVariant
-		node.voxelColorVariant = obj.colorVariant
-		node.voxelDirection = Vector3i(1, 0, 0)
-		node.voxelDirectionUp = Vector3i(0, 1, 0)
-		
-		node.voxelBaseBlockId = obj.baseId
-		node.voxelBaseBlockItem = blockUtils.list_id2obj[obj.baseId]
-		
-		node.voxelBlockId = blockId
-		node.voxelBlockItem = obj
-		
-		if obj.has("rotation"):
-			node.voxelRotation = obj.currentRotation
-			node.voxelDirection = obj.rotation.d
-			node.voxelDirectionUp = obj.rotation.u
-		
-		attachBlockChild(terrain, position, node)
+		loadBlockScript(terrain, position)
 	
 	deleteBlockChildrenWithTypes(terrain, position, ["OmniLight3D", "SpotLight3D"])
 	if obj.has("lights"):

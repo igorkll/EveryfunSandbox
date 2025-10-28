@@ -69,5 +69,15 @@
 		"texture_mode": "UNIFORM_TOP",
 		"texture_no_filter": true,
 		"script": "scripts/testPaint.gd"
+	},
+	
+	{
+		"name": "testTempScript",
+		"texture": "textures/testDirection.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"rotationMode": "360V",
+		"script": "scripts/testDirection.gd",
+		"script_temp": true,
+		"script_temp_usage": true
 	}
 ]
