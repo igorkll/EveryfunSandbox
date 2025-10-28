@@ -120,6 +120,9 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 		node.voxelDirectionUp = obj.rotation.u
 	
 	attachBlockChild(terrain, position, node)
+	
+func getBlockObj(terrain, position: Vector3i):
+	return blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 
 func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var loadBlockData = _getLoadBlockData(terrain, position, blockId, storageData)
@@ -128,7 +131,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	
 	var exists = terrain.blockChildren.has(position)
 	var obj = blockUtils.list_id2obj[blockId]
-	var oldObj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	var oldObj = getBlockObj(terrain, position)
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	var children = getBlockChildren(terrain, position)
 	
@@ -203,19 +206,27 @@ func callBlock(terrain, position: Vector3i, method, ...args) -> bool:
 	return result
 
 func useBlock(terrain, position: Vector3i) -> bool:
-	var children = getBlockChildren(terrain, position)
-	var used = false
-	for child in children:
-		if child.has_method("_use"):
-			child.call("_use")
-			used = true
-	return used
+	if not canUseBlock(terrain, position):
+		return false
 	
+	var script = getBlockScript(terrain, position)
+	if script != null && script.has_method("_use"):
+		script.call("_use")
+		return true
+	
+	return false
+
 func canUseBlock(terrain, position: Vector3i) -> bool:
-	var children = getBlockChildren(terrain, position)
-	for child in children:
-		if child.has_method("_use"):
-			return true
+	var script = getBlockScript(terrain, position)
+	
+	if script == null:
+		var obj = getBlockObj(terrain, position)
+		return obj.get("script_default_usage", false)
+	elif script.has_method("_canUse"):
+		return bool(script.call("_canUse"))
+	elif script.has_method("_use"):
+		return true
+	
 	return false
 	
 func getBlockScript(terrain, position: Vector3i):
@@ -286,27 +297,27 @@ func setVariantAndColor(terrain, position: Vector3i, variant, color):
 	setRotationAndVariantAndColor(terrain, position, getRotation(terrain, position), variant, color)
 
 func getVariantsCount(terrain, position: Vector3i):
-	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	var obj = getBlockObj(terrain, position)
 	return obj.baseVariantsCount
 	
 func getColorsCount(terrain, position: Vector3i):
-	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	var obj = getBlockObj(terrain, position)
 	return obj.colorVariantsCount
 	
 func getRotationsCount(terrain, position: Vector3i):
-	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	var obj = getBlockObj(terrain, position)
 	return obj.rotationsCount
 	
 func getVariant(terrain, position: Vector3i):
-	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	var obj = getBlockObj(terrain, position)
 	return obj.baseVariant
 	
 func getColor(terrain, position: Vector3i):
-	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	var obj = getBlockObj(terrain, position)
 	return obj.colorVariant
 	
 func getRotation(terrain, position: Vector3i):
-	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	var obj = getBlockObj(terrain, position)
 	return obj.currentRotation
 	
 func setVariant(terrain, position: Vector3i, variant):
@@ -319,7 +330,10 @@ func setRotation(terrain, position: Vector3i, rotation):
 	setRotationAndVariantAndColor(terrain, position, rotation, getVariant(terrain, position), getColor(terrain, position))
 
 func setVoxelMetadata(terrain, position: Vector3i, data):
-	terrain.voxel_tool.set_voxel_metadata(position, data)
+	if terrain in VoxelTerrain:
+		terrain.voxel_tool.set_voxel_metadata(position, data)
 
 func getVoxelMetadata(terrain, position: Vector3i):
-	return terrain.voxel_tool.get_voxel_metadata(position)
+	if terrain is VoxelTerrain:
+		return terrain.voxel_tool.get_voxel_metadata(position)
+	return null

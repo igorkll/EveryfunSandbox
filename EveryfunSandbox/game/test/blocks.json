@@ -78,6 +78,6 @@
 		"rotationMode": "360V",
 		"script": "scripts/testDirection.gd",
 		"script_temp": true,
-		"script_temp_usage": true
+		"script_default_usage": true
 	}
 ]
