@@ -96,5 +96,22 @@
 				"texture": "textures/testVariants/enabled.png"
 			}
 		]
+	},
+	{
+		"name": "testTempScript3",
+		"texture": "textures/testDirection.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"script": "scripts/testDirection.gd",
+		"script_temp": true,
+		"script_temp_destroy": false,
+		"script_default_usage": true,
+		"rotationMode": "360V",
+		"lights": [
+			{
+				"type": "spot",
+				"rotation": [0, -90, 0],
+				"range": 10
+			}
+		]
 	}
 ]

@@ -97,7 +97,7 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 	
 	node.voxelTerrain = terrain
 	node.voxelPosition = position
-	node.voxelRotation = 0
+	node.voxelRotation = obj.currentRotation
 	node.voxelVariant = obj.currentVariant
 	node.voxelBaseVariant = obj.baseVariant
 	node.voxelColorVariant = obj.colorVariant
@@ -111,7 +111,6 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 	node.voxelBlockItem = obj
 	
 	if obj.has("rotation"):
-		node.voxelRotation = obj.currentRotation
 		node.voxelDirection = obj.rotation.d
 		node.voxelDirectionUp = obj.rotation.u
 	
@@ -126,8 +125,13 @@ func checkTempScript(terrain, position: Vector3i):
 	if not saves.isNotTempInteractiveVoxel(terrain, position):
 		var loadBlockData = _getLoadBlockData(terrain, position)
 		saves.regInteractiveVoxel(terrain, position, loadBlockData[0], loadBlockData[1], true)
+		
+	var loadBlockData = _getLoadBlockData(terrain, position)
+	var blockId = loadBlockData[0]
+	var storageData = loadBlockData[1]
 	
-	loadBlockScript(terrain, position)
+	loadBlockScript(terrain, position, blockId, storageData)
+	_updateChildrenRotation(terrain, position, blockId)
 	
 func checkUnloadTempScript(terrain, position: Vector3i):
 	var obj = getBlockObj(terrain, position)
