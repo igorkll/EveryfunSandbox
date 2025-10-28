@@ -213,6 +213,17 @@ func changeInteractiveVoxel(terrain, position: Vector3i, blockId=null):
 		_changeInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, blockId)
 	else:
 		_changeInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, blockId)
+			
+func _loadVoxels(chunkVoxels):
+	if chunkVoxels:
+		for interactiveVoxelPosition in chunkVoxels:
+			var interactiveVoxel = chunkVoxels[interactiveVoxelPosition]
+			terrainUtils.loadBlock(game.terrain, interactiveVoxelPosition, interactiveVoxel[0], interactiveVoxel[1])
+
+func _unloadVoxels(chunkVoxels):
+	if chunkVoxels:
+		for interactiveVoxelPosition in chunkVoxels:
+			terrainUtils.unloadBlock(game.terrain, interactiveVoxelPosition)
 
 func __updateLoadedInteractiveVoxels(loadersPositions):
 	var currentLoadedChunks = {}
@@ -223,20 +234,15 @@ func __updateLoadedInteractiveVoxels(loadersPositions):
 		if not _loadedChunks.has(chunkPosition):
 			_loadedChunks[chunkPosition] = true
 			
-			var chunkVoxels = currentWorldData.interactiveVoxels.get(chunkPosition)
-			if chunkVoxels:
-				for interactiveVoxelPosition in chunkVoxels:
-					var interactiveVoxel = chunkVoxels[interactiveVoxelPosition]
-					terrainUtils.loadBlock(game.terrain, interactiveVoxelPosition, interactiveVoxel[0], interactiveVoxel[1])
+			_loadVoxels(currentWorldData.interactiveVoxels.get(chunkPosition))
+			_loadVoxels(currentWorldRuntimeData.interactiveVoxels.get(chunkPosition))
 					
 	for loadedChunk in _loadedChunks:
 		if not currentLoadedChunks.has(loadedChunk):
 			_loadedChunks.erase(loadedChunk)
 			
-			var chunkVoxels = currentWorldData.interactiveVoxels.get(loadedChunk)
-			if chunkVoxels:
-				for interactiveVoxelPosition in chunkVoxels:
-					terrainUtils.unloadBlock(game.terrain, interactiveVoxelPosition)
+			_unloadVoxels(currentWorldData.interactiveVoxels.get(loadedChunk))
+			_unloadVoxels(currentWorldRuntimeData.interactiveVoxels.get(loadedChunk))
 
 
 func __checkAutosave():
