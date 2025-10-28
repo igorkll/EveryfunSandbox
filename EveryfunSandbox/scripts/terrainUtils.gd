@@ -123,6 +123,10 @@ func checkTempScript(terrain, position: Vector3i):
 	if !obj.has("script_temp") && isBlockScript(terrain, position):
 		return
 	
+	if not saves.isNotTempInteractiveVoxel(terrain, position):
+		var loadBlockData = _getLoadBlockData(terrain, position)
+		saves.regInteractiveVoxel(terrain, position, loadBlockData[0], loadBlockData[1], true)
+	
 	loadBlockScript(terrain, position)
 	
 func getBlockObj(terrain, position: Vector3i):

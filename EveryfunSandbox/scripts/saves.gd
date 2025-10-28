@@ -177,6 +177,12 @@ func getInteractiveVoxel(terrain, position: Vector3i):
 		return currentWorldData.interactiveVoxels[chunkPosition].get(position)
 	elif currentWorldRuntimeData.interactiveVoxels.has(chunkPosition):
 		return currentWorldRuntimeData.interactiveVoxels[chunkPosition].get(position)
+
+func isNotTempInteractiveVoxel(terrain, position: Vector3i):
+	var chunkPosition = _getChunkPosition(position)
+	if currentWorldData.interactiveVoxels.has(chunkPosition):
+		return currentWorldData.interactiveVoxels[chunkPosition].has(position)
+	return false
 		
 func isTempInteractiveVoxel(terrain, position: Vector3i):
 	var chunkPosition = _getChunkPosition(position)
