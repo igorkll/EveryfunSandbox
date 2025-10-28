@@ -339,7 +339,7 @@ func setRotation(terrain, position: Vector3i, rotation):
 	setRotationAndVariantAndColor(terrain, position, rotation, getVariant(terrain, position), getColor(terrain, position))
 
 func setVoxelMetadata(terrain, position: Vector3i, data):
-	if terrain in VoxelTerrain:
+	if terrain is VoxelTerrain:
 		terrain.voxel_tool.set_voxel_metadata(position, data)
 
 func getVoxelMetadata(terrain, position: Vector3i):
