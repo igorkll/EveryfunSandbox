@@ -1,5 +1,7 @@
 extends baseblock
 
+var multiblockRelative = Vector3i(1, 1, 1)
+
 func _ready():
 	var plane := MeshInstance3D.new()
 	plane.mesh = PlaneMesh.new()

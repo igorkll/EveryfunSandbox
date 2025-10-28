@@ -11,7 +11,9 @@ var caveScale = 0.25
 
 func _init():
 	resources = [
-		[0.05, blockUtils.list_name2id["glass"]],
+		[0.02, blockUtils.list_name2id["lazuli"]],
+		[0.01, blockUtils.list_name2id["gold"]],
+		[0.001, blockUtils.list_name2id["uranium"]],
 		[0.1, blockUtils.list_name2id["dirt"]]
 	]
 	
