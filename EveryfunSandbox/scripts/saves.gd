@@ -144,13 +144,7 @@ var _loadedChunks = {}
 func _getChunkPosition(position: Vector3i) -> Vector3i:
 	return position / _interactiveChunkSize
 
-func _regInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blockId=null, storageData=null):
-	if storageData == null:
-		storageData = {}
-		
-	if blockId == 0:
-		blockId = null
-	
+func _regInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blockId, storageData):
 	var chunkPosition = _getChunkPosition(position)
 	if blockId != null:
 		if not interactiveVoxels.has(chunkPosition):
@@ -161,16 +155,34 @@ func _regInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blockI
 		if interactiveVoxels[chunkPosition].is_empty():
 			interactiveVoxels.erase(chunkPosition)
 
-func regInteractiveVoxel(terrain, position: Vector3i, blockId=null, storageData=null):
-	_regInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, blockId, storageData)
+func regInteractiveVoxel(terrain, position: Vector3i, blockId=null, storageData=null, tempInteractive=false):
+	if storageData == null:
+		storageData = {}
+		
+	if blockId == 0:
+		blockId = null
 	
-func regTempInteractiveVoxel(terrain, position: Vector3i, blockId=null, storageData=null):
-	_regInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, blockId, storageData)
+	if blockId != null:
+		if tempInteractive:
+			_regInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, blockId, storageData)
+		else:
+			_regInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, blockId, storageData)
+	else:
+		_regInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, null, null)
+		_regInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, null, null)
 			
 func getInteractiveVoxel(terrain, position: Vector3i):
 	var chunkPosition = _getChunkPosition(position)
 	if currentWorldData.interactiveVoxels.has(chunkPosition):
 		return currentWorldData.interactiveVoxels[chunkPosition].get(position)
+	elif currentWorldRuntimeData.interactiveVoxels.has(chunkPosition):
+		return currentWorldRuntimeData.interactiveVoxels[chunkPosition].get(position)
+		
+func isTempInteractiveVoxel(terrain, position: Vector3i):
+	var chunkPosition = _getChunkPosition(position)
+	if currentWorldRuntimeData.interactiveVoxels.has(chunkPosition):
+		return currentWorldRuntimeData.interactiveVoxels[chunkPosition].has(position)
+	return false
 	
 func _changeInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blockId=null):
 	if blockId == 0:
@@ -178,21 +190,23 @@ func _changeInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blo
 	
 	var chunkPosition = _getChunkPosition(position)
 	if blockId != null:
-		if not currentWorldData.interactiveVoxels.has(chunkPosition):
-			currentWorldData.interactiveVoxels[chunkPosition] = {}
+		if not interactiveVoxels.has(chunkPosition):
+			interactiveVoxels[chunkPosition] = {}
 		
-		if currentWorldData.interactiveVoxels[chunkPosition].has(chunkPosition):
-			currentWorldData.interactiveVoxels[chunkPosition][position][0] = blockId
+		if interactiveVoxels[chunkPosition].has(chunkPosition):
+			interactiveVoxels[chunkPosition][position][0] = blockId
 		else:
-			currentWorldData.interactiveVoxels[chunkPosition][position] = [blockId, {}]
-	elif currentWorldData.interactiveVoxels.has(chunkPosition):
-		currentWorldData.interactiveVoxels[chunkPosition].erase(position)
-		if currentWorldData.interactiveVoxels[chunkPosition].is_empty():
-			currentWorldData.interactiveVoxels.erase(chunkPosition)
-			
+			interactiveVoxels[chunkPosition][position] = [blockId, {}]
+	elif interactiveVoxels.has(chunkPosition):
+		interactiveVoxels[chunkPosition].erase(position)
+		if interactiveVoxels[chunkPosition].is_empty():
+			interactiveVoxels.erase(chunkPosition)
+
 func changeInteractiveVoxel(terrain, position: Vector3i, blockId=null):
-	_changeInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, blockId)
-	_changeInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, blockId)
+	if isTempInteractiveVoxel(terrain, position):
+		_changeInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, blockId)
+	else:
+		_changeInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, blockId)
 
 func __updateLoadedInteractiveVoxels(loadersPositions):
 	var currentLoadedChunks = {}
