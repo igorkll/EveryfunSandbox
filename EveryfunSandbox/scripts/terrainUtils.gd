@@ -76,7 +76,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 			if blockId == null:
 				return
 			if storageData == null:
-				storageData = game.getDefaultStorageData(blockId)
+				storageData = blockUtils.getDefaultStorageData(blockId)
 	
 	var exists = terrain.blockChildren.has(position)
 	var obj = game.blockList[blockId]
@@ -155,13 +155,13 @@ func unloadBlock(terrain, position: Vector3i):
 
 func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, color=0, storageData=null):
 	if storageData == null:
-		storageData = game.getDefaultStorageData(blockId)
+		storageData = blockUtils.getDefaultStorageData(blockId)
 	
-	blockId = game.getVariantBlockId(blockId, rotation, variant, color)
+	blockId = blockUtils.getVariantBlockId(blockId, rotation, variant, color)
 	
 	terrain.voxel_tool.set_voxel(position, blockId)
 	
-	if game.isInteractive(blockId):
+	if blockUtils.isInteractive(blockId):
 		saves.regInteractiveVoxel(terrain, position, blockId, storageData)
 	
 	if saves.isInteractiveChunkBlockLoaded(position):
@@ -235,13 +235,13 @@ func isMinimalAreaLoaded(terrain, position):
 
 func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, variant, color):
 	var voxelId = terrain.voxel_tool.get_voxel(position)
-	var newVoxelId = game.getVariantBlockId(voxelId, rotation, variant, color)
+	var newVoxelId = blockUtils.getVariantBlockId(voxelId, rotation, variant, color)
 	
 	var script = getBlockScript(terrain, position)
 	if script:
 		var newVoxelItem = game.blockList[newVoxelId]
 		
-		script.voxelVariant = game.getVariantFromVariantAndColor(voxelId, variant, color)
+		script.voxelVariant = blockUtils.getVariantFromVariantAndColor(voxelId, variant, color)
 		script.voxelBaseVariant = variant
 		script.voxelColorVariant = color
 		

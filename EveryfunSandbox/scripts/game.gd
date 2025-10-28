@@ -237,33 +237,6 @@ func setMouseEnabled(mouseEnabled):
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-func formatType(value):
-	var valueType
-	match typeof(value):
-		TYPE_STRING:
-			valueType = "\"%s\"" % value
-		TYPE_VECTOR2, TYPE_VECTOR3, TYPE_COLOR, TYPE_RECT2:
-			valueType = str(value)
-		TYPE_BOOL:
-			valueType = str(value).to_lower()
-		TYPE_NIL:
-			valueType = "null"
-		_:
-			valueType = str(value)
-	return valueType
-	
-func formatCall(funcname, ...args) -> String:
-	var parts := []
-	for arg in args:
-		parts.append(formatType(arg))
-	return "%s(%s)" % [funcname, ", ".join(parts)]
-	
-func logCall(funcname, ...args):
-	print(formatCall(funcname, args))
-	
-func logCallResult(funcname, result):
-	print("---- %s -> %s" % [funcname, formatType(result)])
-	
 func setAudioChannelVolume(bus, multiplier):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(bus), linear_to_db(multiplier))
 	
@@ -369,37 +342,6 @@ func setScale(scale):
 func getScale():
 	return sceneTree.root.content_scale_factor
 
-func getBlockDefaultRotation(globalCameraBasisZ: Vector3) -> int:
-	var dir = -globalCameraBasisZ
-	var vertical_threshold = 0.8
-	
-	var angle = atan2(dir.z, dir.x)
-	var rotation_index = int(round(angle / (PI / 2)) + 2) % 4
-	
-	var result = rotation_index
-	if dir.y < -vertical_threshold:
-		result += 4
-	elif dir.y > vertical_threshold:
-		result += 8
-	return result
-
-func getVariantFromVariantAndColor(blockId, variant=0, color=0):
-	var obj = game.blockList[blockId]
-	for variantObj in obj.variantsList:
-		if variantObj.baseVariant == variant && variantObj.colorVariant == color:
-			return variantObj.currentVariant
-	
-func getVariantBlockId(blockId, rotation=0, variant=0, color=0):
-	variant = getVariantFromVariantAndColor(blockId, variant, color)
-	
-	var obj = game.blockList[blockId]
-	if obj.has("rotated"):
-		rotation = (int(rotation + obj.get("rotationBase", 0)) % 4) + (floor(rotation / 4) * 4)
-		blockId = obj.rotated[rotation % obj.rotated.size()].id
-		obj = game.blockList[blockId]
-	
-	return obj.variantsList[variant].id
-
 func exit():
 	if saves.isWorldFullLoaded():
 		saves.save(func():
@@ -407,29 +349,6 @@ func exit():
 		)
 	else:
 		sceneTree.quit()
-		
-func blockScriptRequest(blockId: int, methodName, ...args):
-	var obj = game.blockList[blockId]
-	if obj.has("script"):
-		var script = game.loadResource(obj.script).new()
-		if script.has_method(methodName):
-			return script.callv(methodName, args)
-			
-func isBlockScriptMethod(blockId: int, methodName):
-	var obj = game.blockList[blockId]
-	if obj.has("script"):
-		var script = game.loadResource(obj.script).new()
-		return script.has_method(methodName)
-	return false
-			
-func getDefaultStorageData(blockId: int):
-	if isBlockScriptMethod(blockId, "_requestDefaultStorageData"):
-		return blockScriptRequest(blockId, "_requestDefaultStorageData")
-	return {}
-	
-func isInteractive(blockId: int) -> bool:
-	var obj = game.blockList[blockId]
-	return obj.has("script") || obj.has("lights")
 	
 func requestFile(filters, callback):
 	var dialog := FileDialog.new()
@@ -733,7 +652,12 @@ func _checkVariants(blockVariants, item):
 				blockVariants.append(variantItem)
 				currentVariant += 1
 				colorVariant += 1
-			
+				
+
+var defaultBlockInfo = {
+	"durability": 1
+}
+
 func _prepairItem(item, path):
 	if item.has("sound"):
 		for soundkey in soundsTypes:
@@ -760,6 +684,11 @@ func _prepairItem(item, path):
 		
 	if item.has("script"):
 		item.script = path.path_join(item.script)
+		
+	if item.has("info"):
+		item.info = funcs.merge_dicts(item.info, defaultBlockInfo)
+	else:
+		item.info = defaultBlockInfo
 		
 func _addBlockList(jsonPath):
 	var path = jsonPath.get_base_dir()
