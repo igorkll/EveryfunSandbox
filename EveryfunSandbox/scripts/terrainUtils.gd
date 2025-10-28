@@ -120,7 +120,7 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 func checkTempScript(terrain, position: Vector3i):
 	var obj = getBlockObj(terrain, position)
 	
-	if !obj.has("script_temp") && isBlockScript(terrain, position):
+	if !obj.has("script_temp") || isBlockScript(terrain, position):
 		return
 	
 	if not saves.isNotTempInteractiveVoxel(terrain, position):
@@ -128,6 +128,17 @@ func checkTempScript(terrain, position: Vector3i):
 		saves.regInteractiveVoxel(terrain, position, loadBlockData[0], loadBlockData[1], true)
 	
 	loadBlockScript(terrain, position)
+	
+func checkUnloadTempScript(terrain, position: Vector3i):
+	var obj = getBlockObj(terrain, position)
+	
+	if !obj.has("script_temp"):
+		return
+	
+	if saves.isTempInteractiveVoxel(terrain, position):
+		saves.regInteractiveVoxel(terrain, position, null)
+	
+	deleteBlockChildrenWithScript(terrain, position)
 	
 func getBlockObj(terrain, position: Vector3i):
 	return blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
@@ -225,6 +236,8 @@ func useBlock(terrain, position: Vector3i) -> bool:
 	var script = getBlockScript(terrain, position)
 	if script != null && script.has_method("_use"):
 		script.call("_use")
+		
+	checkUnloadTempScript(terrain, position)
 	
 	return true
 
