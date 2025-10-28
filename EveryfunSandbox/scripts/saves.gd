@@ -236,8 +236,8 @@ func __updateLoadedInteractiveVoxels(loadersPositions):
 			
 			_loadVoxels(currentWorldData.interactiveVoxels.get(chunkPosition))
 			_loadVoxels(currentWorldRuntimeData.interactiveVoxels.get(chunkPosition))
-					
-	for loadedChunk in _loadedChunks:
+	
+	for loadedChunk in _loadedChunks.keys():
 		if not currentLoadedChunks.has(loadedChunk):
 			_loadedChunks.erase(loadedChunk)
 			
@@ -287,6 +287,7 @@ func __checkLoaded():
 		duplicatedLoadersPositions = loadersPositions
 	else:
 		duplicatedLoadersPositions = []
+	
 	__updateLoadedInteractiveVoxels(duplicatedLoadersPositions)
 
 func __per_second():
