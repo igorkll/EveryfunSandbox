@@ -65,7 +65,7 @@ func _updateChildrenRotation(terrain, position: Vector3i, blockId=null):
 		child.rotation_degrees = funcs.combine_rotations_deg(rotations)
 
 func _getScriptChecksum(obj):
-	return hash([obj.get("script"), obj.get("script_data"), obj.get("script_temp")])
+	return hash([obj.get("script"), obj.get("script_data")])
 	
 func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=null):
 	if blockId == null || storageData == null:
@@ -120,7 +120,7 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 func checkTempScript(terrain, position: Vector3i):
 	var obj = getBlockObj(terrain, position)
 	
-	if !obj.has("script_temp") || isBlockScript(terrain, position):
+	if !obj.get("script_temp") || isBlockScript(terrain, position):
 		return
 	
 	if not saves.isNotTempInteractiveVoxel(terrain, position):
@@ -132,7 +132,7 @@ func checkTempScript(terrain, position: Vector3i):
 func checkUnloadTempScript(terrain, position: Vector3i):
 	var obj = getBlockObj(terrain, position)
 	
-	if !obj.has("script_temp"):
+	if !obj.get("script_temp") || !obj.get("script_temp_destroy"):
 		return
 	
 	if saves.isTempInteractiveVoxel(terrain, position):
@@ -157,7 +157,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	var children = getBlockChildren(terrain, position)
 	
-	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.has("script_temp") or isBlockScript(terrain, position)):
+	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.get("script_temp") or isBlockScript(terrain, position)):
 		deleteBlockChildrenWithScript(terrain, position)
 		loadBlockScript(terrain, position, blockId, storageData)
 	

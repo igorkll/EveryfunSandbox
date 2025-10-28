@@ -73,6 +73,16 @@
 	
 	{
 		"name": "testTempScript",
+		"texture": "textures/testDirection.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"script": "scripts/testDirection.gd",
+		"script_temp": true,
+		"script_temp_destroy": false,
+		"script_default_usage": true,
+		"rotationMode": "360V"
+	},
+	{
+		"name": "testTempScript2",
 		"texture": "textures/testVariants/disabled.png",
 		"texture_mode": "UNIFORM_SIDE",
 		"texture_no_filter": true,
