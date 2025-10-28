@@ -41,12 +41,8 @@ func getBlockChildren(terrain, position: Vector3i):
 	else:
 		return []
 		
-func isBlockChildrenWithScriptExists(terrain, position: Vector3i):
-	if terrain.blockChildren.has(position):
-		for child in terrain.blockChildren[position]:
-			if child.get_script() != null:
-				return true
-	return false
+func isBlockScript(terrain, position: Vector3i) -> bool:
+	return getBlockScript(terrain, position) != null
 		
 func _updateChildrenRotation(terrain, position: Vector3i, blockId=null):
 	if blockId == null:
@@ -121,6 +117,14 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 	
 	attachBlockChild(terrain, position, node)
 	
+func checkTempScript(terrain, position: Vector3i):
+	var obj = getBlockObj(terrain, position)
+	
+	if !obj.has("script_temp") && isBlockScript(terrain, position):
+		return
+	
+	loadBlockScript(terrain, position)
+	
 func getBlockObj(terrain, position: Vector3i):
 	return blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 
@@ -135,7 +139,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	var children = getBlockChildren(terrain, position)
 	
-	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.has("script_temp") or isBlockChildrenWithScriptExists(terrain, position)):
+	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.has("script_temp") or isBlockScript(terrain, position)):
 		deleteBlockChildrenWithScript(terrain, position)
 		loadBlockScript(terrain, position)
 	
@@ -209,12 +213,13 @@ func useBlock(terrain, position: Vector3i) -> bool:
 	if not canUseBlock(terrain, position):
 		return false
 	
+	checkTempScript(terrain, position)
+	
 	var script = getBlockScript(terrain, position)
 	if script != null && script.has_method("_use"):
 		script.call("_use")
-		return true
 	
-	return false
+	return true
 
 func canUseBlock(terrain, position: Vector3i) -> bool:
 	var script = getBlockScript(terrain, position)
