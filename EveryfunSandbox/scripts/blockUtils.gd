@@ -68,6 +68,10 @@ var _alpha_blocks_shader = preload("res://shaders/alpha_blocks.gdshader")
 
 var _transparency_material
 
+var _defaultBlockInfo = {
+	"durability": 1
+}
+
 # map size: x y
 # texture pos: x- x+ y- y+ z- z+
 var _textureModes = {
@@ -218,10 +222,6 @@ func _checkVariants(blockVariants, item):
 				blockVariants.append(variantItem)
 				currentVariant += 1
 				colorVariant += 1
-				
-var _defaultBlockInfo = {
-	"durability": 1
-}
 
 var _soundsTypes = [
 	"sound_walking",
