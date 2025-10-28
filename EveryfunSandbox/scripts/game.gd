@@ -60,8 +60,6 @@ var defaultSettings = {
 var soundList = {}
 var musicList = []
 var ambientList = []
-var blockList = []
-var blockIDs = {}
 
 var graphicSettingsPresets = [
 	{
@@ -124,8 +122,6 @@ var distanceSettingsPresets = [
 		"lodDistance": 128
 	}
 ]
-
-var _blockMaterials = []
 
 var view_distance
 var lod_distance
@@ -372,7 +368,7 @@ func requestFile(filters, callback):
 	)
 
 var _pressedCounter = {}
-var multiplePressTimeout = 200
+var _multiplePressTimeout = 200
 
 func is_action_multiple_pressed(actionName, count=2):
 	var counter
@@ -387,7 +383,7 @@ func is_action_multiple_pressed(actionName, count=2):
 	var state = Input.is_action_pressed(actionName)
 	if state && !counter[0]:
 		var time = Time.get_ticks_msec()
-		if counter[2] < 0 || time - counter[2] > multiplePressTimeout:
+		if counter[2] < 0 || time - counter[2] > _multiplePressTimeout:
 			counter[1] = 0
 		counter[2] = time
 		
@@ -398,97 +394,24 @@ func is_action_multiple_pressed(actionName, count=2):
 	counter[0] = state
 	
 	return returnState
+	
+func processForks(list):
+	var lastNonFork
+	var forks = []
+	
+	for item in list.duplicate():
+		if item.has("fork") && item.fork:
+			var fork = funcs.merge_dicts(item, lastNonFork)
+			fork.erase("fork")
+			forks.append(fork)
+			list.erase(item)
+		else:
+			lastNonFork = item
+	
+	for item in forks:
+		list.append(item)
 
 # ------------------------------------------------- backend
-
-var _blocks_shader = preload("res://shaders/blocks.gdshader")
-var _alpha_blocks_shader = preload("res://shaders/alpha_blocks.gdshader")
-
-# map size: x y
-# texture pos: x- x+ y- y+ z- z+
-var _textureModes = {
-	"DIFFERENT_SIDES": [
-		Vector2i(3, 3),
-		
-		Vector2i(0, 1),
-		Vector2i(2, 1),
-		Vector2i(0, 0),
-		Vector2i(1, 1),
-		Vector2i(1, 2),
-		Vector2i(1, 0)
-	],
-	"UNIFORM": [
-		Vector2i(1, 1),
-		
-		Vector2i(0, 0),
-		Vector2i(0, 0),
-		Vector2i(0, 0),
-		Vector2i(0, 0),
-		Vector2i(0, 0),
-		Vector2i(0, 0)
-	],
-	"UNIFORM_TOP_BOTTOM": [
-		Vector2i(1, 3),
-		
-		Vector2i(0, 1),
-		Vector2i(0, 1),
-		Vector2i(0, 2),
-		Vector2i(0, 0),
-		Vector2i(0, 1),
-		Vector2i(0, 1)
-	],
-	"UNIFORM_SIDE": [
-		Vector2i(2, 1),
-		
-		Vector2i(0, 0),
-		Vector2i(1, 0),
-		Vector2i(0, 0),
-		Vector2i(0, 0),
-		Vector2i(0, 0),
-		Vector2i(0, 0)
-	],
-	"UNIFORM_SIDE_TOP_BOTTOM": [
-		Vector2i(2, 3),
-		
-		Vector2i(0, 1),
-		Vector2i(1, 1),
-		Vector2i(0, 2),
-		Vector2i(0, 0),
-		Vector2i(0, 1),
-		Vector2i(0, 1)
-	],
-	"UNIFORM_TOP": [
-		Vector2i(1, 2),
-		
-		Vector2i(0, 1),
-		Vector2i(0, 1),
-		Vector2i(0, 1),
-		Vector2i(0, 0),
-		Vector2i(0, 1),
-		Vector2i(0, 1)
-	]
-}
-
-var rotationModes = {
-	"NONE": [
-	],
-	"360": [
-		{y=1, r = Vector3i(0, -90, 0), d = Vector3i(0, 0, 1), u = Vector3i(0, 1, 0), q = 16},
-		{y=2, r = Vector3i(0, -90 * 2, 0), d = Vector3i(-1, 0, 0), u = Vector3i(0, 1, 0), q = 10},
-		{y=3, r = Vector3i(0, -90 * 3, 0), d = Vector3i(0, 0, -1), u = Vector3i(0, 1, 0), q = 22}
-	],
-	"360V": [
-		{y=0, r = Vector3i(0, 0, 90), d = Vector3i(0, 1, 0), u = Vector3i(-1, 0, 0), q = 3},
-		{y=1, r = Vector3i(0, -90, 90), d = Vector3i(0, 1, 0), u = Vector3i(0, 0, -1), q = 19},
-		{y=2, r = Vector3i(0, -90 * 2, 90), d = Vector3i(0, 1, 0), u = Vector3i(1, 0, 0), q = 9},
-		{y=3, r = Vector3i(0, -90 * 3, 90), d = Vector3i(0, 1, 0), u = Vector3i(0, 0, 1), q = 21},
-		
-		{y=0, r = Vector3i(0, 0, -90), d = Vector3i(0, -1, 0), u = Vector3i(-1, 0, 0), q = 1},
-		{y=1, r = Vector3i(0, -90, -90), d = Vector3i(0, -1, 0), u = Vector3i(0, 0, -1), q = 17},
-		{y=2, r = Vector3i(0, -90 * 2, -90), d = Vector3i(0, -1, 0), u = Vector3i(1, 0, 0), q = 11},
-		{y=3, r = Vector3i(0, -90 * 3, -90), d = Vector3i(0, -1, 0), u = Vector3i(0, 0, 1), q = 23}
-	]
-}
 
 func _ready():
 	sceneTree = get_tree()
@@ -497,23 +420,13 @@ func _ready():
 	camera = get_node("/root/main/player/camera")
 	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
 	
-	transparency_material = StandardMaterial3D.new()
-	transparency_material.albedo_color = Color(1,1,1,0)
-	transparency_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	transparency_material.flags_transparent = true
-
-	var array_360_modes = rotationModes["360"].duplicate()
-	array_360_modes.reverse()
-	for rotationMode_360 in array_360_modes:
-		rotationModes["360V"].insert(0, rotationMode_360)
-	
 	loadSettings()
 	saveSettings() # update session counter
 	
 	_addFolder("res://game/main")
 	_addFolder("res://game/test")
 	
-	blockLibrary = _getLibrary()
+	blockLibrary = blockUtils.genLibrary()
 	_initMusic()
 	_initAmbient()
 	_initGui()
@@ -568,178 +481,8 @@ func _initAmbient():
 	ambientPlayer.play()
 	ambientPlayer.connect("finished", _ambientEnd.bind(ambientPlayer))
 
-var soundsTypes = [
-	"sound_walking",
-	"sound_jump",
-	"sound_headbutt",
-	"sound_place",
-	"sound_destroy",
-	"sound_hit"
-]
-
-func _processForks(list):
-	var lastNonFork
-	var forks = []
-	
-	for item in list.duplicate():
-		if item.has("fork") && item.fork:
-			var fork = funcs.merge_dicts(item, lastNonFork)
-			fork.erase("fork")
-			forks.append(fork)
-			list.erase(item)
-		else:
-			lastNonFork = item
-	
-	for item in forks:
-		list.append(item)
-		
-		
-func _readJson(path):
-	if not filesystem.isFile(path):
-		return
-	return filesystem.readJson(path)
-
-func duplicateItem(item):
-	var oldVariantsList = item.variantsList
-	var oldRotatedList = item.rotated
-	item.erase("variantsList")
-	item.erase("rotated")
-	var duplicatedItem = item.duplicate(true)
-	item.variantsList = oldVariantsList
-	item.rotated = oldRotatedList
-	return duplicatedItem
-
-func _checkVariants(blockVariants, item):
-	item.currentVariant = 0
-	item.baseVariant = 0
-	item.colorVariant = 0
-	item.baseVariantsCount = 1
-	item.colorVariantsCount = 1
-	if item.has("variants"):
-		item.baseVariantsCount += item["variants"].size()
-	if item.get("paintable", false):
-		item.colorVariantsCount += consts.palette.size()
-	item.variantsList = [item]
-	
-	var currentVariant = 1
-	if item.has("variants"):
-		for variant in item["variants"]:
-			var variantItem = item.merged(variant, true)
-			variantItem.variantsList = item.variantsList
-			variantItem.currentVariant = currentVariant
-			variantItem.baseVariant = currentVariant
-			item.variantsList.append(variantItem)
-			blockVariants.append(variantItem)
-			currentVariant += 1
-			
-	if item.get("paintable", false):
-		var variantsList = item.variantsList.duplicate(false)
-		for oldVariantItem in variantsList:
-			var colorVariant = 1
-			for paintedColor in consts.palette:
-				var variantItem = duplicateItem(oldVariantItem)
-				
-				variantItem.painted = Color(paintedColor)
-				if variantItem.has("lights"):
-					for lightObj in variantItem.lights:
-						lightObj.color = lightObj.get("color", paintedColor)
-				
-				variantItem.variantsList = item.variantsList
-				variantItem.currentVariant = currentVariant
-				variantItem.baseVariant = oldVariantItem.baseVariant
-				variantItem.colorVariant = colorVariant
-				item.variantsList.append(variantItem)
-				blockVariants.append(variantItem)
-				currentVariant += 1
-				colorVariant += 1
-				
-
-var defaultBlockInfo = {
-	"durability": 1
-}
-
-func _prepairItem(item, path):
-	if item.has("sound"):
-		for soundkey in soundsTypes:
-			if not item.has(soundkey):
-				item[soundkey] = item.sound
-				
-	if item.has("sound_placeDestroy"):
-		item.sound_place = item.sound_placeDestroy
-		item.sound_destroy = item.sound_placeDestroy
-		
-	if item.has("mesh"):
-		item.mesh = loadResource(path.path_join(item.mesh))
-		if item.mesh is PackedScene:
-			item.mesh = item.mesh.instantiate()
-	
-	if item.has("texture"):
-		item.texture = loadResource(path.path_join(item.texture))
-
-	if item.has("material"):
-		item.material = loadResource(path.path_join(item.material))
-		
-	if item.has("normal"):
-		item.normal = loadResource(path.path_join(item.normal))
-		
-	if item.has("script"):
-		item.script = path.path_join(item.script)
-		
-	if item.has("info"):
-		item.info = funcs.merge_dicts(item.info, defaultBlockInfo)
-	else:
-		item.info = defaultBlockInfo
-		
-func _addBlockList(jsonPath):
-	var path = jsonPath.get_base_dir()
-	
-	var list = _readJson(jsonPath)
-	if list:
-		_processForks(list)
-		
-		var blockVariants = []
-		var rotatedBlocks = []
-		for item in list:
-			item.id = blockList.size()
-			item.baseId = item.id
-			if item.has("name"):
-				blockIDs[item.name] = item.id
-			
-			item.rotationsCount = 1
-			item.currentRotation = 0
-			item.rotated = [item]
-			
-			_checkVariants(blockVariants, item)
-			
-			if item.has("rotationMode"):
-				var rotationMode = rotationModes[item.rotationMode]
-				var currentRotation = 1
-				for rotation in rotationMode:
-					var rotated = item.duplicate(false)
-					rotated.rotated = item.rotated
-					rotated.currentRotation = currentRotation
-					rotated.rotation = rotation
-					rotatedBlocks.append(rotated)
-					item.rotated.append(rotated)
-					currentRotation += 1
-				item.rotationsCount = currentRotation
-			
-			_prepairItem(item, path)
-			blockList.append(item)
-			
-		for rotatedBlock in rotatedBlocks:
-			rotatedBlock.id = blockList.size()
-			_checkVariants(blockVariants, rotatedBlock)
-			_prepairItem(rotatedBlock, path)
-			blockList.append(rotatedBlock)
-			
-		for blockVariant in blockVariants:
-			blockVariant.id = blockList.size()
-			_prepairItem(blockVariant, path)
-			blockList.append(blockVariant)
-
 func _addFolder(path):
-	var list = _readJson(path.path_join("/misc.json"))
+	var list = filesystem.checkExistsAndReadJson(path.path_join("/misc.json"))
 	if list:
 		if list.has("the_first_music_in_the_first_played_sessions"):
 			for i in range(list["the_first_music_in_the_first_played_sessions"].size()):
@@ -747,9 +490,9 @@ func _addFolder(path):
 				list["the_first_music_in_the_first_played_sessions"][i] = path.path_join(musicPath)
 		miscData = funcs.merge_dicts(miscData, list)
 	
-	list = _readJson(path.path_join("/sounds.json"))
+	list = filesystem.checkExistsAndReadJson(path.path_join("/sounds.json"))
 	if list:
-		_processForks(list)
+		processForks(list)
 		for sound in list:
 			var audioStreamRandomizer = AudioStreamRandomizer.new()
 			
@@ -772,122 +515,19 @@ func _addFolder(path):
 			
 			soundList[sound.name] = sound
 			
-	list = _readJson(path.path_join("/music.json"))
+	list = filesystem.checkExistsAndReadJson(path.path_join("/music.json"))
 	if list:
 		for music in list:
 			musicList.append(loadResource(path.path_join(music)))
 			
-	list = _readJson(path.path_join("/ambient.json"))
+	list = filesystem.checkExistsAndReadJson(path.path_join("/ambient.json"))
 	if list:
 		for ambient in list:
 			ambientList.append(loadResource(path.path_join(ambient)))
 
-	_addBlockList(path.path_join("/blocks.json"))
+	blockUtils.regBlockList(path.path_join("/blocks.json"))
 	
-	list = _readJson(path.path_join("/blockLists.json"))
+	list = filesystem.checkExistsAndReadJson(path.path_join("/blockLists.json"))
 	if list:
 		for blockList in list:
-			_addBlockList(path.path_join(blockList))
-			
-var _defaultMaterialTexture = preload("res://textures/materialTexture.png")
-
-var _materialCache = {}
-var _materialCacheNames = ["material", "material_no_filter", "texture", "texture_no_filter", "normal", "use_alpha", "painted"]
-
-func _getMaterial(block):
-	block.use_alpha = block.get("use_alpha", false)
-	
-	var cachename = funcs.checksum_dict(block, _materialCacheNames)
-	if _materialCache.has(cachename):
-		return _materialCache[cachename]
-	
-	var material = ShaderMaterial.new()
-	if block["use_alpha"]:
-		material.shader = _alpha_blocks_shader
-	else:
-		material.shader = _blocks_shader
-	
-	var materialTexture = block.get("material", _defaultMaterialTexture)
-	if block.get("material_no_filter", false):
-		material.set_shader_parameter("material_texture_no_filter", materialTexture)
-		material.set_shader_parameter("no_material_filter", true)
-	else:
-		material.set_shader_parameter("material_texture", materialTexture)
-		material.set_shader_parameter("no_material_filter", false)
-		
-	if block.has("normal"):
-		material.set_shader_parameter("normals_texture", block.normal)
-		material.set_shader_parameter("use_normals_texture", true)
-	
-	if block.get("texture_no_filter", false):
-		material.set_shader_parameter("dif_texture_no_filter", block.texture)
-		material.set_shader_parameter("no_filter", true)
-	else:
-		material.set_shader_parameter("dif_texture", block.texture)
-		material.set_shader_parameter("no_filter", false)
-	
-	if block.has("painted"):
-		material.set_shader_parameter("tint_color", block.painted)
-	
-	_materialCache[cachename] = material
-	_blockMaterials.append(material)
-	return material
-
-func _getLibrary():
-	var library = VoxelBlockyLibrary.new()
-	
-	for block in blockList:
-		var blockModel
-		if block.has("mesh"):
-			var material = _getMaterial(block)
-			
-			blockModel = VoxelBlockyModelMesh.new()
-			blockModel.collision_aabbs = [AABB(Vector3(0, 0, 0), Vector3(1, 1, 1))]
-			
-			var mesh
-			if block.mesh is Mesh:
-				mesh = block.mesh
-			else:
-				var mesh_instance = block.mesh.find_children("", "MeshInstance3D", true)
-				if mesh_instance.size() > 0:
-					mesh = mesh_instance[0].mesh
-			blockModel.mesh = mesh
-			
-			var mesh_collision_enabled = block.get("mesh_collision", true)
-			for i in range(mesh.get_surface_count()):
-				var _mesh_collision_enabled = mesh_collision_enabled
-				if funcs.is_number(mesh_collision_enabled):
-					_mesh_collision_enabled = mesh_collision_enabled == i
-				blockModel.set_mesh_collision_enabled(i, _mesh_collision_enabled)
-				
-				if block.get("hide_collision") && _mesh_collision_enabled:
-					mesh.surface_set_material(i, transparency_material)
-				else:
-					mesh.surface_set_material(i, material)
-		elif block.has("texture"):
-			var material = _getMaterial(block)
-			
-			var textureMode = _textureModes[block.get("texture_mode", 1)]
-			blockModel = VoxelBlockyModelCube.new()
-			blockModel.atlas_size_in_tiles = textureMode[0]
-			blockModel.set_material_override(0, material)
-			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_X, textureMode[1])
-			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_X, textureMode[2])
-			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Y, textureMode[3])
-			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Y, textureMode[4])
-			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_NEGATIVE_Z, textureMode[5])
-			blockModel.set_tile(VoxelBlockyModel.Side.SIDE_POSITIVE_Z, textureMode[6])
-		else:
-			blockModel = VoxelBlockyModelEmpty.new()
-		
-		if blockModel is not VoxelBlockyModelEmpty:
-			if block.has("rotation"):
-				blockModel.mesh_ortho_rotation_index = block.rotation.q
-			else:
-				blockModel.mesh_ortho_rotation_index = 0
-		
-		blockModel.transparency_index = block.get("transparency_index", 1 if block.get("use_alpha", false) else 0)
-		blockModel.culls_neighbors = block.get("culls_neighbors", true)
-		library.add_model(blockModel)
-	
-	return library
+			blockUtils.regBlockList(path.path_join(blockList))

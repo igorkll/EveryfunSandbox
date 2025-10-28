@@ -47,6 +47,11 @@ func writeFileBytes(path, data):
 func readJson(path):
 	return JSON.parse_string(readFile(path))
 	
+func checkExistsAndReadJson(path):
+	if not isFile(path):
+		return
+	return readJson(path)
+	
 func writeJson(path, data):
 	writeFile(path, JSON.stringify(data))
 	

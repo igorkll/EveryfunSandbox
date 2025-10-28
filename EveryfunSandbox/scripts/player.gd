@@ -179,7 +179,7 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("place"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and terrainUtils.isCellFree(game.terrain, result[1].previous_position):
-				terrainInteractions.placeBlock(game.terrain, result[1].previous_position, game.blockIDs["grammophone"], blockUtils.getTargetRotation($camera.global_transform.basis.z))
+				terrainInteractions.placeBlock(game.terrain, result[1].previous_position, blockUtils.list_name2id["grammophone"], blockUtils.getTargetRotation($camera.global_transform.basis.z))
 			
 		var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 		if result && terrainUtils.canUseBlock(game.terrain, result[1].position):
@@ -268,7 +268,7 @@ func stopWalkTimer():
 func onWalking():
 	var voxelId = getDownVoxel()
 	if voxelId:
-		var voxel = game.blockList[voxelId]
+		var voxel = blockUtils.list_id2obj[voxelId]
 		if voxel and voxel.has("sound_walking") and game.soundList.has(voxel.sound_walking):
 			var sound = game.soundList[voxel.sound_walking]
 			
@@ -337,7 +337,7 @@ func getDownVoxel():
 func getDownVoxelObj():
 	var voxelId = getDownVoxel()
 	if voxelId:
-		return game.blockList[voxelId]
+		return blockUtils.list_id2obj[voxelId]
 		
 func getUpVoxel():
 	return _getVoxel(Vector3.UP)
@@ -345,7 +345,7 @@ func getUpVoxel():
 func getUpVoxelObj():
 	var voxelId = getUpVoxel()
 	if voxelId:
-		return game.blockList[voxelId]
+		return blockUtils.list_id2obj[voxelId]
 
 func setControlLock(newControlLock):
 	controlLock = newControlLock

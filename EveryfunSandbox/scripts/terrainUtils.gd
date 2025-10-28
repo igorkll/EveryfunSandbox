@@ -45,7 +45,7 @@ func _updateChildrenRotation(terrain, position, blockId=null):
 	if blockId == null:
 		blockId = terrain.voxel_tool.get_voxel(position)
 	
-	var voxelItem = game.blockList[blockId]
+	var voxelItem = blockUtils.list_id2obj[blockId]
 	var children = getBlockChildren(terrain, position)
 
 	var lightIndex = 0
@@ -79,8 +79,8 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 				storageData = blockUtils.getDefaultStorageData(blockId)
 	
 	var exists = terrain.blockChildren.has(position)
-	var obj = game.blockList[blockId]
-	var oldObj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	var obj = blockUtils.list_id2obj[blockId]
+	var oldObj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	var children = getBlockChildren(terrain, position)
 	
@@ -104,7 +104,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 		node.voxelDirectionUp = Vector3i(0, 1, 0)
 		
 		node.voxelBaseBlockId = obj.baseId
-		node.voxelBaseBlockItem = game.blockList[obj.baseId]
+		node.voxelBaseBlockItem = blockUtils.list_id2obj[obj.baseId]
 		
 		node.voxelBlockId = blockId
 		node.voxelBlockItem = obj
@@ -239,7 +239,7 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 	
 	var script = getBlockScript(terrain, position)
 	if script:
-		var newVoxelItem = game.blockList[newVoxelId]
+		var newVoxelItem = blockUtils.list_id2obj[newVoxelId]
 		
 		script.voxelVariant = blockUtils.getVariantFromVariantAndColor(voxelId, variant, color)
 		script.voxelBaseVariant = variant
@@ -266,27 +266,27 @@ func setVariantAndColor(terrain, position: Vector3i, variant, color):
 	setRotationAndVariantAndColor(terrain, position, getRotation(terrain, position), variant, color)
 
 func getVariantsCount(terrain, position: Vector3i):
-	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 	return obj.baseVariantsCount
 	
 func getColorsCount(terrain, position: Vector3i):
-	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 	return obj.colorVariantsCount
 	
 func getRotationsCount(terrain, position: Vector3i):
-	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 	return obj.rotationsCount
 	
 func getVariant(terrain, position: Vector3i):
-	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 	return obj.baseVariant
 	
 func getColor(terrain, position: Vector3i):
-	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 	return obj.colorVariant
 	
 func getRotation(terrain, position: Vector3i):
-	var obj = game.blockList[terrain.voxel_tool.get_voxel(position)]
+	var obj = blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 	return obj.currentRotation
 	
 func setVariant(terrain, position: Vector3i, variant):

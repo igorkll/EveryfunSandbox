@@ -11,8 +11,8 @@ var caveScale = 0.25
 
 func _init():
 	resources = [
-		[0.05, game.blockIDs["glass"]],
-		[0.1, game.blockIDs["dirt"]]
+		[0.05, blockUtils.list_name2id["glass"]],
+		[0.1, blockUtils.list_name2id["dirt"]]
 	]
 	
 	for i in range(2 + resources.size()):
@@ -26,9 +26,9 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var size = buffer.get_size()
 	var scale = 1 << lod
 	
-	var id_grass = game.blockIDs["grass"]
-	var id_dirt = game.blockIDs["dirt"]
-	var id_stone = game.blockIDs["stone"]
+	var id_grass = blockUtils.list_name2id["grass"]
+	var id_dirt = blockUtils.list_name2id["dirt"]
+	var id_stone = blockUtils.list_name2id["stone"]
 	
 	for ix in range(size.x):
 		for iy in range(size.y):

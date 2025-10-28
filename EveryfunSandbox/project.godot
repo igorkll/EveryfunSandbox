@@ -29,6 +29,7 @@ consts="*res://scripts/consts.gd"
 funcs="*res://scripts/funcs.gd"
 timers="*res://scripts/timers.gd"
 filesystem="*res://scripts/filesystem.gd"
+blockUtils="*res://scripts/blockUtils.gd"
 game="*res://scripts/game.gd"
 saves="*res://scripts/saves.gd"
 menu="*res://scripts/menu.gd"
@@ -37,7 +38,6 @@ advanced="*res://scripts/advanced.gd"
 terrainUtils="*res://scripts/terrainUtils.gd"
 terrainInteractions="*res://scripts/terrainInteractions.gd"
 worldsList="*res://scripts/worldsList.gd"
-blockUtils="*res://scripts/blockUtils.gd"
 
 [display]
 
