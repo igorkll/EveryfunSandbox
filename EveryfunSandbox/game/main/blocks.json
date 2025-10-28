@@ -21,14 +21,20 @@
 		"texture": "blocks/stone.png",
 		"texture_mode": "UNIFORM",
 		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 3
+		}
 	},
 	{
 		"name": "bricks",
 		"texture": "blocks/bricks.png",
 		"texture_mode": "UNIFORM",
 		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 4
+		}
 	},
 	{
 		"name": "metal",
@@ -36,7 +42,10 @@
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "metal",
-		"sound_placeDestroy": "metal_placeDestroy"
+		"sound_placeDestroy": "metal_placeDestroy",
+		"info": {
+			"durability": 5
+		}
 	},
 	{
 		"name": "polished_metal",
@@ -44,7 +53,10 @@
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "metal",
-		"sound_placeDestroy": "metal_placeDestroy"
+		"sound_placeDestroy": "metal_placeDestroy",
+		"info": {
+			"durability": 5
+		}
 	},
 	{
 		"name": "colored_stone_tiles",
