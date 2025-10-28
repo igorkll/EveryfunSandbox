@@ -77,7 +77,7 @@ func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=nu
 				storageData = voxel[1]
 		else:
 			if blockId == null:
-				return
+				blockId = getBlockId(terrain, position)
 			if storageData == null:
 				storageData = blockUtils.getDefaultStorageData(blockId)
 	return [blockId, storageData]
@@ -131,6 +131,9 @@ func checkTempScript(terrain, position: Vector3i):
 	
 func getBlockObj(terrain, position: Vector3i):
 	return blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	
+func getBlockId(terrain, position: Vector3i):
+	return terrain.voxel_tool.get_voxel(position)
 
 func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var loadBlockData = _getLoadBlockData(terrain, position, blockId, storageData)
@@ -145,7 +148,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	
 	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.has("script_temp") or isBlockScript(terrain, position)):
 		deleteBlockChildrenWithScript(terrain, position)
-		loadBlockScript(terrain, position)
+		loadBlockScript(terrain, position, blockId, storageData)
 	
 	deleteBlockChildrenWithTypes(terrain, position, ["OmniLight3D", "SpotLight3D"])
 	if obj.has("lights"):
@@ -251,7 +254,7 @@ func getGlobalPositionFromVoxelPosition(terrain, position: Vector3i) -> Vector3:
 	return terrain.global_transform.origin + Vector3(position.x, position.y, position.z) + Vector3(0.5, 0.5, 0.5)
 
 func isCellFree(terrain, position: Vector3i) -> bool:
-	if terrain.voxel_tool.get_voxel(position) != 0:
+	if getBlockId(terrain, position) != 0:
 		return false
 	
 	var space_state = get_tree().current_scene.get_world_3d().direct_space_state
