@@ -223,7 +223,7 @@ func unloadBlock(terrain, position: Vector3i):
 func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, color=0, storageData=null):
 	terrain = getTerrain(terrain)
 	if not isEditable(terrain, position):
-		terrain.deferredActions.append([0, position, blockId, rotation, variant, color, storageData])
+		terrain.deferredActions.append([1, position, blockId, rotation, variant, color, storageData])
 		return
 	
 	if storageData == null:
@@ -242,7 +242,7 @@ func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0
 func destroyBlock(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
 	if not isEditable(terrain, position):
-		terrain.deferredActions.append([1, position])
+		terrain.deferredActions.append([0, position])
 		return
 	
 	unloadBlock(terrain, position)
