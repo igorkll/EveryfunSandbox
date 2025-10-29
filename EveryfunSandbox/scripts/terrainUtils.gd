@@ -263,7 +263,7 @@ func applyDeferredActions(terrain):
 	for i in range(terrain.deferredActions.size() - 1, -1, -1):
 		var deferredAction = terrain.deferredActions[i]
 		if deferredAction[0] < 0:
-			terrain.deferredActions.remove(i)
+			terrain.deferredActions.remove_at(i)
 
 func callBlock(terrain, position: Vector3i, method, ...args) -> bool:
 	terrain = getTerrain(terrain)
