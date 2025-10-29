@@ -177,7 +177,8 @@ func loadBody(id: int):
 	t.origin = data[0]
 	t.basis = Basis(data[1])
 	body.global_transform = t
-	body.freeze = true
+	body.freeze = false
+	terrain.position = Vector3(-0.5, -0.5, -0.5)
 	terrain.init(id)
 
 	_updateBodyDataInSave(body)
