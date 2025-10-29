@@ -4,6 +4,7 @@ var world_generator = preload("res://generators/world.gd")
 var blockChildren = {}
 var voxel_tool
 var isMainTerrain = true
+var deferredActions = []
 
 var _loadedTime = 0
 
@@ -33,3 +34,4 @@ func _process(delta):
 	if _loadedTime > 5 and (game.view_distance != view_distance or game.lod_distance != lod_distance):
 		view_distance = game.view_distance
 		lod_distance = game.lod_distance
+	terrainUtils.applyDeferredActions(self)

@@ -177,7 +177,8 @@ func _physics_process(delta):
 				terrainInteractions.destroyBlock(result[0], result[1].position)
 				
 				var body = saves.createBody(terrainUtils.getGlobalPositionFromVoxelPosition(result[0], result[1].position) + Vector3(0, 15, 0))
-				terrainUtils.placeBlock(body, Vector3i(0, 0, 0), blockUtils.list_name2id["testTempScript"])
+				for i in range(-100, 100):
+					terrainUtils.placeBlock(body, Vector3i(i, i, i), blockUtils.list_name2id["testTempScript"])
 				
 		if Input.is_action_just_pressed("place"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)

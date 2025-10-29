@@ -222,6 +222,10 @@ func unloadBlock(terrain, position: Vector3i):
 
 func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, color=0, storageData=null):
 	terrain = getTerrain(terrain)
+	if not isEditable(terrain, position):
+		terrain.deferredActions.append([0, position, blockId, rotation, variant, color, storageData])
+		return
+	
 	if storageData == null:
 		storageData = blockUtils.getDefaultStorageData(blockId)
 	
@@ -237,10 +241,29 @@ func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0
 
 func destroyBlock(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
+	if not isEditable(terrain, position):
+		terrain.deferredActions.append([1, position])
+		return
+	
 	unloadBlock(terrain, position)
 	saves.regInteractiveVoxel(terrain, position, null)
 	terrain.voxel_tool.set_voxel(position, 0)
 	setVoxelMetadata(terrain, position, null)
+	
+func applyDeferredActions(terrain):
+	terrain = getTerrain(terrain)
+	for deferredAction in terrain.deferredActions:
+		if isEditable(terrain, deferredAction[1]):
+			if deferredAction[0] == 0:
+				destroyBlock(terrain, deferredAction[1])
+			elif deferredAction[0] == 1:
+				placeBlock(terrain, deferredAction[1], deferredAction[2], deferredAction[3], deferredAction[4], deferredAction[5], deferredAction[6])
+			deferredAction[0] = -1
+	
+	for i in range(terrain.deferredActions.size() - 1, -1, -1):
+		var deferredAction = terrain.deferredActions[i]
+		if deferredAction[0] < 0:
+			terrain.deferredActions.remove(i)
 
 func callBlock(terrain, position: Vector3i, method, ...args) -> bool:
 	terrain = getTerrain(terrain)
@@ -319,6 +342,11 @@ func isMinimalAreaLoaded(terrain, position):
 	var aabb = AABB(
 		position - (consts.minimum_loading_radius_for_play / 2),
 		consts.minimum_loading_radius_for_play)
+	return terrain.voxel_tool.is_area_editable(aabb)
+	
+func isEditable(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
+	var aabb = AABB(position, Vector3i(1, 1, 1))
 	return terrain.voxel_tool.is_area_editable(aabb)
 
 func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, variant, color):
