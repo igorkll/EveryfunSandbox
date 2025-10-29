@@ -7,7 +7,13 @@ func blockRaycast(position: Vector3, direction, maxDistance):
 	if result:
 		return [terrain, result]
 		
+func getTerrain(terrain):
+	if terrain is RigidBody3D:
+		return terrain.get_child(0)
+	return terrain
+		
 func attachBlockChild(terrain, position: Vector3i, child):
+	terrain = getTerrain(terrain)
 	if not terrain.blockChildren.has(position):
 		terrain.blockChildren[position] = []
 	terrain.blockChildren[position].append(child)
@@ -15,11 +21,13 @@ func attachBlockChild(terrain, position: Vector3i, child):
 	game.allTerrainNodes.append(child)
 	
 func deleteBlockChild(terrain, position, child):
+	terrain = getTerrain(terrain)
 	terrain.blockChildren[position].erase(child)
 	child.queue_free()
 	game.allTerrainNodes.erase(child)
 	
 func deleteBlockChildrenWithTypes(terrain, position: Vector3i, types):
+	terrain = getTerrain(terrain)
 	var children = terrain.blockChildren.get(position)
 	if children:
 		for i in range(children.size() - 1, -1, -1):
@@ -28,6 +36,7 @@ func deleteBlockChildrenWithTypes(terrain, position: Vector3i, types):
 				deleteBlockChild(terrain, position, child)
 				
 func deleteBlockChildrenWithScript(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var children = terrain.blockChildren.get(position)
 	if children:
 		for i in range(children.size() - 1, -1, -1):
@@ -36,12 +45,14 @@ func deleteBlockChildrenWithScript(terrain, position: Vector3i):
 				deleteBlockChild(terrain, position, child)
 	
 func getBlockChildren(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	if terrain.blockChildren.has(position):
 		return terrain.blockChildren[position]
 	else:
 		return []
 		
 func isBlockScript(terrain, position: Vector3i) -> bool:
+	terrain = getTerrain(terrain)
 	return getBlockScript(terrain, position) != null
 		
 func _updateChildrenRotation(terrain, position: Vector3i, blockId=null):
@@ -83,6 +94,7 @@ func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=nu
 	return [blockId, storageData]
 
 func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
+	terrain = getTerrain(terrain)
 	var loadBlockData = _getLoadBlockData(terrain, position, blockId, storageData)
 	blockId = loadBlockData[0]
 	storageData = loadBlockData[1]
@@ -117,6 +129,7 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 	attachBlockChild(terrain, position, node)
 	
 func checkTempScript(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var obj = getBlockObj(terrain, position)
 	
 	if !obj.get("script_temp") || isBlockScript(terrain, position):
@@ -134,6 +147,7 @@ func checkTempScript(terrain, position: Vector3i):
 	_updateChildrenRotation(terrain, position, blockId)
 	
 func checkUnloadTempScript(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var obj = getBlockObj(terrain, position)
 	
 	if !obj.get("script_temp") || !obj.get("script_temp_destroy"):
@@ -145,12 +159,15 @@ func checkUnloadTempScript(terrain, position: Vector3i):
 	deleteBlockChildrenWithScript(terrain, position)
 	
 func getBlockObj(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	return blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
 	
 func getBlockId(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	return terrain.voxel_tool.get_voxel(position)
 
 func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
+	terrain = getTerrain(terrain)
 	var loadBlockData = _getLoadBlockData(terrain, position, blockId, storageData)
 	blockId = loadBlockData[0]
 	storageData = loadBlockData[1]
@@ -196,6 +213,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	_updateChildrenRotation(terrain, position, blockId)
 		
 func unloadBlock(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	if terrain.blockChildren.has(position):
 		for obj in terrain.blockChildren[position]:
 			game.allTerrainNodes.erase(obj)
@@ -203,6 +221,7 @@ func unloadBlock(terrain, position: Vector3i):
 		terrain.blockChildren.erase(position)
 
 func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, color=0, storageData=null):
+	terrain = getTerrain(terrain)
 	if storageData == null:
 		storageData = blockUtils.getDefaultStorageData(blockId)
 	
@@ -217,12 +236,14 @@ func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0
 		loadBlock(terrain, position, blockId, storageData)
 
 func destroyBlock(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	unloadBlock(terrain, position)
 	saves.regInteractiveVoxel(terrain, position, null)
 	terrain.voxel_tool.set_voxel(position, 0)
 	setVoxelMetadata(terrain, position, null)
 
 func callBlock(terrain, position: Vector3i, method, ...args) -> bool:
+	terrain = getTerrain(terrain)
 	var children = getBlockChildren(terrain, position)
 	var result = false
 	for child in children:
@@ -232,6 +253,7 @@ func callBlock(terrain, position: Vector3i, method, ...args) -> bool:
 	return result
 
 func useBlock(terrain, position: Vector3i) -> bool:
+	terrain = getTerrain(terrain)
 	if not canUseBlock(terrain, position):
 		return false
 	
@@ -246,6 +268,7 @@ func useBlock(terrain, position: Vector3i) -> bool:
 	return true
 
 func canUseBlock(terrain, position: Vector3i) -> bool:
+	terrain = getTerrain(terrain)
 	var script = getBlockScript(terrain, position)
 	
 	if script == null:
@@ -259,18 +282,22 @@ func canUseBlock(terrain, position: Vector3i) -> bool:
 	return false
 	
 func getBlockScript(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var children = getBlockChildren(terrain, position)
 	for child in children:
 		if child.get_script() != null:
 			return child
 
 func getVoxelPositionFromGlobalPosition(terrain, position: Vector3) -> Vector3i:
+	terrain = getTerrain(terrain)
 	return funcs.vec3_to_vec3i_down(position - terrain.global_transform.origin)
 
 func getGlobalPositionFromVoxelPosition(terrain, position: Vector3i) -> Vector3:
+	terrain = getTerrain(terrain)
 	return terrain.global_transform.origin + Vector3(position.x, position.y, position.z) + Vector3(0.5, 0.5, 0.5)
 
 func isCellFree(terrain, position: Vector3i) -> bool:
+	terrain = getTerrain(terrain)
 	if getBlockId(terrain, position) != 0:
 		return false
 	
@@ -288,12 +315,14 @@ func isCellFree(terrain, position: Vector3i) -> bool:
 	return results.size() == 0
 
 func isMinimalAreaLoaded(terrain, position):
+	terrain = getTerrain(terrain)
 	var aabb = AABB(
 		position - (consts.minimum_loading_radius_for_play / 2),
 		consts.minimum_loading_radius_for_play)
 	return terrain.voxel_tool.is_area_editable(aabb)
 
 func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, variant, color):
+	terrain = getTerrain(terrain)
 	var voxelId = terrain.voxel_tool.get_voxel(position)
 	var newVoxelId = blockUtils.getVariantBlockId(voxelId, rotation, variant, color)
 	
@@ -323,46 +352,58 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 	saves.changeInteractiveVoxel(terrain, position, newVoxelId)
 
 func setVariantAndColor(terrain, position: Vector3i, variant, color):
+	terrain = getTerrain(terrain)
 	setRotationAndVariantAndColor(terrain, position, getRotation(terrain, position), variant, color)
 
 func getVariantsCount(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var obj = getBlockObj(terrain, position)
 	return obj.baseVariantsCount
 	
 func getColorsCount(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var obj = getBlockObj(terrain, position)
 	return obj.colorVariantsCount
 	
 func getRotationsCount(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var obj = getBlockObj(terrain, position)
 	return obj.rotationsCount
 	
 func getVariant(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var obj = getBlockObj(terrain, position)
 	return obj.baseVariant
 	
 func getColor(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var obj = getBlockObj(terrain, position)
 	return obj.colorVariant
 	
 func getRotation(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	var obj = getBlockObj(terrain, position)
 	return obj.currentRotation
 	
 func setVariant(terrain, position: Vector3i, variant):
+	terrain = getTerrain(terrain)
 	setVariantAndColor(terrain, position, variant, getColor(terrain, position))
 	
 func setColor(terrain, position: Vector3i, color):
+	terrain = getTerrain(terrain)
 	setVariantAndColor(terrain, position, getVariant(terrain, position), color)
 	
 func setRotation(terrain, position: Vector3i, rotation):
+	terrain = getTerrain(terrain)
 	setRotationAndVariantAndColor(terrain, position, rotation, getVariant(terrain, position), getColor(terrain, position))
 
 func setVoxelMetadata(terrain, position: Vector3i, data):
+	terrain = getTerrain(terrain)
 	if terrain is VoxelTerrain:
 		terrain.voxel_tool.set_voxel_metadata(position, data)
 
 func getVoxelMetadata(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
 	if terrain is VoxelTerrain:
 		return terrain.voxel_tool.get_voxel_metadata(position)
 	return null

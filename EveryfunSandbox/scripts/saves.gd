@@ -153,7 +153,7 @@ func list():
 func _updateBodyDataInSave(body):
 	funcs.arraySet(currentWorldData.dynamicBodies, body.id, [body.position, body.rotation])
 
-func createBody(position, rotation, startVoxelId):
+func createBody(position, rotation):
 	var id = funcs.getNullIndex(currentWorldData.dynamicBodies)
 	funcs.arraySet(currentWorldData.dynamicBodies, id, [position, rotation])
 	return loadBody(id)
@@ -161,11 +161,13 @@ func createBody(position, rotation, startVoxelId):
 func loadBody(id: int):
 	var data = currentWorldData.dynamicBodies[id]
 	
-	var body = preload("res://scripts/dynamicBody.gd").new()
-	data.position = data[0]
-	data.rotation = data[1]
+	var terrain = preload("res://scripts/dynamicBody.gd").new()
+	var body = RigidBody3D.new()
+	body.position = data[0]
+	body.rotation = data[1]
+	body.add_child(terrain)
 	game.dynamicBodies.add_child(body)
-	body.init(id)
+	terrain.init(id)
 	
 	currentWorldRuntimeData.currentDynamicBodies.append(body)
 	return body
@@ -176,6 +178,7 @@ func unloadBody(body):
 
 func destroyBody(body):
 	funcs.arraySet(currentWorldData.dynamicBodies, body.id, null)
+	funcs.deleteAllNullsOnEnd(currentWorldData.dynamicBodies)
 	unloadBody(body)
 
 # --------------------------------------------------------------- interactive voxels

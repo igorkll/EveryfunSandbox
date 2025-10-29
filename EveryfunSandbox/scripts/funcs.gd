@@ -112,3 +112,7 @@ func getNullIndex(array):
 		if val == null:
 			return i
 	return array.size()
+
+func deleteAllNullsOnEnd(array):
+	while array.size() > 0 and array[array.size() - 1] == null:
+		array.pop_back()
