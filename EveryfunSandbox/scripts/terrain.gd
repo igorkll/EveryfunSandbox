@@ -8,6 +8,7 @@ var isMainTerrain = true
 var _loadedTime = 0
 
 func init(terrainPath):
+	filesystem.makeDirectoryForFile(terrainPath)
 	threaded_update_enabled = true
 	# streaming_system = VoxelLodTerrain.STREAMING_SYSTEM_CLIPBOX
 	
@@ -19,6 +20,7 @@ func init(terrainPath):
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()
+	# self.mesh_block_size = 32
 	self.view_distance = 32
 	self.lod_distance = 32
 	self.stream = stream

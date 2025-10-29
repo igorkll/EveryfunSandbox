@@ -174,18 +174,21 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("attack"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result:
-				terrainInteractions.destroyBlock(game.terrain, result[1].position)
+				terrainInteractions.destroyBlock(result[0], result[1].position)
+				
+				var body = saves.createBody(terrainUtils.getGlobalPositionFromVoxelPosition(result[0], result[1].position))
+				terrainUtils.placeBlock(body, Vector3i(0, 0, 0), blockUtils.list_name2id["testTempScript"])
 				
 		if Input.is_action_just_pressed("place"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
-			if result and terrainUtils.isCellFree(game.terrain, result[1].previous_position):
-				terrainInteractions.placeBlock(game.terrain, result[1].previous_position, blockUtils.list_name2id["testTempScript"], blockUtils.getTargetRotation($camera.global_transform.basis.z))
+			if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
+				terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["testTempScript"], blockUtils.getTargetRotation($camera.global_transform.basis.z))
 			
 		var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
-		if result && terrainUtils.canUseBlock(game.terrain, result[1].position):
+		if result && terrainUtils.canUseBlock(result[0], result[1].position):
 			game.setCrosspiece("use")
 			if Input.is_action_just_pressed("use"):
-				terrainUtils.useBlock(game.terrain, result[1].position)
+				terrainUtils.useBlock(result[0], result[1].position)
 		else:
 			game.setCrosspiece("normal")
 	else:

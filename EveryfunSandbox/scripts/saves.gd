@@ -8,7 +8,6 @@ var currentWorldData
 
 var defaultWorldRuntimeData = {
 	"interactiveVoxels": {},
-	"currentDynamicBodies": [],
 	"fullLoaded": false,
 	"time": 0,
 	"autoSaveTimer": 0
@@ -74,9 +73,9 @@ func save(saveEndCallback=null) -> bool:
 	currentWorldRuntimeData.saveEndCallback = saveEndCallback
 	currentWorldRuntimeData.voxelSaveCompletionTrackers = [game.terrain.save_modified_blocks()]
 	
-	for body in currentWorldRuntimeData.currentDynamicBodies:
+	for body in game.dynamicBodies.get_children():
 		_updateBodyDataInSave(body)
-		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(body.save_modified_blocks())
+		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(terrainUtils.getTerrain(body).save_modified_blocks())
 	
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	
@@ -151,9 +150,16 @@ func list():
 # --------------------------------------------------------------- dynamic bodies
 
 func _updateBodyDataInSave(body):
-	funcs.arraySet(currentWorldData.dynamicBodies, body.id, [body.position, body.rotation])
+	var global_transform = body.global_transform
+	funcs.arraySet(currentWorldData.dynamicBodies, terrainUtils.getTerrain(body).id, [
+		global_transform.origin,
+		global_transform.basis.get_rotation_quaternion()
+	])
 
-func createBody(position, rotation):
+func createBody(position, rotation=null):
+	if rotation == null:
+		rotation = Quaternion()
+	
 	var id = funcs.getNullIndex(currentWorldData.dynamicBodies)
 	funcs.arraySet(currentWorldData.dynamicBodies, id, [position, rotation])
 	return loadBody(id)
@@ -162,22 +168,26 @@ func loadBody(id: int):
 	var data = currentWorldData.dynamicBodies[id]
 	
 	var terrain = preload("res://scripts/dynamicBody.gd").new()
+	
 	var body = RigidBody3D.new()
-	body.position = data[0]
-	body.rotation = data[1]
+	body.freeze = true
+	var t = body.global_transform
+	t.origin = data[0]
+	t.basis = Basis(data[1])
+	body.global_transform = t
+	body.freeze = false
+	
 	body.add_child(terrain)
 	game.dynamicBodies.add_child(body)
 	terrain.init(id)
-	
-	currentWorldRuntimeData.currentDynamicBodies.append(body)
+
 	return body
 
 func unloadBody(body):
-	currentWorldRuntimeData.currentDynamicBodies.erase(body)
 	body.queue_free()
 
 func destroyBody(body):
-	funcs.arraySet(currentWorldData.dynamicBodies, body.id, null)
+	funcs.arraySet(currentWorldData.dynamicBodies, terrainUtils.getTerrain(body).id, null)
 	funcs.deleteAllNullsOnEnd(currentWorldData.dynamicBodies)
 	unloadBody(body)
 

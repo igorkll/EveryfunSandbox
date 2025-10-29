@@ -11,15 +11,19 @@ func init(bodyId: int):
 	id = bodyId
 	name = "body_" + idStr
 	
+	var terrainPath = saves.getPathInSave("bodies".path_join(idStr + ".db"))
+	filesystem.makeDirectoryForFile(terrainPath)
+	
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = game.blockLibrary
 	
 	var stream = VoxelStreamSQLite.new()
-	stream.database_path = saves.getPathInSave("bodies".path_join(idStr + ".db"))
+	stream.database_path = terrainPath
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()
-	self.view_distance = game.view_distance
+	# self.mesh_block_size = 32
+	self.max_view_distance = game.view_distance
 	self.stream = stream
 	
 	voxel_tool = get_voxel_tool()

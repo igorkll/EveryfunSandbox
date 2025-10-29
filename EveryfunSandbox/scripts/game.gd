@@ -139,8 +139,8 @@ func setRenderDistance(index):
 	# terrain.lod_distance = distanceSettingsPreset.distance
 	
 	if saves.isWorldLoaded():
-		for body in saves.currentWorldRuntimeData.currentDynamicBodies:
-			body.view_distance = distanceSettingsPreset.distance
+		for body in dynamicBodies.get_children():
+			terrainUtils.getTerrain(body).max_view_distance = distanceSettingsPreset.distance
 	
 func getGraphicSettingsPresets(quality=null):
 	if quality == null:
