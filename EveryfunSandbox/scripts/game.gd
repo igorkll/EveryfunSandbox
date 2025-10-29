@@ -133,6 +133,13 @@ func setRenderDistance(index):
 	view_distance = distanceSettingsPreset.distance
 	lod_distance = distanceSettingsPreset.lodDistance
 	
+	# terrain.view_distance = distanceSettingsPreset.distance
+	# terrain.lod_distance = distanceSettingsPreset.distance
+	
+	if saves.isWorldLoaded():
+		for body in saves.currentWorldRuntimeData.currentDynamicBodies:
+			body.view_distance = distanceSettingsPreset.distance
+	
 func getGraphicSettingsPresets(quality=null):
 	if quality == null:
 		quality = settings.graphic.quality
@@ -255,6 +262,15 @@ func defaultSettingsInit():
 	var resolution = DisplayServer.screen_get_size(currentScreen)
 	defaultSettings.gui.scale = (resolution.y / 1080) * consts.default_scale_on_1080
 
+func applySettings():
+	applyAudioSettings()
+	setGraphicQuality(settings.graphic.quality)
+	setRenderDistance(settings.graphic.distance)
+	setHdrState(settings.graphic.hdr)
+	setWindowMode(settings.graphic.window)
+	setVSyncMode(settings.graphic.vsync)
+	setSmoothingState(settings.graphic.smoothing)
+
 func loadSettings():
 	settings = {}
 	if filesystem.isFile(consts.settings_path):
@@ -263,13 +279,7 @@ func loadSettings():
 	settings = funcs.merge_dicts(settings, defaultSettings)
 	settings.statistics.game_session_counter = settings.statistics.game_session_counter + 1;
 	
-	applyAudioSettings()
-	setGraphicQuality(settings.graphic.quality)
-	setRenderDistance(settings.graphic.distance)
-	setHdrState(settings.graphic.hdr)
-	setWindowMode(settings.graphic.window)
-	setVSyncMode(settings.graphic.vsync)
-	setSmoothingState(settings.graphic.smoothing)
+	applySettings()
 
 func saveSettings():
 	filesystem.writeJson(consts.settings_path, settings)

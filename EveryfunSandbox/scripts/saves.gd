@@ -8,6 +8,7 @@ var currentWorldData
 
 var defaultWorldRuntimeData = {
 	"interactiveVoxels": {},
+	"currentDynamicBodies": [],
 	"fullLoaded": false,
 	"time": 0,
 	"autoSaveTimer": 0
@@ -16,6 +17,7 @@ var defaultWorldRuntimeData = {
 var defaultWorldData = {
 	"objectData": {},
 	"interactiveVoxels": {},
+	"dynamicBodies": {},
 	"debug": {
 		"debugInfo": false,
 		"allowFly": false,
@@ -66,12 +68,16 @@ func getObjectData(key):
 	return currentWorldData.objectData[key]
 
 func save(saveEndCallback=null) -> bool:
-	if currentWorldName == null || not isWorldFullLoaded() || currentWorldRuntimeData.has("voxelSaveCompletionTracker"):
+	if currentWorldName == null || not isWorldFullLoaded() || currentWorldRuntimeData.has("voxelSaveCompletionTrackers"):
 		return false
 	
 	currentWorldRuntimeData.savingProcessMessage = game.gameMessage("Saving...", null, true)
 	currentWorldRuntimeData.saveEndCallback = saveEndCallback
-	currentWorldRuntimeData.voxelSaveCompletionTracker = game.terrain.save_modified_blocks()
+	currentWorldRuntimeData.voxelSaveCompletionTrackers = [game.terrain.save_modified_blocks()]
+	
+	for body in currentWorldRuntimeData.currentDynamicBodies:
+		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(body)
+	
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	
 	return true
@@ -80,7 +86,7 @@ func isSaving() -> bool:
 	if currentWorldName == null:
 		return false
 	
-	return not not currentWorldRuntimeData.voxelSaveCompletionTracker
+	return not not currentWorldRuntimeData.voxelSaveCompletionTrackers
 
 func unload() -> bool:
 	if currentWorldName == null:
@@ -118,6 +124,8 @@ func open(savename) -> bool:
 	
 	game.player.init()
 	signals.emit_signal("world_open", savename)
+	
+	game.applySettings()
 	
 	return true
 	
@@ -250,17 +258,25 @@ func __checkAutosave():
 		currentWorldRuntimeData.autoSaveTimer = 0
 		save()
 	
-	if currentWorldRuntimeData.has("voxelSaveCompletionTracker") && currentWorldRuntimeData.voxelSaveCompletionTracker.is_complete():
-		currentWorldRuntimeData.savingProcessMessage.task_end()
-		if game.settings.gui.showSaveLabel:
-			game.gameMessage("Game saved!")
+	if currentWorldRuntimeData.has("voxelSaveCompletionTrackers"):
+		var saved = true
 		
-		if currentWorldRuntimeData.saveEndCallback:
-			currentWorldRuntimeData.saveEndCallback.call()
+		for tracker in currentWorldRuntimeData.voxelSaveCompletionTrackers:
+			if not tracker.is_complete():
+				saved = false
+				break
 		
-		currentWorldRuntimeData.erase("voxelSaveCompletionTracker")
-		currentWorldRuntimeData.erase("savingProcessMessage")
-		currentWorldRuntimeData.erase("saveEndCallback")
+		if saved:
+			currentWorldRuntimeData.savingProcessMessage.task_end()
+			if game.settings.gui.showSaveLabel:
+				game.gameMessage("Game saved!")
+			
+			if currentWorldRuntimeData.saveEndCallback:
+				currentWorldRuntimeData.saveEndCallback.call()
+			
+			currentWorldRuntimeData.erase("voxelSaveCompletionTrackers")
+			currentWorldRuntimeData.erase("savingProcessMessage")
+			currentWorldRuntimeData.erase("saveEndCallback")
 		
 func __checkLoaded():
 	var loadersPositions = []

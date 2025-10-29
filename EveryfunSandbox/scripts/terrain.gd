@@ -3,7 +3,9 @@ extends VoxelLodTerrain
 var world_generator = preload("res://generators/world.gd")
 var blockChildren = {}
 var voxel_tool
-var loadedTime = 0
+var isMainTerrain = true
+
+var _loadedTime = 0
 
 func init(terrainPath):
 	threaded_update_enabled = true
@@ -25,7 +27,7 @@ func init(terrainPath):
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 
 func _process(delta):
-	loadedTime += delta
-	if loadedTime > 5 and (game.view_distance != view_distance or game.lod_distance != lod_distance):
+	_loadedTime += delta
+	if _loadedTime > 5 and (game.view_distance != view_distance or game.lod_distance != lod_distance):
 		view_distance = game.view_distance
 		lod_distance = game.lod_distance
