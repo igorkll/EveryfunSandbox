@@ -9,7 +9,6 @@ var id: int
 func init(bodyId: int):
 	var idStr = str(id)
 	id = bodyId
-	name = "body_" + idStr
 	
 	var terrainPath = saves.getPathInSave("bodies".path_join(idStr + ".db"))
 	filesystem.makeDirectoryForFile(terrainPath)

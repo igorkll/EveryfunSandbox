@@ -170,17 +170,19 @@ func loadBody(id: int):
 	var terrain = preload("res://scripts/dynamicBody.gd").new()
 	
 	var body = RigidBody3D.new()
+	body.name = "body_" + str(id)
 	body.freeze = true
 	var t = body.global_transform
 	t.origin = data[0]
 	t.basis = Basis(data[1])
 	body.global_transform = t
-	body.freeze = false
+	body.freeze = true
 	
 	body.add_child(terrain)
 	game.dynamicBodies.add_child(body)
 	terrain.init(id)
 
+	_updateBodyDataInSave(body)
 	return body
 
 func unloadBody(body):
