@@ -262,8 +262,8 @@ func defaultSettingsInit():
 		currentScreen = 0
 	
 	var resolution = DisplayServer.screen_get_size(currentScreen)
-	defaultSettings.gui.scale = (resolution.y / 1080) * consts.default_scale_on_1080
-
+	defaultSettings.gui.scale = (resolution.y / 1080.0) * consts.default_scale_on_1080
+ 
 func applySettings():
 	applyAudioSettings()
 	setGraphicQuality(settings.graphic.quality)
