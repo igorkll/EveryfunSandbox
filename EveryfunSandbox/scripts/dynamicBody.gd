@@ -4,15 +4,18 @@ var world_generator = preload("res://generators/empty.gd")
 var blockChildren = {}
 var voxel_tool
 var isMainTerrain = false
+var id: int
 
-func init(bodyId):
-	name = "body_" + bodyId
+func init(bodyId: int):
+	var idStr = str(id)
+	id = bodyId
+	name = "body_" + idStr
 	
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = game.blockLibrary
 	
 	var stream = VoxelStreamSQLite.new()
-	stream.database_path = saves.getPathInSave("bodies".path_join(bodyId + ".db"))
+	stream.database_path = saves.getPathInSave("bodies".path_join(idStr + ".db"))
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()

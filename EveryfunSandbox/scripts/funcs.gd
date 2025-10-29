@@ -93,3 +93,10 @@ func combine_rotations_deg(rotations: Array) -> Vector3:
 		q_combined *= q
 
 	return q_combined.get_euler() * rad_to_deg(1)
+
+func appendNull(array, value):
+	for i in range(array.size()):
+		if array[i] == null:
+			array[i] = value
+			return
+	array.append(value)

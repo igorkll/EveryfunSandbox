@@ -17,7 +17,7 @@ var defaultWorldRuntimeData = {
 var defaultWorldData = {
 	"objectData": {},
 	"interactiveVoxels": {},
-	"dynamicBodies": {},
+	"dynamicBodies": [],
 	"debug": {
 		"debugInfo": false,
 		"allowFly": false,
@@ -26,7 +26,6 @@ var defaultWorldData = {
 	}
 }
 
-var dynamicBodies
 var _loadingGameMessage
 	
 func isWorldLoaded() -> bool:
@@ -152,24 +151,32 @@ func list():
 # --------------------------------------------------------------- dynamic bodies
 
 func _updateBodyDataInSave(body):
-	currentWorldData.dynamicBodies[body.name] = {}
+	currentWorldData.dynamicBodies[body.id] = [body.position, body.rotation]
 
-func loadBody():
-	var id = "123"
+func createBody():
+	var id = 
+	currentWorldData.dynamicBodies[id] = 
+	return loadBody(id)
+
+func loadBody(id: int):
+	var data = currentWorldData.dynamicBodies[id]
 	
 	var body = preload("res://scripts/dynamicBody.gd").new()
+	data.position = data[0]
+	data.rotation = data[1]
 	game.dynamicBodies.add_child(body)
 	body.init(id)
 	
 	currentWorldRuntimeData.currentDynamicBodies.append(body)
+	return body
 
 func unloadBody(body):
 	body.queue_free()
 
 func destroyBody(body):
-	unloadBody(body)
 	currentWorldRuntimeData.currentDynamicBodies.erase(body)
 	currentWorldData.dynamicBodies.erase(body.name)
+	unloadBody(body)
 
 # --------------------------------------------------------------- interactive voxels
 
