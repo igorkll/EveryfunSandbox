@@ -6,6 +6,8 @@ var voxel_tool
 var isMainTerrain = false
 
 func init(bodyId):
+	name = "body_" + bodyId
+	
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = game.blockLibrary
 	

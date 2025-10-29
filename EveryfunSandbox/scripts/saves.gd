@@ -76,7 +76,8 @@ func save(saveEndCallback=null) -> bool:
 	currentWorldRuntimeData.voxelSaveCompletionTrackers = [game.terrain.save_modified_blocks()]
 	
 	for body in currentWorldRuntimeData.currentDynamicBodies:
-		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(body)
+		_updateBodyDataInSave(body)
+		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(body.save_modified_blocks())
 	
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	
@@ -150,17 +151,25 @@ func list():
 
 # --------------------------------------------------------------- dynamic bodies
 
+func _updateBodyDataInSave(body):
+	currentWorldData.dynamicBodies[body.name] = {}
+
 func loadBody():
 	var id = "123"
+	
 	var body = preload("res://scripts/dynamicBody.gd").new()
-	body.name = "body_" + id
 	game.dynamicBodies.add_child(body)
 	body.init(id)
-
-func destroyBody(terrain):
 	
-	currentWorldRuntimeData.currentDynamicBodies.erase(terrain)
-	currentWorldData.dynamicBodies.erase(terrain)
+	currentWorldRuntimeData.currentDynamicBodies.append(body)
+
+func unloadBody(body):
+	body.queue_free()
+
+func destroyBody(body):
+	unloadBody(body)
+	currentWorldRuntimeData.currentDynamicBodies.erase(body)
+	currentWorldData.dynamicBodies.erase(body.name)
 
 # --------------------------------------------------------------- interactive voxels
 

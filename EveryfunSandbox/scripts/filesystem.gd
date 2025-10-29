@@ -17,6 +17,13 @@ func makeDirectory(path):
 	var spath = splitGodotPath(path)
 	var dir = DirAccess.open(spath[0])
 	dir.make_dir_recursive(spath[1])
+	
+func makeDirectoryForFile(path):
+	path = path.get_base_dir()
+	if not isDirectory(path):
+		var spath = splitGodotPath(path)
+		var dir = DirAccess.open(spath[0])
+		dir.make_dir_recursive(spath[1])
 
 func isDirectory(path):
 	var spath = splitGodotPath(path)
@@ -32,6 +39,7 @@ func readFile(path):
 	return FileAccess.get_file_as_string(path)
 	
 func writeFile(path, data):
+	makeDirectoryForFile(path)
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(data)
 	file.close()
@@ -40,6 +48,7 @@ func readFileBytes(path):
 	return FileAccess.get_file_as_bytes(path)
 	
 func writeFileBytes(path, data):
+	makeDirectoryForFile(path)
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_buffer(data)
 	file.close()
