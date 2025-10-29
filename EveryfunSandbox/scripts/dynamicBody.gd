@@ -5,12 +5,12 @@ var blockChildren = {}
 var voxel_tool
 var isMainTerrain = false
 
-func init(terrainPath):
+func init(bodyId):
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = game.blockLibrary
 	
 	var stream = VoxelStreamSQLite.new()
-	stream.database_path = terrainPath
+	stream.database_path = saves.getPathInSave("bodies".path_join(bodyId + ".db"))
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()

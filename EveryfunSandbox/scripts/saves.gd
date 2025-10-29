@@ -26,8 +26,8 @@ var defaultWorldData = {
 	}
 }
 
-var objects
-var loadingGameMessage
+var dynamicBodies
+var _loadingGameMessage
 	
 func isWorldLoaded() -> bool:
 	return currentWorldName != null
@@ -48,9 +48,9 @@ func isWorldFullLoaded() -> bool:
 			
 	if currentWorldRuntimeData.has("fullLoadedTimer") and currentWorldRuntimeData.fullLoadedTimer >= consts.load_time_delay:
 		currentWorldRuntimeData.fullLoaded = true
-		if loadingGameMessage != null:
-			loadingGameMessage.task_end()
-			loadingGameMessage = null
+		if _loadingGameMessage != null:
+			_loadingGameMessage.task_end()
+			_loadingGameMessage = null
 	
 	return currentWorldRuntimeData.fullLoaded
 	
@@ -92,7 +92,7 @@ func unload() -> bool:
 	if currentWorldName == null:
 		return false
 	
-	for child in objects.get_children():
+	for child in game.objects.get_children():
 		child.queue_free()
 	
 	game.terrain = null
@@ -104,15 +104,19 @@ func open(savename) -> bool:
 	if not exists(savename):
 		return false
 	
-	loadingGameMessage = game.gameMessage("Loading...", null, true)
+	_loadingGameMessage = game.gameMessage("Loading...", null, true)
 	
 	unload()
 	currentWorldName = savename
 	currentWorldRuntimeData = defaultWorldRuntimeData.duplicate(true)
 	
+	game.dynamicBodies = Node.new()
+	game.dynamicBodies.name = "dynamicBodies"
+	game.objects.add_child(game.dynamicBodies)
+	
 	var terrain = preload("res://scripts/terrain.gd").new()
 	terrain.name = "terrain"
-	objects.add_child(terrain)
+	game.objects.add_child(terrain)
 	terrain.init(getPathInSave("terrain.db"))
 	game.terrain = terrain
 	
@@ -144,24 +148,21 @@ func isInteractiveChunkBlockLoaded(position: Vector3i):
 func list():
 	return filesystem.list(savesFolderPath)
 
-# ---------------------------------------------------------------
+# --------------------------------------------------------------- dynamic bodies
 
-var _interactiveChunkSize = 32
-var _loadedChunks = {}
+func loadBody():
+	var id = "123"
+	var body = preload("res://scripts/dynamicBody.gd").new()
+	body.name = "body_" + id
+	game.dynamicBodies.add_child(body)
+	body.init(id)
 
-func _getChunkPosition(position: Vector3i) -> Vector3i:
-	return position / _interactiveChunkSize
+func destroyBody(terrain):
+	
+	currentWorldRuntimeData.currentDynamicBodies.erase(terrain)
+	currentWorldData.dynamicBodies.erase(terrain)
 
-func _regInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blockId, storageData):
-	var chunkPosition = _getChunkPosition(position)
-	if blockId != null:
-		if not interactiveVoxels.has(chunkPosition):
-			interactiveVoxels[chunkPosition] = {}
-		interactiveVoxels[chunkPosition][position] = [blockId, storageData]
-	elif interactiveVoxels.has(chunkPosition):
-		interactiveVoxels[chunkPosition].erase(position)
-		if interactiveVoxels[chunkPosition].is_empty():
-			interactiveVoxels.erase(chunkPosition)
+# --------------------------------------------------------------- interactive voxels
 
 func regInteractiveVoxel(terrain, position: Vector3i, blockId=null, storageData=null, tempInteractive=false):
 	if storageData == null:
@@ -178,7 +179,7 @@ func regInteractiveVoxel(terrain, position: Vector3i, blockId=null, storageData=
 	else:
 		_regInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, null, null)
 		_regInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, null, null)
-			
+		
 func getInteractiveVoxel(terrain, position: Vector3i):
 	var chunkPosition = _getChunkPosition(position)
 	if currentWorldData.interactiveVoxels.has(chunkPosition):
@@ -198,6 +199,31 @@ func isTempInteractiveVoxel(terrain, position: Vector3i):
 		return currentWorldRuntimeData.interactiveVoxels[chunkPosition].has(position)
 	return false
 	
+func changeInteractiveVoxel(terrain, position: Vector3i, blockId=null):
+	if isTempInteractiveVoxel(terrain, position):
+		_changeInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, blockId)
+	else:
+		_changeInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, blockId)
+
+# --------------------------------------------------------------- interactive chunk
+
+var _interactiveChunkSize = 32
+var _loadedChunks = {}
+
+func _getChunkPosition(position: Vector3i) -> Vector3i:
+	return position / _interactiveChunkSize
+
+func _regInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blockId, storageData):
+	var chunkPosition = _getChunkPosition(position)
+	if blockId != null:
+		if not interactiveVoxels.has(chunkPosition):
+			interactiveVoxels[chunkPosition] = {}
+		interactiveVoxels[chunkPosition][position] = [blockId, storageData]
+	elif interactiveVoxels.has(chunkPosition):
+		interactiveVoxels[chunkPosition].erase(position)
+		if interactiveVoxels[chunkPosition].is_empty():
+			interactiveVoxels.erase(chunkPosition)
+	
 func _changeInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blockId=null):
 	if blockId == 0:
 		blockId = null
@@ -216,12 +242,6 @@ func _changeInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blo
 		if interactiveVoxels[chunkPosition].is_empty():
 			interactiveVoxels.erase(chunkPosition)
 
-func changeInteractiveVoxel(terrain, position: Vector3i, blockId=null):
-	if isTempInteractiveVoxel(terrain, position):
-		_changeInteractiveVoxel(currentWorldRuntimeData.interactiveVoxels, terrain, position, blockId)
-	else:
-		_changeInteractiveVoxel(currentWorldData.interactiveVoxels, terrain, position, blockId)
-			
 func _loadVoxels(chunkVoxels):
 	if chunkVoxels:
 		for interactiveVoxelPosition in chunkVoxels:
@@ -233,7 +253,7 @@ func _unloadVoxels(chunkVoxels):
 		for interactiveVoxelPosition in chunkVoxels:
 			terrainUtils.unloadBlock(game.terrain, interactiveVoxelPosition)
 
-func __updateLoadedInteractiveVoxels(loadersPositions):
+func _updateLoadedInteractiveVoxels(loadersPositions):
 	var currentLoadedChunks = {}
 	for loaderPosition in loadersPositions:
 		var chunkPosition = _getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, loaderPosition))
@@ -252,8 +272,7 @@ func __updateLoadedInteractiveVoxels(loadersPositions):
 			_unloadVoxels(currentWorldData.interactiveVoxels.get(loadedChunk))
 			_unloadVoxels(currentWorldRuntimeData.interactiveVoxels.get(loadedChunk))
 
-
-func __checkAutosave():
+func _checkAutosave():
 	if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:
 		currentWorldRuntimeData.autoSaveTimer = 0
 		save()
@@ -278,7 +297,7 @@ func __checkAutosave():
 			currentWorldRuntimeData.erase("savingProcessMessage")
 			currentWorldRuntimeData.erase("saveEndCallback")
 		
-func __checkLoaded():
+func _checkLoaded():
 	var loadersPositions = []
 	loadersPositions.append(game.camera.global_position)
 	
@@ -304,18 +323,17 @@ func __checkLoaded():
 	else:
 		duplicatedLoadersPositions = []
 	
-	__updateLoadedInteractiveVoxels(duplicatedLoadersPositions)
+	_updateLoadedInteractiveVoxels(duplicatedLoadersPositions)
 
-func __per_second():
+func _per_second():
 	if currentWorldRuntimeData:
-		__checkLoaded()
+		_checkLoaded()
 
 func _ready():
-	objects = get_node("/root/main/objects")
-	timers.setInterval(__per_second, 1)
+	timers.setInterval(_per_second, 1)
 
 func _process(delta):
-	if loadingGameMessage != null:
+	if _loadingGameMessage != null:
 		isWorldFullLoaded()
 	
 	if currentWorldRuntimeData:
@@ -324,5 +342,5 @@ func _process(delta):
 		if currentWorldRuntimeData.has("fullLoadedTimer"):
 			currentWorldRuntimeData.fullLoadedTimer += delta
 
-		__checkAutosave()
+		_checkAutosave()
 	

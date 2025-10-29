@@ -95,7 +95,7 @@ view_distance = 256
 [node name="MeshInstance3D" type="MeshInstance3D" parent="player"]
 mesh = SubResource("CapsuleMesh_dwbse")
 
-[node name="objects" type="Node3D" parent="."]
+[node name="objects" type="Node" parent="."]
 
 [node name="music" type="AudioStreamPlayer" parent="."]
 bus = &"Music"

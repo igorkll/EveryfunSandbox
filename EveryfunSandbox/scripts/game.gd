@@ -3,6 +3,8 @@ extends Node
 var sceneTree
 var mainNode
 var terrain
+var objects
+var dynamicBodies
 var player
 var camera
 var blockLibrary
@@ -428,6 +430,7 @@ func _ready():
 	mainNode = get_node("/root/main")
 	player = get_node("/root/main/player")
 	camera = get_node("/root/main/player/camera")
+	objects = get_node("/root/main/objects")
 	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
 	
 	loadSettings()
