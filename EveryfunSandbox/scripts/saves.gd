@@ -151,11 +151,11 @@ func list():
 # --------------------------------------------------------------- dynamic bodies
 
 func _updateBodyDataInSave(body):
-	currentWorldData.dynamicBodies[body.id] = [body.position, body.rotation]
+	funcs.arraySet(currentWorldData.dynamicBodies, body.id, [body.position, body.rotation])
 
-func createBody():
-	var id = 
-	currentWorldData.dynamicBodies[id] = 
+func createBody(position, rotation, startVoxelId):
+	var id = funcs.getNullIndex(currentWorldData.dynamicBodies)
+	funcs.arraySet(currentWorldData.dynamicBodies, id, [position, rotation])
 	return loadBody(id)
 
 func loadBody(id: int):
@@ -171,11 +171,11 @@ func loadBody(id: int):
 	return body
 
 func unloadBody(body):
+	currentWorldRuntimeData.currentDynamicBodies.erase(body)
 	body.queue_free()
 
 func destroyBody(body):
-	currentWorldRuntimeData.currentDynamicBodies.erase(body)
-	currentWorldData.dynamicBodies.erase(body.name)
+	funcs.arraySet(currentWorldData.dynamicBodies, body.id, null)
 	unloadBody(body)
 
 # --------------------------------------------------------------- interactive voxels

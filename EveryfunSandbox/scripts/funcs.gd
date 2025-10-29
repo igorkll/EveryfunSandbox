@@ -100,3 +100,15 @@ func appendNull(array, value):
 			array[i] = value
 			return
 	array.append(value)
+
+func arraySet(array, index, value):
+	if index >= array.size():
+		array.resize(index + 1)
+	array[index] = value
+	
+func getNullIndex(array):
+	for i in range(array.size()):
+		var val = array[i]
+		if val == null:
+			return i
+	return array.size()
