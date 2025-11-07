@@ -65,6 +65,7 @@ var ambientList = []
 
 var graphicSettingsPresets = [
 	{
+		"shadow": false,
 		"shadow_quality": 512,
 		"shadow_distance": 32,
 		"sdfgi": false,
@@ -74,6 +75,7 @@ var graphicSettingsPresets = [
 		"normalBias": 2.0
 	},
 	{
+		"shadow": true,
 		"shadow_quality": 2048,
 		"shadow_distance": 64,
 		"sdfgi": false,
@@ -83,6 +85,7 @@ var graphicSettingsPresets = [
 		"normalBias": 2.0
 	},
 	{
+		"shadow": true,
 		"shadow_quality": 4096,
 		"shadow_distance": 96,
 		"sdfgi": false,
@@ -92,6 +95,7 @@ var graphicSettingsPresets = [
 		"normalBias": 5.0
 	},
 	{
+		"shadow": true,
 		"shadow_quality": 16384,
 		"shadow_distance": 256,
 		"sdfgi": false,
@@ -134,14 +138,7 @@ func setRenderDistance(index):
 	voxelViewer.view_distance = distanceSettingsPreset.distance
 	view_distance = distanceSettingsPreset.distance
 	lod_distance = distanceSettingsPreset.lodDistance
-	
-	# terrain.view_distance = distanceSettingsPreset.distance
-	# terrain.lod_distance = distanceSettingsPreset.distance
-	
-	if saves.isWorldLoaded():
-		for body in dynamicBodies.get_children():
-			terrainUtils.getTerrain(body).max_view_distance = distanceSettingsPreset.distance
-	
+
 func getGraphicSettingsPresets(quality=null):
 	if quality == null:
 		quality = settings.graphic.quality
@@ -150,6 +147,7 @@ func getGraphicSettingsPresets(quality=null):
 func applyLightGraphicSettings(light, quality=null):
 	var graphicSettingsPreset = getGraphicSettingsPresets(quality)
 	
+	light.shadow_enabled = graphicSettingsPreset.shadow
 	light.shadow_bias = graphicSettingsPreset.bias
 	light.shadow_normal_bias = graphicSettingsPreset.normalBias
 
@@ -167,6 +165,7 @@ func setGraphicQuality(quality):
 	
 	RenderingServer.directional_shadow_atlas_set_size(graphicSettingsPreset.shadow_quality, true)
 	worldLight.directional_shadow_max_distance = graphicSettingsPreset.shadow_distance
+	worldLight.shadow_enabled = graphicSettingsPreset.shadow
 	worldLight.shadow_bias = graphicSettingsPreset.bias
 	worldLight.shadow_normal_bias = graphicSettingsPreset.normalBias
 	worldEnv.environment.set_sdfgi_enabled(graphicSettingsPreset.sdfgi)

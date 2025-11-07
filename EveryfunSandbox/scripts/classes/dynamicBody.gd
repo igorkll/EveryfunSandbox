@@ -4,8 +4,9 @@ var world_generator = preload("res://scripts/generators/empty.gd")
 var blockChildren = {}
 var voxel_tool
 var isMainTerrain = false
-var id: int
 var deferredActions = []
+
+var id: int
 
 func init(bodyId: int):
 	var idStr = str(id)
@@ -30,4 +31,5 @@ func init(bodyId: int):
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 
 func _process(delta):
+	self.max_view_distance = game.view_distance
 	terrainUtils.applyDeferredActions(self)
