@@ -6,10 +6,12 @@ var voxel_tool
 var isMainTerrain = false
 var deferredActions = []
 
+var _colliders = {}
 var id: int
 
 func _ready():
 	self.connect("mesh_block_entered", _block_loaded)
+	self.connect("block_unloaded", _block_unloaded)
 
 func init(bodyId: int):
 	id = bodyId
@@ -26,21 +28,25 @@ func init(bodyId: int):
 	self.mesh_block_size = consts.chunk_size
 	self.max_view_distance = game.view_distance
 	self.stream = stream
+	self.generate_collisions = false
 	
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 	
-func regenerateCollider():
-	pass
-	
 func _block_loaded(pos):
-	if terrainUtils.getBlockId(self, pos) > 0:
+	var colliderShape = blockUtils.getBlockCollider(terrainUtils.getBlockId(self, pos))
+	if colliderShape:
 		var collider = CollisionShape3D.new()
 		collider.position = pos
-		var shape = BoxShape3D.new()
-		shape.size = Vector3(1, 1, 1)
-		collider.shape = shape
-		add_child(collider)
+		collider.shape = colliderShape
+		get_parent().add_child(collider)
+		_colliders[pos] = collider
+		
+func _block_unloaded(pos):
+	var collider = _colliders.get(pos)
+	if collider:
+		collider.queue_free()
+		_colliders.erase(pos)
 
 func _process(delta):
 	self.max_view_distance = game.view_distance

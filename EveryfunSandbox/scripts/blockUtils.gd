@@ -60,6 +60,11 @@ func isInteractive(blockId: int) -> bool:
 	var obj = list_id2obj[blockId]
 	return (obj.has("script") && !obj.has("script_temp")) || obj.has("lights")
 	
+func getBlockCollider(blockId: int):
+	if blockId > 0:
+		return _defaultBlockCollider
+	return null
+
 # ------------------------------------------------- backend
 
 var _default_material_texture = preload("res://textures/materialTexture.png")
@@ -67,6 +72,7 @@ var _blocks_shader = preload("res://shaders/blocks.gdshader")
 var _alpha_blocks_shader = preload("res://shaders/alpha_blocks.gdshader")
 
 var _transparency_material
+var _defaultBlockCollider
 
 var _defaultBlockInfo = {
 	"durability": 1
@@ -168,6 +174,9 @@ func _ready():
 	_transparency_material.albedo_color = Color(1,1,1,0)
 	_transparency_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	_transparency_material.flags_transparent = true
+	
+	_defaultBlockCollider = BoxShape3D.new()
+	_defaultBlockCollider.size = Vector3(1, 1, 1)
 
 func _duplicateItem(item):
 	var oldVariantsList = item.variantsList
