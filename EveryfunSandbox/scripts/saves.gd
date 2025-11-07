@@ -113,7 +113,7 @@ func open(savename) -> bool:
 	game.dynamicBodies.name = "dynamicBodies"
 	game.objects.add_child(game.dynamicBodies)
 	
-	var terrain = preload("res://scripts/terrain.gd").new()
+	var terrain = preload("res://scripts/classes/terrain.gd").new()
 	terrain.name = "terrain"
 	game.objects.add_child(terrain)
 	terrain.init(getPathInSave("terrain.db"))
@@ -167,7 +167,7 @@ func createBody(position, rotation=null):
 func loadBody(id: int):
 	var data = currentWorldData.dynamicBodies[id]
 	
-	var terrain = preload("res://scripts/dynamicBody.gd").new()
+	var terrain = preload("res://scripts/classes/dynamicBody.gd").new()
 	var body = RigidBody3D.new()
 	body.name = "body_" + str(id)
 	body.freeze = true
