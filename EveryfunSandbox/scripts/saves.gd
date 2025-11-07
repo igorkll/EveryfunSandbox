@@ -16,6 +16,7 @@ var defaultWorldRuntimeData = {
 var defaultWorldData = {
 	"objectData": {},
 	"interactiveVoxels": {},
+	"voxelsMetadata": {},
 	"dynamicBodies": [],
 	"debug": {
 		"debugInfo": false,

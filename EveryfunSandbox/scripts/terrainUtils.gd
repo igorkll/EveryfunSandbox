@@ -431,9 +431,11 @@ func setVoxelMetadata(terrain, position: Vector3i, data):
 	terrain = getTerrain(terrain)
 	if terrain is VoxelTerrain:
 		terrain.voxel_tool.set_voxel_metadata(position, data)
+	else:
+		saves.currentWorldData.voxelsMetadata[position] = data
 
 func getVoxelMetadata(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
 	if terrain is VoxelTerrain:
 		return terrain.voxel_tool.get_voxel_metadata(position)
-	return null
+	return saves.currentWorldData.voxelsMetadata.get(position)
