@@ -57,7 +57,7 @@ func isBlockScript(terrain, position: Vector3i) -> bool:
 		
 func _updateChildrenRotation(terrain, position: Vector3i, blockId=null):
 	if blockId == null:
-		blockId = terrain.voxel_tool.get_voxel(position)
+		blockId = getBlockId(terrain, position)
 	
 	var voxelItem = blockUtils.list_id2obj[blockId]
 	var children = getBlockChildren(terrain, position)
@@ -159,12 +159,15 @@ func checkUnloadTempScript(terrain, position: Vector3i):
 	deleteBlockChildrenWithScript(terrain, position)
 	
 func getBlockObj(terrain, position: Vector3i):
-	terrain = getTerrain(terrain)
-	return blockUtils.list_id2obj[terrain.voxel_tool.get_voxel(position)]
+	return blockUtils.list_id2obj[getBlockId(terrain, position)]
 	
 func getBlockId(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
 	return terrain.voxel_tool.get_voxel(position)
+	
+func setBlockId(terrain, position: Vector3i, blockId: int):
+	terrain = getTerrain(terrain)
+	terrain.voxel_tool.set_voxel(position, blockId)
 
 func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	terrain = getTerrain(terrain)
@@ -231,7 +234,7 @@ func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0
 	
 	blockId = blockUtils.getVariantBlockId(blockId, rotation, variant, color)
 	
-	terrain.voxel_tool.set_voxel(position, blockId)
+	setBlockId(terrain, position, blockId)
 	
 	if blockUtils.isInteractive(blockId):
 		saves.regInteractiveVoxel(terrain, position, blockId, storageData)
