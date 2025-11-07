@@ -22,7 +22,7 @@ func init(bodyId: int):
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()
-	# self.mesh_block_size = 32
+	self.mesh_block_size = consts.chunk_size
 	self.max_view_distance = game.view_distance
 	self.stream = stream
 	

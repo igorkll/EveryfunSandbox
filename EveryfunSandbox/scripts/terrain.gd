@@ -21,7 +21,7 @@ func init(terrainPath):
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()
-	# self.mesh_block_size = 32
+	self.mesh_block_size = consts.chunk_size
 	self.view_distance = 32
 	self.lod_distance = 32
 	self.stream = stream
