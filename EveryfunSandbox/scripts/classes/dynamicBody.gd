@@ -9,11 +9,8 @@ var deferredActions = []
 var id: int
 
 func init(bodyId: int):
-	var idStr = str(id)
 	id = bodyId
-	
-	var terrainPath = saves.getPathInSave("bodies".path_join(idStr + ".db"))
-	filesystem.makeDirectoryForFile(terrainPath)
+	var terrainPath = bodyUtils.getBodyTerrainPath(bodyId)
 	
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = game.blockLibrary

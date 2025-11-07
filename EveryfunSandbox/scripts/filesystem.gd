@@ -25,12 +25,12 @@ func makeDirectoryForFile(path):
 		var dir = DirAccess.open(spath[0])
 		dir.make_dir_recursive(spath[1])
 
-func isDirectory(path):
+func isDirectory(path) -> bool:
 	var spath = splitGodotPath(path)
 	var dir = DirAccess.open(spath[0])
 	return dir.dir_exists(spath[1])
 
-func isFile(path):
+func isFile(path) -> bool:
 	var spath = splitGodotPath(path)
 	var dir = DirAccess.open(spath[0])
 	return dir.file_exists(spath[1])
@@ -85,3 +85,11 @@ func list(path):
 		return folder_list
 	else:
 		return []
+		
+func remove(path) -> bool:
+	var dir := DirAccess.open("res://")
+	if dir:
+		if dir.file_exists(path):
+			var result = dir.remove(path)
+			return result == OK
+	return false

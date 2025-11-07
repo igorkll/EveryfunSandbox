@@ -1,11 +1,17 @@
 extends Node
 
-func _updateBodyDataInSave(body):
+func updateBodyDataInSave(body):
 	var global_transform = body.global_transform
 	funcs.arraySet(saves.currentWorldData.dynamicBodies, terrainUtils.getTerrain(body).id, [
 		global_transform.origin,
 		global_transform.basis.get_rotation_quaternion()
 	])
+	
+func getBodyTerrainPath(id: int):
+	var idStr = str(id)
+	var terrainPath = saves.getPathInSave("bodies".path_join(idStr + ".db"))
+	filesystem.makeDirectoryForFile(terrainPath)
+	return terrainPath
 
 func createBody(position, rotation=null):
 	if rotation == null:
@@ -32,13 +38,16 @@ func loadBody(id: int):
 	terrain.position = Vector3(-0.5, -0.5, -0.5)
 	terrain.init(id)
 
-	_updateBodyDataInSave(body)
+	updateBodyDataInSave(body)
 	return body
 
 func unloadBody(body):
+	updateBodyDataInSave(body)
 	body.queue_free()
 
 func destroyBody(body):
+	var id = terrainUtils.getTerrain(body).id
+	body.queue_free()
+	filesystem.remove(bodyUtils.getBodyTerrainPath(id))
 	funcs.arraySet(saves.currentWorldData.dynamicBodies, terrainUtils.getTerrain(body).id, null)
 	funcs.deleteAllNullsOnEnd(saves.currentWorldData.dynamicBodies)
-	unloadBody(body)
