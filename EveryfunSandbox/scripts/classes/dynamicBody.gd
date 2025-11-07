@@ -26,6 +26,19 @@ func init(bodyId: int):
 	
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
+	
+	self.connect("block_loaded", _block_loaded)
+	
+func regenerateCollider():
+	pass
+	
+func _block_loaded(pos):
+	var collider = CollisionShape3D.new()
+	collider.position = pos
+	var shape = BoxShape3D.new()
+	shape.size = Vector3(1, 1, 1)
+	collider.shape = shape
+	add_child(collider)
 
 func _process(delta):
 	self.max_view_distance = game.view_distance
