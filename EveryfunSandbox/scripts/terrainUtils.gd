@@ -250,7 +250,7 @@ func destroyBlock(terrain, position: Vector3i):
 	
 	unloadBlock(terrain, position)
 	saves.regInteractiveVoxel(terrain, position, null)
-	terrain.voxel_tool.set_voxel(position, 0)
+	setBlockId(terrain, position, 0)
 	setVoxelMetadata(terrain, position, null)
 	
 func applyDeferredActions(terrain):
@@ -354,7 +354,7 @@ func isEditable(terrain, position: Vector3i):
 
 func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, variant, color):
 	terrain = getTerrain(terrain)
-	var voxelId = terrain.voxel_tool.get_voxel(position)
+	var voxelId = getBlockId(terrain, position)
 	var newVoxelId = blockUtils.getVariantBlockId(voxelId, rotation, variant, color)
 	
 	var script = getBlockScript(terrain, position)
@@ -378,8 +378,7 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 			script.voxelDirectionUp = Vector3(0, 1, 0)
 	
 	loadBlock(terrain, position, newVoxelId)
-	
-	terrain.voxel_tool.set_voxel(position, newVoxelId)
+	setBlockId(terrain, position, newVoxelId)
 	saves.changeInteractiveVoxel(terrain, position, newVoxelId)
 
 func setVariantAndColor(terrain, position: Vector3i, variant, color):
