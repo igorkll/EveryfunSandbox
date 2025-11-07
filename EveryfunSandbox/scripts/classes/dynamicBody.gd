@@ -9,7 +9,7 @@ var deferredActions = []
 var id: int
 
 func _ready():
-	self.connect("block_loaded", _block_loaded)
+	self.connect("mesh_block_entered", _block_loaded)
 
 func init(bodyId: int):
 	id = bodyId
