@@ -1,5 +1,8 @@
 extends Node
 
+var list_id2obj = []
+var list_name2id = {}
+
 func getTargetRotation(globalCameraBasisZ: Vector3) -> int:
 	var dir = -globalCameraBasisZ
 	var vertical_threshold = 0.8
@@ -58,9 +61,6 @@ func isInteractive(blockId: int) -> bool:
 	return (obj.has("script") && !obj.has("script_temp")) || obj.has("lights")
 	
 # ------------------------------------------------- backend
-
-var list_id2obj = []
-var list_name2id = {}
 
 var _default_material_texture = preload("res://textures/materialTexture.png")
 var _blocks_shader = preload("res://shaders/blocks.gdshader")
