@@ -176,7 +176,7 @@ func _physics_process(delta):
 			if result:
 				terrainInteractions.destroyBlock(result[0], result[1].position)
 				
-				var body = saves.createBody(terrainUtils.getGlobalPositionFromVoxelPosition(result[0], result[1].position) + Vector3(0, 15, 0))
+				var body = bodyUtils.createBody(terrainUtils.getGlobalPositionFromVoxelPosition(result[0], result[1].position) + Vector3(0, 15, 0))
 				terrainUtils.placeBlock(body, Vector3i(0, 0, 0), blockUtils.list_name2id["testTempScript"])
 				
 		if Input.is_action_just_pressed("place"):
