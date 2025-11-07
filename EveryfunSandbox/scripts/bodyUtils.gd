@@ -42,6 +42,7 @@ func loadBody(id: int):
 	return body
 
 func unloadBody(body):
+	# need save terrain
 	updateBodyDataInSave(body)
 	body.queue_free()
 
