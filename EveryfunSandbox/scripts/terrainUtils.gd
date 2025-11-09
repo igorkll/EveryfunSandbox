@@ -285,6 +285,8 @@ func applyDeferredActions(terrain):
 				placeBlock(terrain, deferredAction[1], deferredAction[2], deferredAction[3], deferredAction[4], deferredAction[5], deferredAction[6])
 			elif deferredAction[0] == 2:
 				setBlockId(terrain, deferredAction[1], deferredAction[2])
+			elif deferredAction[0] == 3:
+				setVoxelMetadata(terrain, deferredAction[1], deferredAction[2])
 			deferredAction[0] = -1
 	
 	for i in range(terrain.deferredActions.size() - 1, -1, -1):
@@ -455,6 +457,9 @@ func setRotation(terrain, position: Vector3i, rotation):
 func setVoxelMetadata(terrain, position: Vector3i, data):
 	terrain = getTerrain(terrain)
 	if terrain is VoxelTerrain:
+		if not isEditable(terrain, position):
+			terrain.deferredActions.append([3, position, data])
+			return
 		terrain.voxel_tool.set_voxel_metadata(position, data)
 	else:
 		saves.currentWorldData.voxelsMetadata[position] = data

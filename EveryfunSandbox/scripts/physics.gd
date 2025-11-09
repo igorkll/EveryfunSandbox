@@ -1,5 +1,16 @@
 extends Node
 
+func pulseObject(position, radius, power, object):
+	var dir = (object.global_position - position).normalized()
+	var dist = object.global_position.distance_to(position)
+	var strength = power * (1.0 - dist / radius)
+	object.apply_impulse(dir * strength)
+	
+func pulseObjectToDirection(position, radius, power, dir, object):
+	var dist = object.global_position.distance_to(position)
+	var strength = power * (1.0 - dist / radius)
+	object.apply_impulse(dir * strength)
+
 func pulse(position, radius, power):
 	var space = game.world.direct_space_state
 	var shape = SphereShape3D.new()
@@ -16,10 +27,7 @@ func pulse(position, radius, power):
 	for hit in results:
 		var body = hit["collider"]
 		if body is RigidBody3D or body is CharacterBody3D:
-			var dir = (body.global_position - position).normalized()
-			var dist = body.global_position.distance_to(position)
-			var strength = power * (1.0 - dist / radius)
-			body.apply_impulse(dir * strength)
+			pulseObject(position, radius, power, body)
 			
 
 func explode(position, explosiveLevel):
@@ -42,7 +50,13 @@ func explode(position, explosiveLevel):
 			var result = terrainUtils.blockRaycast(position, funcs.getRandomDirection(), raycastDistance)
 			if result:
 				if not terrainUtils.callBlock(result[0], result[1].position, "_explode"):
-					terrainInteractions.destroyBlock(result[0], result[1].position, level * (1 - (result[1].distance / raycastDistance)))
+					var fraction = result[1].distance / raycastDistance
+					if randf() < fraction:
+						var body = terrainUtils.makeDynamic(result[0], result[1].position)
+						pulseObject(position, raycastDistance, pulsePower, body)
+						pulseObjectToDirection(position, raycastDistance, pulsePower, Vector3.UP, body)
+					else:
+						terrainInteractions.destroyBlock(result[0], result[1].position, level * (1 - fraction))
 		explosionState.iterations -= 1
 		if explosionState.iterations < 1:
 			return true
