@@ -4,6 +4,7 @@ var menuUI
 var showTextUI
 var gameUI
 
+var waitSwitchUI = false
 var toggleTimeout = 0
 var currentUI
 var backTo
@@ -25,10 +26,14 @@ func liteLock():
 	game.player.control_lock = true
 	game.setMouseEnabled(true)
 
-func switchUI(ui):
+func switchUI(ui) -> bool:
 	if currentUI == ui:
-		return
+		return false
 	currentUI = ui
+	
+	if not game.player:
+		waitSwitchUI = true
+		return false
 	
 	menuUI.visible = false
 	gameUI.visible = false
@@ -53,6 +58,8 @@ func switchUI(ui):
 		4:
 			showTextUI.visible = true
 			liteLock()
+	
+	return true
 			
 func showText(text):
 	var backToMenu = currentUI == 0 || currentUI == 3
@@ -77,6 +84,9 @@ func _process(delta):
 				switchUI(0)
 			else:
 				switchUI(1)
+	
+	if waitSwitchUI && switchUI(currentUI):
+		waitSwitchUI = false
 	
 	toggleTimeout -= delta
 	if toggleTimeout < 0:
