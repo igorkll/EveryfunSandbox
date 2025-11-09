@@ -1,7 +1,7 @@
 extends CharacterBody3D
 class_name basecharacter
 
-var character_height
+var character_height = 1
 
 var disable_collision = false
 var disable_collision_sounds = false
@@ -200,7 +200,6 @@ func initCharacter(collision: CollisionShape3D, mesh: Mesh):
 	meshIntance.mesh = mesh
 	add_child(meshIntance)
 	
-	character_height = collision.shape.height
 	_inited = true
 	
 func setJump(jump):

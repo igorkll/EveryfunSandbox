@@ -289,8 +289,7 @@ func _checkAutosave():
 			currentWorldRuntimeData.erase("saveEndCallback")
 		
 func _checkLoaded():
-	var loadersPositions = []
-	loadersPositions.append(game.camera.global_position)
+	var loadersPositions = game.getChunkloadersPositions()
 	
 	var chunkLoadingDistance = floor((game.view_distance * 2) / _interactiveChunkSize)
 	if chunkLoadingDistance < 1:

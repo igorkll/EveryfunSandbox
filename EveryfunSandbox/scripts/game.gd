@@ -429,6 +429,12 @@ func collisionFromMesh(mesh):
 	shape.points = mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	collision.shape = shape
 	return collision
+	
+func getChunkloadersPositions():
+	var loadersPositions = []
+	for chunkloaderObj in chunkloaders:
+		loadersPositions.append(chunkloaderObj.position)
+	return loadersPositions
 
 # ------------------------------------------------- backend
 

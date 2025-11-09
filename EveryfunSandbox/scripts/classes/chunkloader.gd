@@ -7,7 +7,8 @@ func _ready():
 	game.chunkloaders.append(self)
 	connect("tree_exiting", _on_tree_exiting)
 	
-	add_child(VoxelViewer.new())
+	voxel_viewer = VoxelViewer.new()
+	add_child(voxel_viewer)
 	
 func _physics_process(delta):
 	voxel_viewer.view_distance = game.view_distance

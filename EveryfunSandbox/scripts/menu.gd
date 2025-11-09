@@ -9,13 +9,13 @@ var currentUI
 var backTo
 
 func fullLock():
-	game.player.camera.setOrbital(true)
+	# game.player.camera.setOrbital(true)
 	game.player.control_lock = true
 	game.setMouseEnabled(true)
 	game.setMuteAllExceptMusic(true)
 	
 func fullUnlock():
-	game.camera.setOrbital(false)
+	# game.camera.setOrbital(false)
 	game.player.control_lock = false
 	game.setMouseEnabled(false)
 	game.setMuteAllExceptMusic(false)
