@@ -2,18 +2,19 @@ extends CharacterBody3D
 
 var character_height
 
+var disable_collision = false
+var direction = Vector3.ZERO
+
 # -------------------------------------------------
 
 var _inited = false
 var _collision: CollisionShape3D
-var _disable_collision = false
-var _direction = Vector3.ZERO
 
 func _physics_process(delta):
 	if not _inited || not saves.isWorldFullLoaded():
 		return
 	
-	_collision.disabled = _disable_collision
+	_collision.disabled = disable_collision
 	
 	var player_basis = global_transform.basis
 	var player_direction = -player_basis.z
@@ -22,7 +23,7 @@ func _physics_process(delta):
 	player_direction.y = 0
 	player_direction = player_direction.normalized()
 	
-	var move_direction = (player_direction * _direction.z + player_right * _direction.x)
+	var move_direction = (player_direction * direction.z + player_right * direction.x)
 	move_direction.y = 0
 	
 	if move_direction.length() > 1:
@@ -104,12 +105,6 @@ func init(collision: CollisionShape3D, mesh: Mesh):
 	character_height = collision.shape.height
 	_inited = true
 
-func apply_impulse(direction: Vector3):
-	velocity += direction
-	
-func setDisableCollision(disable_collision: bool):
-	_disable_collision = disable_collision
-
 func getDownVoxel():
 	return _getVoxel(Vector3.DOWN)
 		
@@ -125,3 +120,6 @@ func getUpVoxelObj():
 	var voxelId = getUpVoxel()
 	if voxelId:
 		return blockUtils.list_id2obj[voxelId]
+		
+func apply_impulse(direction: Vector3):
+	velocity += direction
