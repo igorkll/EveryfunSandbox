@@ -1,6 +1,7 @@
 extends CharacterBody3D
 class_name basecharacter
 
+var character_radius = 1
 var character_height = 1
 
 var disable_collision = false
@@ -99,7 +100,7 @@ func _physics_process(delta):
 	if fly_mode:
 		velocity.y *= speed_mul;
 	velocity.z *= speed_mul;
-		
+	
 	if terrainUtils.isMinimalAreaLoaded(game.terrain, terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)):
 		move_and_slide()
 
@@ -192,6 +193,14 @@ func _checkEdge(x, z):
 # ------------------------------------------------- api
 
 func initCharacter(collision: CollisionShape3D, mesh: Mesh):
+	if not collision:
+		var shape = CapsuleShape3D.new()
+		shape.radius = character_radius
+		shape.height = character_height
+		
+		collision = CollisionShape3D.new()
+		collision.shape = shape
+	
 	_collision = collision
 	
 	add_child(collision)

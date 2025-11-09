@@ -2,6 +2,7 @@ extends basecharacter
 class_name human
 
 func _ready():
+	character_radius = 0.25
 	character_height = 1.8
 	
 	var camera = Camera3D.new()
@@ -14,8 +15,7 @@ func _ready():
 	mesh.radius = 0.25
 	mesh.height = character_height
 	
-	var collision = game.collisionFromMesh(mesh)
-	initCharacter(collision, mesh)
+	initCharacter(null, mesh)
 
 func _physics_process(delta):
 	super._physics_process(delta)
