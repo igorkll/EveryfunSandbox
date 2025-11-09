@@ -90,9 +90,6 @@ func controlHandler():
 		if result:
 			terrainInteractions.destroyBlock(result[0], result[1].position)
 			
-			var body = bodyUtils.createBody(terrainUtils.getGlobalPositionFromVoxelPosition(result[0], result[1].position) + Vector3(0, 15, 0))
-			terrainUtils.placeBlock(body, Vector3i(0, 0, 0), blockUtils.list_name2id["testTempScript"])
-			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
 			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["explosive"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
