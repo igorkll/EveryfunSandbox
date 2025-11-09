@@ -1,6 +1,7 @@
 extends CharacterBody3D
 class_name basecharacter
 
+var inited = false
 var storageData = {}
 
 var character_radius = 1
@@ -25,7 +26,6 @@ var walking_speed_multiplier = 1
 
 # -------------------------------------------------
 
-var _inited = false
 var _collision: CollisionShape3D
 
 var _headbutt_sound_available = false
@@ -37,7 +37,7 @@ var _move_acceleration
 var _step_interval
 
 func _physics_process(delta):
-	if not _inited || not saves.isWorldFullLoaded():
+	if not inited || not saves.isWorldFullLoaded():
 		return
 	
 	_collision.disabled = disable_collision
@@ -211,7 +211,7 @@ func initCharacter(collision: CollisionShape3D, mesh: Mesh):
 	meshIntance.mesh = mesh
 	add_child(meshIntance)
 	
-	_inited = true
+	inited = true
 	
 func setJump(jump):
 	if jump == null:

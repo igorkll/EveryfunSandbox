@@ -12,11 +12,14 @@ var oldRotation = rotation
 var realPosition
 
 var shakeAnimationValue = 0
+var player
+var inited = false
 
 func init():
-	var player = get_parent()
+	player = get_parent().get_parent()
 	currentYaw = player.storageData.get("cameraYaw", 0)
 	currentPitch = player.storageData.get("cameraPitch", 0)
+	inited = true
 
 func _input(event):
 	if !orbital:
@@ -29,8 +32,7 @@ func _input(event):
 var _shakeEnd = false
 var isWalking = false
 func _process(delta):
-	var player = get_parent()
-	if not player._inited:
+	if not inited or not player.inited:
 		return
 	
 	setOrbital(player.orbital_camera)
@@ -67,7 +69,7 @@ func _process(delta):
 
 func orbitalUpdate(delta=null):
 	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)
-	look_at(get_parent().global_transform.origin, Vector3.UP)
+	look_at(player.global_transform.origin, Vector3.UP)
 	if delta:
 		orbitalValue += deg_to_rad(8) * delta;
 

@@ -7,9 +7,11 @@ var orbital_camera = false
 
 func _ready():
 	super._ready()
-	camera = preload("res://scripts/classes/camera.gd").new()
+	camera = preload("res://scripts/classes/playerCamera.gd").new()
+	camera.name = "camera"
+	camera.fov = 80
 	camera.add_child(chunkloader.new())
-	add_child(camera)
+	cameraContainer.add_child(camera)
 
 func _physics_process(delta):
 	if not control_lock:
@@ -24,7 +26,7 @@ func _physics_process(delta):
 				
 		if Input.is_action_just_pressed("place"):
 			if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
-				terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["explosive"], blockUtils.getTargetRotation($camera.global_transform.basis.z))
+				terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["explosive"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
 			
 		if result && terrainUtils.canUseBlock(result[0], result[1].position):
 			game.setCrosspiece("use")

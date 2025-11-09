@@ -1,15 +1,15 @@
 extends basecharacter
 class_name human
 
+var cameraContainer
+
 func _ready():
 	character_radius = 0.25
 	character_height = 1.8
 	
-	var camera = Camera3D.new()
-	camera.name = "camera"
-	camera.fov = 80
-	camera.position = Vector3(0, 0.689, 0)
-	add_child(camera)
+	cameraContainer = Camera3D.new()
+	cameraContainer.position = Vector3(0, 0.689, 0)
+	add_child(cameraContainer)
 	
 	var mesh = CapsuleMesh.new()
 	mesh.radius = 0.25
