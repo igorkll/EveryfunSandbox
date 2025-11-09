@@ -28,13 +28,13 @@ func controlHandler():
 	if saves.currentWorldData.debug.allowFly:
 		if not control_lock && game.is_action_multiple_pressed("jump"):
 			fly_mode = not fly_mode
-		print(fly_mode)
 	else:
 		fly_mode = false
-		setJump(false)
 		
 	# ---------------------------------- direction
-
+	
+	jump_state = Input.is_action_pressed("jump")
+	
 	var direction = Vector3.ZERO
 	var joystickWalk = game.getLeftJoystickValues()
 	
@@ -57,24 +57,20 @@ func controlHandler():
 	
 	# ---------------------------------- speed
 	
-	walking_speed_multiplier = 1
+	walking_speed_mul = 1
 	if Input.is_action_pressed("crouch"):
 		if fly_mode:
 			if Input.is_action_pressed("sprint"):
-				walking_speed_multiplier = consts.player_mul_sprint
+				walking_speed_mul = consts.player_mul_sprint
 		else:
-			walking_speed_multiplier = consts.player_mul_crouch
+			walking_speed_mul = consts.player_mul_crouch
 	elif Input.is_action_pressed("sprint"):
-		walking_speed_multiplier = consts.player_mul_sprint
+		walking_speed_mul = consts.player_mul_sprint
 	
-	camera.amplitude_multiplier = walking_speed_multiplier
+	camera.amplitude_multiplier = walking_speed_mul
 	
 	if fly_mode:
-		walking_speed_multiplier *= consts.player_mul_fly
-		setJump(Input.is_action_pressed("jump"))
-	elif Input.is_action_just_pressed("jump"):
-		if is_on_floor():
-			setJump()
+		walking_speed_mul *= consts.player_mul_fly
 		
 	# ---------------------------------- interact
 	

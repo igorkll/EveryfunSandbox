@@ -11,6 +11,7 @@ var disable_collision = false
 var disable_collision_sounds = false
 
 var direction = Vector3.ZERO
+var jump_state = false
 var fly_mode = false
 var beware_edge = false
 
@@ -18,11 +19,10 @@ var move_acceleration = 30
 var jump_acceleration = 8
 var fall_speed_mul = 2.5
 var step_interval = 0.4
-
 var velocity_drop = 0.0005
-var jump_budget = 0.02
 
-var walking_speed_multiplier = 1
+var walking_speed_mul = 1
+var velocity_drop_mul = 1
 
 # -------------------------------------------------
 
@@ -32,6 +32,7 @@ var _headbutt_sound_available = false
 var _on_floor = false
 var _current_jump = false
 var _walking = false
+var _jump_allow = true
 
 var _move_acceleration
 var _step_interval
@@ -41,8 +42,8 @@ func _physics_process(delta):
 		return
 	
 	_collision.disabled = disable_collision
-	_move_acceleration = move_acceleration * walking_speed_multiplier
-	_step_interval = step_interval / walking_speed_multiplier
+	_move_acceleration = move_acceleration * walking_speed_mul
+	_step_interval = step_interval / walking_speed_mul
 	
 	var player_basis = global_transform.basis
 	var player_direction = -player_basis.z
@@ -82,12 +83,14 @@ func _physics_process(delta):
 			_blockSound(game.soundList[voxel.sound_jump])
 	_on_floor = on_floor
 
-	if _current_jump:
+	if jump_state:
 		if fly_mode:
 			velocity.y += _move_acceleration * delta
-		else:
+		elif on_floor && _jump_allow:
 			velocity.y += jump_acceleration
-			_current_jump = false
+			_jump_allow = false
+	else:
+		_jump_allow = true
 		
 	if velocity.y > 0:
 		var voxel = getUpVoxelObj()
@@ -97,7 +100,7 @@ func _physics_process(delta):
 	elif velocity.y < 0:
 		_headbutt_sound_available = true
 	
-	var speed_mul = pow(velocity_drop, delta);
+	var speed_mul = pow(velocity_drop * velocity_drop_mul, delta);
 	velocity.x *= speed_mul;
 	if fly_mode:
 		velocity.y *= speed_mul;
@@ -212,9 +215,6 @@ func initCharacter(collision: CollisionShape3D, mesh: Mesh):
 	add_child(meshIntance)
 	
 	inited = true
-	
-func setJump(jump=true):
-	_current_jump = jump
 
 func getDownVoxel():
 	return _getVoxel(Vector3.DOWN)
