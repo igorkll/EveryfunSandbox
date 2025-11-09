@@ -3,18 +3,40 @@ extends CharacterBody3D
 var character_height
 
 var disable_collision = false
+var disable_collision_sounds = false
+var fly_mode = false
 var direction = Vector3.ZERO
+
+var move_acceleration = 30
+var jump_acceleration = 8
+var fall_speed_mul = 2.5
+var step_interval = 0.4
+
+var velocity_drop = 0.0005
+var jump_budget = 0.02
+
+var walking_speed_multiplier = 1
 
 # -------------------------------------------------
 
 var _inited = false
 var _collision: CollisionShape3D
 
+var _headbutt_sound = false
+var _on_floor = false
+var _current_jump = false
+var _walking = false
+
+var _move_acceleration
+var _step_interval
+
 func _physics_process(delta):
 	if not _inited || not saves.isWorldFullLoaded():
 		return
 	
 	_collision.disabled = disable_collision
+	_move_acceleration = move_acceleration * walking_speed_multiplier
+	_step_interval = step_interval * walking_speed_multiplier
 	
 	var player_basis = global_transform.basis
 	var player_direction = -player_basis.z
@@ -22,6 +44,13 @@ func _physics_process(delta):
 	
 	player_direction.y = 0
 	player_direction = player_direction.normalized()
+	
+	var is_walking = direction != Vector3.ZERO
+	if is_walking:
+		_onWalking()
+	elif _walking:
+		_onStopWalk()
+	_walking = is_walking
 	
 	var move_direction = (player_direction * direction.z + player_right * direction.x)
 	move_direction.y = 0
@@ -34,32 +63,32 @@ func _physics_process(delta):
 
 	var on_floor = is_on_floor()
 	if not on_floor:
-		if not flyState:
+		if not fly_mode:
 			velocity += get_gravity() * delta * fall_speed_mul
 	elif not _on_floor:
 		var voxel = getDownVoxelObj()
 		if voxel and voxel.has("sound_jump") and game.soundList.has(voxel.sound_jump):
-			blockSound(game.soundList[voxel.sound_jump])
-			
+			_blockSound(game.soundList[voxel.sound_jump])
 	_on_floor = on_floor
 
-	if current_jump:
-		if flyState:
+	if _current_jump:
+		if fly_mode:
 			velocity.y += _move_acceleration * delta
 		else:
 			velocity.y += jump_acceleration
+			_current_jump = false
 		
 	if velocity.y > 0:
 		var voxel = getUpVoxelObj()
-		if voxel and voxel.has("sound_headbutt") and game.soundList.has(voxel.sound_headbutt) and headbuttSound:
-			blockSound(game.soundList[voxel.sound_headbutt])
-			headbuttSound = false
+		if voxel and voxel.has("sound_headbutt") and game.soundList.has(voxel.sound_headbutt) and _headbutt_sound:
+			_blockSound(game.soundList[voxel.sound_headbutt])
+			_headbutt_sound = false
 	elif velocity.y < 0:
-		headbuttSound = true
+		_headbutt_sound = true
 	
 	var speed_mul = pow(velocity_drop, delta);
 	velocity.x *= speed_mul;
-	if flyState:
+	if fly_mode:
 		velocity.y *= speed_mul;
 	velocity.z *= speed_mul;
 		
@@ -68,6 +97,64 @@ func _physics_process(delta):
 	
 	move_and_slide()
 
+# -------------------------------------------------
+
+var _walkSoundTimer
+var _walkVoxelId
+var _currentWalkSound
+
+func _stopWalkTimer():
+	if _walkSoundTimer is Timer:
+		_blockSound(_currentWalkSound)
+	if _walkSoundTimer:
+		_walkSoundTimer.queue_free()
+		_walkSoundTimer = null
+	_walkVoxelId = null
+	_currentWalkSound = null
+
+func _onWalking():
+	var voxelId = getDownVoxel()
+	if voxelId:
+		var voxel = blockUtils.list_id2obj[voxelId]
+		if voxel and voxel.has("sound_walking") and game.soundList.has(voxel.sound_walking):
+			var sound = game.soundList[voxel.sound_walking]
+			
+			if sound && (not _walkSoundTimer || _walkVoxelId != voxelId):
+				_stopWalkTimer()
+				_walkVoxelId = voxelId
+				
+				_walkSoundTimer = Timer.new()
+				_walkSoundTimer.wait_time = _step_interval / 2
+				_walkSoundTimer.one_shot = true
+				_walkSoundTimer.timeout.connect(func(): 
+					_walkSoundTimer.queue_free()
+					_walkSoundTimer = RandomIntervalTimer.new()
+					add_child(_walkSoundTimer)
+					
+					_walkSoundTimer.interval = sound.get("interval", _step_interval)
+					_walkSoundTimer.random_interval = 0.05
+					
+					_walkSoundTimer.start(_blockSound.bind(sound))
+					_blockSound(sound)
+				)
+				add_child(_walkSoundTimer)
+				_walkSoundTimer.start()
+				
+				_currentWalkSound = sound
+	else:
+		_stopWalkTimer()
+	
+	if _walkSoundTimer and _walkSoundTimer is RandomIntervalTimer:
+		_walkSoundTimer.interval = _currentWalkSound.get("interval", _step_interval)
+
+func _onStopWalk():
+	_stopWalkTimer()
+
+func _blockSound(sound):
+	if disable_collision || disable_collision_sounds:
+		return
+	game.playSound(sound, global_transform.origin - Vector3(0, character_height / 2, 0))
+	
 # -------------------------------------------------
 
 func _getVoxelWithOffset(side, offset):
@@ -104,6 +191,11 @@ func init(collision: CollisionShape3D, mesh: Mesh):
 	
 	character_height = collision.shape.height
 	_inited = true
+	
+func setJump(jump):
+	if jump == null:
+		jump = true
+	_current_jump = jump
 
 func getDownVoxel():
 	return _getVoxel(Vector3.DOWN)
