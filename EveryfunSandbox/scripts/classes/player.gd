@@ -28,9 +28,15 @@ func controlHandler():
 	if saves.currentWorldData.debug.allowFly:
 		if not control_lock && game.is_action_multiple_pressed("jump"):
 			fly_mode = not fly_mode
+		
+		if fly_mode:
+			disable_collision = saves.currentWorldData.debug.disableCollisionOnFly
 	else:
 		fly_mode = false
 		
+	if not fly_mode:
+		disable_collision = false
+	
 	# ---------------------------------- direction
 	
 	jump_state = Input.is_action_pressed("jump")
