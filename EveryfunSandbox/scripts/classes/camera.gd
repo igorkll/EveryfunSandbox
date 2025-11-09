@@ -32,6 +32,8 @@ func _process(delta):
 	var player = get_parent()
 	if not player.inited:
 		return
+		
+	setOrbital(player.orbital_camera)
 	
 	var interval = player._stepInterval
 	

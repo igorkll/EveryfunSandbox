@@ -3,6 +3,7 @@ extends human
 var camera
 
 var control_lock = false
+var orbital_camera = false
 
 func _ready():
 	super._ready()
