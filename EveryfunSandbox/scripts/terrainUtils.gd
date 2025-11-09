@@ -471,12 +471,10 @@ func makeDynamic(terrain, position: Vector3i):
 	teleportVoxel(terrain, position, body, Vector3i(0, 0, 0))
 	return body
 	
-func convertTerrainPositions(terrain, position: Vector3i, newTerrain):
-	terrain = getTerrain(terrain)
-	return getVoxelPositionFromGlobalPosition(newTerrain, getGlobalPositionFromVoxelPosition(terrain, position))
-	
 func makeStatic(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
+	if terrain == game.terrain:
+		return
 	var staticPosition = convertTerrainPositions(terrain, position, game.terrain)
 	var id = getBlockId(terrain, position)
 	var staticId = getBlockId(game.terrain, staticPosition)
@@ -499,3 +497,7 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	detachAllBlockChildren(terrain, position)
 	for child in children:
 		attachBlockChild(newTerrain, newPosition, child)
+
+func convertTerrainPositions(terrain, position: Vector3i, newTerrain):
+	terrain = getTerrain(terrain)
+	return getVoxelPositionFromGlobalPosition(newTerrain, getGlobalPositionFromVoxelPosition(terrain, position))
