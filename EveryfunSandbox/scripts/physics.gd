@@ -15,6 +15,8 @@ func explode(position, explosiveLevel):
 		"iterations": explosiveLevel * 1
 	}
 	
+	pulse(position, 1)
+	
 	timers.setInterval(func():
 		for i in range(shrapnel):
 			var result = terrainUtils.blockRaycast(position, funcs.getRandomDirection(), raycastDistance)
