@@ -181,7 +181,7 @@ func _getVoxel(side):
 	
 	for x in [-1, 1]:
 		for z in [-1, 1]:
-			result = _getVoxelWithOffset(side, (Vector3(x, 0, z) * $collision.shape.radius) / sqrt(2))
+			result = _getVoxelWithOffset(side, (Vector3(x, 0, z) * character_radius) / sqrt(2))
 			if result:
 				return result
 				
