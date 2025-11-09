@@ -1,27 +1,19 @@
 extends Node
 
-"""
-func blockRaycast(position: Vector3, direction, maxDistance):
-	var terrain = game.terrain
-	
-	var result = terrain.voxel_tool.raycast(position, direction, maxDistance)
-	if result:
-		return [terrain, result]
-"""
-
 func blockRaycast(position: Vector3, direction: Vector3, maxDistance: float):
-	var terrains = game.dynamicBodies.get_children()
-	game.sortNodesByDistance(terrains, position)
-	terrains = terrains + [game.terrain]
+	var terrains = [game.terrain] + game.dynamicBodies.get_children()
+	var blockRaycastResult = null
+	var blockRaycastDistance
 	
 	for terrain in terrains:
 		terrain = getTerrain(terrain)
 		
 		var result = terrain.voxel_tool.raycast(position, direction, maxDistance)
-		if result:
-			return [terrain, result]
+		if result && (not blockRaycastResult || result.distance < blockRaycastDistance):
+			blockRaycastResult = [terrain, result]
+			blockRaycastDistance = result.distance
 	
-	return null
+	return blockRaycastResult
 		
 func getTerrain(terrain):
 	if terrain is RigidBody3D:
