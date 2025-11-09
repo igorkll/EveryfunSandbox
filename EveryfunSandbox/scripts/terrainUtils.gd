@@ -1,11 +1,27 @@
 extends Node
 
+"""
 func blockRaycast(position: Vector3, direction, maxDistance):
 	var terrain = game.terrain
 	
 	var result = terrain.voxel_tool.raycast(position, direction, maxDistance)
 	if result:
 		return [terrain, result]
+"""
+
+func blockRaycast(position: Vector3, direction: Vector3, maxDistance: float):
+	var terrains = [game.terrain] + game.dynamicBodies.get_children()
+	
+	for terrain in terrains:
+		# Переводим глобальную позицию и направление в локальные координаты террейна
+		var local_pos = terrain.global_transform.affine_inverse() * position
+		var local_dir = terrain.global_transform.basis.affine_inverse() * direction
+		
+		var result = terrain.voxel_tool.raycast(local_pos, local_dir, maxDistance)
+		if result:
+			return [terrain, result]
+	
+	return null
 		
 func getTerrain(terrain):
 	if terrain is RigidBody3D:
@@ -340,6 +356,7 @@ func getBlockScript(terrain, position: Vector3i):
 		if child.get_script() != null:
 			return child
 
+"""
 func getVoxelPositionFromGlobalPosition(terrain, position: Vector3) -> Vector3i:
 	terrain = getTerrain(terrain)
 	return funcs.vec3_to_vec3i_down(position - terrain.global_transform.origin)
@@ -347,6 +364,17 @@ func getVoxelPositionFromGlobalPosition(terrain, position: Vector3) -> Vector3i:
 func getGlobalPositionFromVoxelPosition(terrain, position: Vector3i) -> Vector3:
 	terrain = getTerrain(terrain)
 	return terrain.global_transform.origin + Vector3(position.x, position.y, position.z) + Vector3(0.5, 0.5, 0.5)
+"""
+
+func getVoxelPositionFromGlobalPosition(terrain, position: Vector3) -> Vector3i:
+	terrain = getTerrain(terrain)
+	var local_pos = terrain.global_transform.affine_inverse() * position
+	return funcs.vec3_to_vec3i_down(local_pos)
+
+func getGlobalPositionFromVoxelPosition(terrain, position: Vector3i) -> Vector3:
+	terrain = getTerrain(terrain)
+	var local_pos = Vector3(position.x, position.y, position.z) + Vector3(0.5, 0.5, 0.5)
+	return terrain.global_transform * local_pos
 
 func isCellFree(terrain, position: Vector3i) -> bool:
 	terrain = getTerrain(terrain)
