@@ -27,7 +27,7 @@ func liteLock():
 	game.setMouseEnabled(true)
 
 func switchUI(ui) -> bool:
-	if currentUI == ui:
+	if currentUI == ui && not waitSwitchUI:
 		return false
 	currentUI = ui
 	

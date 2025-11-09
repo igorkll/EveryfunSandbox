@@ -58,8 +58,12 @@ func controlHandler():
 	# ---------------------------------- speed
 	
 	walking_speed_mul = 1
+	beware_edge = false
+	fly_down = false
 	if Input.is_action_pressed("crouch"):
+		beware_edge = true
 		if fly_mode:
+			fly_down = true
 			if Input.is_action_pressed("sprint"):
 				walking_speed_mul = consts.player_mul_sprint
 		else:

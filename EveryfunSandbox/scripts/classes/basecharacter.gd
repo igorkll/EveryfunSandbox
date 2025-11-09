@@ -13,6 +13,7 @@ var disable_collision_sounds = false
 var direction = Vector3.ZERO
 var jump_state = false
 var fly_mode = false
+var fly_down = false
 var beware_edge = false
 
 var move_acceleration = 30
@@ -64,8 +65,9 @@ func _physics_process(delta):
 	
 	if move_direction.length() > 1:
 		move_direction = move_direction.normalized()
-		
-	if beware_edge:
+	
+	var on_floor = is_on_floor()
+	if beware_edge && on_floor:
 		var edges = getEdgeDirections()
 		for edge in edges:
 			move_direction = move_direction - move_direction.project(edge)
@@ -73,7 +75,6 @@ func _physics_process(delta):
 	velocity.x += move_direction.x * _move_acceleration * delta
 	velocity.z += move_direction.z * _move_acceleration * delta
 
-	var on_floor = is_on_floor()
 	if not on_floor:
 		if not fly_mode:
 			velocity += get_gravity() * delta * fall_speed_mul
@@ -83,6 +84,9 @@ func _physics_process(delta):
 			_blockSound(game.soundList[voxel.sound_jump])
 	_on_floor = on_floor
 
+	if fly_mode && fly_down:
+		velocity.y -= _move_acceleration * delta
+	
 	if jump_state:
 		if fly_mode:
 			velocity.y += _move_acceleration * delta
@@ -191,7 +195,7 @@ func _getVoxel(side):
 				return result
 				
 func _checkEdge(x, z):
-	var result = _getVoxelWithOffset(-1, Vector3(x, 0, z) * 0.2)
+	var result = _getVoxelWithOffset(Vector3.DOWN, Vector3(x, 0, z) * 0.2)
 	if result:
 		return result
 
