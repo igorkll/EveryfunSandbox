@@ -6,4 +6,7 @@ func spawn(character):
 	game.characters.add_child(character)
 
 func loadCharacters():
-	spawn(characters[0].new())
+	var player = characters[0].new()
+	spawn(player)
+	game.player = player
+	game.camera = player.camera
