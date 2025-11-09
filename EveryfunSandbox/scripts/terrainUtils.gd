@@ -497,7 +497,7 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	var id = getBlockId(terrain, position)
 	setBlockId(terrain, position, 0)
 	setBlockId(newTerrain, newPosition, id)
-	setVoxelMetadata(newTerrain, position, getVoxelMetadata(terrain, position))
+	setVoxelMetadata(newTerrain, newPosition, getVoxelMetadata(terrain, position))
 	setVoxelMetadata(terrain, position, null)
 	
 	var children = terrain.blockChildren.get(position)
