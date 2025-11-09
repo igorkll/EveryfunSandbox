@@ -440,3 +440,19 @@ func getVoxelMetadata(terrain, position: Vector3i):
 	if terrain is VoxelTerrain:
 		return terrain.voxel_tool.get_voxel_metadata(position)
 	return saves.currentWorldData.voxelsMetadata.get(position)
+
+func makeDynamic(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
+	var id = getBlockId(terrain, position)
+	var body = bodyUtils.createBody(
+		getGlobalPositionFromVoxelPosition(terrain, position),
+		terrain.global_transform.basis
+	)
+	teleportVoxel(terrain, position, body, Vector3i(0, 0, 0))
+
+func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3i):
+	terrain = getTerrain(terrain)
+	newTerrain = getTerrain(newTerrain)
+	var id = getBlockId(terrain, position)
+	setBlockId(terrain, position, 0)
+	setBlockId(newTerrain, newPosition, id)
