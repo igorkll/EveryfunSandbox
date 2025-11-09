@@ -33,13 +33,13 @@ blockUtils="*res://scripts/blockUtils.gd"
 bodyUtils="*res://scripts/bodyUtils.gd"
 game="*res://scripts/game.gd"
 saves="*res://scripts/saves.gd"
-menu="*res://scripts/menu.gd"
-gui="*res://scripts/gui.gd"
 physics="*res://scripts/physics.gd"
 terrainUtils="*res://scripts/terrainUtils.gd"
 terrainInteractions="*res://scripts/terrainInteractions.gd"
 worldsList="*res://scripts/worldsList.gd"
 characterUtils="*res://scripts/characterUtils.gd"
+menu="*res://scripts/menu.gd"
+gui="*res://scripts/gui.gd"
 
 [display]
 

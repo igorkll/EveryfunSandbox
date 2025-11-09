@@ -1,7 +1,5 @@
-[gd_scene load_steps=17 format=3 uid="uid://bw0m6x1agdhve"]
+[gd_scene load_steps=13 format=3 uid="uid://bw0m6x1agdhve"]
 
-[ext_resource type="Script" uid="uid://c5pj52brlpnak" path="res://scripts/classes/_player.gd" id="2_272bh"]
-[ext_resource type="Script" uid="uid://cnv5mi67jr1go" path="res://scripts/classes/camera.gd" id="3_5vw27"]
 [ext_resource type="Shader" uid="uid://bouu1iwjpmhdo" path="res://gui/panel.gdshader" id="3_kek77"]
 [ext_resource type="Material" uid="uid://cxdqotjrqebme" path="res://gui/panel.tres" id="4_kek77"]
 [ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="5_4c57u"]
@@ -40,10 +38,6 @@ volumetric_fog_length = 16.87
 adjustment_enabled = true
 adjustment_saturation = 1.75
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gv5m4"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_dwbse"]
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4c57u"]
 shader = ExtResource("3_kek77")
 shader_parameter/color = Vector4(0.4, 0.3, 0.3, 1)
@@ -72,28 +66,6 @@ shadow_enabled = true
 shadow_bias = 0.02
 shadow_normal_bias = 4.0
 shadow_opacity = 0.99
-
-[node name="player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
-script = ExtResource("2_272bh")
-
-[node name="collision" type="CollisionShape3D" parent="player"]
-transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -0.00568438, 0.00694084, 0.00512743)
-shape = SubResource("CapsuleShape3D_gv5m4")
-
-[node name="camera" type="Camera3D" parent="player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.689, 0)
-fov = 80.0
-size = 0.1
-script = ExtResource("3_5vw27")
-
-[node name="VoxelViewer" type="VoxelViewer" parent="player/camera"]
-view_distance = 256
-
-[node name="raycast" type="RayCast3D" parent="player"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="player"]
-mesh = SubResource("CapsuleMesh_dwbse")
 
 [node name="objects" type="Node" parent="."]
 

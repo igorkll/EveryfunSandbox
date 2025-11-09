@@ -9,7 +9,6 @@ var world
 var dynamicBodies
 var characters
 var player
-var camera
 var blockLibrary
 var settings
 var miscData = {}
@@ -17,6 +16,7 @@ var muteAllExceptMusic = false
 var transparency_material
 
 var allTerrainNodes = []
+var chunkloaders = []
 
 var defaultSettings = {
 	"statistics": {
@@ -136,9 +136,7 @@ var view_distance
 var lod_distance
 func setRenderDistance(index):
 	var distanceSettingsPreset = distanceSettingsPresets[index]
-	var voxelViewer = mainNode.find_child("VoxelViewer", true, false)
 	
-	voxelViewer.view_distance = distanceSettingsPreset.distance
 	view_distance = distanceSettingsPreset.distance
 	lod_distance = distanceSettingsPreset.lodDistance
 

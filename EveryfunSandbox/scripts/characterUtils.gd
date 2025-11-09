@@ -9,4 +9,3 @@ func loadCharacters():
 	var player = characters[0].new()
 	spawn(player)
 	game.player = player
-	game.camera = player.camera

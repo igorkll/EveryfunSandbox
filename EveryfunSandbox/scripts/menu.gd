@@ -9,20 +9,20 @@ var currentUI
 var backTo
 
 func fullLock():
-	game.camera.setOrbital(true)
-	game.player.setControlLock(true)
+	game.player.camera.setOrbital(true)
+	game.player.control_lock = true
 	game.setMouseEnabled(true)
 	game.setMuteAllExceptMusic(true)
 	
 func fullUnlock():
 	game.camera.setOrbital(false)
-	game.player.setControlLock(false)
+	game.player.control_lock = false
 	game.setMouseEnabled(false)
 	game.setMuteAllExceptMusic(false)
 	
 func liteLock():
 	fullUnlock()
-	game.player.setControlLock(true)
+	game.player.control_lock = true
 	game.setMouseEnabled(true)
 
 func switchUI(ui):
