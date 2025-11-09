@@ -42,7 +42,7 @@ func _physics_process(delta):
 	
 	_collision.disabled = disable_collision
 	_move_acceleration = move_acceleration * walking_speed_multiplier
-	_step_interval = step_interval * walking_speed_multiplier
+	_step_interval = step_interval / walking_speed_multiplier
 	
 	var player_basis = global_transform.basis
 	var player_direction = -player_basis.z
@@ -248,6 +248,10 @@ func getEdgeDirections():
 		edges.append(Vector3(0, 0, -1))
 		
 	return edges
+
+func raycast(camera: Camera3D, max_interact_distance=consts.max_interact_distance):
+	var global_transform = camera.get_global_transform()
+	return terrainUtils.blockRaycast(global_transform.origin, -global_transform.basis.z, max_interact_distance)
 
 func apply_impulse(direction: Vector3):
 	velocity += direction

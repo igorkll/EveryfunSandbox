@@ -67,6 +67,8 @@ func controlHandler():
 	elif Input.is_action_pressed("sprint"):
 		walking_speed_multiplier = consts.player_mul_sprint
 	
+	camera.amplitude_multiplier = walking_speed_multiplier
+	
 	if fly_mode:
 		walking_speed_multiplier *= consts.player_mul_fly
 		setJump(Input.is_action_pressed("jump"))
@@ -76,8 +78,8 @@ func controlHandler():
 		
 	# ---------------------------------- interact
 	
-	var result = raycast()
-		
+	var result = raycast(camera)
+	
 	if Input.is_action_just_pressed("attack"):
 		if result:
 			terrainInteractions.destroyBlock(result[0], result[1].position)
@@ -95,8 +97,3 @@ func controlHandler():
 			terrainUtils.useBlock(result[0], result[1].position)
 	else:
 		game.setCrosspiece("normal")
-
-func raycast():
-	var raycastPosition = camera.get_global_transform().origin
-	var raycastDirection = -camera.get_transform().basis.z
-	return terrainUtils.blockRaycast(raycastPosition, raycastDirection, consts.max_interact_distance)

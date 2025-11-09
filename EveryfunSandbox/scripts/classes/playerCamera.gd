@@ -3,6 +3,7 @@ extends Camera3D
 var orbitalOffset = 15
 var orbitalHeight = 10
 
+var amplitude_multiplier = 1
 var currentYaw = 0.0
 var currentPitch = 0.0
 var orbital = false
@@ -76,13 +77,14 @@ func cameraUpdate(yaw, pitch):
 	currentPitch -= pitch
 	currentPitch = clamp(currentPitch, -89, 89) 
 
-	rotation_degrees.y = currentYaw
+	player.rotation_degrees.y = currentYaw
 	rotation_degrees.x = currentPitch
 	
-	position = defaultPosition + funcs.rotateVectorIn_xz(
-		Vector3(sin(shakeAnimationValue) * 0.02, abs(sin(shakeAnimationValue)) * -0.03, 0),
-		-currentYaw
-	)
+	# position = defaultPosition + funcs.rotateVectorIn_xz(
+	# 	Vector3(sin(shakeAnimationValue) * 0.02 * amplitude_multiplier, abs(sin(shakeAnimationValue)) * -0.03 * amplitude_multiplier, 0),
+	# 	-currentYaw
+ 	#)
+	position = defaultPosition + Vector3(sin(shakeAnimationValue) * 0.02 * amplitude_multiplier, abs(sin(shakeAnimationValue)) * -0.03 * amplitude_multiplier, 0)
 
 func setOrbital(newOrbital):
 	if newOrbital == orbital:
