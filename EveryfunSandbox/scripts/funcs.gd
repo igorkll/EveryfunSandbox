@@ -116,3 +116,7 @@ func getNullIndex(array):
 func deleteAllNullsOnEnd(array):
 	while array.size() > 0 and array[array.size() - 1] == null:
 		array.pop_back()
+		
+func funcAvailable(callback):
+	var target = callback.get_object()
+	return target == null or is_instance_valid(target)

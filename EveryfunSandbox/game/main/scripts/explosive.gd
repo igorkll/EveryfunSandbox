@@ -13,7 +13,7 @@ func __explode():
 	
 	timers.clearTimeout(timer)
 	
-	advanced.explode(global_position, scriptData.explosiveLevel)
+	physics.explode(global_position, scriptData.explosiveLevel)
 	game.playSound(game.soundList["explosion"], position)
 	destroy()
 

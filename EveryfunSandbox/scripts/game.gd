@@ -5,6 +5,7 @@ var mainNode
 var terrain
 var objects
 var dynamicBodies
+var characters
 var player
 var camera
 var blockLibrary

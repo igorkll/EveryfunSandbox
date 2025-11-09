@@ -182,7 +182,7 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("place"):
 			var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 			if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
-				terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["testTempScript"], blockUtils.getTargetRotation($camera.global_transform.basis.z))
+				terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["explosive"], blockUtils.getTargetRotation($camera.global_transform.basis.z))
 			
 		var result = terrainUtils.blockRaycast($camera.get_global_transform().origin, -$camera.get_transform().basis.z, max_interact_distance)
 		if result && terrainUtils.canUseBlock(result[0], result[1].position):

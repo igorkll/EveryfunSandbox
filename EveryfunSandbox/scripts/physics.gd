@@ -1,5 +1,8 @@
 extends Node
 
+func pulse(position, pulseLevel):
+	pass
+
 func explode(position, explosiveLevel):
 	if explosiveLevel < 1:
 		return

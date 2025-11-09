@@ -114,6 +114,10 @@ func open(savename) -> bool:
 	game.dynamicBodies.name = "dynamicBodies"
 	game.objects.add_child(game.dynamicBodies)
 	
+	game.characters = Node.new()
+	game.characters.name = "characters"
+	game.objects.add_child(game.characters)
+	
 	var terrain = preload("res://scripts/classes/terrain.gd").new()
 	terrain.name = "terrain"
 	game.objects.add_child(terrain)
