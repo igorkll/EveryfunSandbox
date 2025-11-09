@@ -39,6 +39,7 @@ physics="*res://scripts/physics.gd"
 terrainUtils="*res://scripts/terrainUtils.gd"
 terrainInteractions="*res://scripts/terrainInteractions.gd"
 worldsList="*res://scripts/worldsList.gd"
+characterUtils="*res://scripts/characterUtils.gd"
 
 [display]
 

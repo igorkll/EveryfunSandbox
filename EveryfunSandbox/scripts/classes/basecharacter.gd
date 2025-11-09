@@ -4,6 +4,16 @@ var character_height
 
 # -------------------------------------------------
 
+var _inited = false
+
+func _physics_process(delta):
+	if not _inited || not saves.isWorldFullLoaded():
+		return
+		
+	
+
+# -------------------------------------------------
+
 func _getVoxelWithOffset(side, offset):
 	var result = game.terrain.voxel_tool.raycast(
 		global_transform.origin + offset,
@@ -35,6 +45,7 @@ func init(collision, mesh):
 	add_child(meshIntance)
 	
 	character_height = collision.shape.height
+	_inited = true
 
 func apply_impulse(direction: Vector3):
 	velocity += direction

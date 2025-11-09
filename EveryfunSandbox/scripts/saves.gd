@@ -118,6 +118,8 @@ func open(savename) -> bool:
 	game.characters.name = "characters"
 	game.objects.add_child(game.characters)
 	
+	characterUtils.loadCharacters()
+	
 	var terrain = preload("res://scripts/classes/terrain.gd").new()
 	terrain.name = "terrain"
 	game.objects.add_child(terrain)

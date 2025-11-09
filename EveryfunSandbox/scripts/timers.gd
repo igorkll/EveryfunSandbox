@@ -8,7 +8,7 @@ func setTimeout(callback: Callable, delay_seconds: float) -> Timer:
 	timer.one_shot = true
 	timer.autostart = true
 	timer.timeout.connect(func():
-		if funcs.funcAvailable(callback):
+		if callback.is_valid():
 			callback.call()
 		timer.queue_free()
 	)
@@ -20,7 +20,7 @@ func setInterval(callback: Callable, delay_seconds: float) -> Timer:
 	timer.wait_time = delay_seconds
 	timer.autostart = true
 	timer.timeout.connect(func(): 
-		if not funcs.funcAvailable(callback) or callback.call():
+		if not callback.is_valid() or callback.call():
 			clearTimeout(timer)
 	)
 	get_tree().root.add_child.call_deferred(timer)
