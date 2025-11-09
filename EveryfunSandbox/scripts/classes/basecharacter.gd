@@ -21,6 +21,7 @@ var jump_acceleration = 8
 var fall_speed_mul = 2.5
 var step_interval = 0.4
 var velocity_drop = 0.0005
+var push_strength = 1
 
 var walking_speed_mul = 1
 var velocity_drop_mul = 1
@@ -112,6 +113,17 @@ func _physics_process(delta):
 	
 	if terrainUtils.isMinimalAreaLoaded(game.terrain, terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)):
 		move_and_slide()
+		if push_strength:
+			_pushObjects()
+		
+func _pushObjects():
+	for i in range(get_slide_collision_count()):
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+
+		if collider is RigidBody3D:
+			var push_dir = -collision.get_normal()
+			collider.apply_impulse(push_dir * push_strength, collision.get_position() - collider.global_position)
 
 # -------------------------------------------------
 
