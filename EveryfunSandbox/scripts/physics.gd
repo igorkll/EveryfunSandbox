@@ -53,8 +53,8 @@ func explode(position, explosiveLevel):
 					var fraction = result[1].distance / raycastDistance
 					if randf() < fraction:
 						var body = terrainUtils.makeDynamic(result[0], result[1].position)
-						pulseObject(position, raycastDistance, pulsePower, body)
-						pulseObjectToDirection(position, raycastDistance, pulsePower, Vector3.UP, body)
+						pulseObject(position, raycastDistance, pulsePower / 2, body)
+						pulseObjectToDirection(position, raycastDistance, pulsePower / 2, Vector3.UP, body)
 					else:
 						terrainInteractions.destroyBlock(result[0], result[1].position, level * (1 - fraction))
 		explosionState.iterations -= 1
