@@ -19,12 +19,15 @@ func attachBlockChild(terrain, position: Vector3i, child):
 	terrain.blockChildren[position].append(child)
 	terrain.add_child(child)
 	game.allTerrainNodes.append(child)
-	
-func deleteBlockChild(terrain, position, child):
+
+func detachBlockChild(terrain, position, child):
 	terrain = getTerrain(terrain)
 	terrain.blockChildren[position].erase(child)
-	child.queue_free()
 	game.allTerrainNodes.erase(child)
+
+func deleteBlockChild(terrain, position, child):
+	detachBlockChild(terrain, position, child)
+	child.queue_free()
 	
 func deleteBlockChildrenWithTypes(terrain, position: Vector3i, types):
 	terrain = getTerrain(terrain)
