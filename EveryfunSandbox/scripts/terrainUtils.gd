@@ -106,6 +106,13 @@ func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=nu
 			if storageData == null:
 				storageData = blockUtils.getDefaultStorageData(blockId)
 	return [blockId, storageData]
+	
+func updateTerrainDependedChildFields(terrain, position: Vector3i, child):
+	terrain = getTerrain(terrain)
+	child.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+	if child.get_script() != null:
+		child.voxelTerrain = terrain
+		child.voxelPosition = position
 
 func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
 	terrain = getTerrain(terrain)
@@ -116,13 +123,11 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 	var obj = blockUtils.list_id2obj[blockId]
 	var script = game.loadResource(obj.script)
 	var node = script.new()
+	updateTerrainDependedChildFields(terrain, position, node)
 	
-	node.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	node.storageData = storageData
 	node.scriptData = obj.get("script_data", {})
 	
-	node.voxelTerrain = terrain
-	node.voxelPosition = position
 	node.voxelRotation = obj.currentRotation
 	node.voxelVariant = obj.currentVariant
 	node.voxelBaseVariant = obj.baseVariant
@@ -483,6 +488,9 @@ func makeStatic(terrain, position: Vector3i):
 		return
 	teleportVoxel(terrain, position, game.terrain, staticPosition)
 
+func _teleportVoxelChildProcess(terrain, position: Vector3i, child):
+	updateTerrainDependedChildFields(terrain, position, child)
+
 func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3i):
 	terrain = getTerrain(terrain)
 	newTerrain = getTerrain(newTerrain)
@@ -499,6 +507,7 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	children = children.duplicate()
 	detachAllBlockChildren(terrain, position)
 	for child in children:
+		_teleportVoxelChildProcess(newTerrain, newPosition, child)
 		attachBlockChild(newTerrain, newPosition, child)
 
 func convertTerrainPositions(terrain, position: Vector3i, newTerrain):
