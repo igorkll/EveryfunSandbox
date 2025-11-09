@@ -10,14 +10,14 @@ func blockRaycast(position: Vector3, direction, maxDistance):
 """
 
 func blockRaycast(position: Vector3, direction: Vector3, maxDistance: float):
-	var terrains = [game.terrain] + game.dynamicBodies.get_children()
+	var terrains = game.dynamicBodies.get_children()
+	game.sortNodesByDistance(terrains, position)
+	terrains = terrains + [game.terrain]
 	
 	for terrain in terrains:
-		# Переводим глобальную позицию и направление в локальные координаты террейна
-		var local_pos = terrain.global_transform.affine_inverse() * position
-		var local_dir = terrain.global_transform.basis.affine_inverse() * direction
+		terrain = getTerrain(terrain)
 		
-		var result = terrain.voxel_tool.raycast(local_pos, local_dir, maxDistance)
+		var result = terrain.voxel_tool.raycast(position, direction, maxDistance)
 		if result:
 			return [terrain, result]
 	

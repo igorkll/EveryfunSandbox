@@ -436,6 +436,11 @@ func getChunkloadersPositions():
 		loadersPositions.append(chunkloaderObj.global_transform.origin)
 	return loadersPositions
 
+func sortNodesByDistance(nodes, position):
+	nodes.sort_custom(func(a, b):
+		return -1 if a.global_transform.origin.distance_to(position) < b.global_transform.origin.distance_to(position) else 1
+	)
+
 # ------------------------------------------------- backend
 
 func _ready():
