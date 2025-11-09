@@ -4,6 +4,8 @@ var sceneTree
 var mainNode
 var terrain
 var objects
+var scene
+var world
 var dynamicBodies
 var characters
 var player
@@ -427,10 +429,12 @@ func processForks(list):
 
 func _ready():
 	sceneTree = get_tree()
+	scene = sceneTree.current_scene
 	mainNode = get_node("/root/main")
 	player = get_node("/root/main/player")
 	camera = get_node("/root/main/player/camera")
 	objects = get_node("/root/main/objects")
+	world = scene.get_world_3d()
 	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
 	
 	loadSettings()

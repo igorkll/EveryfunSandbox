@@ -327,13 +327,14 @@ func isCellFree(terrain, position: Vector3i) -> bool:
 	if getBlockId(terrain, position) != 0:
 		return false
 	
-	var space_state = get_tree().current_scene.get_world_3d().direct_space_state
+	var space_state = game.world.direct_space_state
 	var query = PhysicsShapeQueryParameters3D.new()
 	
 	var shape = BoxShape3D.new()
-	shape.size = Vector3(0.8, 0.8, 0.8)
+	shape.size = Vector3(0.95, 0.95, 0.95)
+	
 	query.shape = shape
-	query.transform = Transform3D(Basis(), getGlobalPositionFromVoxelPosition(terrain, position))
+	query.transform = Transform3D(terrain.global_transform.basis, getGlobalPositionFromVoxelPosition(terrain, position))
 	query.collide_with_areas = true
 	query.collide_with_bodies = true
 	

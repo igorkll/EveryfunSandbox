@@ -36,6 +36,9 @@ var disableCollisionState = false
 func _ready():
 	halfPlayerSize = $collision.shape.height / 2
 	pass
+	
+func apply_impulse(direction: Vector3):
+	velocity += direction
 
 func checkOptimalSpawnPosition(raycastPosition) -> bool:
 	var result = game.terrain.voxel_tool.raycast(raycastPosition, Vector3.DOWN, 2000)
