@@ -30,70 +30,45 @@ func controlHandler():
 			fly_mode = not fly_mode
 	else:
 		fly_mode = false
+		setJump(false)
 
-	var _move_acceleration = move_acceleration
-	_step_interval = step_interval
-	var direction = Vector3.ZERO	
-	isWalking = false
-	if not controlLock:
-		var joystickWalk = game.getLeftJoystickValues()
-		
-		if joystickWalk[0] != 0 || joystickWalk[1] != 0:
-			direction += Vector3(joystickWalk[0], 0, -joystickWalk[1])
-			isWalking = true
-		
-		if Input.is_action_pressed("move_right"):
-			direction.x += 1
-			isWalking = true
-		
-		if Input.is_action_pressed("move_left"):
-			direction.x -= 1
-			isWalking = true
-		
-		if Input.is_action_pressed("move_back"):
-			direction.z -= 1
-			isWalking = true
-		
-		if Input.is_action_pressed("move_forward"):
-			direction.z += 1
-			isWalking = true
-		
-		if Input.is_action_pressed("crouch"):
-			if flyState:
-				if Input.is_action_pressed("sprint"):
-					_move_acceleration *= consts.player_mul_sprint
-					_stepInterval /= consts.player_mul_sprint
-				velocity.y -= _move_acceleration * delta
-			else:
-				_move_acceleration *= consts.player_mul_crouch
-				_stepInterval /= consts.player_mul_crouch
-		elif Input.is_action_pressed("sprint"):
-			_move_acceleration *= consts.player_mul_sprint
-			_stepInterval /= consts.player_mul_sprint
+	var direction = Vector3.ZERO
 
-	if flyState:
-		_move_acceleration *= consts.player_mul_fly
-		_stepInterval /= consts.player_mul_fly
+	var joystickWalk = game.getLeftJoystickValues()
 	
-	if isWalking:
-		onWalking()
-	elif _walk:
-		onStopWalk()
-	_walk = isWalking
+	if joystickWalk[0] != 0 || joystickWalk[1] != 0:
+		direction += Vector3(joystickWalk[0], 0, -joystickWalk[1])
 	
-	if not controlLock && Input.is_action_pressed("jump") && (flyState || is_on_floor()):
-		if not current_jump:
-			current_jump_budget = jump_budget
-		current_jump = true
+	if Input.is_action_pressed("move_right"):
+		direction.x += 1
+	
+	if Input.is_action_pressed("move_left"):
+		direction.x -= 1
+	
+	if Input.is_action_pressed("move_back"):
+		direction.z -= 1
+	
+	if Input.is_action_pressed("move_forward"):
+		direction.z += 1
 		
-	if current_jump:
-		current_jump_budget -= delta
-		if current_jump_budget < 0:
-			current_jump = false
-			current_jump_budget = 0
+	direction = direction.normalized()
 	
-	if Input.is_action_just_released("jump"):
-		current_jump = false
+	walking_speed_multiplier = 1
+	if Input.is_action_pressed("crouch"):
+		if fly_mode:
+			if Input.is_action_pressed("sprint"):
+				walking_speed_multiplier = consts.player_mul_sprint
+		else:
+			walking_speed_multiplier = consts.player_mul_crouch
+	elif Input.is_action_pressed("sprint"):
+		walking_speed_multiplier = consts.player_mul_sprint
+	
+	if fly_mode:
+		walking_speed_multiplier *= consts.player_mul_fly
+		setJump(Input.is_action_pressed("jump"))
+	else:
+		if Input.is_action_just_pressed("jump"):
+			setJump()
 		
 	# ---------------------------------- edit
 	

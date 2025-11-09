@@ -213,9 +213,7 @@ func initCharacter(collision: CollisionShape3D, mesh: Mesh):
 	
 	inited = true
 	
-func setJump(jump):
-	if jump == null:
-		jump = true
+func setJump(jump=true):
 	_current_jump = jump
 
 func getDownVoxel():
