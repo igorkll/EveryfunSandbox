@@ -105,7 +105,8 @@ func _physics_process(delta):
 	elif velocity.y < 0:
 		_headbutt_sound_available = true
 	
-	var speed_mul = pow(velocity_drop * velocity_drop_mul, delta);
+	var voxel_velocity_drop_mul = 1
+	var speed_mul = pow(velocity_drop * velocity_drop_mul * voxel_velocity_drop_mul, delta);
 	velocity.x *= speed_mul;
 	if fly_mode:
 		velocity.y *= speed_mul;
