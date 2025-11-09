@@ -24,7 +24,7 @@ func detachBlockChild(terrain, position, child):
 	terrain = getTerrain(terrain)
 	var blockChildren = terrain.blockChildren[position]
 	blockChildren.erase(child)
-	if blockChildren.len() == 0:
+	if blockChildren.size() == 0:
 		terrain.blockChildren.erase(position)
 	game.allTerrainNodes.erase(child)
 
@@ -180,6 +180,9 @@ func getBlockId(terrain, position: Vector3i):
 	
 func setBlockId(terrain, position: Vector3i, blockId: int):
 	terrain = getTerrain(terrain)
+	if not isEditable(terrain, position):
+		terrain.deferredActions.append([2, position, blockId])
+		return
 	terrain.voxel_tool.set_voxel(position, blockId)
 
 func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
@@ -274,6 +277,8 @@ func applyDeferredActions(terrain):
 				destroyBlock(terrain, deferredAction[1])
 			elif deferredAction[0] == 1:
 				placeBlock(terrain, deferredAction[1], deferredAction[2], deferredAction[3], deferredAction[4], deferredAction[5], deferredAction[6])
+			elif deferredAction[0] == 2:
+				setBlockId(terrain, deferredAction[1], deferredAction[2])
 			deferredAction[0] = -1
 	
 	for i in range(terrain.deferredActions.size() - 1, -1, -1):
@@ -457,6 +462,8 @@ func getVoxelMetadata(terrain, position: Vector3i):
 func makeDynamic(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
 	var id = getBlockId(terrain, position)
+	if id == 0:
+		return
 	var body = bodyUtils.createBody(
 		getGlobalPositionFromVoxelPosition(terrain, position),
 		terrain.global_transform.basis
