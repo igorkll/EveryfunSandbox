@@ -433,7 +433,7 @@ func collisionFromMesh(mesh):
 func getChunkloadersPositions():
 	var loadersPositions = []
 	for chunkloaderObj in chunkloaders:
-		loadersPositions.append(chunkloaderObj.position)
+		loadersPositions.append(chunkloaderObj.global_transform.origin)
 	return loadersPositions
 
 # ------------------------------------------------- backend
