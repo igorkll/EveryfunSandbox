@@ -95,15 +95,17 @@ func controlHandler():
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
-			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["explosive"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
+			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["lamp"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
 		
+	if Input.is_action_just_pressed("chat"):
+		if terrainUtils.isDymanic(result[0]):
+			terrainUtils.makeStatic(result[0], result[1].position)
+		else:
+			terrainUtils.makeDynamic(result[0], result[1].position)
+	
 	if result && terrainUtils.canUseBlock(result[0], result[1].position):
 		game.setCrosspiece("use")
 		if Input.is_action_just_pressed("use"):
-			# terrainUtils.useBlock(result[0], result[1].position)
-			if terrainUtils.isDymanic(result[0]):
-				terrainUtils.makeStatic(result[0], result[1].position)
-			else:
-				terrainUtils.makeDynamic(result[0], result[1].position)
+			terrainUtils.useBlock(result[0], result[1].position)
 	else:
 		game.setCrosspiece("normal")
