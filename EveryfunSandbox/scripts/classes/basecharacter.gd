@@ -4,8 +4,10 @@ var character_height
 
 var disable_collision = false
 var disable_collision_sounds = false
-var fly_mode = false
+
 var direction = Vector3.ZERO
+var fly_mode = false
+var beware_edge = false
 
 var move_acceleration = 30
 var jump_acceleration = 8
@@ -22,7 +24,7 @@ var walking_speed_multiplier = 1
 var _inited = false
 var _collision: CollisionShape3D
 
-var _headbutt_sound = false
+var _headbutt_sound_available = false
 var _on_floor = false
 var _current_jump = false
 var _walking = false
@@ -57,6 +59,11 @@ func _physics_process(delta):
 	
 	if move_direction.length() > 1:
 		move_direction = move_direction.normalized()
+		
+	if beware_edge:
+		var edges = getEdgeDirections()
+		for edge in edges:
+			move_direction = move_direction - move_direction.project(edge)
 
 	velocity.x += move_direction.x * _move_acceleration * delta
 	velocity.z += move_direction.z * _move_acceleration * delta
@@ -80,11 +87,11 @@ func _physics_process(delta):
 		
 	if velocity.y > 0:
 		var voxel = getUpVoxelObj()
-		if voxel and voxel.has("sound_headbutt") and game.soundList.has(voxel.sound_headbutt) and _headbutt_sound:
+		if voxel and voxel.has("sound_headbutt") and game.soundList.has(voxel.sound_headbutt) and _headbutt_sound_available:
 			_blockSound(game.soundList[voxel.sound_headbutt])
-			_headbutt_sound = false
+			_headbutt_sound_available = false
 	elif velocity.y < 0:
-		_headbutt_sound = true
+		_headbutt_sound_available = true
 	
 	var speed_mul = pow(velocity_drop, delta);
 	velocity.x *= speed_mul;
@@ -92,10 +99,8 @@ func _physics_process(delta):
 		velocity.y *= speed_mul;
 	velocity.z *= speed_mul;
 		
-	if not terrainUtils.isMinimalAreaLoaded(game.terrain, terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)):
-		velocity = Vector3(0, 0, 0)
-	
-	move_and_slide()
+	if terrainUtils.isMinimalAreaLoaded(game.terrain, terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)):
+		move_and_slide()
 
 # -------------------------------------------------
 
@@ -177,6 +182,11 @@ func _getVoxel(side):
 			result = _getVoxelWithOffset(side, (Vector3(x, 0, z) * $collision.shape.radius) / sqrt(2))
 			if result:
 				return result
+				
+func _checkEdge(x, z):
+	var result = _getVoxelWithOffset(-1, Vector3(x, 0, z) * 0.2)
+	if result:
+		return result
 
 # ------------------------------------------------- api
 
@@ -213,5 +223,22 @@ func getUpVoxelObj():
 	if voxelId:
 		return blockUtils.list_id2obj[voxelId]
 		
+func getEdgeDirections():
+	var edges = []
+	
+	if _checkEdge(1, 0):
+		edges.append(Vector3(1, 0, 0))
+		
+	if _checkEdge(-1, 0):
+		edges.append(Vector3(-1, 0, 0))
+		
+	if _checkEdge(0, 1):
+		edges.append(Vector3(0, 0, 1))
+		
+	if _checkEdge(0, -1):
+		edges.append(Vector3(0, 0, -1))
+		
+	return edges
+
 func apply_impulse(direction: Vector3):
 	velocity += direction
