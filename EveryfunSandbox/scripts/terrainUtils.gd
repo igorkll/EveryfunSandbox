@@ -22,12 +22,22 @@ func attachBlockChild(terrain, position: Vector3i, child):
 
 func detachBlockChild(terrain, position, child):
 	terrain = getTerrain(terrain)
-	terrain.blockChildren[position].erase(child)
+	var blockChildren = terrain.blockChildren[position]
+	blockChildren.erase(child)
+	if blockChildren.len() == 0:
+		terrain.blockChildren.erase(position)
 	game.allTerrainNodes.erase(child)
 
 func deleteBlockChild(terrain, position, child):
 	detachBlockChild(terrain, position, child)
 	child.queue_free()
+
+func detachAllBlockChildren(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
+	var children = terrain.blockChildren.get(position)
+	if children:
+		for i in range(children.size() - 1, -1, -1):
+			detachBlockChild(terrain, position, children[i])
 	
 func deleteBlockChildrenWithTypes(terrain, position: Vector3i, types):
 	terrain = getTerrain(terrain)
@@ -459,3 +469,12 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	var id = getBlockId(terrain, position)
 	setBlockId(terrain, position, 0)
 	setBlockId(newTerrain, newPosition, id)
+	
+	var children = terrain.blockChildren.get(position)
+	if children == null:
+		return
+	
+	children = children.duplicate()
+	detachAllBlockChildren(terrain, position)
+	for child in children:
+		attachBlockChild(newTerrain, newPosition, child)
