@@ -1,6 +1,7 @@
 extends Node
 
 var character_player = preload("res://scripts/classes/player.gd")
+var characterClasses = [character_player]
 
 func spawn(character):
 	game.characters.add_child(character)
