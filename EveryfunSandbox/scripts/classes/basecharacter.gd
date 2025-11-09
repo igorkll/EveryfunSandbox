@@ -1,6 +1,8 @@
 extends CharacterBody3D
 class_name basecharacter
 
+var data = {}
+
 var character_radius = 1
 var character_height = 1
 

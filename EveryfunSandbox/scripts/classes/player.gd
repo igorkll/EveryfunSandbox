@@ -7,9 +7,9 @@ var orbital_camera = false
 
 func _ready():
 	super._ready()
-	camera = $camera
-	camera.set_script(preload("res://scripts/classes/camera.gd"))
+	camera = preload("res://scripts/classes/camera.gd").new()
 	camera.add_child(chunkloader.new())
+	add_child(camera)
 
 func _physics_process(delta):
 	if not control_lock:
