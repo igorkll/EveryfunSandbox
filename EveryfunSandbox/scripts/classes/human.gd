@@ -4,7 +4,7 @@ class_name human
 var cameraContainer
 
 func _ready():
-	character_radius = 0.25
+	character_radius = 0.3
 	character_height = 1.8
 	
 	cameraContainer = Node3D.new()
@@ -12,7 +12,7 @@ func _ready():
 	add_child(cameraContainer)
 	
 	var mesh = CapsuleMesh.new()
-	mesh.radius = 0.25
+	mesh.radius = character_radius
 	mesh.height = character_height
 	
 	initCharacter(null, mesh)
