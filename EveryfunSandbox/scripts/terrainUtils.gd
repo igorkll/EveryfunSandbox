@@ -205,7 +205,18 @@ func setBlockId(terrain, position: Vector3i, blockId: int):
 	if not isEditable(terrain, position):
 		terrain.deferredActions.append([2, position, blockId])
 		return
+	
+	if terrain.voxel_tool.get_voxel(position) == blockId:
+		return
+	
 	terrain.voxel_tool.set_voxel(position, blockId)
+	
+	if isDymanic(terrain):
+		terrain.storageData.blocksCount = terrain.storageData.blocksCount + (-1 if blockId == 0 else 1)
+		if terrain.storageData.blocksCount == 0:
+			bodyUtils.destroyBody(terrain)
+		else:
+			terrain.updateCollider(position)
 
 func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	terrain = getTerrain(terrain)

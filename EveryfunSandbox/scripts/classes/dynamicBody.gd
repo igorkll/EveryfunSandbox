@@ -6,15 +6,23 @@ var voxel_tool
 var isMainTerrain = false
 var deferredActions = []
 
+var defaultStorageData = {
+	blocksCount = 0
+}
+
+var storageData
+
 var _colliders = {}
 var id: int
 
 func _ready():
-	self.connect("mesh_block_entered", _block_loaded)
-	self.connect("block_unloaded", _block_unloaded)
+	self.connect("mesh_block_entered", updateCollider)
+	self.connect("block_unloaded", destroyCollider)
 
 func init(bodyId: int):
 	id = bodyId
+	storageData = funcs.merge_dicts(storageData, defaultStorageData)
+	
 	var terrainPath = bodyUtils.getBodyTerrainPath(bodyId)
 	
 	var mesher = VoxelMesherBlocky.new()
@@ -33,16 +41,20 @@ func init(bodyId: int):
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 	
-func _block_loaded(pos):
-	var colliderShape = blockUtils.getBlockCollider(terrainUtils.getBlockId(self, pos))
-	if colliderShape:
-		var collider = CollisionShape3D.new()
-		collider.position = pos
-		collider.shape = colliderShape
-		get_parent().add_child(collider)
-		_colliders[pos] = collider
+func updateCollider(pos):
+	destroyCollider(pos)
+	
+	var id = terrainUtils.getBlockId(self, pos)
+	if id > 0:
+		var colliderShape = blockUtils.getBlockCollider(id)
+		if colliderShape:
+			var collider = CollisionShape3D.new()
+			collider.position = pos
+			collider.shape = colliderShape
+			get_parent().add_child(collider)
+			_colliders[pos] = collider
 		
-func _block_unloaded(pos):
+func destroyCollider(pos):
 	var collider = _colliders.get(pos)
 	if collider:
 		collider.queue_free()
