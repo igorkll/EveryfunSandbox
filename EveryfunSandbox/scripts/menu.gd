@@ -67,7 +67,7 @@ func _ready():
 	switchUI(0)
 
 func _process(delta):
-	if not saves.isWorldFullLoaded():
+	if not saves.isWorldFullLoaded() && (currentUI == 1 or currentUI == 0):
 		switchUI(0)
 	elif Input.is_action_just_pressed("menu") && toggleTimeout <= 0:
 		if currentUI != 2:

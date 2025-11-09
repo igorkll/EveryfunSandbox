@@ -23,17 +23,19 @@ func _physics_process(delta):
 	super._physics_process(delta)
 	
 func controlHandler():
-	# ---------------------------------- control handler
+	# ---------------------------------- fly
 	
 	if saves.currentWorldData.debug.allowFly:
 		if not control_lock && game.is_action_multiple_pressed("jump"):
 			fly_mode = not fly_mode
+		print(fly_mode)
 	else:
 		fly_mode = false
 		setJump(false)
+		
+	# ---------------------------------- direction
 
 	var direction = Vector3.ZERO
-
 	var joystickWalk = game.getLeftJoystickValues()
 	
 	if joystickWalk[0] != 0 || joystickWalk[1] != 0:
@@ -51,7 +53,9 @@ func controlHandler():
 	if Input.is_action_pressed("move_forward"):
 		direction.z += 1
 		
-	direction = direction.normalized()
+	self.direction = direction.normalized()
+	
+	# ---------------------------------- speed
 	
 	walking_speed_multiplier = 1
 	if Input.is_action_pressed("crouch"):
@@ -66,11 +70,11 @@ func controlHandler():
 	if fly_mode:
 		walking_speed_multiplier *= consts.player_mul_fly
 		setJump(Input.is_action_pressed("jump"))
-	else:
-		if Input.is_action_just_pressed("jump"):
+	elif Input.is_action_just_pressed("jump"):
+		if is_on_floor():
 			setJump()
 		
-	# ---------------------------------- edit
+	# ---------------------------------- interact
 	
 	var result = raycast()
 		
