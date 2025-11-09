@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name basecharacter
 
 var character_height
 
@@ -190,7 +191,7 @@ func _checkEdge(x, z):
 
 # ------------------------------------------------- api
 
-func init(collision: CollisionShape3D, mesh: Mesh):
+func initCharacter(collision: CollisionShape3D, mesh: Mesh):
 	_collision = collision
 	
 	add_child(collision)

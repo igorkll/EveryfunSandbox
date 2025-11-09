@@ -424,6 +424,13 @@ func processForks(list):
 	
 	for item in forks:
 		list.append(item)
+		
+func collisionFromMesh(mesh):
+	var collision = CollisionShape3D.new()
+	var shape = ConvexPolygonShape3D.new()
+	shape.points = mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	collision.shape = shape
+	return collision
 
 # ------------------------------------------------- backend
 
