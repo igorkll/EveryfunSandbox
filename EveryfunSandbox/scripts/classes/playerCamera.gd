@@ -13,13 +13,11 @@ var realPosition
 
 var shakeAnimationValue = 0
 var player
-var inited = false
 
-func init():
+func _ready():
 	player = get_parent().get_parent()
 	currentYaw = player.storageData.get("cameraYaw", 0)
 	currentPitch = player.storageData.get("cameraPitch", 0)
-	inited = true
 
 func _input(event):
 	if !orbital:
@@ -32,7 +30,7 @@ func _input(event):
 var _shakeEnd = false
 var isWalking = false
 func _process(delta):
-	if not inited or not player.inited:
+	if not player.inited:
 		return
 	
 	setOrbital(player.orbital_camera)

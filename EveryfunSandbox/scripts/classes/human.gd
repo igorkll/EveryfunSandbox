@@ -7,7 +7,7 @@ func _ready():
 	character_radius = 0.25
 	character_height = 1.8
 	
-	cameraContainer = Camera3D.new()
+	cameraContainer = Node3D.new()
 	cameraContainer.position = Vector3(0, 0.689, 0)
 	add_child(cameraContainer)
 	
