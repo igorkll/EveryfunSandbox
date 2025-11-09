@@ -26,6 +26,7 @@ func detachBlockChild(terrain, position, child):
 	blockChildren.erase(child)
 	if blockChildren.size() == 0:
 		terrain.blockChildren.erase(position)
+	terrain.remove_child(child)
 	game.allTerrainNodes.erase(child)
 
 func deleteBlockChild(terrain, position, child):
@@ -500,4 +501,11 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 
 func convertTerrainPositions(terrain, position: Vector3i, newTerrain):
 	terrain = getTerrain(terrain)
+	newTerrain = getTerrain(newTerrain)
 	return getVoxelPositionFromGlobalPosition(newTerrain, getGlobalPositionFromVoxelPosition(terrain, position))
+
+func isDymanic(terrain):
+	return not getTerrain(terrain).isMainTerrain
+	
+func isStatic(terrain):
+	return getTerrain(terrain).isMainTerrain

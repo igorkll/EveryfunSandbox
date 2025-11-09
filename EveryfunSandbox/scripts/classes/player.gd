@@ -101,6 +101,9 @@ func controlHandler():
 		game.setCrosspiece("use")
 		if Input.is_action_just_pressed("use"):
 			# terrainUtils.useBlock(result[0], result[1].position)
-			terrainUtils.makeDynamic(result[0], result[1].position)
+			if terrainUtils.isDymanic(result[0]):
+				terrainUtils.makeStatic(result[0], result[1].position)
+			else:
+				terrainUtils.makeDynamic(result[0], result[1].position)
 	else:
 		game.setCrosspiece("normal")
