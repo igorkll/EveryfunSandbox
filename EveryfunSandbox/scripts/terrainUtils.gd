@@ -213,7 +213,7 @@ func setBlockId(terrain, position: Vector3i, blockId: int):
 		if terrain.storageData.blocksCount == 0:
 			bodyUtils.destroyBody(terrain)
 		else:
-			terrain.updateBlock(position)
+			terrain.updateBlock(position, blockId)
 			bodyUtils.updateBody(terrain)
 
 func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null, allowRecreateScript=true):

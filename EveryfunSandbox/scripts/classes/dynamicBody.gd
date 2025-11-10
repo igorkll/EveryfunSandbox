@@ -40,24 +40,26 @@ func init(bodyId: int):
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 	
-func updateBlock(pos):
+func updateBlock(pos, blockId=null):
 	unloadBlock(pos)
 	
-	var id = terrainUtils.getBlockId(self, pos)
-	if id > 0:
+	if blockId == null:
+		blockId = terrainUtils.getBlockId(self, pos)
+	
+	if blockId > 0:
 		var collider = null
 		
-		var colliderShape = blockUtils.getBlockCollider(id)
+		var colliderShape = blockUtils.getBlockCollider(blockId)
 		if colliderShape:
 			collider = CollisionShape3D.new()
-			var voxelItem = blockUtils.list_id2obj[id]
+			var voxelItem = blockUtils.list_id2obj[blockId]
 			if voxelItem.has("rotation"):
 				collider.rotation_degrees = voxelItem.rotation.r
 			collider.position = pos
 			collider.shape = colliderShape
 			get_parent().add_child(collider)
 		
-		loadedBlocks[pos] = [collider, id]
+		loadedBlocks[pos] = [collider, blockId]
 		
 func unloadBlock(pos):
 	var block = loadedBlocks.get(pos)
