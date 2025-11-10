@@ -440,22 +440,26 @@ func sortNodesByDistance(nodes, position):
 	nodes.sort_custom(func(a, b):
 		return -1 if a.global_transform.origin.distance_to(position) < b.global_transform.origin.distance_to(position) else 1
 	)
-	
+
+var _aabb_debug_material
 func showAabb(aabb: AABB, parent: Node3D, offset=Vector3()):
 	var box_mesh = BoxMesh.new()
-	box_mesh.size = aabb.size
+	box_mesh.size = aabb.size + Vector3(0.025, 0.025, 0.025)
 
 	var mesh_instance = MeshInstance3D.new()
+	mesh_instance.material_override = _aabb_debug_material
 	mesh_instance.mesh = box_mesh
-	mesh_instance.translation = offset + aabb.position + aabb.size * 0.5
+	mesh_instance.position = aabb.position - ((Vector3(1, 1, 1) - aabb.size) / 2)
 
 	parent.add_child(mesh_instance)
-	
 	return mesh_instance
 
 # ------------------------------------------------- backend
 
 func _ready():
+	_aabb_debug_material = StandardMaterial3D.new()
+	_aabb_debug_material.albedo_color = Color(1, 0, 0)
+	
 	sceneTree = get_tree()
 	scene = sceneTree.current_scene
 	mainNode = get_node("/root/main")

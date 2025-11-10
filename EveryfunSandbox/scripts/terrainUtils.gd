@@ -114,15 +114,18 @@ func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=nu
 			if storageData == null:
 				storageData = blockUtils.getDefaultStorageData(blockId)
 	return [blockId, storageData]
+
+func updateBlockScriptChild(terrain, position: Vector3i, blockId, child):
+	child.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+	child.voxelTerrain = terrain
+	child.voxelPosition = position
+	child.voxelModel = game.blockLibrary.get_model(blockId)
 	
 func updateBlockScript(terrain, position: Vector3i, blockId):
 	var children = getBlockChildren(terrain, position)
 	for child in children:
 		if child.get_script() != null:
-			child.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
-			child.voxelTerrain = terrain
-			child.voxelPosition = position
-			child.voxelModel = game.blockLibrary.get_model(blockId)
+			updateBlockScriptChild(terrain, position, blockId, child)
 
 func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
 	terrain = getTerrain(terrain)
@@ -154,6 +157,7 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 		node.voxelDirection = obj.rotation.d
 		node.voxelDirectionUp = obj.rotation.u
 	
+	updateBlockScriptChild(terrain, position, blockId, node)
 	attachBlockChild(terrain, position, node)
 	
 func checkTempScript(terrain, position: Vector3i):
