@@ -49,12 +49,28 @@ func loadBody(id: int):
 	terrain.init(id)
 
 	updateBodyDataInSave(body)
+	updateBody(body)
 	return body
+	
+func updateBody(body):
+	body = getBody(body)
+	var terrain = terrainUtils.getTerrain(body)
+	
+	var mass = 0
+	var center_of_mass = Vector3(0, 0, 0)
+	for pos in terrain.loadedBlocks:
+		var id = terrain.loadedBlocks[pos][1]
+		mass += blockUtils.list_id2obj[id].info.weight
+		
+	body.mass = mass
+	body.center_of_mass_mode = RigidBody3D.CenterOfMassMode.CENTER_OF_MASS_MODE_CUSTOM
+	body.center_of_mass = center_of_mass
 
 func unloadBody(body):
 	body = getBody(body)
 	
-	# need save terrain
+	# need write terrain saving here
+	
 	updateBodyDataInSave(body)
 	body.queue_free()
 

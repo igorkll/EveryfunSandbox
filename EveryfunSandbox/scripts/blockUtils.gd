@@ -77,7 +77,8 @@ var _transparency_material
 var _defaultBlockCollider
 
 var _defaultBlockInfo = {
-	"durability": 1
+	"durability": 1,
+	"weight": 10
 }
 
 # map size: x y

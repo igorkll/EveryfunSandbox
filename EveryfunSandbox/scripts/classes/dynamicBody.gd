@@ -6,18 +6,17 @@ var voxel_tool
 var isMainTerrain = false
 var deferredActions = []
 
+var id: int
+var storageData
 var defaultStorageData = {
 	blocksCount = 0
 }
 
-var storageData
-
-var _colliders = {}
-var id: int
+var loadedBlocks = {}
 
 func _ready():
-	self.connect("mesh_block_entered", updateCollider)
-	self.connect("block_unloaded", destroyCollider)
+	self.connect("mesh_block_entered", updateBlock)
+	self.connect("block_unloaded", unloadBlock)
 
 func init(bodyId: int):
 	id = bodyId
@@ -41,27 +40,31 @@ func init(bodyId: int):
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 	
-func updateCollider(pos):
-	destroyCollider(pos)
+func updateBlock(pos):
+	unloadBlock(pos)
 	
 	var id = terrainUtils.getBlockId(self, pos)
 	if id > 0:
+		var collider = null
+		
 		var colliderShape = blockUtils.getBlockCollider(id)
 		if colliderShape:
-			var collider = CollisionShape3D.new()
+			collider = CollisionShape3D.new()
 			var voxelItem = blockUtils.list_id2obj[id]
 			if voxelItem.has("rotation"):
 				collider.rotation_degrees = voxelItem.rotation.r
 			collider.position = pos
 			collider.shape = colliderShape
 			get_parent().add_child(collider)
-			_colliders[pos] = collider
 		
-func destroyCollider(pos):
-	var collider = _colliders.get(pos)
-	if collider:
-		collider.queue_free()
-		_colliders.erase(pos)
+		loadedBlocks[pos] = [collider, id]
+		
+func unloadBlock(pos):
+	var block = loadedBlocks.get(pos)
+	if block:
+		if block[0]:
+			block[0].queue_free()
+		loadedBlocks.erase(pos)
 
 func _process(delta):
 	self.max_view_distance = game.view_distance
