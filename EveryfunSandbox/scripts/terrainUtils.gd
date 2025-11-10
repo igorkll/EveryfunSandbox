@@ -115,16 +115,8 @@ func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=nu
 				storageData = blockUtils.getDefaultStorageData(blockId)
 	return [blockId, storageData]
 	
-func updateTerrainDependedChildFields(terrain, position: Vector3i, child):
-	terrain = getTerrain(terrain)
-	child.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
-	if child.get_script() != null:
-		child.voxelTerrain = terrain
-		child.voxelPosition = position
-		
-func updateVariantDependedChildFields(terrain, position: Vector3i, child):
-	terrain = getTerrain(terrain)
-	child.voxelModel = game.blockLibrary.get_model(child.voxelBlockId)
+func updateBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
+	pass
 
 func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
 	terrain = getTerrain(terrain)
@@ -135,8 +127,11 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 	var obj = blockUtils.list_id2obj[blockId]
 	var script = game.loadResource(obj.script)
 	var node = script.new()
-	updateTerrainDependedChildFields(terrain, position, node)
-	updateVariantDependedChildFields(terrain, position, node)
+	
+	node.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+	node.voxelTerrain = terrain
+	node.voxelPosition = position
+	node.voxelModel = game.blockLibrary.get_model(blockId)
 	
 	node.storageData = storageData
 	node.scriptData = obj.get("script_data", {})
@@ -227,9 +222,13 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	var children = getBlockChildren(terrain, position)
 	
-	if obj.has("script") and (not exists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.get("script_temp") or isBlockScript(terrain, position)):
-		deleteBlockChildrenWithScript(terrain, position)
-		loadBlockScript(terrain, position, blockId, storageData)
+	if obj.has("script"):
+		var blockScriptExists = isBlockScript(terrain, position)
+		if (not blockScriptExists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.get("script_temp") or blockScriptExists):
+			deleteBlockChildrenWithScript(terrain, position)
+			loadBlockScript(terrain, position, blockId, storageData)
+		else:
+			updateBlockScript(terrain, position, blockId)
 	
 	deleteBlockChildrenWithTypes(terrain, position, ["OmniLight3D", "SpotLight3D"])
 	if obj.has("lights"):
@@ -443,7 +442,6 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 	loadBlock(terrain, position, newVoxelId)
 	setBlockId(terrain, position, newVoxelId)
 	saves.changeInteractiveVoxel(terrain, position, newVoxelId)
-	updateVariantDependedFields()
 
 func setVariantAndColor(terrain, position: Vector3i, variant, color):
 	terrain = getTerrain(terrain)
@@ -530,9 +528,6 @@ func makeStatic(terrain, position: Vector3i):
 		return
 	teleportVoxel(terrain, position, game.terrain, staticPosition)
 
-func _teleportVoxelChildProcess(terrain, position: Vector3i, child):
-	updateTerrainDependedChildFields(terrain, position, child)
-
 func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3i):
 	terrain = getTerrain(terrain)
 	newTerrain = getTerrain(newTerrain)
@@ -549,8 +544,9 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	children = children.duplicate()
 	detachAllBlockChildren(terrain, position)
 	for child in children:
-		_teleportVoxelChildProcess(newTerrain, newPosition, child)
 		attachBlockChild(newTerrain, newPosition, child)
+	
+	loadBlock(newTerrain, newPosition, id)
 
 func convertTerrainPositions(terrain, position: Vector3i, newTerrain):
 	terrain = getTerrain(terrain)
