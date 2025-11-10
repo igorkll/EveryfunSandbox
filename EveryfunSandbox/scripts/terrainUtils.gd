@@ -199,22 +199,22 @@ func getBlockId(terrain, position: Vector3i):
 	
 func setBlockId(terrain, position: Vector3i, blockId: int):
 	terrain = getTerrain(terrain)
-	if not isEditable(terrain, position):
-		terrain.deferredActions.append([2, position, blockId])
-		return
-	
-	if terrain.voxel_tool.get_voxel(position) == blockId:
-		return
-	
-	terrain.voxel_tool.set_voxel(position, blockId)
+	var editable = isEditable(terrain, position)
 	
 	if isDymanic(terrain):
-		terrain.storageData.blocksCount = terrain.storageData.blocksCount + (-1 if blockId == 0 else 1)
+		if editable:
+			terrain.storageData.blocksCount = terrain.storageData.blocksCount + (-1 if blockId == 0 else 1)
 		if terrain.storageData.blocksCount == 0:
 			bodyUtils.destroyBody(terrain)
 		else:
 			terrain.updateBlock(position, blockId)
 			bodyUtils.updateBody(terrain)
+	
+	if not isEditable(terrain, position):
+		terrain.deferredActions.append([2, position, blockId])
+		return
+	
+	terrain.voxel_tool.set_voxel(position, blockId)
 
 func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null, allowRecreateScript=true):
 	terrain = getTerrain(terrain)
@@ -283,9 +283,9 @@ func unloadBlock(terrain, position: Vector3i):
 
 func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0, color=0, storageData=null):
 	terrain = getTerrain(terrain)
-	if not isEditable(terrain, position):
-		terrain.deferredActions.append([1, position, blockId, rotation, variant, color, storageData])
-		return
+	# if not isEditable(terrain, position):
+	# 	terrain.deferredActions.append([1, position, blockId, rotation, variant, color, storageData])
+	#	return
 	
 	if storageData == null:
 		storageData = blockUtils.getDefaultStorageData(blockId)
