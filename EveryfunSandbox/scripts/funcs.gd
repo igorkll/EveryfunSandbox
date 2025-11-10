@@ -116,3 +116,22 @@ func getNullIndex(array):
 func deleteAllNullsOnEnd(array):
 	while array.size() > 0 and array[array.size() - 1] == null:
 		array.pop_back()
+
+# -------------------------------------------------
+
+func get_surface_aabb(mesh: ArrayMesh, surface_index: int) -> AABB:
+	if surface_index < 0 or surface_index >= mesh.get_surface_count():
+		push_error("Invalid surface index")
+		return AABB()
+
+	var arrays = mesh.surface_get_arrays(surface_index)
+	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+
+	if vertices.is_empty():
+		return AABB()
+
+	var aabb = AABB(vertices[0], Vector3.ZERO)
+	for v in vertices:
+		aabb = aabb.expand(v)
+
+	return aabb
