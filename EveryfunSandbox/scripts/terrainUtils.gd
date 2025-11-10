@@ -313,7 +313,7 @@ func destroyBlock(terrain, position: Vector3i):
 	
 func applyDeferredActions(terrain):
 	terrain = getTerrain(terrain)
-	for deferredAction in terrain.deferredActions:
+	for deferredAction in terrain.deferredActions.duplicate():
 		if isEditable(terrain, deferredAction[1]):
 			if deferredAction[0] == 0:
 				destroyBlock(terrain, deferredAction[1])

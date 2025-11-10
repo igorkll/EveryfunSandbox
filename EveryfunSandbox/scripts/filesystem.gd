@@ -1,6 +1,7 @@
 extends Node
 
 var _availableRoots = ["user://", "res://"]
+var deferredActions = []
 
 func splitGodotPath(path):
 	var root
@@ -87,9 +88,21 @@ func list(path):
 		return []
 		
 func remove(path) -> bool:
-	var dir := DirAccess.open("res://")
-	if dir:
-		if dir.file_exists(path):
-			var result = dir.remove(path)
-			return result == OK
+	var spath = splitGodotPath(path)
+	var dir := DirAccess.open(spath[0])
+	if dir && dir.file_exists(spath[1]) && dir.remove(spath[1]) == OK:
+		return true
+	deferredActions.append([0, path])
 	return false
+
+func _process(delta):
+	if deferredActions.size() > 0:
+		for deferredAction in deferredActions.duplicate():
+			if deferredAction[0] == 0:
+				remove(deferredAction[1])
+			deferredAction[0] = -1
+			
+		for i in range(deferredActions.size() - 1, -1, -1):
+			var deferredAction = deferredActions[i]
+			if deferredAction[0] < 0:
+				deferredActions.remove_at(i)
