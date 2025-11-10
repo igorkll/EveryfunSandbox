@@ -62,7 +62,7 @@ func isInteractive(blockId: int) -> bool:
 	
 func getBlockCollider(blockId: int):
 	if blockId > 0:
-		return _defaultBlockCollider
+		return _blockColliders.get(blockId, _defaultBlockCollider)
 	return null
 
 # ------------------------------------------------- backend
@@ -77,6 +77,8 @@ var _defaultBlockCollider
 var _defaultBlockInfo = {
 	"durability": 1
 }
+
+var _blockColliders = {}
 
 # map size: x y
 # texture pos: x- x+ y- y+ z- z+
