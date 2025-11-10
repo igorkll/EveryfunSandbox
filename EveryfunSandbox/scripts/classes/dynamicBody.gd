@@ -49,6 +49,9 @@ func updateCollider(pos):
 		var colliderShape = blockUtils.getBlockCollider(id)
 		if colliderShape:
 			var collider = CollisionShape3D.new()
+			var voxelItem = blockUtils.list_id2obj[id]
+			if voxelItem.has("rotation"):
+				collider.rotation_degrees = voxelItem.rotation.r
 			collider.position = pos
 			collider.shape = colliderShape
 			get_parent().add_child(collider)
