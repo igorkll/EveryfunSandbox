@@ -223,7 +223,7 @@ func rotated_mesh_centered(original_mesh: ArrayMesh, rotation_degrees: Vector3) 
 			for v in vertices:
 				aabb.expand(v)
 		
-		var center = Vector3(0, 0, 0)
+		var center = Vector3(0.5, 0.5, 0.5)
 		for i in range(vertices.size()):
 			vertices[i] = (transform * (vertices[i] - center)) + center
 		
@@ -234,8 +234,6 @@ func rotated_mesh_centered(original_mesh: ArrayMesh, rotation_degrees: Vector3) 
 		new_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	
 	return new_mesh
-
-
 
 func make_aabbs_from_surfaces(mesh: ArrayMesh, surfaces: Array, rotation_degrees: Vector3) -> Array:
 	var aabbs = []
