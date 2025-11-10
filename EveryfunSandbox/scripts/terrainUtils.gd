@@ -115,8 +115,13 @@ func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=nu
 				storageData = blockUtils.getDefaultStorageData(blockId)
 	return [blockId, storageData]
 	
-func updateBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
-	pass
+func updateBlockScript(terrain, position: Vector3i, blockId):
+	var children = getBlockChildren(terrain, position)
+	for child in children:
+		child.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+		child.voxelTerrain = terrain
+		child.voxelPosition = position
+		child.voxelModel = game.blockLibrary.get_model(blockId)
 
 func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
 	terrain = getTerrain(terrain)
@@ -127,11 +132,6 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 	var obj = blockUtils.list_id2obj[blockId]
 	var script = game.loadResource(obj.script)
 	var node = script.new()
-	
-	node.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
-	node.voxelTerrain = terrain
-	node.voxelPosition = position
-	node.voxelModel = game.blockLibrary.get_model(blockId)
 	
 	node.storageData = storageData
 	node.scriptData = obj.get("script_data", {})
@@ -220,15 +220,13 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	var obj = blockUtils.list_id2obj[blockId]
 	var oldObj = getBlockObj(terrain, position)
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
-	var children = getBlockChildren(terrain, position)
 	
 	if obj.has("script"):
 		var blockScriptExists = isBlockScript(terrain, position)
-		if (not blockScriptExists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.get("script_temp") or blockScriptExists):
+		if (not blockScriptExists or (_getScriptChecksum(obj) != _getScriptChecksum(oldObj) and isEditable(terrain, position))) and (!obj.get("script_temp") or blockScriptExists):
 			deleteBlockChildrenWithScript(terrain, position)
 			loadBlockScript(terrain, position, blockId, storageData)
-		else:
-			updateBlockScript(terrain, position, blockId)
+		updateBlockScript(terrain, position, blockId)
 	
 	deleteBlockChildrenWithTypes(terrain, position, ["OmniLight3D", "SpotLight3D"])
 	if obj.has("lights"):
