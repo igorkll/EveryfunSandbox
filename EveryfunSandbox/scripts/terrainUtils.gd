@@ -197,20 +197,21 @@ func getBlockId(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
 	return terrain.voxel_tool.get_voxel(position)
 	
-func setBlockId(terrain, position: Vector3i, blockId: int): # WTF
+func setBlockId(terrain, position: Vector3i, blockId: int):
 	terrain = getTerrain(terrain)
 	var editable = isEditable(terrain, position)
 	
 	if isDymanic(terrain):
-		if editable:
+		if not editable or ((blockId == 0) != (terrain.voxel_tool.get_voxel(position) == 0)):
 			terrain.storageData.blocksCount = terrain.storageData.blocksCount + (-1 if blockId == 0 else 1)
+		
 		if terrain.storageData.blocksCount == 0:
 			bodyUtils.destroyBody(terrain)
 		else:
 			terrain.updateBlock(position, blockId)
 			bodyUtils.updateBody(terrain)
 	
-	if not isEditable(terrain, position):
+	if not editable:
 		terrain.deferredActions.append([2, position, blockId])
 		return
 	
