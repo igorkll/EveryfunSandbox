@@ -223,7 +223,7 @@ func rotated_mesh_centered(original_mesh: ArrayMesh, rotation_degrees: Vector3) 
 			for v in vertices:
 				aabb.expand(v)
 		
-		var center = aabb.position
+		var center = Vector3(0, 0, 0)
 		for i in range(vertices.size()):
 			vertices[i] = (transform * (vertices[i] - center)) + center
 		
