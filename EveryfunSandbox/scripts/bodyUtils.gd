@@ -60,7 +60,12 @@ func updateBody(body):
 	var center_of_mass = Vector3(0, 0, 0)
 	for pos in terrain.loadedBlocks:
 		var id = terrain.loadedBlocks[pos][1]
-		mass += blockUtils.list_id2obj[id].info.weight
+		var blockMass = blockUtils.list_id2obj[id].info.weight
+		mass += blockMass
+		center_of_mass = Vector3(pos) * blockMass
+		
+	if mass > 0:
+		center_of_mass /= mass
 		
 	body.mass = mass
 	body.center_of_mass_mode = RigidBody3D.CenterOfMassMode.CENTER_OF_MASS_MODE_CUSTOM
