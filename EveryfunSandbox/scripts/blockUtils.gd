@@ -78,7 +78,8 @@ var _defaultBlockCollider
 
 var _defaultBlockInfo = {
 	"durability": 1,
-	"weight": 10
+	"weight": 10,
+	"center_of_mass": [0, 0, 0]
 }
 
 # map size: x y
@@ -279,6 +280,13 @@ func _prepairItem(item, path):
 		item.info = funcs.merge_dicts(item.info, _defaultBlockInfo)
 	else:
 		item.info = _defaultBlockInfo
+		
+	var info = item.info
+	if item.has("rotation"):
+		var rotation = item.rotation.r
+		info.center_of_mass = funcs.rotateVectorIn_degrees(funcs.vecFromArr(info.center_of_mass), rotation)
+	else:
+		info.center_of_mass = funcs.vecFromArr(info.center_of_mass)
 
 func regBlockList(jsonPath):
 	var path = jsonPath.get_base_dir()

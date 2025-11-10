@@ -60,9 +60,10 @@ func updateBody(body):
 	var center_of_mass = Vector3(0, 0, 0)
 	for pos in terrain.loadedBlocks:
 		var id = terrain.loadedBlocks[pos][1]
-		var blockMass = blockUtils.list_id2obj[id].info.weight
+		var blockInfo = blockUtils.list_id2obj[id].info
+		var blockMass = blockInfo.weight
 		mass += blockMass
-		center_of_mass = Vector3(pos) * blockMass
+		center_of_mass = (Vector3(pos) + blockInfo.center_of_mass) * blockMass
 	
 	if mass <= 0:
 		mass = 0.001

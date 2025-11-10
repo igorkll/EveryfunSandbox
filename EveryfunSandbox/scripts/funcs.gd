@@ -44,6 +44,14 @@ func rotateVectorIn_xz(vec: Vector3, angle_degrees: float) -> Vector3:
 	var z = vec.x * sin_a + vec.z * cos_a
 	
 	return Vector3(x, vec.y, z)
+	
+func vecFromArr(arr):
+	return Vector3(arr[0], arr[1], arr[2])
+	
+func rotateVectorIn_degrees(v: Vector3, rotation_degrees: Vector3) -> Vector3:
+	var rad = rotation_degrees * deg_to_rad(1)
+	var q = Quaternion.from_euler(rad)
+	return q * v
 
 # окозалось что Vector3i по умалчанию делает гребаное отбрасывание дробной части
 # а не округление вниз

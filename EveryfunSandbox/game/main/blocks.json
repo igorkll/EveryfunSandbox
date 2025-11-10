@@ -166,6 +166,9 @@
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "scripts/grammophone.gd",
-		"rotationMode": "360"
+		"rotationMode": "360",
+		"info": {
+			"center_of_mass": [0, 0.4, 0]
+		}
 	}
 ]
