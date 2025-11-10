@@ -116,6 +116,9 @@ func getNullIndex(array):
 func deleteAllNullsOnEnd(array):
 	while array.size() > 0 and array[array.size() - 1] == null:
 		array.pop_back()
+		
+func deg_to_rad_vec3(vec: Vector3) -> Vector3:
+	return Vector3(deg_to_rad(vec.x), deg_to_rad(vec.y), deg_to_rad(vec.z))
 
 # -------------------------------------------------
 
@@ -167,6 +170,23 @@ func make_shape_from_surfaces(mesh: ArrayMesh, surface_indices: Array, convex: b
 		var shape = ConcavePolygonShape3D.new()
 		shape.faces = all_vertices
 		return shape
+		
+func get_mesh_from_surface(original_mesh: ArrayMesh, surface_index: int) -> ArrayMesh:
+	if surface_index >= original_mesh.get_surface_count():
+		push_error("Surface index out of range")
+		return null
+	
+	var arrays = original_mesh.surface_get_arrays(surface_index)
+	
+	var new_mesh = ArrayMesh.new()
+	new_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	return new_mesh
 
-func make_collision_aabbs_from_surfaces(mesh: ArrayMesh, collision_surfaces: Array, rotation_degrees: Vector3):
-	pass
+func make_aabbs_from_surfaces(mesh: ArrayMesh, surfaces: Array, rotation_degrees: Vector3) -> Array:
+	var aabbs = []
+
+	for surface in surfaces:
+		var _mesh = get_mesh_from_surface(mesh, surface)
+		aabbs.append(_mesh.get_aabb())
+	
+	return aabbs

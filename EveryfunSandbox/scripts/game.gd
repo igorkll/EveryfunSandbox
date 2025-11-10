@@ -441,7 +441,7 @@ func showAabb(aabb: AABB, parent: Node3D, offset=Vector3()):
 	var mesh_instance = MeshInstance3D.new()
 	mesh_instance.material_override = _aabb_debug_material
 	mesh_instance.mesh = box_mesh
-	mesh_instance.position = aabb.position - ((Vector3(1, 1, 1) - aabb.size) / 2)
+	mesh_instance.position = offset + (aabb.position - ((Vector3(1, 1, 1) - aabb.size) / 2))
 
 	parent.add_child(mesh_instance)
 	return mesh_instance

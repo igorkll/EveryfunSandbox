@@ -407,11 +407,11 @@ func _genLibrary():
 					mesh.surface_set_material(i, material)
 			
 			if collision_surfaces.size() > 0:
-				var rotation_degrees
+				var rotation_degrees = Vector3()
 				if block.has("rotation"):
 					rotation_degrees = block.rotation.r
 				
-				blockModel.collision_aabbs = funcs.make_collision_aabbs_from_surfaces(mesh, collision_surfaces, rotation_degrees)
+				blockModel.collision_aabbs = funcs.make_aabbs_from_surfaces(mesh, collision_surfaces, rotation_degrees)
 				_blockColliders[index] = funcs.make_shape_from_surfaces(mesh, collision_surfaces)
 			else:
 				blockModel.collision_aabbs = [AABB(Vector3(0, 0, 0), Vector3(1, 1, 1))]
