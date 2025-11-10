@@ -210,7 +210,7 @@ func setBlockId(terrain, position: Vector3i, blockId: int):
 		else:
 			terrain.updateCollider(position)
 
-func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
+func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null, allowRecreateScript=true):
 	terrain = getTerrain(terrain)
 	var loadBlockData = _getLoadBlockData(terrain, position, blockId, storageData)
 	blockId = loadBlockData[0]
@@ -223,7 +223,7 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null):
 	
 	if obj.has("script"):
 		var blockScriptExists = isBlockScript(terrain, position)
-		if (not blockScriptExists or (_getScriptChecksum(obj) != _getScriptChecksum(oldObj) and isEditable(terrain, position))) and (!obj.get("script_temp") or blockScriptExists):
+		if allowRecreateScript and (not blockScriptExists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.get("script_temp") or blockScriptExists):
 			deleteBlockChildrenWithScript(terrain, position)
 			loadBlockScript(terrain, position, blockId, storageData)
 		updateBlockScript(terrain, position, blockId)
