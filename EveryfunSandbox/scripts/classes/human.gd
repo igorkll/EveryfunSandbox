@@ -4,7 +4,7 @@ class_name human
 var cameraContainer
 
 func _ready():
-	character_radius = 0.3
+	character_radius = 0.45
 	character_height = 1.8
 	
 	cameraContainer = Node3D.new()
