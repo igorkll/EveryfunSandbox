@@ -321,7 +321,7 @@ func applyDeferredActions(terrain):
 			elif deferredAction[0] == 1:
 				placeBlock(terrain, deferredAction[1], deferredAction[2], deferredAction[3], deferredAction[4], deferredAction[5], deferredAction[6])
 			elif deferredAction[0] == 2:
-				setBlockId(terrain, deferredAction[1], deferredAction[2])
+				terrain.voxel_tool.set_voxel(deferredAction[1], deferredAction[2])
 			elif deferredAction[0] == 3:
 				setVoxelMetadata(terrain, deferredAction[1], deferredAction[2])
 			deferredAction[0] = -1
