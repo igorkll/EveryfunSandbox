@@ -534,6 +534,9 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	terrain = getTerrain(terrain)
 	newTerrain = getTerrain(newTerrain)
 	
+	if terrain == newTerrain and position == newPosition:
+		return
+	
 	var voxelId = getBlockId(terrain, position)
 	var voxelMetadata = getVoxelMetadata(terrain, position)
 	var _blockData = _getLoadBlockData(terrain, position, voxelId, null)
