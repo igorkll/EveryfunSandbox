@@ -181,7 +181,7 @@ func _ready():
 	_defaultBlockCollider.size = Vector3(1, 1, 1)
 	
 func updateBlockLibrary():
-	_blockColliders = []
+	_blockColliders = {}
 	_genLibrary()
 
 func _duplicateItem(item):
