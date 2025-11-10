@@ -222,9 +222,20 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null, allo
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	
 	if obj.has("script"):
-		if allowRecreateScript and !obj.get("script_temp") and (not isBlockScript(terrain, position) or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)):
-			deleteBlockChildrenWithScript(terrain, position)
-			loadBlockScript(terrain, position, blockId, storageData)
+		if allowRecreateScript:
+			var blockScript = isBlockScript(terrain, position)
+			var scriptChanged = _getScriptChecksum(obj) != _getScriptChecksum(oldObj)
+			
+			var recreate = false
+			if obj.get("script_temp"):
+				recreate = blockScript and scriptChanged
+			else:
+				recreate = not blockScript or scriptChanged
+			
+			if recreate:
+				deleteBlockChildrenWithScript(terrain, position)
+				loadBlockScript(terrain, position, blockId, storageData)
+		
 		updateBlockScript(terrain, position, blockId)
 	
 	deleteBlockChildrenWithTypes(terrain, position, ["OmniLight3D", "SpotLight3D"])
