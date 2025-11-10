@@ -22,6 +22,7 @@ var fall_speed_mul = 2.5
 var step_interval = 0.4
 var velocity_drop = 0.0005
 var push_strength = 1
+var beware_edge_percent = 0.5
 
 var walking_speed_mul = 1
 var velocity_drop_mul = 1
@@ -210,7 +211,7 @@ func _getVoxel(side):
 				return result
 				
 func _checkEdge(x, z):
-	return not _getVoxelWithOffset(Vector3.DOWN, Vector3(x, 0, z) * character_radius)
+	return not _getVoxelWithOffset(Vector3.DOWN, Vector3(x, 0, z) * character_radius * beware_edge_percent)
 
 # ------------------------------------------------- api
 
