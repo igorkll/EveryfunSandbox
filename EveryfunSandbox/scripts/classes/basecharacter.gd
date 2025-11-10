@@ -189,14 +189,14 @@ func _blockSound(sound):
 # -------------------------------------------------
 
 func _getVoxelWithOffset(side, offset):
-	var result = game.terrain.voxel_tool.raycast(
+	var result = terrainUtils.blockRaycast(
 		global_transform.origin + offset,
 		side,
 		(character_height / 2) + 0.01
 	)
 
 	if result:
-		return game.terrain.voxel_tool.get_voxel(result.position)
+		return result[0].voxel_tool.get_voxel(result[1].position)
 
 func _getVoxel(side):
 	var result = _getVoxelWithOffset(side, Vector3(0, 0, 0))
