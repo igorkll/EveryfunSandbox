@@ -168,7 +168,7 @@
 		"script": "scripts/grammophone.gd",
 		"rotationMode": "360",
 		"info": {
-			"center_of_mass": [0, 0.4, 0]
+			"center_of_mass": [0, -0.3, 0]
 		}
 	}
 ]
