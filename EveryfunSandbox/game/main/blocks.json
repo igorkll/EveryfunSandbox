@@ -10,7 +10,7 @@
 		"sound_placeDestroy": "grass_placeDestroy",
 		"info": {
 			"durability": 3,
-			"weight": 1300
+			"weight": 13
 		}
 	},
 	{
@@ -21,7 +21,7 @@
 		"sound_placeDestroy": "grass_placeDestroy",
 		"info": {
 			"durability": 3,
-			"weight": 1300
+			"weight": 13
 		}
 	},
 	{
@@ -32,7 +32,7 @@
 		"sound_placeDestroy": "stone_placeDestroy",
 		"info": {
 			"durability": 3,
-			"weight": 2600
+			"weight": 26
 		}
 	},
 	{
@@ -43,7 +43,7 @@
 		"sound_placeDestroy": "stone_placeDestroy",
 		"info": {
 			"durability": 4,
-			"weight": 1800
+			"weight": 18
 		}
 	},
 	{
@@ -55,7 +55,7 @@
 		"sound_placeDestroy": "metal_placeDestroy",
 		"info": {
 			"durability": 5,
-			"weight": 7800
+			"weight": 78
 		}
 	},
 	{
@@ -67,7 +67,7 @@
 		"sound_placeDestroy": "metal_placeDestroy",
 		"info": {
 			"durability": 5,
-			"weight": 7800
+			"weight": 78
 		}
 	},
 	{
@@ -79,7 +79,7 @@
 		"sound_placeDestroy": "stone_placeDestroy",
 		"info": {
 			"durability": 5,
-			"weight": 2600
+			"weight": 26
 		}
 	},
 	{
@@ -92,7 +92,7 @@
 		"sound_placeDestroy": "glass_placeDestroy",
 		"info": {
 			"durability": 1,
-			"weight": 2500
+			"weight": 25
 		}
 	},
 	
@@ -112,7 +112,7 @@
 		"paintable": true,
 		"info": {
 			"durability": 1,
-			"weight": 2500
+			"weight": 25
 		}
 	},
 	{
@@ -133,7 +133,7 @@
 		"rotationMode": "360V",
 		"info": {
 			"durability": 1,
-			"weight": 2500
+			"weight": 25
 		}
 	},
 	

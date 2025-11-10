@@ -61,9 +61,8 @@ func updateBody(body):
 	for pos in terrain.loadedBlocks:
 		var id = terrain.loadedBlocks[pos][1]
 		var blockInfo = blockUtils.list_id2obj[id].info
-		var blockMass = blockInfo.weight / consts.physics_divider
-		mass += blockMass
-		center_of_mass = (Vector3(pos) + blockInfo.center_of_mass) * blockMass
+		mass += blockInfo.weight
+		center_of_mass = (Vector3(pos) + blockInfo.center_of_mass) * blockInfo.weight
 	
 	if mass <= 0:
 		mass = 0.001

@@ -1,7 +1,7 @@
 extends Node
 
 func apply_impulse(obj, vec, pos=Vector3()):
-	obj.apply_impulse(vec / consts.physics_divider, pos)
+	obj.apply_impulse(vec, pos)
 
 func pulseObject(position, radius, power, object):
 	var dir = (object.global_position - position).normalized()
