@@ -1,15 +1,18 @@
 extends Node
 
+func apply_impulse(obj, vec, pos=Vector3()):
+	obj.apply_impulse(vec / consts.physics_divider, pos)
+
 func pulseObject(position, radius, power, object):
 	var dir = (object.global_position - position).normalized()
 	var dist = object.global_position.distance_to(position)
 	var strength = power * (1.0 - dist / radius)
-	object.apply_impulse(dir * strength)
+	apply_impulse(object, dir * strength)
 	
 func pulseObjectToDirection(position, radius, power, dir, object):
 	var dist = object.global_position.distance_to(position)
 	var strength = power * (1.0 - dist / radius)
-	object.apply_impulse(dir * strength)
+	apply_impulse(object, dir * strength)
 
 func pulse(position, radius, power):
 	var space = game.world.direct_space_state

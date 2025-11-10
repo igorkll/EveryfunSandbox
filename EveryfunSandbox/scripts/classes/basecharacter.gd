@@ -126,7 +126,7 @@ func _pushObjects():
 
 		if collider is RigidBody3D:
 			var push_dir = -collision.get_normal()
-			collider.apply_impulse(push_dir * push_strength, collision.get_position() - collider.global_position)
+			physics.apply_impulse(collider, push_dir * push_strength, collision.get_position() - collider.global_position)
 
 # -------------------------------------------------
 
@@ -270,5 +270,5 @@ func raycast(camera: Camera3D, max_interact_distance=consts.max_interact_distanc
 	var global_transform = camera.get_global_transform()
 	return terrainUtils.blockRaycast(global_transform.origin, -global_transform.basis.z, max_interact_distance)
 
-func apply_impulse(direction: Vector3):
+func apply_impulse(direction: Vector3, pos=null):
 	velocity += direction
