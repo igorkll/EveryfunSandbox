@@ -243,3 +243,71 @@ func make_aabbs_from_surfaces(mesh: ArrayMesh, surfaces: Array, rotation_degrees
 		aabbs.append(_mesh.get_aabb())
 	
 	return aabbs
+
+func copy_surface_with_reduction(mesh: ArrayMesh, reduction: float) -> ArrayMesh:
+	reduction = clamp(1 - reduction, 0.0, 1.0)
+	if mesh.get_surface_count() == 0:
+		push_error("Mesh has no surfaces")
+		return null
+	
+	var original = []
+	for i in range(mesh.get_surface_count()):
+		original.append(mesh.surface_get_arrays(i))
+	
+	var arrays = mesh.surface_get_arrays(0)
+	var vertices: PackedVector3Array = PackedVector3Array(arrays[Mesh.ARRAY_VERTEX])
+	var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] else PackedInt32Array()
+	
+	if indices.size() == 0:
+		push_error("Surface has no indices")
+		return null
+	
+	# Считаем, сколько треугольников оставить
+	var num_triangles = indices.size() / 3
+	var keep_triangles = int(num_triangles * (1.0 - reduction))
+	if keep_triangles <= 0:
+		keep_triangles = 1  # хотя бы один треугольник
+	
+	var new_vertices := PackedVector3Array()
+	var new_indices := PackedInt32Array()
+	var vertex_map := {} # old_index -> new_index
+	
+	# Копируем только первые keep_triangles треугольников
+	for i in range(keep_triangles * 3):
+		var old_index = indices[i]
+		if not vertex_map.has(old_index):
+			vertex_map[old_index] = new_vertices.size()
+			new_vertices.append(vertices[old_index])
+		new_indices.append(vertex_map[old_index])
+	
+	# Строим новые массивы для поверхности
+	var new_arrays = []
+	new_arrays.resize(Mesh.ARRAY_MAX)
+	new_arrays[Mesh.ARRAY_VERTEX] = new_vertices
+	new_arrays[Mesh.ARRAY_INDEX] = new_indices
+	
+	# Копируем нормали, UV, цвета под новые вершины
+	for arr_type in [Mesh.ARRAY_NORMAL, Mesh.ARRAY_TEX_UV, Mesh.ARRAY_COLOR]:
+		if arrays[arr_type]:
+			var old_array = arrays[arr_type]
+			var new_array
+			if arr_type == Mesh.ARRAY_TEX_UV:
+				new_array = PackedVector2Array()
+			else:
+				new_array = PackedVector3Array()
+			for old_index in vertex_map.keys():
+				new_array.append(old_array[old_index])
+			new_arrays[arr_type] = new_array
+	
+	# Создаём новый ArrayMesh
+	var new_mesh = ArrayMesh.new()
+	for surface in original:
+		new_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface)
+	new_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, new_arrays)
+	
+	return new_mesh
+	
+func save_only_first_surface(mesh: ArrayMesh) -> ArrayMesh:
+	var new_mesh = ArrayMesh.new()
+	new_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh.surface_get_arrays(0))
+	return new_mesh

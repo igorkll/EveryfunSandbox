@@ -159,7 +159,7 @@
 		"name": "grammophone",
 		"texture": "blocks/grammophone/texture.png",
 		"mesh": "blocks/grammophone/mesh.obj",
-		"mesh_collision": 1,
+		"auto_collision": true,
 		"hide_collision": true,
 		"material": "blocks/grammophone/material.png",
 		"normal": "blocks/grammophone/normal.png",

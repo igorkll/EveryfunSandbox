@@ -388,6 +388,15 @@ func _genLibrary():
 				var mesh_instance = block.mesh.find_children("", "MeshInstance3D", true)
 				if mesh_instance.size() > 0:
 					mesh = mesh_instance[0].mesh
+			
+			var auto_collision_value = block.get("auto_collision")
+			if auto_collision_value:
+				if not funcs.is_number(auto_collision_value):
+					auto_collision_value = 0.2
+				mesh = funcs.save_only_first_surface(mesh)
+				mesh = funcs.copy_surface_with_reduction(mesh, auto_collision_value)
+				block.mesh_collision = mesh.get_surface_count() - 1
+				
 			blockModel.mesh = mesh
 			
 			var mesh_collision_enabled = block.get("mesh_collision", true)
