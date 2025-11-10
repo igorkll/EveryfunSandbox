@@ -9,7 +9,6 @@ var world
 var dynamicBodies
 var characters
 var player
-var blockLibrary
 var settings
 var miscData = {}
 var muteAllExceptMusic = false
@@ -472,8 +471,8 @@ func _ready():
 	
 	_addFolder("res://game/main")
 	_addFolder("res://game/test")
+	blockUtils.updateBlockLibrary()
 	
-	blockLibrary = blockUtils.genLibrary()
 	_initMusic()
 	_initAmbient()
 	_initGui()

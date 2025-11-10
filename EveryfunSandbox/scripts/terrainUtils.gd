@@ -119,7 +119,7 @@ func updateBlockScriptChild(terrain, position: Vector3i, blockId, child):
 	child.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	child.voxelTerrain = terrain
 	child.voxelPosition = position
-	child.voxelModel = game.blockLibrary.get_model(blockId)
+	child.voxelModel = blockUtils.blockLibrary.get_model(blockId)
 	
 func updateBlockScript(terrain, position: Vector3i, blockId):
 	var children = getBlockChildren(terrain, position)
@@ -543,11 +543,19 @@ func makeStatic(terrain, position: Vector3i):
 func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3i):
 	terrain = getTerrain(terrain)
 	newTerrain = getTerrain(newTerrain)
-	var id = getBlockId(terrain, position)
+	
+	var voxelId = getBlockId(terrain, position)
+	var voxelMetadata = getVoxelMetadata(terrain, position)
+	var _blockData = _getLoadBlockData(terrain, position, voxelId, null)
+	var voxelStorageData = _blockData[1]
+	
 	setBlockId(terrain, position, 0)
-	setBlockId(newTerrain, newPosition, id)
-	setVoxelMetadata(newTerrain, newPosition, getVoxelMetadata(terrain, position))
 	setVoxelMetadata(terrain, position, null)
+	saves.regInteractiveVoxel(terrain, position, null)
+	
+	setBlockId(newTerrain, newPosition, voxelId)
+	setVoxelMetadata(newTerrain, newPosition, voxelMetadata)
+	saves.regInteractiveVoxel(newTerrain, newPosition, voxelId, voxelStorageData)
 	
 	var children = terrain.blockChildren.get(position)
 	if children == null:
@@ -558,7 +566,7 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	for child in children:
 		attachBlockChild(newTerrain, newPosition, child)
 	
-	loadBlock(newTerrain, newPosition, id, null, false)
+	loadBlock(newTerrain, newPosition, voxelId, null, false)
 
 func convertTerrainPositions(terrain, position: Vector3i, newTerrain):
 	terrain = getTerrain(terrain)

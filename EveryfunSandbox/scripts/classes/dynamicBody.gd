@@ -26,7 +26,7 @@ func init(bodyId: int):
 	var terrainPath = bodyUtils.getBodyTerrainPath(bodyId)
 	
 	var mesher = VoxelMesherBlocky.new()
-	mesher.library = game.blockLibrary
+	mesher.library = blockUtils.blockLibrary
 	
 	var stream = VoxelStreamSQLite.new()
 	stream.database_path = terrainPath

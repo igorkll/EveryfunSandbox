@@ -14,7 +14,7 @@ func init(terrainPath):
 	# streaming_system = VoxelLodTerrain.STREAMING_SYSTEM_CLIPBOX
 	
 	var mesher = VoxelMesherBlocky.new()
-	mesher.library = game.blockLibrary
+	mesher.library = blockUtils.blockLibrary
 	
 	var stream = VoxelStreamSQLite.new()
 	stream.database_path = terrainPath

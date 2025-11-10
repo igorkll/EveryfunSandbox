@@ -2,6 +2,7 @@ extends Node
 
 var list_id2obj = []
 var list_name2id = {}
+var blockLibrary
 
 func getTargetRotation(globalCameraBasisZ: Vector3) -> int:
 	var dir = -globalCameraBasisZ
@@ -178,6 +179,10 @@ func _ready():
 	
 	_defaultBlockCollider = BoxShape3D.new()
 	_defaultBlockCollider.size = Vector3(1, 1, 1)
+	
+func updateBlockLibrary():
+	_blockColliders = []
+	_genLibrary()
 
 func _duplicateItem(item):
 	var oldVariantsList = item.variantsList
@@ -365,8 +370,8 @@ func _getMaterial(block):
 	_blockMaterials.append(material)
 	return material
 
-func genLibrary():
-	var library = VoxelBlockyLibrary.new()
+func _genLibrary():
+	blockLibrary = VoxelBlockyLibrary.new()
 	
 	for block in list_id2obj:
 		var blockModel
@@ -429,6 +434,4 @@ func genLibrary():
 		
 		blockModel.transparency_index = block.get("transparency_index", 1 if block.get("use_alpha", false) else 0)
 		blockModel.culls_neighbors = block.get("culls_neighbors", true)
-		library.add_model(blockModel)
-	
-	return library
+		blockLibrary.add_model(blockModel)
