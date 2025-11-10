@@ -160,7 +160,7 @@
 		"texture": "blocks/grammophone/texture.png",
 		"mesh": "blocks/grammophone/mesh.obj",
 		"mesh_collision": 1,
-		"hide_collision": true,
+		"hide_collision": false,
 		"material": "blocks/grammophone/material.png",
 		"normal": "blocks/grammophone/normal.png",
 		"sound": "metal",

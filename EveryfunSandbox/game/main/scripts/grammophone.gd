@@ -63,6 +63,8 @@ func _ready():
 	__updateSound()
 
 	add_child(node)
+	
+	game.showAabb(voxelModel.collision_aabbs[0], self)
 
 func _process(delta):
 	rotationCount += (delta * storageData.rpm) / 60

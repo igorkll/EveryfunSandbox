@@ -121,6 +121,10 @@ func updateTerrainDependedChildFields(terrain, position: Vector3i, child):
 	if child.get_script() != null:
 		child.voxelTerrain = terrain
 		child.voxelPosition = position
+		
+func updateVariantDependedChildFields(terrain, position: Vector3i, child):
+	terrain = getTerrain(terrain)
+	child.voxelModel = game.blockLibrary.get_model(child.voxelBlockId)
 
 func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
 	terrain = getTerrain(terrain)
@@ -132,6 +136,7 @@ func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null
 	var script = game.loadResource(obj.script)
 	var node = script.new()
 	updateTerrainDependedChildFields(terrain, position, node)
+	updateVariantDependedChildFields(terrain, position, node)
 	
 	node.storageData = storageData
 	node.scriptData = obj.get("script_data", {})
@@ -438,6 +443,7 @@ func setRotationAndVariantAndColor(terrain, position: Vector3i, rotation, varian
 	loadBlock(terrain, position, newVoxelId)
 	setBlockId(terrain, position, newVoxelId)
 	saves.changeInteractiveVoxel(terrain, position, newVoxelId)
+	updateVariantDependedFields()
 
 func setVariantAndColor(terrain, position: Vector3i, variant, color):
 	terrain = getTerrain(terrain)

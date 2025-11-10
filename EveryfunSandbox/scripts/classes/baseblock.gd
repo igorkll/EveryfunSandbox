@@ -5,6 +5,7 @@ var storageData = {}
 var scriptData = {}
 
 var voxelTerrain
+var voxelModel
 var voxelPosition: Vector3i
 
 var voxelVariant: int

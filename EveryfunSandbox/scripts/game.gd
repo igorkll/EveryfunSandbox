@@ -440,6 +440,18 @@ func sortNodesByDistance(nodes, position):
 	nodes.sort_custom(func(a, b):
 		return -1 if a.global_transform.origin.distance_to(position) < b.global_transform.origin.distance_to(position) else 1
 	)
+	
+func showAabb(aabb: AABB, parent: Node3D, offset=Vector3()):
+	var box_mesh = BoxMesh.new()
+	box_mesh.size = aabb.size
+
+	var mesh_instance = MeshInstance3D.new()
+	mesh_instance.mesh = box_mesh
+	mesh_instance.translation = offset + aabb.position + aabb.size * 0.5
+
+	parent.add_child(mesh_instance)
+	
+	return mesh_instance
 
 # ------------------------------------------------- backend
 

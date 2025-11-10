@@ -404,7 +404,6 @@ func genLibrary():
 					mesh.surface_set_material(i, material)
 					
 			blockModel.collision_aabbs = collision_aabbs
-			print(blockModel.collision_aabbs)
 		elif block.has("texture"):
 			var material = _getMaterial(block)
 			
