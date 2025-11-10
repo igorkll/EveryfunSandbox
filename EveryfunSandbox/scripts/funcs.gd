@@ -181,12 +181,41 @@ func get_mesh_from_surface(original_mesh: ArrayMesh, surface_index: int) -> Arra
 	var new_mesh = ArrayMesh.new()
 	new_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	return new_mesh
+	
+func rotated_mesh(original_mesh: ArrayMesh, rotation_degrees: Vector3) -> ArrayMesh:
+	var new_mesh := ArrayMesh.new()
+	
+	# Transform с поворотом
+	var transform := Transform3D()
+	transform.basis = Basis(Vector3.RIGHT, deg_to_rad(rotation_degrees.x))
+	transform.basis = transform.basis.rotated(Vector3.UP, deg_to_rad(rotation_degrees.y))
+	transform.basis = transform.basis.rotated(Vector3.FORWARD, deg_to_rad(rotation_degrees.z))
+	
+	for si in range(original_mesh.get_surface_count()):
+		var arrays = original_mesh.surface_get_arrays(si)
+		
+		# vertices должны быть PackedVector3Array
+		var vertices: PackedVector3Array = PackedVector3Array(arrays[Mesh.ARRAY_VERTEX])
+		
+		for i in range(vertices.size()):
+			vertices[i] = transform * vertices[i]
+		
+		arrays[Mesh.ARRAY_VERTEX] = vertices
+		
+		# если есть индексы, привести к PackedInt32Array
+		if arrays[Mesh.ARRAY_INDEX]:
+			arrays[Mesh.ARRAY_INDEX] = PackedInt32Array(arrays[Mesh.ARRAY_INDEX])
+		
+		new_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+	
+	return new_mesh
+
 
 func make_aabbs_from_surfaces(mesh: ArrayMesh, surfaces: Array, rotation_degrees: Vector3) -> Array:
 	var aabbs = []
 
 	for surface in surfaces:
-		var _mesh = get_mesh_from_surface(mesh, surface)
+		var _mesh = rotated_mesh(get_mesh_from_surface(mesh, surface), rotation_degrees)
 		aabbs.append(_mesh.get_aabb())
 	
 	return aabbs
