@@ -63,9 +63,10 @@ func updateBody(body):
 		var blockMass = blockUtils.list_id2obj[id].info.weight
 		mass += blockMass
 		center_of_mass = Vector3(pos) * blockMass
-		
-	if mass > 0:
-		center_of_mass /= mass
+	
+	if mass <= 0:
+		mass = 0.001
+	center_of_mass /= mass
 		
 	body.mass = mass
 	body.center_of_mass_mode = RigidBody3D.CenterOfMassMode.CENTER_OF_MASS_MODE_CUSTOM
