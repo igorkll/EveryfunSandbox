@@ -118,10 +118,11 @@ func _getLoadBlockData(terrain, position: Vector3i, blockId=null, storageData=nu
 func updateBlockScript(terrain, position: Vector3i, blockId):
 	var children = getBlockChildren(terrain, position)
 	for child in children:
-		child.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
-		child.voxelTerrain = terrain
-		child.voxelPosition = position
-		child.voxelModel = game.blockLibrary.get_model(blockId)
+		if child.get_script() != null:
+			child.position = Vector3(position) + Vector3(0.5, 0.5, 0.5)
+			child.voxelTerrain = terrain
+			child.voxelPosition = position
+			child.voxelModel = game.blockLibrary.get_model(blockId)
 
 func loadBlockScript(terrain, position: Vector3i, blockId=null, storageData=null):
 	terrain = getTerrain(terrain)
@@ -216,14 +217,12 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null, allo
 	blockId = loadBlockData[0]
 	storageData = loadBlockData[1]
 	
-	var exists = terrain.blockChildren.has(position)
 	var obj = blockUtils.list_id2obj[blockId]
 	var oldObj = getBlockObj(terrain, position)
 	var childPos = Vector3(position) + Vector3(0.5, 0.5, 0.5)
 	
 	if obj.has("script"):
-		var blockScriptExists = isBlockScript(terrain, position)
-		if allowRecreateScript and (not blockScriptExists or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)) and (!obj.get("script_temp") or blockScriptExists):
+		if allowRecreateScript and !obj.get("script_temp") and (not isBlockScript(terrain, position) or _getScriptChecksum(obj) != _getScriptChecksum(oldObj)):
 			deleteBlockChildrenWithScript(terrain, position)
 			loadBlockScript(terrain, position, blockId, storageData)
 		updateBlockScript(terrain, position, blockId)
@@ -544,7 +543,7 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	for child in children:
 		attachBlockChild(newTerrain, newPosition, child)
 	
-	loadBlock(newTerrain, newPosition, id)
+	loadBlock(newTerrain, newPosition, id, null, false)
 
 func convertTerrainPositions(terrain, position: Vector3i, newTerrain):
 	terrain = getTerrain(terrain)
