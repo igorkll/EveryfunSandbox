@@ -135,3 +135,32 @@ func get_surface_aabb(mesh: ArrayMesh, surface_index: int) -> AABB:
 		aabb = aabb.expand(v)
 
 	return aabb
+
+func make_shape_from_surfaces(mesh: ArrayMesh, surface_indices: Array, convex: bool = true) -> Shape3D:
+	var all_vertices = []
+	
+	for si in surface_indices:
+		if si >= mesh.get_surface_count():
+			push_warning("Surface index %d out of range" % si)
+			continue
+		
+		var arrays = mesh.surface_get_arrays(si)
+		var vertices = arrays[Mesh.ARRAY_VERTEX]
+		var indices = arrays[Mesh.ARRAY_INDEX]
+		
+		if indices and indices.size() > 0:
+			for i in range(0, indices.size(), 3):
+				all_vertices.append(vertices[indices[i]])
+				all_vertices.append(vertices[indices[i+1]])
+				all_vertices.append(vertices[indices[i+2]])
+		else:
+			all_vertices += vertices
+	
+	if convex:
+		var shape = ConvexPolygonShape3D.new()
+		shape.points = all_vertices
+		return shape
+	else:
+		var shape = ConcavePolygonShape3D.new()
+		shape.faces = all_vertices
+		return shape

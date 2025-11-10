@@ -375,16 +375,6 @@ func getBlockScript(terrain, position: Vector3i):
 		if child.get_script() != null:
 			return child
 
-"""
-func getVoxelPositionFromGlobalPosition(terrain, position: Vector3) -> Vector3i:
-	terrain = getTerrain(terrain)
-	return funcs.vec3_to_vec3i_down(position - terrain.global_transform.origin)
-
-func getGlobalPositionFromVoxelPosition(terrain, position: Vector3i) -> Vector3:
-	terrain = getTerrain(terrain)
-	return terrain.global_transform.origin + Vector3(position.x, position.y, position.z) + Vector3(0.5, 0.5, 0.5)
-"""
-
 func getVoxelPositionFromGlobalPosition(terrain, position: Vector3) -> Vector3i:
 	terrain = getTerrain(terrain)
 	var local_pos = terrain.global_transform.affine_inverse() * position

@@ -373,6 +373,7 @@ func _getMaterial(block):
 func _genLibrary():
 	blockLibrary = VoxelBlockyLibrary.new()
 	
+	var index = 0
 	for block in list_id2obj:
 		var blockModel
 		if block.has("mesh"):
@@ -392,6 +393,7 @@ func _genLibrary():
 			
 			var newAabbs = false
 			var mesh_collision_enabled = block.get("mesh_collision", true)
+			var collision_surfaces = []
 			for i in range(mesh.get_surface_count()):
 				var _mesh_collision_enabled = mesh_collision_enabled
 				if funcs.is_number(mesh_collision_enabled):
@@ -402,14 +404,16 @@ func _genLibrary():
 					if not newAabbs:
 						collision_aabbs = []
 					collision_aabbs.append(funcs.get_surface_aabb(mesh, i))
+					collision_surfaces.append(i)
 					newAabbs = true
 				
 				if block.get("hide_collision") && _mesh_collision_enabled:
 					mesh.surface_set_material(i, _transparency_material)
 				else:
 					mesh.surface_set_material(i, material)
-					
+			
 			blockModel.collision_aabbs = collision_aabbs
+			_blockColliders[index] = funcs.make_shape_from_surfaces(mesh, collision_surfaces)
 		elif block.has("texture"):
 			var material = _getMaterial(block)
 			
@@ -435,3 +439,4 @@ func _genLibrary():
 		blockModel.transparency_index = block.get("transparency_index", 1 if block.get("use_alpha", false) else 0)
 		blockModel.culls_neighbors = block.get("culls_neighbors", true)
 		blockLibrary.add_model(blockModel)
+		index += 1
