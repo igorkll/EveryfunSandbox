@@ -555,7 +555,8 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 	
 	setBlockId(newTerrain, newPosition, voxelId)
 	setVoxelMetadata(newTerrain, newPosition, voxelMetadata)
-	saves.regInteractiveVoxel(newTerrain, newPosition, voxelId, voxelStorageData)
+	if blockUtils.isInteractive(voxelId):
+		saves.regInteractiveVoxel(newTerrain, newPosition, voxelId, voxelStorageData)
 	
 	var children = terrain.blockChildren.get(position)
 	if children == null:
