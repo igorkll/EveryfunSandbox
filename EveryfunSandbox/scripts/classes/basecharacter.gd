@@ -71,7 +71,9 @@ func _physics_process(delta):
 	if beware_edge && on_floor:
 		var edges = getEdgeDirections()
 		for edge in edges:
-			move_direction = move_direction - move_direction.project(edge)
+			var project = move_direction.project(edge)
+			if funcs.compareMark(edge.x, project.x) and funcs.compareMark(edge.z, project.z):
+				move_direction = move_direction - project
 
 	velocity.x += move_direction.x * _move_acceleration * delta
 	velocity.z += move_direction.z * _move_acceleration * delta
@@ -208,9 +210,7 @@ func _getVoxel(side):
 				return result
 				
 func _checkEdge(x, z):
-	var result = _getVoxelWithOffset(Vector3.DOWN, Vector3(x, 0, z) * 0.2)
-	if result:
-		return result
+	return not _getVoxelWithOffset(Vector3.DOWN, Vector3(x, 0, z) * character_radius)
 
 # ------------------------------------------------- api
 
