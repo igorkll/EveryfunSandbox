@@ -71,14 +71,13 @@ var _default_material_texture = preload("res://textures/materialTexture.png")
 var _blocks_shader = preload("res://shaders/blocks.gdshader")
 var _alpha_blocks_shader = preload("res://shaders/alpha_blocks.gdshader")
 
+var _blockColliders = {}
 var _transparency_material
 var _defaultBlockCollider
 
 var _defaultBlockInfo = {
 	"durability": 1
 }
-
-var _blockColliders = {}
 
 # map size: x y
 # texture pos: x- x+ y- y+ z- z+
