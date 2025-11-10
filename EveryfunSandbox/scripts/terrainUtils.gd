@@ -197,7 +197,7 @@ func getBlockId(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
 	return terrain.voxel_tool.get_voxel(position)
 	
-func setBlockId(terrain, position: Vector3i, blockId: int):
+func setBlockId(terrain, position: Vector3i, blockId: int): # WTF
 	terrain = getTerrain(terrain)
 	var editable = isEditable(terrain, position)
 	
