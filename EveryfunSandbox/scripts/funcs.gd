@@ -167,3 +167,6 @@ func make_shape_from_surfaces(mesh: ArrayMesh, surface_indices: Array, convex: b
 		var shape = ConcavePolygonShape3D.new()
 		shape.faces = all_vertices
 		return shape
+
+func make_collision_aabbs_from_surfaces(mesh: ArrayMesh, collision_surfaces: Array, rotation_degrees: Vector3):
+	pass

@@ -380,7 +380,6 @@ func _genLibrary():
 			var material = _getMaterial(block)
 			
 			blockModel = VoxelBlockyModelMesh.new()
-			var collision_aabbs = [AABB(Vector3(0, 0, 0), Vector3(1, 1, 1))]
 			
 			var mesh
 			if block.mesh is Mesh:
@@ -391,7 +390,6 @@ func _genLibrary():
 					mesh = mesh_instance[0].mesh
 			blockModel.mesh = mesh
 			
-			var newAabbs = false
 			var mesh_collision_enabled = block.get("mesh_collision", true)
 			var collision_surfaces = []
 			for i in range(mesh.get_surface_count()):
@@ -401,19 +399,22 @@ func _genLibrary():
 				blockModel.set_mesh_collision_enabled(i, _mesh_collision_enabled)
 				
 				if _mesh_collision_enabled:
-					if not newAabbs:
-						collision_aabbs = []
-					collision_aabbs.append(funcs.get_surface_aabb(mesh, i))
 					collision_surfaces.append(i)
-					newAabbs = true
 				
 				if block.get("hide_collision") && _mesh_collision_enabled:
 					mesh.surface_set_material(i, _transparency_material)
 				else:
 					mesh.surface_set_material(i, material)
 			
-			blockModel.collision_aabbs = collision_aabbs
-			_blockColliders[index] = funcs.make_shape_from_surfaces(mesh, collision_surfaces)
+			if collision_surfaces.size() > 0:
+				var rotation_degrees
+				if block.has("rotation"):
+					rotation_degrees = block.rotation.r
+				
+				blockModel.collision_aabbs = funcs.make_collision_aabbs_from_surfaces(mesh, collision_surfaces, rotation_degrees)
+				_blockColliders[index] = funcs.make_shape_from_surfaces(mesh, collision_surfaces)
+			else:
+				blockModel.collision_aabbs = [AABB(Vector3(0, 0, 0), Vector3(1, 1, 1))]
 		elif block.has("texture"):
 			var material = _getMaterial(block)
 			
