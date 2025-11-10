@@ -18,7 +18,6 @@ func _physics_process(delta):
 		controlHandler()
 	else:
 		game.setCrosspiece("normal")
-		fly_mode = false
 	
 	super._physics_process(delta)
 	

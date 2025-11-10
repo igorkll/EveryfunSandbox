@@ -84,7 +84,7 @@ func _physics_process(delta):
 		if voxel and voxel.has("sound_jump") and game.soundList.has(voxel.sound_jump):
 			_blockSound(game.soundList[voxel.sound_jump])
 	_on_floor = on_floor
-
+	
 	if fly_mode && fly_down:
 		velocity.y -= _move_acceleration * delta
 	
