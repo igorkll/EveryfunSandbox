@@ -156,6 +156,9 @@ func make_shape_from_surfaces(mesh: ArrayMesh, surface_indices: Array, convex: b
 		else:
 			all_vertices += vertices
 	
+	for i in all_vertices.size():
+		all_vertices[i] = all_vertices[i] - Vector3(0.5, 0.5, 0.5)
+	
 	if convex:
 		var shape = ConvexPolygonShape3D.new()
 		shape.points = all_vertices
