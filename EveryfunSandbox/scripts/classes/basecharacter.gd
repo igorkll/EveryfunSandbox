@@ -121,7 +121,7 @@ func _physics_process(delta):
 		if push_strength:
 			_pushObjects()
 			
-	if not nonUnloadable and not saves.isInteractiveChunkLoaded(position):
+	if not nonUnloadable and not saves.isInteractiveChunkLoadedFull(position):
 		characterUtils.unloadCharacter(self)
 		
 func _pushObjects():
@@ -131,7 +131,7 @@ func _pushObjects():
 
 		if collider is RigidBody3D:
 			var push_dir = -collision.get_normal()
-			physics.apply_impulse(collider, push_dir * push_strength, collision.get_position() - collider.global_position)
+			collider.apply_impulse(push_dir * push_strength, collision.get_position() - collider.global_position)
 
 # -------------------------------------------------
 

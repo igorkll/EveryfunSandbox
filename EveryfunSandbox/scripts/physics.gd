@@ -7,19 +7,16 @@ func updateDirectSpaceState():
 	if newState != null:
 		direct_space_state = newState
 
-func apply_impulse(obj, vec, pos=Vector3()):
-	obj.apply_impulse(vec, pos)
-
 func pulseObject(position, radius, power, object):
 	var dir = (object.global_position - position).normalized()
 	var dist = object.global_position.distance_to(position)
 	var strength = power * (1.0 - dist / radius)
-	apply_impulse(object, dir * strength)
+	object.apply_impulse(dir * strength)
 	
 func pulseObjectToDirection(position, radius, power, dir, object):
 	var dist = object.global_position.distance_to(position)
 	var strength = power * (1.0 - dist / radius)
-	apply_impulse(object, dir * strength)
+	object.apply_impulse(dir * strength)
 
 func pulse(position, radius, power):
 	var shape = SphereShape3D.new()

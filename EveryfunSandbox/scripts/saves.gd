@@ -262,7 +262,7 @@ var _interactiveChunkSize = 32
 var _chunkEdgeOffset = Vector3i(_interactiveChunkSize - 1, _interactiveChunkSize - 1, _interactiveChunkSize - 1)
 var _loadedChunks = {}
 
-func isInteractiveChunkLoaded(position: Vector3):
+func isInteractiveChunkLoadedFull(position: Vector3):
 	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)
 	var chunkPosition = _getChunkPosition(voxelPosition)
 	return _loadedChunks.has(chunkPosition) and _isChunkEditable(chunkPosition)
@@ -387,7 +387,7 @@ func _checkAutosave():
 func _checkLoaded():
 	var loadersPositions = game.getChunkloadersPositions()
 	
-	var chunkLoadingDistance = floor((game.view_distance * 2) / _interactiveChunkSize)
+	var chunkLoadingDistance = floor(game.view_distance / _interactiveChunkSize)
 	if chunkLoadingDistance < 1:
 		chunkLoadingDistance = 1
 	

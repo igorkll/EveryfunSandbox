@@ -93,7 +93,7 @@ func _process(delta):
 	terrainUtils.applyDeferredActions(self)
 	
 	var body = bodyUtils.getBody(self)
-	if not saves.isInteractiveChunkLoaded(body.position):
+	if not saves.isInteractiveChunkLoadedFull(body.position):
 		bodyUtils.unloadBody(self)
 		return
 	
