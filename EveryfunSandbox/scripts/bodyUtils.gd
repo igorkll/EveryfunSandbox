@@ -84,10 +84,11 @@ func unloadBody(body):
 	if terrain.unloaded:
 		return
 	terrain.unloaded = true
+	saves.saveBodyId(body)
+	updateBodyDataInSave(body)
 	body.remove_child(terrain)
 	game.tempNode.add_child(terrain)
 	saves.saveTerrainBackground(terrain)
-	updateBodyDataInSave(body)
 	body.queue_free()
 
 func destroyBody(body):

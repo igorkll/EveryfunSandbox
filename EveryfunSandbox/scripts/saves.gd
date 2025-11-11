@@ -19,6 +19,7 @@ var defaultWorldData = {
 	"interactiveVoxels": {},
 	"voxelsMetadata": {},
 	"dynamicBodies": [],
+	"dynamicBodiesLoadPosition": {},
 	"debug": {
 		"debugInfo": false,
 		"allowFly": false,
@@ -159,6 +160,15 @@ func list():
 
 func saveTerrainBackground(terrain):
 	currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers[terrain.save_modified_blocks()] = terrain
+	
+func saveBodyId(body):
+	body = bodyUtils.getBody(body)
+	var terrain = terrainUtils.getTerrain(body)
+	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, body.position)
+	var chunkPosition = _getChunkPosition(voxelPosition)
+	var arr = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition, {})
+	arr.append(terrain.id)
+	currentWorldData.dynamicBodiesLoadPosition[chunkPosition] = arr
 
 # --------------------------------------------------------------- interactive voxels
 
@@ -207,12 +217,11 @@ func changeInteractiveVoxel(terrain, position: Vector3i, blockId=null):
 
 var _interactiveChunkSize = 32
 var _loadedChunks = {}
-var _currentLoadedChunks = {}
 
 func isInteractiveChunkLoaded(position: Vector3):
 	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)
 	var chunkPosition = _getChunkPosition(voxelPosition)
-	return _currentLoadedChunks.has(chunkPosition) and terrainUtils.isEditable(game.terrain, voxelPosition)
+	return _loadedChunks.has(chunkPosition) and terrainUtils.isEditable(game.terrain, voxelPosition)
 
 func _getChunkPosition(position: Vector3i) -> Vector3i:
 	return position / _interactiveChunkSize
@@ -258,20 +267,25 @@ func _unloadVoxels(chunkVoxels):
 			terrainUtils.unloadBlock(game.terrain, interactiveVoxelPosition)
 
 func _updateLoadedInteractiveVoxels(loadersPositions):
-	_currentLoadedChunks = {}
+	var currentLoadedChunks = {}
 	
 	for loaderPosition in loadersPositions:
 		var chunkPosition = _getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, loaderPosition))
-		_currentLoadedChunks[chunkPosition] = true
+		currentLoadedChunks[chunkPosition] = true
 		
 		if not _loadedChunks.has(chunkPosition):
 			_loadedChunks[chunkPosition] = true
 			
 			_loadVoxels(currentWorldData.interactiveVoxels.get(chunkPosition))
 			_loadVoxels(currentWorldRuntimeData.interactiveVoxels.get(chunkPosition))
+			
+			var bodiesIDs = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition, [])
+			for id in bodiesIDs:
+				bodyUtils.loadBody(id)
+			currentWorldData.dynamicBodiesLoadPosition.erase(chunkPosition)
 	
 	for loadedChunk in _loadedChunks.keys():
-		if not _currentLoadedChunks.has(loadedChunk):
+		if not currentLoadedChunks.has(loadedChunk):
 			_loadedChunks.erase(loadedChunk)
 			
 			_unloadVoxels(currentWorldData.interactiveVoxels.get(loadedChunk))
