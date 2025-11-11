@@ -1,6 +1,7 @@
 extends CharacterBody3D
 class_name basecharacter
 
+var id: int
 var inited = false
 var storageData = {}
 

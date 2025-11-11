@@ -21,6 +21,7 @@ var defaultWorldData = {
 	"dynamicBodies": [],
 	"dynamicBodiesLoadPosition": {},
 	"characters": [],
+	"charactersLoadPosition": {},
 	"debug": {
 		"debugInfo": false,
 		"allowFly": false,
@@ -83,9 +84,13 @@ func save(saveEndCallback=null) -> bool:
 		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(terrainUtils.getTerrain(body).save_modified_blocks())
 		
 	for character in game.characters.get_children():
+		saves.saveCharacterId(character)
 		character.updateCharacterStorageData()
 	
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
+	
+	for character in game.characters.get_children():
+		saves.eraseCharacterId(character)
 	
 	for body in game.dynamicBodies.get_children():
 		saves.eraseBodyId(body)
@@ -131,8 +136,6 @@ func open(savename) -> bool:
 	game.characters.name = "characters"
 	game.objects.add_child(game.characters)
 	
-	characterUtils.loadCharacters()
-	
 	var terrain = preload("res://scripts/classes/terrain.gd").new()
 	terrain.name = "terrain"
 	game.objects.add_child(terrain)
@@ -144,6 +147,10 @@ func open(savename) -> bool:
 	if filesystem.isFile(dataPath):
 		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
+	
+	if not currentWorldData.has("inited"):
+		game.player = characterUtils.spawn(0, characterUtils.findSpawnPosition())
+		currentWorldData["inited"] = true
 	
 	signals.emit_signal("world_open", savename)
 	
@@ -169,25 +176,37 @@ func list():
 func saveTerrainBackground(terrain):
 	currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers[terrain.save_modified_blocks()] = terrain
 	
+func _saveId(array, position, id):
+	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)
+	var chunkPosition = _getChunkPosition(voxelPosition)
+	var arr = array.get(chunkPosition, [])
+	arr.append(id)
+	array[chunkPosition] = arr
+	
+func _eraseId(array, position, id):
+	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)
+	var chunkPosition = _getChunkPosition(voxelPosition)
+	var arr = array.get(chunkPosition)
+	if arr:
+		arr.erase(id)
+		if arr.is_empty():
+			array.erase(chunkPosition)
+			
 func saveBodyId(body):
 	body = bodyUtils.getBody(body)
 	var terrain = terrainUtils.getTerrain(body)
-	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, body.position)
-	var chunkPosition = _getChunkPosition(voxelPosition)
-	var arr = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition, [])
-	arr.append(terrain.id)
-	currentWorldData.dynamicBodiesLoadPosition[chunkPosition] = arr
+	_saveId(currentWorldData.dynamicBodiesLoadPosition, body.position, terrain.id)
 	
 func eraseBodyId(body):
 	body = bodyUtils.getBody(body)
 	var terrain = terrainUtils.getTerrain(body)
-	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, body.position)
-	var chunkPosition = _getChunkPosition(voxelPosition)
-	var arr = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition)
-	if arr:
-		arr.erase(terrain.id)
-		if arr.is_empty():
-			currentWorldData.dynamicBodiesLoadPosition.erase(chunkPosition)
+	_eraseId(currentWorldData.dynamicBodiesLoadPosition, body.position, terrain.id)
+	
+func saveCharacterId(character):
+	_saveId(currentWorldData.characterLoadPosition, character.position, character.id)
+	
+func eraseCharacterId(character):
+	_eraseId(currentWorldData.characterLoadPosition, character.position, character.id)
 
 # --------------------------------------------------------------- interactive voxels
 
