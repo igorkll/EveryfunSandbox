@@ -9,6 +9,7 @@ var currentWorldData
 var defaultWorldRuntimeData = {
 	"interactiveVoxels": {},
 	"voxelBackgroundSaveCompletionTrackers": {},
+	"characters": {},
 	"fullLoaded": false,
 	"time": 0,
 	"autoSaveTimer": 0
@@ -148,8 +149,12 @@ func open(savename) -> bool:
 		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
 	
-	if not currentWorldData.has("inited"):
-		game.player = characterUtils.spawn(0, characterUtils.findSpawnPosition())
+	if currentWorldData.has("inited"):
+		game.player = characterUtils.loadCharacter(currentWorldData["hostPlayerCharacterId"])
+		currentWorldData.charactersLoadPosition
+	else:
+		game.player = characterUtils.spawn("player", characterUtils.findSpawnPosition())
+		currentWorldData["hostPlayerCharacterId"] = game.player.id
 		currentWorldData["inited"] = true
 	
 	signals.emit_signal("world_open", savename)
@@ -203,10 +208,10 @@ func eraseBodyId(body):
 	_eraseId(currentWorldData.dynamicBodiesLoadPosition, body.position, terrain.id)
 	
 func saveCharacterId(character):
-	_saveId(currentWorldData.characterLoadPosition, character.position, character.id)
+	_saveId(currentWorldData.charactersLoadPosition, character.position, character.id)
 	
 func eraseCharacterId(character):
-	_eraseId(currentWorldData.characterLoadPosition, character.position, character.id)
+	_eraseId(currentWorldData.charactersLoadPosition, character.position, character.id)
 
 # --------------------------------------------------------------- interactive voxels
 
@@ -343,7 +348,8 @@ func _updateLoadedInteractiveVoxels(loadersPositions):
 				var charactersIDs = currentWorldData.charactersLoadPosition.get(loadedChunk)
 				if charactersIDs != null:
 					for id in charactersIDs:
-						characterUtils.loadCharacter(id)
+						if not currentWorldRuntimeData.characters.has(id):
+							characterUtils.loadCharacter(id)
 					currentWorldData.charactersLoadPosition.erase(loadedChunk)
 
 func _checkAutosave():
