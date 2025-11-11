@@ -17,6 +17,7 @@ var unloaded = false
 var needUpdate = false
 var freeze = true
 var loadedBlocks = {}
+var callCount
 
 func _ready():
 	self.connect("mesh_block_entered", updateBlock)
@@ -40,6 +41,7 @@ func init(bodyId: int):
 	self.max_view_distance = game.view_distance
 	self.stream = stream
 	self.generate_collisions = false
+	self.streaming_system = VoxelLodTerrain.STREAMING_SYSTEM_CLIPBOX
 	
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
@@ -68,6 +70,10 @@ func updateBlock(pos, blockId=null):
 		
 		loadedBlocks[pos] = [collider, blockId]
 		
+	if callCount == null:
+		callCount = 0
+	callCount += 1
+		
 	needUpdate = true
 		
 func unloadBlock(pos):
@@ -87,6 +93,8 @@ func _process(delta):
 		return
 		
 	lifeTime += delta
+	
+	print(loadedBlocks.size(), " ", callCount, " ", storageData.blocksCount)
 	
 	if needUpdate:
 		bodyUtils.updateBody(self)
