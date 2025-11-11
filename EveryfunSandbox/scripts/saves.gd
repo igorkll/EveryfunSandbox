@@ -210,8 +210,9 @@ var _loadedChunks = {}
 var _currentLoadedChunks = {}
 
 func isInteractiveChunkLoaded(position: Vector3):
-	var chunkPosition = _getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position))
-	return _currentLoadedChunks.has(chunkPosition)
+	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)
+	var chunkPosition = _getChunkPosition(voxelPosition)
+	return _currentLoadedChunks.has(chunkPosition) and terrainUtils.isEditable(game.terrain, voxelPosition)
 
 func _getChunkPosition(position: Vector3i) -> Vector3i:
 	return position / _interactiveChunkSize
@@ -356,7 +357,5 @@ func _process(delta):
 	var trackers = currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers
 	for tracker in trackers.keys():
 		if tracker.is_complete():
-			var node = trackers[tracker]
-			if node != true:
-				node.queue_free()
+			trackers[tracker].queue_free()
 			trackers.erase(tracker)

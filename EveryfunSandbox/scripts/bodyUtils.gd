@@ -8,12 +8,16 @@ func getBody(body):
 func updateBodyDataInSave(body):
 	body = getBody(body)
 	var terrain = terrainUtils.getTerrain(body)
+	if not terrain:
+		return
 	
 	var global_transform = body.global_transform
 	funcs.arraySet(saves.currentWorldData.dynamicBodies, terrain.id, [
 		global_transform.origin,
 		global_transform.basis.get_rotation_quaternion(),
-		terrain.storageData
+		terrain.storageData,
+		body.linear_velocity,
+		body.angular_velocity
 	])
 	
 func getBodyTerrainPath(id: int):
@@ -43,6 +47,8 @@ func loadBody(id: int):
 	t.origin = data[0]
 	t.basis = Basis(data[1])
 	body.global_transform = t
+	body.linear_velocity = data[3]
+	body.angular_velocity = data[4]
 	body.freeze = false
 	terrain.position = Vector3(-0.5, -0.5, -0.5)
 	terrain.storageData = data[2]
@@ -75,6 +81,8 @@ func updateBody(body):
 func unloadBody(body):
 	body = getBody(body)
 	var terrain = terrainUtils.getTerrain(body)
+	if terrain.unloaded:
+		return
 	terrain.unloaded = true
 	body.remove_child(terrain)
 	game.tempNode.add_child(terrain)
