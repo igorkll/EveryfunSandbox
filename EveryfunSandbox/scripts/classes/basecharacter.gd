@@ -3,6 +3,7 @@ class_name basecharacter
 
 var id: int
 var inited = false
+var nonUnloadable = false
 var storageData = {}
 
 var character_radius = 1
@@ -119,6 +120,9 @@ func _physics_process(delta):
 		move_and_slide()
 		if push_strength:
 			_pushObjects()
+			
+	if not nonUnloadable and not saves.isInteractiveChunkLoaded(position):
+		characterUtils.unloadCharacter(self)
 		
 func _pushObjects():
 	for i in range(get_slide_collision_count()):

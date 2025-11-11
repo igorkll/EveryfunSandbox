@@ -53,8 +53,6 @@ func loadBody(id: int):
 	terrain.position = Vector3(-0.5, -0.5, -0.5)
 	terrain.storageData = data[2]
 	terrain.init(id)
-	
-	print("LOAD BODY ", terrain.id)
 
 	updateBodyDataInSave(body)
 	updateBody(body)
@@ -87,7 +85,6 @@ func unloadBody(body):
 	if terrain.unloaded:
 		return
 	terrain.unloaded = true
-	print("UNLOAD BODY ", terrain.id)
 	saves.saveBodyId(body)
 	updateBodyDataInSave(body)
 	body.remove_child(terrain)

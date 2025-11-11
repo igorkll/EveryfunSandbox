@@ -339,6 +339,12 @@ func _updateLoadedInteractiveVoxels(loadersPositions):
 					for id in bodiesIDs:
 						bodyUtils.loadBody(id)
 					currentWorldData.dynamicBodiesLoadPosition.erase(loadedChunk)
+					
+				var charactersIDs = currentWorldData.charactersLoadPosition.get(loadedChunk)
+				if charactersIDs != null:
+					for id in charactersIDs:
+						characterUtils.loadCharacter(id)
+					currentWorldData.charactersLoadPosition.erase(loadedChunk)
 
 func _checkAutosave():
 	if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:

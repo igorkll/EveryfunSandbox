@@ -13,3 +13,9 @@ func spawn(characterId, position):
 
 func findSpawnPosition():
 	return Vector3(0, 15, 0)
+
+func loadCharacter(id):
+	pass
+
+func unloadCharacter(character):
+	pass
