@@ -1,5 +1,12 @@
 extends Node
 
+var direct_space_state
+
+func updateDirectSpaceState():
+	var newState = game.world.direct_space_state
+	if newState != null:
+		direct_space_state = newState
+
 func apply_impulse(obj, vec, pos=Vector3()):
 	obj.apply_impulse(vec, pos)
 
@@ -15,10 +22,6 @@ func pulseObjectToDirection(position, radius, power, dir, object):
 	apply_impulse(object, dir * strength)
 
 func pulse(position, radius, power):
-	var space = game.world.direct_space_state
-	if not space:
-		return
-	
 	var shape = SphereShape3D.new()
 	shape.radius = radius
 
@@ -28,8 +31,10 @@ func pulse(position, radius, power):
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
 
-	var results = space.intersect_shape(query)
-
+	if not direct_space_state:
+		return
+	
+	var results = direct_space_state.intersect_shape(query)
 	for hit in results:
 		var body = hit["collider"]
 		if body is RigidBody3D or body is CharacterBody3D:
@@ -39,6 +44,8 @@ func pulse(position, radius, power):
 func explode(position, explosiveLevel):
 	if explosiveLevel < 1:
 		return
+		
+	updateDirectSpaceState()
 	
 	var raycastDistance = explosiveLevel * 2
 	var shrapnel = explosiveLevel * 4
