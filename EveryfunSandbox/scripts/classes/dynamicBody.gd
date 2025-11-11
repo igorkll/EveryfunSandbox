@@ -44,6 +44,8 @@ func init(bodyId: int):
 	
 	for blockPos in storageData.blocksInfo:
 		updateBlock(blockPos, storageData.blocksInfo[blockPos])
+		
+	bodyUtils.updateBody(self)
 	
 func updateBlock(pos, blockId=null):
 	if unloaded:
