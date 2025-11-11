@@ -20,7 +20,6 @@ var defaultWorldData = {
 	"voxelsMetadata": {},
 	"dynamicBodies": [],
 	"dynamicBodiesLoadPosition": {},
-	"dynamicBodiesStartupLoadPosition": {},
 	"debug": {
 		"debugInfo": false,
 		"allowFly": false,
@@ -78,11 +77,14 @@ func save(saveEndCallback=null) -> bool:
 	currentWorldRuntimeData.voxelSaveCompletionTrackers = [game.terrain.save_modified_blocks()]
 	
 	for body in game.dynamicBodies.get_children():
-		saves.saveBodyId(body, true)
+		saves.saveBodyId(body)
 		bodyUtils.updateBodyDataInSave(body)
 		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(terrainUtils.getTerrain(body).save_modified_blocks())
 	
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
+	
+	for body in game.dynamicBodies.get_children():
+		saves.eraseBodyId(body)
 	
 	return true
 	
@@ -139,9 +141,6 @@ func open(savename) -> bool:
 		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
 	
-	currentWorldRuntimeData.dynamicBodiesStartupLoadPosition = currentWorldData.dynamicBodiesStartupLoadPosition
-	currentWorldData.dynamicBodiesStartupLoadPosition = {}
-	
 	signals.emit_signal("world_open", savename)
 	
 	game.applySettings()
@@ -166,15 +165,25 @@ func list():
 func saveTerrainBackground(terrain):
 	currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers[terrain.save_modified_blocks()] = terrain
 	
-func saveBodyId(body, startup=false):
+func saveBodyId(body):
 	body = bodyUtils.getBody(body)
 	var terrain = terrainUtils.getTerrain(body)
 	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, body.position)
 	var chunkPosition = _getChunkPosition(voxelPosition)
-	var array = currentWorldData.dynamicBodiesStartupLoadPosition if startup else currentWorldData.dynamicBodiesLoadPosition
-	var arr = array.get(chunkPosition, [])
+	var arr = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition, [])
 	arr.append(terrain.id)
-	array[chunkPosition] = arr
+	currentWorldData.dynamicBodiesLoadPosition[chunkPosition] = arr
+	
+func eraseBodyId(body):
+	body = bodyUtils.getBody(body)
+	var terrain = terrainUtils.getTerrain(body)
+	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, body.position)
+	var chunkPosition = _getChunkPosition(voxelPosition)
+	var arr = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition)
+	if arr:
+		arr.erase(terrain.id)
+		if arr.is_empty():
+			currentWorldData.dynamicBodiesLoadPosition.erase(chunkPosition)
 
 # --------------------------------------------------------------- interactive voxels
 
@@ -281,13 +290,6 @@ func _unloadVoxels(chunkVoxels):
 		for interactiveVoxelPosition in chunkVoxels:
 			terrainUtils.unloadBlock(game.terrain, interactiveVoxelPosition)
 
-func _loadBodies(loadedChunk, array):
-	var bodiesIDs = array.get(loadedChunk)
-	if bodiesIDs != null:
-		for id in bodiesIDs:
-			bodyUtils.loadBody(id)
-		array.erase(loadedChunk)
-
 func _updateLoadedInteractiveVoxels(loadersPositions):
 	var currentLoadedChunks = {}
 	
@@ -309,8 +311,11 @@ func _updateLoadedInteractiveVoxels(loadersPositions):
 			_unloadVoxels(currentWorldRuntimeData.interactiveVoxels.get(loadedChunk))
 		else:
 			if _isChunkEditable(loadedChunk):
-				_loadBodies(loadedChunk, currentWorldData.dynamicBodiesLoadPosition)
-				_loadBodies(loadedChunk, currentWorldRuntimeData.dynamicBodiesStartupLoadPosition)
+				var bodiesIDs = currentWorldData.dynamicBodiesLoadPosition.get(loadedChunk)
+				if bodiesIDs != null:
+					for id in bodiesIDs:
+						bodyUtils.loadBody(id)
+					currentWorldData.dynamicBodiesLoadPosition.erase(loadedChunk)
 
 func _checkAutosave():
 	if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:
