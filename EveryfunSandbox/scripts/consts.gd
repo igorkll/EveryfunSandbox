@@ -21,7 +21,7 @@ var default_scale_on_1080 = 1.5
 var default_sound_unit_size = 16
 var default_sound_max_distance = 60
 
-var chance_multiplier_to_destroy_a_block_of_greater_strength = 0.1
+var chance_multiplier_to_destroy_a_block_of_greater_strength = 0.8
 
 var extfilter_audio = ["*.mp3, *.wav, *.ogg", "Audio"]
 

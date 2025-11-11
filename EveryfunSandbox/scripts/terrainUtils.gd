@@ -17,7 +17,9 @@ func blockRaycast(position: Vector3, direction: Vector3, maxDistance: float):
 		
 func getTerrain(terrain):
 	if terrain is RigidBody3D:
-		return terrain.get_child(0)
+		for child in terrain.get_children():
+			if child is VoxelTerrain or child is VoxelLodTerrain:
+				return child
 	return terrain
 		
 func attachBlockChild(terrain, position: Vector3i, child):

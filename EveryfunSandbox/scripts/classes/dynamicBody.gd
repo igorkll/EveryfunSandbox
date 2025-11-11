@@ -28,8 +28,8 @@ func init(bodyId: int):
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = blockUtils.blockLibrary
 	
-	# var stream = VoxelStreamSQLite.new()
-	# stream.database_path = terrainPath
+	var stream = VoxelStreamSQLite.new()
+	stream.database_path = terrainPath
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()

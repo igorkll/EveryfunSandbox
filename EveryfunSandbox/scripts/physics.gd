@@ -48,9 +48,10 @@ func explode(position, explosiveLevel):
 	updateDirectSpaceState()
 	
 	var raycastDistance = explosiveLevel * 2
-	var shrapnel = explosiveLevel * 4
+	var shrapnel = explosiveLevel * 15
 	var level = explosiveLevel * 0.5
 	var pulsePower = explosiveLevel * 5
+	var minimalDistance = explosiveLevel * 0.5
 	
 	var explosionState = {
 		"iterations": explosiveLevel * 1
@@ -63,7 +64,7 @@ func explode(position, explosiveLevel):
 			var result = terrainUtils.blockRaycast(position, funcs.getRandomDirection(), raycastDistance)
 			if result:
 				if not terrainUtils.callBlock(result[0], result[1].position, "_explode"):
-					var fraction = result[1].distance / raycastDistance
+					var fraction = max(0, result[1].distance - minimalDistance) / (raycastDistance - minimalDistance)
 					if not terrainInteractions.destroyBlock(result[0], result[1].position, level * (1 - fraction)):
 						if randf() < fraction:
 							var body = terrainUtils.makeDynamic(result[0], result[1].position)
