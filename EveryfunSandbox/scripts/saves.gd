@@ -166,7 +166,7 @@ func saveBodyId(body):
 	var terrain = terrainUtils.getTerrain(body)
 	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, body.position)
 	var chunkPosition = _getChunkPosition(voxelPosition)
-	var arr = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition, {})
+	var arr = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition, [])
 	arr.append(terrain.id)
 	currentWorldData.dynamicBodiesLoadPosition[chunkPosition] = arr
 
@@ -216,15 +216,24 @@ func changeInteractiveVoxel(terrain, position: Vector3i, blockId=null):
 # --------------------------------------------------------------- interactive chunk
 
 var _interactiveChunkSize = 32
+var _chunkEdgeOffset = Vector3i(_interactiveChunkSize - 1, _interactiveChunkSize - 1, _interactiveChunkSize - 1)
 var _loadedChunks = {}
 
 func isInteractiveChunkLoaded(position: Vector3):
 	var voxelPosition = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)
 	var chunkPosition = _getChunkPosition(voxelPosition)
-	return _loadedChunks.has(chunkPosition) and terrainUtils.isEditable(game.terrain, voxelPosition)
+	return _loadedChunks.has(chunkPosition) and _isChunkEditable(chunkPosition)
 
 func _getChunkPosition(position: Vector3i) -> Vector3i:
 	return position / _interactiveChunkSize
+	
+func _getGlobalPositionFromChunkPosition(position: Vector3i) -> Vector3i:
+	return position * _interactiveChunkSize
+	
+func _isChunkEditable(chunkPosition: Vector3i):
+	var voxel1Position = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, _getGlobalPositionFromChunkPosition(chunkPosition))
+	var voxel2Position = terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, _getGlobalPositionFromChunkPosition(chunkPosition) + _chunkEdgeOffset)
+	return terrainUtils.isEditable(game.terrain, voxel1Position) and terrainUtils.isEditable(game.terrain, voxel2Position)
 
 func _regInteractiveVoxel(interactiveVoxels, terrain, position: Vector3i, blockId, storageData):
 	var chunkPosition = _getChunkPosition(position)
@@ -278,18 +287,20 @@ func _updateLoadedInteractiveVoxels(loadersPositions):
 			
 			_loadVoxels(currentWorldData.interactiveVoxels.get(chunkPosition))
 			_loadVoxels(currentWorldRuntimeData.interactiveVoxels.get(chunkPosition))
-			
-			var bodiesIDs = currentWorldData.dynamicBodiesLoadPosition.get(chunkPosition, [])
-			for id in bodiesIDs:
-				bodyUtils.loadBody(id)
-			currentWorldData.dynamicBodiesLoadPosition.erase(chunkPosition)
-	
+
 	for loadedChunk in _loadedChunks.keys():
 		if not currentLoadedChunks.has(loadedChunk):
 			_loadedChunks.erase(loadedChunk)
 			
 			_unloadVoxels(currentWorldData.interactiveVoxels.get(loadedChunk))
 			_unloadVoxels(currentWorldRuntimeData.interactiveVoxels.get(loadedChunk))
+		else:
+			if _isChunkEditable(loadedChunk):
+				var bodiesIDs = currentWorldData.dynamicBodiesLoadPosition.get(loadedChunk)
+				if bodiesIDs != null:
+					for id in bodiesIDs:
+						bodyUtils.loadBody(id)
+					currentWorldData.dynamicBodiesLoadPosition.erase(loadedChunk)
 
 func _checkAutosave():
 	if currentWorldRuntimeData.autoSaveTimer >= game.settings.game.autoSaveInterval:

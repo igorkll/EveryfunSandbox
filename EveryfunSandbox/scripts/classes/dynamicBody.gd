@@ -13,6 +13,7 @@ var defaultStorageData = {
 }
 
 var unloaded = false
+var needUpdate = false
 var loadedBlocks = {}
 
 func _ready():
@@ -65,6 +66,8 @@ func updateBlock(pos, blockId=null):
 		
 		loadedBlocks[pos] = [collider, blockId]
 		
+	needUpdate = true
+		
 func unloadBlock(pos):
 	if unloaded:
 		return
@@ -74,10 +77,16 @@ func unloadBlock(pos):
 		if block[0]:
 			block[0].queue_free()
 		loadedBlocks.erase(pos)
+		
+	needUpdate = true
 
 func _process(delta):
 	if unloaded:
 		return
+		
+	if needUpdate:
+		bodyUtils.updateBody(self)
+		needUpdate = false
 	
 	self.max_view_distance = game.view_distance
 	terrainUtils.applyDeferredActions(self)
