@@ -20,6 +20,7 @@ var defaultWorldData = {
 	"voxelsMetadata": {},
 	"dynamicBodies": [],
 	"dynamicBodiesLoadPosition": {},
+	"characters": [],
 	"debug": {
 		"debugInfo": false,
 		"allowFly": false,
@@ -80,6 +81,9 @@ func save(saveEndCallback=null) -> bool:
 		saves.saveBodyId(body)
 		bodyUtils.updateBodyDataInSave(body)
 		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(terrainUtils.getTerrain(body).save_modified_blocks())
+		
+	for character in game.characters.get_children():
+		character.updateCharacterStorageData()
 	
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	

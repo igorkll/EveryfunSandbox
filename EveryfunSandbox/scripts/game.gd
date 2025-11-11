@@ -468,9 +468,7 @@ func _ready():
 	loadSettings()
 	saveSettings() # update session counter
 	
-	_addFolder("res://game/main")
-	_addFolder("res://game/test")
-	blockUtils.updateBlockLibrary()
+	_reloadGameContent()
 	
 	_initMusic()
 	_initAmbient()
@@ -485,6 +483,13 @@ func _ready():
 	
 func _on_close_requested():
 	exit()
+	
+func _reloadGameContent():
+	blockUtils.unloadBlockList()
+	_addFolder("res://game/main")
+	_addFolder("res://game/test")
+	blockUtils.updateBlockList()
+	characterUtils.updateCharacterList()
 
 func _initGui():
 	setScale(settings.gui.scale)

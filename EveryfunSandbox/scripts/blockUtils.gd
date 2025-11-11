@@ -4,6 +4,10 @@ var list_id2obj = []
 var list_name2id = {}
 var blockLibrary
 
+var _blockMaterials = []
+var _materialCache = {}
+var _blockColliders = {}
+
 func getTargetRotation(globalCameraBasisZ: Vector3) -> int:
 	var dir = -globalCameraBasisZ
 	var vertical_threshold = 0.8
@@ -71,10 +75,6 @@ func getBlockCollider(blockId: int):
 var _default_material_texture = preload("res://textures/materialTexture.png")
 var _blocks_shader = preload("res://shaders/blocks.gdshader")
 var _alpha_blocks_shader = preload("res://shaders/alpha_blocks.gdshader")
-
-var _blockColliders = {}
-var _transparency_material
-var _defaultBlockCollider
 
 var _defaultBlockInfo = {
 	"durability": 1,
@@ -168,6 +168,28 @@ var _rotationModes = {
 	]
 }
 
+var _materialCacheNames = [
+	"material",
+	"material_no_filter",
+	"texture",
+	"texture_no_filter",
+	"normal",
+	"use_alpha",
+	"painted"
+]
+
+var _soundsTypes = [
+	"sound_walking",
+	"sound_jump",
+	"sound_headbutt",
+	"sound_place",
+	"sound_destroy",
+	"sound_hit"
+]
+
+var _transparency_material
+var _defaultBlockCollider
+
 func _ready():
 	var array_360_modes = _rotationModes["360"].duplicate()
 	array_360_modes.reverse()
@@ -182,8 +204,14 @@ func _ready():
 	_defaultBlockCollider = BoxShape3D.new()
 	_defaultBlockCollider.size = Vector3(1, 1, 1)
 	
-func updateBlockLibrary():
+func unloadBlockList():
+	list_id2obj = []
+	list_name2id = {}
+
+func updateBlockList():
 	_blockColliders = {}
+	_blockMaterials = []
+	_materialCache = {}
 	_genLibrary()
 
 func _duplicateItem(item):
@@ -239,15 +267,6 @@ func _checkVariants(blockVariants, item):
 				blockVariants.append(variantItem)
 				currentVariant += 1
 				colorVariant += 1
-
-var _soundsTypes = [
-	"sound_walking",
-	"sound_jump",
-	"sound_headbutt",
-	"sound_place",
-	"sound_destroy",
-	"sound_hit"
-]
 
 func _prepairItem(item, path):
 	if item.has("sound"):
@@ -335,10 +354,6 @@ func regBlockList(jsonPath):
 			blockVariant.id = list_id2obj.size()
 			_prepairItem(blockVariant, path)
 			list_id2obj.append(blockVariant)
-
-var _blockMaterials = []
-var _materialCache = {}
-var _materialCacheNames = ["material", "material_no_filter", "texture", "texture_no_filter", "normal", "use_alpha", "painted"]
 
 func _getMaterial(block):
 	block.use_alpha = block.get("use_alpha", false)

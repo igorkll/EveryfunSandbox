@@ -1,10 +1,15 @@
 extends Node
 
-var character_player = preload("res://scripts/classes/player.gd")
-var characterClasses = [character_player]
+var characterClasses
 
-func spawn(character):
+func updateCharacterList():
+	characterClasses = [preload("res://scripts/classes/player.gd")]
+
+func spawn(characterId, position):
+	var character = 0
+	saves.currentWorldData.characters.append([])
 	game.characters.add_child(character)
+	return character
 
 func loadCharacters():
 	var player = character_player.new()
