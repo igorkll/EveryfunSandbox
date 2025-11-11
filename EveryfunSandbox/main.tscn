@@ -1,8 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bw0m6x1agdhve"]
-
-[ext_resource type="Shader" uid="uid://bouu1iwjpmhdo" path="res://gui/panel.gdshader" id="3_kek77"]
-[ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="5_4c57u"]
-[ext_resource type="Texture2D" uid="uid://du7nm0bvtfk18" path="res://gui/crosspiece/normal.png" id="8_5vw27"]
+[gd_scene load_steps=4 format=3 uid="uid://bw0m6x1agdhve"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_272bh"]
 ground_color = Color(0.6901961, 0.7294118, 0.8117647, 1)
@@ -35,16 +31,6 @@ volumetric_fog_length = 16.87
 adjustment_enabled = true
 adjustment_saturation = 1.75
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4c57u"]
-shader = ExtResource("3_kek77")
-shader_parameter/color = Vector4(0.4, 0.3, 0.3, 1)
-shader_parameter/progressColor = Vector4(0.2, 0.2, 0.8, 1)
-shader_parameter/timeout = 0.0
-shader_parameter/processAnimation = false
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
-shader = ExtResource("5_4c57u")
-
 [node name="main" type="Node3D"]
 
 [node name="worldEnv" type="WorldEnvironment" parent="."]
@@ -66,102 +52,3 @@ bus = &"Music"
 bus = &"Ambient"
 
 [node name="gui" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="gui"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer2" type="MarginContainer" parent="gui/Control"]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 60.0
-grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 30
-
-[node name="gameMessages" type="VBoxContainer" parent="gui/Control/MarginContainer2"]
-layout_mode = 2
-theme_override_constants/separation = 30
-
-[node name="MarginContainer3" type="MarginContainer" parent="gui/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 30
-
-[node name="ui_debug_panel" type="Panel" parent="gui/Control/MarginContainer3"]
-material = SubResource("ShaderMaterial_4c57u")
-custom_minimum_size = Vector2(300, 100)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="gui/Control/MarginContainer3/ui_debug_panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="GridContainer" type="GridContainer" parent="gui/Control/MarginContainer3/ui_debug_panel/MarginContainer"]
-layout_mode = 2
-columns = 2
-
-[node name="Label" type="Label" parent="gui/Control/MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "FPS:"
-
-[node name="ui_debug_fps" type="Label" parent="gui/Control/MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="gui/Control/MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "position:"
-
-[node name="ui_debug_position" type="Label" parent="gui/Control/MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
-layout_mode = 2
-
-[node name="gameUI" type="Control" parent="gui/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="gui/Control/gameUI"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="crosspiece" type="TextureRect" parent="gui/Control/gameUI/CenterContainer"]
-texture_filter = 1
-material = SubResource("ShaderMaterial_pkg7o")
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-texture = ExtResource("8_5vw27")
