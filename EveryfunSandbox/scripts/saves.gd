@@ -151,7 +151,6 @@ func open(savename) -> bool:
 	
 	if currentWorldData.has("inited"):
 		game.player = characterUtils.loadCharacter(currentWorldData["hostPlayerCharacterId"])
-		currentWorldData.charactersLoadPosition
 	else:
 		game.player = characterUtils.spawn("player", characterUtils.findSpawnPosition())
 		currentWorldData["hostPlayerCharacterId"] = game.player.id
@@ -342,13 +341,14 @@ func _updateLoadedInteractiveVoxels(loadersPositions):
 				var bodiesIDs = currentWorldData.dynamicBodiesLoadPosition.get(loadedChunk)
 				if bodiesIDs != null:
 					for id in bodiesIDs:
-						bodyUtils.loadBody(id)
+						if currentWorldData.dynamicBodies.has(id):
+							bodyUtils.loadBody(id)
 					currentWorldData.dynamicBodiesLoadPosition.erase(loadedChunk)
 					
 				var charactersIDs = currentWorldData.charactersLoadPosition.get(loadedChunk)
 				if charactersIDs != null:
 					for id in charactersIDs:
-						if not currentWorldRuntimeData.characters.has(id):
+						if not currentWorldRuntimeData.characters.has(id) and currentWorldData.characters.has(id):
 							characterUtils.loadCharacter(id)
 					currentWorldData.charactersLoadPosition.erase(loadedChunk)
 

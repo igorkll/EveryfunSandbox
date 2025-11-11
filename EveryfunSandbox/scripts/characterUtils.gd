@@ -21,15 +21,22 @@ func loadCharacter(id):
 	var characterInfo = saves.currentWorldData.characters[id]
 	
 	var character = characterClasses[characterInfo[0]].new()
+	character.id = id
 	character.storageData = characterInfo[1]
 	character.loadCharacterStorageData()
+	
 	saves.currentWorldRuntimeData.characters[character.id] = character
 	game.characters.add_child(character)
 	return character
 
 func unloadCharacter(character):
 	saves.currentWorldRuntimeData.characters.erase(character.id)
-	game.characters.remove_child(character)
+	character.updateCharacterStorageData()
+	saves.saveCharacterId(character)
+	character.queue_free()
 
 func destroyCharacter(character):
-	pass
+	saves.currentWorldRuntimeData.characters.erase(character.id)
+	funcs.arraySet(saves.currentWorldData.characters, character.id, null)
+	funcs.deleteAllNullsOnEnd(saves.currentWorldData.characters)	
+	character.queue_free()
