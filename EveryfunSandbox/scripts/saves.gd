@@ -342,14 +342,14 @@ func _updateLoadedInteractiveVoxels(loadersPositions):
 				var bodiesIDs = currentWorldData.dynamicBodiesLoadPosition.get(loadedChunk)
 				if bodiesIDs != null:
 					for id in bodiesIDs:
-						if currentWorldData.dynamicBodies.has(id):
+						if funcs.indexExistsInArray(currentWorldData.dynamicBodies, id):
 							bodyUtils.loadBody(id)
 					currentWorldData.dynamicBodiesLoadPosition.erase(loadedChunk)
 					
 				var charactersIDs = currentWorldData.charactersLoadPosition.get(loadedChunk)
 				if charactersIDs != null:
 					for id in charactersIDs:
-						if not currentWorldRuntimeData.characters.has(id) and currentWorldData.characters.has(id):
+						if not currentWorldRuntimeData.characters.has(id) and funcs.indexExistsInArray(currentWorldData.characters, id):
 							characterUtils.loadCharacter(id)
 					currentWorldData.charactersLoadPosition.erase(loadedChunk)
 
