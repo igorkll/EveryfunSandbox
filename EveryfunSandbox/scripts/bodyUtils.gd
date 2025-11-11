@@ -75,6 +75,7 @@ func updateBody(body):
 func unloadBody(body):
 	body = getBody(body)
 	var terrain = terrainUtils.getTerrain(body)
+	terrain.unloaded = true
 	body.remove_child(terrain)
 	game.tempNode.add_child(terrain)
 	saves.saveTerrainBackground(terrain)
@@ -83,6 +84,8 @@ func unloadBody(body):
 
 func destroyBody(body):
 	body = getBody(body)
+	var terrain = terrainUtils.getTerrain(body)
+	terrain.unloaded = true
 	
 	var id = terrainUtils.getTerrain(body).id
 	body.queue_free()

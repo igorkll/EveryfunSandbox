@@ -12,6 +12,7 @@ var defaultStorageData = {
 	blocksCount = 0
 }
 
+var unloaded = false
 var loadedBlocks = {}
 
 func _ready():
@@ -27,8 +28,8 @@ func init(bodyId: int):
 	var mesher = VoxelMesherBlocky.new()
 	mesher.library = blockUtils.blockLibrary
 	
-	var stream = VoxelStreamSQLite.new()
-	stream.database_path = terrainPath
+	# var stream = VoxelStreamSQLite.new()
+	# stream.database_path = terrainPath
 	
 	self.mesher = mesher
 	self.generator = world_generator.new()
@@ -41,6 +42,9 @@ func init(bodyId: int):
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 	
 func updateBlock(pos, blockId=null):
+	if unloaded:
+		return
+	
 	unloadBlock(pos)
 	
 	if blockId == null:
@@ -62,6 +66,9 @@ func updateBlock(pos, blockId=null):
 		loadedBlocks[pos] = [collider, blockId]
 		
 func unloadBlock(pos):
+	if unloaded:
+		return
+	
 	var block = loadedBlocks.get(pos)
 	if block:
 		if block[0]:
@@ -69,5 +76,11 @@ func unloadBlock(pos):
 		loadedBlocks.erase(pos)
 
 func _process(delta):
+	if unloaded:
+		return
+	
 	self.max_view_distance = game.view_distance
 	terrainUtils.applyDeferredActions(self)
+	
+	if not saves.isInteractiveChunkLoaded(position):
+		bodyUtils.unloadBody(self)

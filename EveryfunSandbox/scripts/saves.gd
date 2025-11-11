@@ -90,7 +90,7 @@ func isSaving() -> bool:
 	if currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers.size() > 0:
 		return true
 	
-	return not not currentWorldRuntimeData.voxelSaveCompletionTrackers
+	return currentWorldRuntimeData.has("voxelSaveCompletionTrackers")
 
 func unload() -> bool:
 	if currentWorldName == null || isSaving():
@@ -207,6 +207,11 @@ func changeInteractiveVoxel(terrain, position: Vector3i, blockId=null):
 
 var _interactiveChunkSize = 32
 var _loadedChunks = {}
+var _currentLoadedChunks = {}
+
+func isInteractiveChunkLoaded(position: Vector3):
+	var chunkPosition = _getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position))
+	return _currentLoadedChunks.has(chunkPosition)
 
 func _getChunkPosition(position: Vector3i) -> Vector3i:
 	return position / _interactiveChunkSize
@@ -252,10 +257,11 @@ func _unloadVoxels(chunkVoxels):
 			terrainUtils.unloadBlock(game.terrain, interactiveVoxelPosition)
 
 func _updateLoadedInteractiveVoxels(loadersPositions):
-	var currentLoadedChunks = {}
+	_currentLoadedChunks = {}
+	
 	for loaderPosition in loadersPositions:
 		var chunkPosition = _getChunkPosition(terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, loaderPosition))
-		currentLoadedChunks[chunkPosition] = true
+		_currentLoadedChunks[chunkPosition] = true
 		
 		if not _loadedChunks.has(chunkPosition):
 			_loadedChunks[chunkPosition] = true
@@ -264,7 +270,7 @@ func _updateLoadedInteractiveVoxels(loadersPositions):
 			_loadVoxels(currentWorldRuntimeData.interactiveVoxels.get(chunkPosition))
 	
 	for loadedChunk in _loadedChunks.keys():
-		if not currentLoadedChunks.has(loadedChunk):
+		if not _currentLoadedChunks.has(loadedChunk):
 			_loadedChunks.erase(loadedChunk)
 			
 			_unloadVoxels(currentWorldData.interactiveVoxels.get(loadedChunk))

@@ -16,6 +16,9 @@ func pulseObjectToDirection(position, radius, power, dir, object):
 
 func pulse(position, radius, power):
 	var space = game.world.direct_space_state
+	if not space:
+		return
+	
 	var shape = SphereShape3D.new()
 	shape.radius = radius
 
