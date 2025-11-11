@@ -74,9 +74,10 @@ func updateBody(body):
 
 func unloadBody(body):
 	body = getBody(body)
-	
-	# need write terrain saving here
-	
+	var terrain = terrainUtils.getTerrain(body)
+	body.remove_child(terrain)
+	game.tempNode.add_child(terrain)
+	saves.saveTerrainBackground(terrain)
 	updateBodyDataInSave(body)
 	body.queue_free()
 

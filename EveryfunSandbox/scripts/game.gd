@@ -9,6 +9,7 @@ var world
 var dynamicBodies
 var characters
 var player
+var tempNode
 var settings
 var miscData = {}
 var muteAllExceptMusic = false
@@ -460,6 +461,7 @@ func _ready():
 	scene = sceneTree.current_scene
 	mainNode = get_node("/root/main")
 	objects = get_node("/root/main/objects")
+	tempNode = get_node("/root/main/temp")
 	world = scene.get_world_3d()
 	gameMessagesContainer = mainNode.find_child("gameMessages", true, false)
 	

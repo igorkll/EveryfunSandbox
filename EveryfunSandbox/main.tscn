@@ -43,6 +43,9 @@ shadow_bias = 0.02
 shadow_normal_bias = 4.0
 shadow_opacity = 0.99
 
+[node name="temp" type="Node3D" parent="."]
+visible = false
+
 [node name="objects" type="Node" parent="."]
 
 [node name="music" type="AudioStreamPlayer" parent="."]

@@ -157,6 +157,9 @@ func isInteractiveChunkBlockLoaded(position: Vector3i):
 func list():
 	return filesystem.list(savesFolderPath)
 
+func saveTerrainBackground(terrain):
+	currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers[terrain.save_modified_blocks()] = terrain
+
 # --------------------------------------------------------------- interactive voxels
 
 func regInteractiveVoxel(terrain, position: Vector3i, blockId=null, storageData=null, tempInteractive=false):
