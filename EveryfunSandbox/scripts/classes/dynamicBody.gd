@@ -14,6 +14,7 @@ var defaultStorageData = {
 }
 
 var lifeTime = 0
+var inited = false
 var unloaded = false
 var needUpdate = false
 var freeze = true
@@ -46,6 +47,7 @@ func init(bodyId: int):
 		updateBlock(blockPos, storageData.blocksInfo[blockPos])
 		
 	bodyUtils.updateBody(self)
+	inited = true
 	
 func updateBlock(pos, blockId=null):
 	if unloaded:
@@ -80,7 +82,7 @@ func updateBlock(pos, blockId=null):
 	needUpdate = true
 
 func _process(delta):
-	if unloaded:
+	if unloaded || not inited:
 		return
 		
 	lifeTime += delta
@@ -97,7 +99,7 @@ func _process(delta):
 		bodyUtils.unloadBody(self)
 		return
 	
-	if lifeTime >= 1:
+	if lifeTime >= 0.1:
 		body.freeze = freeze
 	else:
 		body.freeze = true
