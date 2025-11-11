@@ -31,7 +31,7 @@ func createBody(position, rotation=null):
 		rotation = Quaternion()
 	
 	var id = funcs.getNullIndex(saves.currentWorldData.dynamicBodies)
-	funcs.arraySet(saves.currentWorldData.dynamicBodies, id, [position, rotation, {}])
+	funcs.arraySet(saves.currentWorldData.dynamicBodies, id, [position, rotation, {}, Vector3(), Vector3()])
 	return loadBody(id)
 
 func loadBody(id: int):
