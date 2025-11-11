@@ -155,6 +155,7 @@ func open(savename) -> bool:
 		game.player = characterUtils.spawn("player", characterUtils.findSpawnPosition())
 		currentWorldData["hostPlayerCharacterId"] = game.player.id
 		currentWorldData["inited"] = true
+	game.player.nonUnloadable = true
 	
 	signals.emit_signal("world_open", savename)
 	
