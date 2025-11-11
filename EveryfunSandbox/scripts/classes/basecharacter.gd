@@ -236,11 +236,13 @@ func initCharacter(collision: CollisionShape3D, mesh: Mesh):
 	meshIntance.mesh = mesh
 	add_child(meshIntance)
 	
+	loadCharacterStorageData()
+	inited = true
+	
+func loadCharacterStorageData():
 	velocity = storageData.get("_character_velocity", velocity)
 	position = storageData.get("_character_position", position)
 	quaternion = storageData.get("_character_quaternion", quaternion)
-	
-	inited = true
 	
 func updateCharacterStorageData():
 	storageData["_character_velocity"] = velocity
