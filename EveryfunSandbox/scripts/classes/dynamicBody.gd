@@ -90,11 +90,11 @@ func _process(delta):
 	self.max_view_distance = game.view_distance
 	terrainUtils.applyDeferredActions(self)
 	
-	if not saves.isInteractiveChunkLoaded(position):
+	var body = bodyUtils.getBody(self)
+	if not saves.isInteractiveChunkLoaded(body.position):
 		bodyUtils.unloadBody(self)
 		return
-		
-	var body = bodyUtils.getBody(self)
+	
 	if lifeTime >= 1:
 		body.freeze = freeze
 	else:

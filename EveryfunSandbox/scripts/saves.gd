@@ -77,6 +77,7 @@ func save(saveEndCallback=null) -> bool:
 	currentWorldRuntimeData.voxelSaveCompletionTrackers = [game.terrain.save_modified_blocks()]
 	
 	for body in game.dynamicBodies.get_children():
+		saves.saveBodyId(body)
 		bodyUtils.updateBodyDataInSave(body)
 		currentWorldRuntimeData.voxelSaveCompletionTrackers.append(terrainUtils.getTerrain(body).save_modified_blocks())
 	
