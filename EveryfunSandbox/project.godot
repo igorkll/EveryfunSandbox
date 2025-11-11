@@ -143,7 +143,6 @@ chat={
 
 [physics]
 
-3d/run_on_separate_thread=true
 3d/physics_engine="GodotPhysics3D"
 jolt_physics_3d/simulation/allow_sleep=false
 3d/sleep_threshold_linear=0.0

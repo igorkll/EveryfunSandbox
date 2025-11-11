@@ -38,8 +38,6 @@ func pulse(position, radius, power):
 	for hit in results:
 		var body = hit["collider"]
 		if body is RigidBody3D or body is CharacterBody3D:
-			if body is CharacterBody3D:
-				print(body)
 			pulseObject(position, radius, power, body)
 			
 
@@ -52,7 +50,7 @@ func explode(position, explosiveLevel):
 	var raycastDistance = explosiveLevel * 2
 	var shrapnel = explosiveLevel * 15
 	var level = explosiveLevel * 0.5
-	var pulsePower = explosiveLevel * 5
+	var pulsePower = explosiveLevel * 20
 	var minimalDistance = explosiveLevel * 0.5
 	
 	var explosionState = {
@@ -68,7 +66,7 @@ func explode(position, explosiveLevel):
 				if not terrainUtils.callBlock(result[0], result[1].position, "_explode"):
 					var fraction = max(0, result[1].distance - minimalDistance) / (raycastDistance - minimalDistance)
 					if not terrainInteractions.destroyBlock(result[0], result[1].position, level * (1 - fraction)):
-						if randf() < fraction and false:
+						if randf() < fraction:
 							var body = terrainUtils.makeDynamic(result[0], result[1].position)
 							pulseObject(position, raycastDistance, pulsePower / 2, body)
 							pulseObjectToDirection(position, raycastDistance, pulsePower / 2, Vector3.UP, body)
