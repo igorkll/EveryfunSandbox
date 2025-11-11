@@ -449,6 +449,8 @@ func showAabb(aabb: AABB, parent: Node3D, offset=Vector3()):
 # ------------------------------------------------- backend
 
 func _ready():
+	get_node("/root/main/gui").add_child(preload("res://gui/gameMenu.tscn").instantiate())
+	
 	_aabb_debug_material = StandardMaterial3D.new()
 	_aabb_debug_material.albedo_color = Color(1, 0, 0)
 	
