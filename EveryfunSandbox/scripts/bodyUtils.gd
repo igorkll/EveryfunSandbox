@@ -49,7 +49,7 @@ func loadBody(id: int):
 	body.global_transform = t
 	body.linear_velocity = data[3]
 	body.angular_velocity = data[4]
-	body.freeze = false
+	terrain.freeze = false
 	terrain.position = Vector3(-0.5, -0.5, -0.5)
 	terrain.storageData = data[2]
 	terrain.init(id)
@@ -63,6 +63,7 @@ func loadBody(id: int):
 func updateBody(body):
 	body = getBody(body)
 	var terrain = terrainUtils.getTerrain(body)
+	terrain.needUpdate = false
 	
 	var mass = 0
 	var center_of_mass = Vector3(0, 0, 0)

@@ -12,13 +12,15 @@ var defaultStorageData = {
 	blocksCount = 0
 }
 
+var lifeTime = 0
 var unloaded = false
 var needUpdate = false
+var freeze = true
 var loadedBlocks = {}
 
 func _ready():
 	self.connect("mesh_block_entered", updateBlock)
-	self.connect("block_unloaded", unloadBlock)
+	# self.connect("block_unloaded", unloadBlock)
 
 func init(bodyId: int):
 	id = bodyId
@@ -84,6 +86,8 @@ func _process(delta):
 	if unloaded:
 		return
 		
+	lifeTime += delta
+	
 	if needUpdate:
 		bodyUtils.updateBody(self)
 		needUpdate = false
@@ -93,3 +97,10 @@ func _process(delta):
 	
 	if not saves.isInteractiveChunkLoaded(position):
 		bodyUtils.unloadBody(self)
+		return
+		
+	var body = bodyUtils.getBody(self)
+	if lifeTime >= 1:
+		body.freeze = freeze
+	else:
+		body.freeze = true
