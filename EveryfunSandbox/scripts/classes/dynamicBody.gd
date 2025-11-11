@@ -9,7 +9,8 @@ var deferredActions = []
 var id: int
 var storageData
 var defaultStorageData = {
-	blocksCount = 0
+	blocksCount = 0,
+	blocksInfo = {}
 }
 
 var lifeTime = 0
@@ -18,10 +19,6 @@ var needUpdate = false
 var freeze = true
 var loadedBlocks = {}
 var callCount
-
-func _ready():
-	self.connect("mesh_block_entered", updateBlock)
-	# self.connect("block_unloaded", unloadBlock)
 
 func init(bodyId: int):
 	id = bodyId
@@ -41,16 +38,23 @@ func init(bodyId: int):
 	self.max_view_distance = game.view_distance
 	self.stream = stream
 	self.generate_collisions = false
-	self.streaming_system = VoxelLodTerrain.STREAMING_SYSTEM_CLIPBOX
 	
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
+	
+	for blockPos in storageData.blocksInfo:
+		updateBlock(blockPos, storageData.blocksInfo[blockPos])
 	
 func updateBlock(pos, blockId=null):
 	if unloaded:
 		return
 	
-	unloadBlock(pos)
+	var block = loadedBlocks.get(pos)
+	if block:
+		if block[0]:
+			block[0].queue_free()
+		loadedBlocks.erase(pos)
+		storageData.blocksInfo.erase(pos)
 	
 	if blockId == null:
 		blockId = terrainUtils.getBlockId(self, pos)
@@ -69,22 +73,7 @@ func updateBlock(pos, blockId=null):
 			get_parent().add_child(collider)
 		
 		loadedBlocks[pos] = [collider, blockId]
-		
-	if callCount == null:
-		callCount = 0
-	callCount += 1
-		
-	needUpdate = true
-		
-func unloadBlock(pos):
-	if unloaded:
-		return
-	
-	var block = loadedBlocks.get(pos)
-	if block:
-		if block[0]:
-			block[0].queue_free()
-		loadedBlocks.erase(pos)
+		storageData.blocksInfo[pos] = blockId
 		
 	needUpdate = true
 
@@ -93,8 +82,6 @@ func _process(delta):
 		return
 		
 	lifeTime += delta
-	
-	print(loadedBlocks.size(), " ", callCount, " ", storageData.blocksCount)
 	
 	if needUpdate:
 		bodyUtils.updateBody(self)
