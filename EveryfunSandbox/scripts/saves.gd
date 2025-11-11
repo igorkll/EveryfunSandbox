@@ -8,6 +8,7 @@ var currentWorldData
 
 var defaultWorldRuntimeData = {
 	"interactiveVoxels": {},
+	"voxelBackgroundSaveCompletionTrackers": {},
 	"fullLoaded": false,
 	"time": 0,
 	"autoSaveTimer": 0
@@ -67,7 +68,7 @@ func getObjectData(key):
 	return currentWorldData.objectData[key]
 
 func save(saveEndCallback=null) -> bool:
-	if currentWorldName == null || not isWorldFullLoaded() || currentWorldRuntimeData.has("voxelSaveCompletionTrackers"):
+	if currentWorldName == null || not isWorldFullLoaded() || isSaving():
 		return false
 	
 	currentWorldRuntimeData.savingProcessMessage = game.gameMessage("Saving...", null, true)
@@ -85,11 +86,14 @@ func save(saveEndCallback=null) -> bool:
 func isSaving() -> bool:
 	if currentWorldName == null:
 		return false
+		
+	if currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers.size() > 0:
+		return true
 	
 	return not not currentWorldRuntimeData.voxelSaveCompletionTrackers
 
 func unload() -> bool:
-	if currentWorldName == null:
+	if currentWorldName == null || isSaving():
 		return false
 	
 	for child in game.objects.get_children():
@@ -101,7 +105,7 @@ func unload() -> bool:
 	return true
 
 func open(savename) -> bool:
-	if not exists(savename):
+	if not exists(savename) || isSaving():
 		return false
 	
 	_loadingGameMessage = game.gameMessage("Loading...", null, true)
@@ -275,6 +279,12 @@ func _checkAutosave():
 			if not tracker.is_complete():
 				saved = false
 				break
+				
+		if saved:
+			for tracker in currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers:
+				if not tracker.is_complete():
+					saved = false
+					break
 		
 		if saved:
 			currentWorldRuntimeData.savingProcessMessage.task_end()
@@ -334,3 +344,10 @@ func _process(delta):
 
 		_checkAutosave()
 	
+	var trackers = currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers
+	for tracker in trackers.keys():
+		if tracker.is_complete():
+			var node = trackers[tracker]
+			if node != true:
+				node.queue_free()
+			trackers.erase(tracker)
