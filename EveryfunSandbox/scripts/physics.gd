@@ -6,17 +6,22 @@ func updateDirectSpaceState():
 	var newState = game.world.direct_space_state
 	if newState != null:
 		direct_space_state = newState
+		
+func getPulseMul(object):
+	if object is RigidBody3D:
+		return object.mass
+	return 1
 
 func pulseObject(position, radius, power, object):
 	var dir = (object.global_position - position).normalized()
 	var dist = object.global_position.distance_to(position)
 	var strength = power * (1.0 - dist / radius)
-	object.apply_impulse(dir * strength)
+	object.apply_impulse(dir * strength * getPulseMul(object))
 	
 func pulseObjectToDirection(position, radius, power, dir, object):
 	var dist = object.global_position.distance_to(position)
 	var strength = power * (1.0 - dist / radius)
-	object.apply_impulse(dir * strength)
+	object.apply_impulse(dir * strength * getPulseMul(object))
 
 func pulse(position, radius, power):
 	var shape = SphereShape3D.new()
@@ -47,7 +52,7 @@ func explode(position, explosiveLevel):
 	var raycastDistance = explosiveLevel * 2
 	var shrapnel = explosiveLevel * 15
 	var level = explosiveLevel * 0.5
-	var pulsePower = explosiveLevel * 20
+	var pulsePower = explosiveLevel * 1
 	var minimalDistance = explosiveLevel * 0.5
 	
 	var explosionState = {
