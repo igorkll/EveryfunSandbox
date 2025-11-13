@@ -1,0 +1,1 @@
+https://github.com/Zylann/godot_voxel/releases/tag/v1.5
