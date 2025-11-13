@@ -56,7 +56,16 @@ func explode(position, explosiveLevel):
 	
 	pulse(position, raycastDistance, pulsePower)
 	
+	var pulseObjs = []
+	var pulseObjects = func():
+		for obj in pulseObjs:
+			pulseObject(position, raycastDistance, pulsePower / 2, obj)
+			pulseObjectToDirection(position, raycastDistance, pulsePower / 2, Vector3.UP, obj)
+		pulseObjs = []
+	
 	timers.setInterval(func():
+		pulseObjects.call()
+		
 		for i in range(shrapnel):
 			var result = terrainUtils.blockRaycast(position, funcs.getRandomDirection(), raycastDistance)
 			if result:
@@ -64,10 +73,10 @@ func explode(position, explosiveLevel):
 					var fraction = max(0, result[1].distance - minimalDistance) / (raycastDistance - minimalDistance)
 					if not terrainInteractions.destroyBlock(result[0], result[1].position, level * (1 - fraction)):
 						if randf() < fraction:
-							var body = terrainUtils.makeDynamic(result[0], result[1].position)
-							pulseObject(position, raycastDistance, pulsePower / 2, body)
-							pulseObjectToDirection(position, raycastDistance, pulsePower / 2, Vector3.UP, body)
+							pulseObjs.append(terrainUtils.makeDynamic(result[0], result[1].position))
 		explosionState.iterations -= 1
 		if explosionState.iterations < 1:
 			return true
 	, timers.tps_60)
+	
+	pulseObjects.call()
