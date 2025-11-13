@@ -52,7 +52,7 @@ func explode(position, explosiveLevel):
 	var raycastDistance = explosiveLevel * 2
 	var shrapnel = explosiveLevel * 15
 	var level = explosiveLevel * 0.5
-	var pulsePower = explosiveLevel * 1
+	var pulsePower = explosiveLevel * 20
 	var minimalDistance = explosiveLevel * 0.5
 	
 	var explosionState = {
