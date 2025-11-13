@@ -20,6 +20,7 @@ func getTerrain(terrain):
 		for child in terrain.get_children():
 			if child is VoxelTerrain or child is VoxelLodTerrain:
 				return child
+		print("FAILED TO FIND TERRAIN. ", terrain)
 		return
 	return terrain
 		

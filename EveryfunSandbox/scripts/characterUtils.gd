@@ -18,7 +18,13 @@ func updateCharacterDataInSave(character):
 
 func spawn(characterName: String, position: Vector3):
 	var id = funcs.getNullIndex(saves.currentWorldData.characters)
-	funcs.arraySet(saves.currentWorldData.characters, id, [characterName, {}, position, Vector3(0, 0, 0), Vector3(0, 0, 0), Quaternion()])
+	funcs.arraySet(saves.currentWorldData.characters, id, [
+		characterName,
+		{},
+		position,
+		Vector3(0, 0, 0),
+		Quaternion()
+	])
 	return loadCharacter(id)
 
 func findSpawnPosition():
