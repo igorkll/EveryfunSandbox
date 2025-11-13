@@ -12,7 +12,8 @@ func updateCharacterDataInSave(character):
 		character.name,
 		character.storageData,
 		character.position,
-		Vector3(0, 0, 0)
+		character.velocity,
+		character.quaternion
 	])
 
 func spawn(characterName: String, position: Vector3):
@@ -40,7 +41,7 @@ func loadCharacter(id):
 
 func unloadCharacter(character):
 	saves.currentWorldRuntimeData.characters.erase(character.id)
-	character.updateCharacterStorageData()
+	updateCharacterDataInSave(character)
 	saves.saveCharacterId(character)
 	character.queue_free()
 

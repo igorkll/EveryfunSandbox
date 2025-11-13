@@ -86,7 +86,7 @@ func save(saveEndCallback=null) -> bool:
 		
 	for character in game.characters.get_children():
 		saves.saveCharacterId(character)
-		character.updateCharacterStorageData()
+		characterUtils.updateCharacterDataInSave(character)
 	
 	filesystem.writeObj(getPathInSave("data"), currentWorldData)
 	
