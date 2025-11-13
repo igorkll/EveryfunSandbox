@@ -121,17 +121,17 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -30.0
+offset_left = -280.0
 offset_top = -110.0
-offset_right = 30.0
+offset_right = 280.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
 
-[node name="SimpleInventoryUI" type="ItemList" parent="MarginContainer4"]
+[node name="itemdock" type="ItemList" parent="MarginContainer4"]
 custom_minimum_size = Vector2(500, 50)
 layout_mode = 2
 size_flags_horizontal = 4
