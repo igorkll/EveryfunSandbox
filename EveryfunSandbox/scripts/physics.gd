@@ -59,8 +59,9 @@ func explode(position, explosiveLevel):
 	var pulseObjs = []
 	var pulseObjects = func():
 		for obj in pulseObjs:
-			pulseObject(position, raycastDistance, pulsePower / 2, obj)
-			pulseObjectToDirection(position, raycastDistance, pulsePower / 2, Vector3.UP, obj)
+			if obj:
+				pulseObject(position, raycastDistance, pulsePower / 2, obj)
+				pulseObjectToDirection(position, raycastDistance, pulsePower / 2, Vector3.UP, obj)
 		pulseObjs = []
 	
 	timers.setInterval(func():
