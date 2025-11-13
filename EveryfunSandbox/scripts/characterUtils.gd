@@ -6,12 +6,18 @@ func updateCharacterList():
 	characterClasses = {
 		player = preload("res://scripts/classes/player.gd")
 	}
+	
+func updateCharacterDataInSave(character):
+	funcs.arraySet(saves.currentWorldData.characters, character.id, [
+		character.name,
+		character.storageData,
+		character.position,
+		Vector3(0, 0, 0)
+	])
 
 func spawn(characterName: String, position: Vector3):
 	var id = funcs.getNullIndex(saves.currentWorldData.characters)
-	funcs.arraySet(saves.currentWorldData.characters, id, [characterName, {
-		_character_position = position
-	}])
+	funcs.arraySet(saves.currentWorldData.characters, id, [characterName, {}, position, Vector3(0, 0, 0), Vector3(0, 0, 0), Quaternion()])
 	return loadCharacter(id)
 
 func findSpawnPosition():
@@ -22,8 +28,11 @@ func loadCharacter(id):
 	
 	var character = characterClasses[characterInfo[0]].new()
 	character.id = id
+	character.name = characterInfo[0]
 	character.storageData = characterInfo[1]
-	character.loadCharacterStorageData()
+	character.position = characterInfo[2]
+	character.velocity = characterInfo[3]
+	character.quaternion = characterInfo[4]
 	
 	saves.currentWorldRuntimeData.characters[character.id] = character
 	game.characters.add_child(character)
