@@ -5,13 +5,27 @@ var defaultWorldName = "default world"
 
 var ui_worlds_list
 
+func _attachWorldCardButton(worldCard, button, callback):
+	var buttonObj = worldCard.find_child(button, true, false)
+	buttonObj.pressed.connect(callback)
+	return buttonObj
+
+func worldRename(worldName):
+	pass
+	
+func worldDelete(worldName):
+	pass
+
 func addWorldToList(worldName):
 	var worldCard = worldCardBase.instantiate()
 	worldCard.find_child("worldName", true, false).text = worldName
 	
 	if worldName == game.settings.data.selectedWorld:
 		pass
+	
 	ui_worlds_list.add_child(worldCard)
+	_attachWorldCardButton(worldCard, "worldRename", worldRename.bind(worldName))
+	_attachWorldCardButton(worldCard, "worldDelete", worldDelete.bind(worldName))
 
 func updateWorldsList():
 	for child in ui_worlds_list.get_children():
