@@ -377,12 +377,14 @@ func _checkAutosave():
 			if game.settings.gui.showSaveLabel:
 				game.gameMessage("Game saved!")
 			
-			if currentWorldRuntimeData.saveEndCallback:
-				currentWorldRuntimeData.saveEndCallback.call()
+			var saveEndCallback = currentWorldRuntimeData.saveEndCallback
 			
 			currentWorldRuntimeData.erase("voxelSaveCompletionTrackers")
 			currentWorldRuntimeData.erase("savingProcessMessage")
 			currentWorldRuntimeData.erase("saveEndCallback")
+			
+			if saveEndCallback:
+				saveEndCallback.call()
 		
 func _checkLoaded():
 	var loadersPositions = game.getChunkloadersPositions()

@@ -1,6 +1,7 @@
 extends Node
 
 var worldCardBase = preload("res://gui/worldCard/worldCard.tscn")
+var defaultWorldName = "default world"
 
 var ui_worlds_list
 
@@ -23,20 +24,32 @@ func updateWorldsList():
 		if game.settings.data.selectedWorld != worldName:
 			addWorldToList(worldName)
 
-func openDefaultWorld():
-	if game.settings.data.selectedWorld == null:
-		game.settings.data.selectedWorld = "default world"
-	
+func loadSelectedWorld():
 	if saves.exists(game.settings.data.selectedWorld):
 		saves.open(game.settings.data.selectedWorld)
 	else:
 		saves.create(game.settings.data.selectedWorld)
 
+func _changeWorld(worldName):	
+	game.settings.data.selectedWorld = worldName
+	game.saveSettings()
+	
+	loadSelectedWorld()
+	updateWorldsList()
+
+func changeWorld(worldName):
+	saves.save(_changeWorld.bind(worldName))
+
 func _ready():
 	ui_worlds_list = game.mainNode.find_child("ui_worlds_list", true, false)
 	gui._attachButton("ui_worlds_new", _worlds_new)
-	openDefaultWorld()
+	
+	if game.settings.data.selectedWorld == null:
+		game.settings.data.selectedWorld = defaultWorldName
+		game.saveSettings()
+	
+	loadSelectedWorld()
 	updateWorldsList()
 
 func _worlds_new():
-	pass
+	changeWorld("test5")
