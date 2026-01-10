@@ -46,10 +46,6 @@ worldsList="*res://scripts/worldsList.gd"
 window/size/mode=3
 window/vsync/vsync_mode=0
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/inventory-system/plugin.cfg")
-
 [gui]
 
 theme/custom="uid://b1snsmkgncv41"

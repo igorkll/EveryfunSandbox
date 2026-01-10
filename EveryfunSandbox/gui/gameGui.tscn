@@ -1,6 +1,5 @@
-[gd_scene load_steps=7 format=3 uid="uid://cnx2vnovtfcjx"]
+[gd_scene load_steps=6 format=3 uid="uid://cnx2vnovtfcjx"]
 
-[ext_resource type="Script" uid="uid://du4odj2yajra2" path="res://addons/inventory-system-demos/simple-transfer/simple_inventory_ui.gd" id="1_5upv5"]
 [ext_resource type="Shader" uid="uid://bouu1iwjpmhdo" path="res://gui/panel.gdshader" id="1_qq510"]
 [ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="2_5upv5"]
 [ext_resource type="Texture2D" uid="uid://du7nm0bvtfk18" path="res://gui/crosspiece/normal.png" id="3_018vt"]
@@ -127,14 +126,3 @@ offset_right = 30.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/margin_bottom = 15
-
-[node name="itemdock" type="ItemList" parent="MarginContainer4"]
-custom_minimum_size = Vector2(500, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-max_columns = 10
-same_column_width = true
-fixed_column_width = 25
-script = ExtResource("1_5upv5")
-metadata/_custom_type_script = "uid://du4odj2yajra2"
