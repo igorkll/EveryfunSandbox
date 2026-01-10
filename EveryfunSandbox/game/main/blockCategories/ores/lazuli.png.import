@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://reyip4hrotng"
-path="res://.godot/imported/stone.png-b3d17b3f4ddadfe76c0f9269e990d52f.ctex"
+uid="uid://4b8nt8cd7oic"
+path="res://.godot/imported/lazuli.png-78b7c88e11918188097daad73479ee9f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/ores/materials/stone.png"
-dest_files=["res://.godot/imported/stone.png-b3d17b3f4ddadfe76c0f9269e990d52f.ctex"]
+source_file="res://game/main/blockCategories/ores/lazuli.png"
+dest_files=["res://.godot/imported/lazuli.png-78b7c88e11918188097daad73479ee9f.ctex"]
 
 [params]
 

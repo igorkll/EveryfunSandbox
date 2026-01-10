@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clrh62h4uopqo"
-path="res://.godot/imported/gold.png-eed21e6ef3e89dbf8d50df132c53c870.ctex"
+uid="uid://mesrtki0sa4m"
+path="res://.godot/imported/glow.png-b27a8ce637518794a50292a99ba48b19.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/ores/gold.png"
-dest_files=["res://.godot/imported/gold.png-eed21e6ef3e89dbf8d50df132c53c870.ctex"]
+source_file="res://game/main/blockCategories/ores/materials/glow.png"
+dest_files=["res://.godot/imported/glow.png-b27a8ce637518794a50292a99ba48b19.ctex"]
 
 [params]
 

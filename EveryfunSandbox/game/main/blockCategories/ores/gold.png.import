@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlbpietlomxfi"
-path="res://.godot/imported/uranium.png-4a87e9996aa9f4c59ba4df323da2048d.ctex"
+uid="uid://clrh62h4uopqo"
+path="res://.godot/imported/gold.png-dc431af993838262b8391e0583ce8fe7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/ores/uranium.png"
-dest_files=["res://.godot/imported/uranium.png-4a87e9996aa9f4c59ba4df323da2048d.ctex"]
+source_file="res://game/main/blockCategories/ores/gold.png"
+dest_files=["res://.godot/imported/gold.png-dc431af993838262b8391e0583ce8fe7.ctex"]
 
 [params]
 

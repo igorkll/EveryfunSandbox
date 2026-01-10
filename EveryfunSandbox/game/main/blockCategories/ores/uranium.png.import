@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4b8nt8cd7oic"
-path="res://.godot/imported/lazuli.png-85b54d543b6b8e798a5a2fdcaeeba6dd.ctex"
+uid="uid://dlbpietlomxfi"
+path="res://.godot/imported/uranium.png-8f1b31418b91b0260ee4adfc197ccae6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/ores/lazuli.png"
-dest_files=["res://.godot/imported/lazuli.png-85b54d543b6b8e798a5a2fdcaeeba6dd.ctex"]
+source_file="res://game/main/blockCategories/ores/uranium.png"
+dest_files=["res://.godot/imported/uranium.png-8f1b31418b91b0260ee4adfc197ccae6.ctex"]
 
 [params]
 

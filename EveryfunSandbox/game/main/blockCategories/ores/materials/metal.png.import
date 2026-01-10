@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://q6g31ck7rn70"
-path="res://.godot/imported/metal.png-a94e1985cf339b1a541039539c5b8249.ctex"
+path="res://.godot/imported/metal.png-22c787bfb7c0ff4d059c49e98752bb9f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/ores/materials/metal.png"
-dest_files=["res://.godot/imported/metal.png-a94e1985cf339b1a541039539c5b8249.ctex"]
+source_file="res://game/main/blockCategories/ores/materials/metal.png"
+dest_files=["res://.godot/imported/metal.png-22c787bfb7c0ff4d059c49e98752bb9f.ctex"]
 
 [params]
 
