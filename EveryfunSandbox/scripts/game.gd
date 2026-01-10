@@ -343,6 +343,7 @@ func gameMessage(text, timeout=4, processAnimation=false, minShowTime=null):
 		message.processAnimation = true
 	
 	gameMessagesContainer.add_child(message)
+	gameMessagesContainer.move_child(message, 0)
 	return message
 	
 func setScale(scale):
