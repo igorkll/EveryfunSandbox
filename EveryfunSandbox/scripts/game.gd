@@ -156,7 +156,7 @@ func updateGraphicParameters(quality):
 	var graphicSettingsPreset = getGraphicSettingsPresets(quality)
 		
 	for child in allTerrainNodes:
-		if child is OmniLight3D || child is SpotLight3D:
+		if is_instance_valid(child) and child is OmniLight3D || child is SpotLight3D:
 			applyLightGraphicSettings(child, quality)
 
 func setGraphicQuality(quality):
