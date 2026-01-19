@@ -67,7 +67,6 @@
 		"name": "testPaint",
 		"texture": "textures/testPaint.png",
 		"texture_mode": "UNIFORM_TOP",
-		"texture_no_filter": true,
 		"script": "scripts/testPaint.gd"
 	},
 	
@@ -85,7 +84,6 @@
 		"name": "testTempScript2",
 		"texture": "textures/testVariants/disabled.png",
 		"texture_mode": "UNIFORM_SIDE",
-		"texture_no_filter": true,
 		"rotationMode": "360V",
 		"script": "scripts/testVariants.gd",
 		"script_temp": true,
