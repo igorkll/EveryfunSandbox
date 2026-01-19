@@ -1,0 +1,204 @@
+[
+	{
+		"name": "air"
+	},
+	{
+		"name": "grass",
+		"texture": "blocks/grass.png",
+		"texture_mode": "UNIFORM_TOP_BOTTOM",
+		"sound": "grass",
+		"sound_placeDestroy": "grass_placeDestroy",
+		"info": {
+			"durability": 3,
+			"weight": 13
+		}
+	},
+	{
+		"name": "dirt",
+		"texture": "blocks/dirt.png",
+		"texture_mode": "UNIFORM",
+		"sound": "grass",
+		"sound_placeDestroy": "grass_placeDestroy",
+		"info": {
+			"durability": 3,
+			"weight": 13
+		}
+	},
+	{
+		"name": "stone",
+		"texture": "blocks/stone.png",
+		"texture_mode": "UNIFORM",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 3,
+			"weight": 26
+		}
+	},
+	{
+		"name": "bricks",
+		"texture": "blocks/bricks.png",
+		"texture_mode": "UNIFORM",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 4,
+			"weight": 18
+		}
+	},
+	{
+		"name": "metal",
+		"texture": "blocks/metal.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"info": {
+			"durability": 5,
+			"weight": 78
+		}
+	},
+	{
+		"name": "polished_metal",
+		"texture": "blocks/polished_metal.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"info": {
+			"durability": 5,
+			"weight": 78
+		}
+	},
+	{
+		"name": "colored_stone_tiles",
+		"texture": "blocks/colored_stone_tiles.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/glass.png",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 5,
+			"weight": 26
+		}
+	},
+	{
+		"name": "glass",
+		"texture": "blocks/glass.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/glass.png",
+		"use_alpha": true,
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy",
+		"info": {
+			"durability": 1,
+			"weight": 25
+		}
+	},
+	
+	{
+		"name": "glow",
+		"texture": "blocks/glow.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/glow.png",
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy",
+		"lights": [
+			{
+				"type": "omni",
+				"range": 10
+			}
+		],
+		"paintable": true,
+		"info": {
+			"durability": 1,
+			"weight": 25
+		}
+	},
+	{
+		"name": "lamp",
+		"texture": "blocks/lamp/texture.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"material": "blocks/lamp/material.png",
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy",
+		"lights": [
+			{
+				"type": "spot",
+				"rotation": [0, -90, 0],
+				"range": 10
+			}
+		],
+		"paintable": true,
+		"rotationMode": "360V",
+		"info": {
+			"durability": 1,
+			"weight": 25
+		}
+	},
+	
+	
+	{
+		"name": "mirror",
+		"texture": "blocks/metal.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/mirror.gd",
+		"rotationMode": "360V",
+		"multiblock": "PLANE"
+	},
+	{
+		"name": "monitor",
+		"texture": "blocks/polished_metal.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/monitor.gd",
+		"rotationMode": "360V"
+	},
+	{
+		"name": "explosive",
+		"texture": "blocks/explosive.png",
+		"texture_mode": "UNIFORM_TOP_BOTTOM",
+		"material": "materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/explosive.gd",
+		"script_data": {
+			"explosiveLevel": 5
+		}
+	},
+	{
+		"name": "nuclear_explosive",
+		"texture": "blocks/nuclear_explosive/texture.png",
+		"texture_mode": "UNIFORM",
+		"material": "blocks/nuclear_explosive/material.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/explosive.gd",
+		"script_data": {
+			"explosiveLevel": 150
+		}
+	},
+	{
+		"name": "grammophone",
+		"texture": "blocks/grammophone/texture.png",
+		"mesh": "blocks/grammophone/mesh.obj",
+		"mesh_collision": 1,
+		"hide_collision": true,
+		"material": "blocks/grammophone/material.png",
+		"normal": "blocks/grammophone/normal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/grammophone.gd",
+		"rotationMode": "360",
+		"info": {
+			"durability": 1,
+			"weight": 23,
+			"center_of_mass": [0, -0.2, 0]
+		}
+	}
+]

@@ -1,0 +1,75 @@
+extends baseblock
+
+var sinDestortion = 0.5
+
+var defaultStorageData = {
+	rpm = 78.26
+}
+
+var effectSound = preload("res://game/main/blocks/grammophone/effect.mp3")
+
+var audioPlayer: AudioStreamPlayer3D
+var audioPlayerEffect: AudioStreamPlayer3D
+var rotationCount = 0
+
+func __updateSound():
+	var pitch = (storageData.rpm + (sin(rotationCount * PI * 2) * sinDestortion)) / defaultStorageData.rpm
+	audioPlayer.pitch_scale = pitch
+	audioPlayerEffect.pitch_scale = pitch
+
+func __play(path):
+	audioPlayerEffect.stream = effectSound
+	audioPlayerEffect.volume_db = 5
+	audioPlayerEffect.play()
+	
+	audioPlayer.stream = game.loadResource(path)
+	audioPlayer.play()
+	
+func __stop():
+	audioPlayer.stop()
+	audioPlayerEffect.stop()
+	
+func __onFileSelected(path):
+	if path:
+		__play(path)
+
+func __disk_end():
+	pass
+
+func _ready():
+	effectSound.loop = true
+	
+	var node = Node3D.new()
+	node.rotation_degrees = Vector3(0, -90, 0)
+	
+	audioPlayer = AudioStreamPlayer3D.new()
+	audioPlayer.bus = "Grammophone"
+	game.initAudioStream(audioPlayer)
+	audioPlayer.emission_angle_enabled = true
+	audioPlayer.emission_angle_degrees = 45
+	audioPlayer.emission_angle_filter_attenuation_db = -30
+	audioPlayer.max_db = 30
+	audioPlayer.connect("finished", __disk_end)
+	node.add_child(audioPlayer)
+	
+	audioPlayerEffect = AudioStreamPlayer3D.new()
+	audioPlayerEffect.bus = "Interactive blocks"
+	game.initAudioStream(audioPlayerEffect)
+	audioPlayerEffect.attenuation_filter_cutoff_hz = 20500
+	audioPlayerEffect.unit_size = 30
+	audioPlayerEffect.max_db = 10
+	node.add_child(audioPlayerEffect)
+	
+	__updateSound()
+
+	add_child(node)
+
+func _process(delta):
+	rotationCount += (delta * storageData.rpm) / 60
+	__updateSound()
+
+func _requestDefaultStorageData():
+	return defaultStorageData
+
+func _use():
+	game.requestFile([consts.extfilter_audio], __onFileSelected)

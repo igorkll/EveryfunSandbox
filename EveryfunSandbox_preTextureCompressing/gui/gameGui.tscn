@@ -1,0 +1,128 @@
+[gd_scene load_steps=6 format=3 uid="uid://cnx2vnovtfcjx"]
+
+[ext_resource type="Shader" uid="uid://bouu1iwjpmhdo" path="res://gui/panel.gdshader" id="1_qq510"]
+[ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="2_5upv5"]
+[ext_resource type="Texture2D" uid="uid://du7nm0bvtfk18" path="res://gui/crosspiece/normal.png" id="3_018vt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yodrc"]
+shader = ExtResource("1_qq510")
+shader_parameter/color = Vector4(0.4, 0.3, 0.3, 1)
+shader_parameter/progressColor = Vector4(0.2, 0.2, 0.8, 1)
+shader_parameter/timeout = 0.0
+shader_parameter/processAnimation = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o85lh"]
+shader = ExtResource("2_5upv5")
+
+[node name="gameGui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 60.0
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="gameMessages" type="VBoxContainer" parent="MarginContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="MarginContainer3" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="ui_debug_panel" type="Panel" parent="MarginContainer3"]
+material = SubResource("ShaderMaterial_yodrc")
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer3/ui_debug_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer3/ui_debug_panel/MarginContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "FPS:"
+
+[node name="ui_debug_fps" type="Label" parent="MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "position:"
+
+[node name="ui_debug_position" type="Label" parent="MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="gameUI" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="gameUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="crosspiece" type="TextureRect" parent="gameUI/CenterContainer"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_o85lh")
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+texture = ExtResource("3_018vt")
+
+[node name="MarginContainer4" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -60.0
+offset_right = 30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 15

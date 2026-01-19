@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cxdqotjrqebme"]
+
+[ext_resource type="Shader" uid="uid://bouu1iwjpmhdo" path="res://gui/panel.gdshader" id="1_qshik"]
+
+[resource]
+shader = ExtResource("1_qshik")
+shader_parameter/color = Vector4(0.6, 0.6, 0.6, 1)
+shader_parameter/progressColor = Vector4(0.2, 0.2, 0.8, 1)
+shader_parameter/timeout = 0.0
+shader_parameter/processAnimation = false

@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://bw0m6x1agdhve"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_272bh"]
+ground_color = Color(0.6901961, 0.7294118, 0.8117647, 1)
+energy_multiplier = 1.5
+use_debanding = false
+
+[sub_resource type="Sky" id="Sky_fj7yv"]
+sky_material = SubResource("PhysicalSkyMaterial_272bh")
+
+[sub_resource type="Environment" id="Environment_gv5m4"]
+background_mode = 2
+sky = SubResource("Sky_fj7yv")
+ambient_light_source = 3
+ambient_light_color = Color(0.68859524, 0.6885953, 0.6885953, 1)
+ambient_light_sky_contribution = 0.1
+ambient_light_energy = 0.01
+reflected_light_source = 1
+tonemap_mode = 4
+tonemap_exposure = 3.0
+ssao_enabled = true
+ssao_radius = 3.0
+ssao_intensity = 5.35
+ssil_enabled = true
+ssil_radius = 1.0
+sdfgi_read_sky_light = false
+sdfgi_normal_bias = 0.5
+sdfgi_probe_bias = 0.5
+glow_enabled = true
+volumetric_fog_length = 16.87
+adjustment_enabled = true
+adjustment_saturation = 1.75
+
+[node name="main" type="Node3D"]
+
+[node name="worldEnv" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gv5m4")
+
+[node name="worldLight" type="DirectionalLight3D" parent="worldEnv"]
+transform = Transform3D(0.79504, 0.332199, -0.507499, 2.97226e-08, 0.836688, 0.54768, 0.606558, -0.435427, 0.6652, 0, 0, 0)
+shadow_enabled = true
+shadow_bias = 0.02
+shadow_normal_bias = 4.0
+shadow_opacity = 0.99
+
+[node name="temp" type="Node3D" parent="."]
+visible = false
+
+[node name="objects" type="Node" parent="."]
+
+[node name="music" type="AudioStreamPlayer" parent="."]
+bus = &"Music"
+
+[node name="ambient" type="AudioStreamPlayer" parent="."]
+bus = &"Ambient"
+
+[node name="gui" type="CanvasLayer" parent="."]
