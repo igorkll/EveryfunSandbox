@@ -288,10 +288,7 @@ func _prepairItem(item, path):
 
 	if item.has("material"):
 		item.material = game.loadResource(path.path_join(item.material))
-		
-	if item.has("normal"):
-		item.normal = game.loadResource(path.path_join(item.normal))
-		
+	
 	if item.has("script"):
 		item.script = path.path_join(item.script)
 		
