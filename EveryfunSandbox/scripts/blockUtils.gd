@@ -369,26 +369,12 @@ func _getMaterial(block):
 		material.shader = _blocks_shader
 	
 	var materialTexture = block.get("material", _default_material_texture)
-	if block.get("material_no_filter", false):
-		material.set_shader_parameter("material_texture_no_filter", materialTexture)
-		material.set_shader_parameter("no_material_filter", true)
-	else:
-		material.set_shader_parameter("material_texture", materialTexture)
-		material.set_shader_parameter("no_material_filter", false)
-		
-	if block.has("normal"):
-		material.set_shader_parameter("normals_texture", block.normal)
-		material.set_shader_parameter("use_normals_texture", true)
+
+	material.set_shader_parameter("material_texture", materialTexture);	
+	material.set_shader_parameter("dif_texture", block.texture);
 	
-	if block.get("texture_no_filter", false):
-		material.set_shader_parameter("dif_texture_no_filter", block.texture)
-		material.set_shader_parameter("no_filter", true)
-	else:
-		material.set_shader_parameter("dif_texture", block.texture)
-		material.set_shader_parameter("no_filter", false)
-	
-	if block.has("painted"):
-		material.set_shader_parameter("tint_color", block.painted)
+	# if block.has("painted"):
+	# 	material.set_shader_parameter("tint_color", block.painted)
 	
 	_materialCache[cachename] = material
 	_blockMaterials.append(material)
