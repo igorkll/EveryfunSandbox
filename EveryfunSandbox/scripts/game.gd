@@ -372,7 +372,6 @@ func requestFile(filters, callback):
 	)
 
 var _pressedCounter = {}
-var _multiplePressTimeout = 200
 
 func is_action_multiple_pressed(actionName, count=2):
 	var counter
@@ -387,7 +386,7 @@ func is_action_multiple_pressed(actionName, count=2):
 	var state = Input.is_action_pressed(actionName)
 	if state && !counter[0]:
 		var time = Time.get_ticks_msec()
-		if counter[2] < 0 || time - counter[2] > _multiplePressTimeout:
+		if counter[2] < 0 || time - counter[2] > consts.multiplePressTimeout:
 			counter[1] = 0
 		counter[2] = time
 		
