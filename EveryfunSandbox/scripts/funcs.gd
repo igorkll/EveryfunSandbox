@@ -325,3 +325,18 @@ func save_only_first_surface(mesh: ArrayMesh) -> ArrayMesh:
 	var new_mesh = ArrayMesh.new()
 	new_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, mesh.surface_get_arrays(0))
 	return new_mesh
+
+func tint_texture(tex: Texture2D, tint: Color) -> Texture2D:
+	var img := tex.get_image()
+
+	for y in img.get_height():
+		for x in img.get_width():
+			var c = img.get_pixel(x, y)
+			c.r *= tint.r
+			c.g *= tint.g
+			c.b *= tint.b
+			c.a *= tint.a
+			img.set_pixel(x, y, c)
+
+	var new_tex := ImageTexture.create_from_image(img)
+	return new_tex

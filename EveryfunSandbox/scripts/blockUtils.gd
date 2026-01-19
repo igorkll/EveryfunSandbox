@@ -170,10 +170,7 @@ var _rotationModes = {
 
 var _materialCacheNames = [
 	"material",
-	"material_no_filter",
 	"texture",
-	"texture_no_filter",
-	"normal",
 	"use_alpha",
 	"painted"
 ]
@@ -366,12 +363,13 @@ func _getMaterial(block):
 		material.shader = _blocks_shader
 	
 	var materialTexture = block.get("material", _default_material_texture)
-
-	material.set_shader_parameter("material_texture", materialTexture);	
-	material.set_shader_parameter("dif_texture", block.texture);
+	var texture = block.texture
 	
-	# if block.has("painted"):
-	# 	material.set_shader_parameter("tint_color", block.painted)
+	if block.has("painted"):
+		texture = funcs.tint_texture(texture, block.painted)
+	
+	material.set_shader_parameter("material_texture", materialTexture);	
+	material.set_shader_parameter("dif_texture", texture);
 	
 	_materialCache[cachename] = material
 	_blockMaterials.append(material)

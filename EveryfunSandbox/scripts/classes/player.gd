@@ -25,7 +25,7 @@ func controlHandler():
 	# ---------------------------------- fly
 	
 	if saves.currentWorldData.debug.allowFly:
-		if not control_lock && game.is_action_multiple_pressed("jump"):
+		if not control_lock && (game.is_action_multiple_pressed("jump") || Input.is_action_just_pressed("fly")):
 			fly_mode = not fly_mode
 		
 		if fly_mode:
@@ -91,14 +91,15 @@ func controlHandler():
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
-			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["testPaint"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
+			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["glass"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
 		
 	if Input.is_action_just_pressed("chat"):
-		if result:
-			if terrainUtils.isDymanic(result[0]):
-				terrainUtils.makeStatic(result[0], result[1].position)
-			else:
-				terrainUtils.makeDynamic(result[0], result[1].position)
+		# if result:
+		# 	if terrainUtils.isDymanic(result[0]):
+		#		terrainUtils.makeStatic(result[0], result[1].position)
+		#	else:
+		#		terrainUtils.makeDynamic(result[0], result[1].position)
+		pass
 	
 	if result && terrainUtils.canUseBlock(result[0], result[1].position):
 		game.setCrosspiece("use")
