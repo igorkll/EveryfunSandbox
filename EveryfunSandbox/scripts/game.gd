@@ -115,8 +115,12 @@ var distanceSettingsPresets = [
 		"lodDistance": 32
 	},
 	{
-		"distance": 256,
+		"distance": 128,
 		"lodDistance": 64
+	},
+	{
+		"distance": 256,
+		"lodDistance": 128
 	},
 	{
 		"distance": 512,
@@ -124,10 +128,6 @@ var distanceSettingsPresets = [
 	},
 	{
 		"distance": 1024,
-		"lodDistance": 128
-	},
-	{
-		"distance": 2048,
 		"lodDistance": 128
 	}
 ]
