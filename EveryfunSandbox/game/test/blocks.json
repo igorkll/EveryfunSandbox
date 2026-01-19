@@ -2,38 +2,32 @@
 	{
 		"name": "test_DIFFERENT_SIDES",
 		"texture": "textures/DIFFERENT_SIDES.png",
-		"texture_mode": "DIFFERENT_SIDES",
-		"texture_no_filter": true
+		"texture_mode": "DIFFERENT_SIDES"
 	},
 	{
 		"name": "test_UNIFORM",
 		"texture": "textures/UNIFORM.png",
-		"texture_mode": "UNIFORM",
-		"texture_no_filter": true
+		"texture_mode": "UNIFORM"
 	},
 	{
 		"name": "test_UNIFORM_TOP_BOTTOM",
 		"texture": "textures/UNIFORM_TOP_BOTTOM.png",
-		"texture_mode": "UNIFORM_TOP_BOTTOM",
-		"texture_no_filter": true
+		"texture_mode": "UNIFORM_TOP_BOTTOM"
 	},
 	{
 		"name": "test_UNIFORM_SIDE",
 		"texture": "textures/UNIFORM_SIDE.png",
-		"texture_mode": "UNIFORM_SIDE",
-		"texture_no_filter": true
+		"texture_mode": "UNIFORM_SIDE"
 	},
 	{
 		"name": "test_UNIFORM_SIDE_TOP_BOTTOM",
 		"texture": "textures/UNIFORM_SIDE_TOP_BOTTOM.png",
-		"texture_mode": "UNIFORM_SIDE_TOP_BOTTOM",
-		"texture_no_filter": true
+		"texture_mode": "UNIFORM_SIDE_TOP_BOTTOM"
 	},
 	{
 		"name": "test_UNIFORM_TOP",
 		"texture": "textures/UNIFORM_TOP.png",
-		"texture_mode": "UNIFORM_TOP",
-		"texture_no_filter": true
+		"texture_mode": "UNIFORM_TOP"
 	},
 	
 	{
@@ -47,14 +41,12 @@
 		"name": "testStorage",
 		"texture": "textures/UNIFORM.png",
 		"texture_mode": "UNIFORM",
-		"texture_no_filter": true,
 		"script": "scripts/testStorage.gd"
 	},
 	{
 		"name": "testVariants",
 		"texture": "textures/testVariants/disabled.png",
 		"texture_mode": "UNIFORM_SIDE",
-		"texture_no_filter": true,
 		"rotationMode": "360V",
 		"script": "scripts/testVariants.gd",
 		"variants": [

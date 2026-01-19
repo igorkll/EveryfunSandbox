@@ -255,7 +255,6 @@ func loadBlock(terrain, position: Vector3i, blockId=null, storageData=null, allo
 			match lightData.type:
 				"omni":
 					lightObj = OmniLight3D.new()
-					lightObj.omni_shadow_mode = OmniLight3D.SHADOW_DUAL_PARABOLOID
 					lightObj.omni_attenuation = lightData.get("attenuation", lightObj.omni_attenuation)
 					lightObj.omni_range = lightData.get("range", lightObj.omni_range)
 

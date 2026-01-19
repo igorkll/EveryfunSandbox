@@ -129,11 +129,8 @@ func _ready():
 	
 	_attachOption("graphic.quality", "ui_graphic_quality", game.setGraphicQuality)
 	_attachOption("graphic.distance", "ui_graphic_distance", game.setRenderDistance)
-	
 	_attachOption("graphic.window", "ui_window_mode", game.setWindowMode)
 	_attachOption("graphic.vsync", "ui_vsync_mode", game.setVSyncMode)
-	_attachToggleOption("graphic.hdr", "ui_graphic_hdr", game.setHdrState)
-	_attachToggleOption("graphic.smoothing", "ui_graphic_smoothing", game.setSmoothingState)
 	
 	_attachSlider("control.mouse.sensitivity", "ui_control_mouse_sensitivity", [0, 2], _updateSlider)
 	_attachSlider("control.joystick.sensitivity", "ui_control_joystick_sensitivity", [0, 2], _updateSlider)

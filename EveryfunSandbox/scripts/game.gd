@@ -56,9 +56,7 @@ var defaultSettings = {
 		"window": 0,
 		"vsync": 1,
 		"quality": 0,
-		"distance": 0,
-		"hdr": true,
-		"smoothing": true
+		"distance": 0
 	}
 }
 
@@ -176,9 +174,6 @@ func setGraphicQuality(quality):
 	
 	updateGraphicParameters(quality)
 
-func setHdrState(hdr):
-	sceneTree.root.set_use_hdr_2d(hdr)
-
 var _crosspiece
 func setCrosspiece(name):
 	if _crosspiece == name:
@@ -196,9 +191,6 @@ func setWindowMode(mode):
 			
 func setVSyncMode(vsync):
 	DisplayServer.window_set_vsync_mode(vsync, 0)
-	
-func setSmoothingState(smoothing):
-	sceneTree.root.use_taa = smoothing
 
 func loadResource(resourcePath):
 	if resourcePath.begins_with("res://") or resourcePath.begins_with("user://"):
@@ -269,10 +261,8 @@ func applySettings():
 	applyAudioSettings()
 	setGraphicQuality(settings.graphic.quality)
 	setRenderDistance(settings.graphic.distance)
-	setHdrState(settings.graphic.hdr)
 	setWindowMode(settings.graphic.window)
 	setVSyncMode(settings.graphic.vsync)
-	setSmoothingState(settings.graphic.smoothing)
 
 func loadSettings():
 	settings = {}

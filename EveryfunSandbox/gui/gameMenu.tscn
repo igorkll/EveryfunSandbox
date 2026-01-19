@@ -44,9 +44,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 7
 
 [node name="Main" type="MarginContainer" parent="MarginContainer/menuUI/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -485,7 +486,6 @@ ignore_texture_size = true
 stretch_mode = 0
 
 [node name="Graphic" type="MarginContainer" parent="MarginContainer/menuUI/TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -585,26 +585,6 @@ popup/item_3/id = 3
 [node name="Label" type="Label" parent="MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer4"]
 layout_mode = 2
 text = "VSync mode"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-
-[node name="ui_graphic_hdr" type="CheckButton" parent="MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer3"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer3"]
-layout_mode = 2
-text = "Use HDR"
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-
-[node name="ui_graphic_smoothing" type="CheckButton" parent="MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer5"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/menuUI/TabContainer/Graphic/HBoxContainer/VBoxContainer2/HBoxContainer5"]
-layout_mode = 2
-text = "Smoothing"
 
 [node name="showTextUI" type="Panel" parent="MarginContainer"]
 visible = false
