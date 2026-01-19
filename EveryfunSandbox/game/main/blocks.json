@@ -137,18 +137,6 @@
 		}
 	},
 	
-	
-	{
-		"name": "mirror",
-		"texture": "blocks/metal.png",
-		"texture_mode": "UNIFORM",
-		"material": "materials/metal.png",
-		"sound": "metal",
-		"sound_placeDestroy": "metal_placeDestroy",
-		"script": "scripts/mirror.gd",
-		"rotationMode": "360V",
-		"multiblock": "PLANE"
-	},
 	{
 		"name": "monitor",
 		"texture": "blocks/polished_metal.png",
