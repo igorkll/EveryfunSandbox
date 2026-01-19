@@ -1,3 +1,2 @@
 the following third-party assets are used:
 *    grammophone: akselmot - https://sketchfab.com/3d-models/old-gramophone-3d997263b04c4f6ea2b0df05ff6c9bfb
-*    character: davisthegamelord - https://sketchfab.com/3d-models/wong-3d-character-model-rigged-ab3eca7de3eb4ec38aaade89e73b4860
