@@ -26,7 +26,7 @@ var terrainHeightValues = [
 var dirtOffset = 3
 var dirtHeight = 16
 
-var cavePercent = 0
+var cavePercent = 0.3
 var caveScale = 0.25
 
 var grassCutPos = 64.0
