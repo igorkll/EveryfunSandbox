@@ -219,7 +219,7 @@ func _checkEdge(x, z):
 
 # ------------------------------------------------- api
 
-func initCharacter(collision: CollisionShape3D, mesh=null):
+func initCharacter(collision: CollisionShape3D, mesh=null, parentCharacter=null):
 	if not collision:
 		var shape = CapsuleShape3D.new()
 		shape.radius = character_radius
@@ -236,6 +236,12 @@ func initCharacter(collision: CollisionShape3D, mesh=null):
 		var meshIntance = MeshInstance3D.new()
 		meshIntance.mesh = mesh
 		add_child(meshIntance)
+	
+	if parentCharacter:
+		for shape in parentCharacter.get_children():
+			if shape is CollisionShape3D:
+				shape.disabled = true
+		add_child(parentCharacter)
 	
 	inited = true
 
