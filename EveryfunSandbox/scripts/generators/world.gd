@@ -92,7 +92,7 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 
 				var heightOffset = 0
 				for terrainHeightArr in terrainHeightValues:
-					var noiseValue = (terrainNoises[terrainHeightArr[2]].get_noise_2d_single(Vector2i(worldPos.x, worldPos.z) / terrainHeightArr[1]) + 1) / 2
+					var noiseValue = (terrainNoises[terrainHeightArr[2]].get_noise_2d_single(Vector2(worldPos.x, worldPos.z) / terrainHeightArr[1]) + 1) / 2
 					if terrainHeightArr[3] > 0:
 						noiseValue = pow(noiseValue, terrainHeightArr[3])
 					
