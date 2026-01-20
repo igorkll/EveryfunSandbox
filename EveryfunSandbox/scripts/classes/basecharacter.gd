@@ -119,8 +119,8 @@ func _physics_process(delta):
 	velocity.z *= speed_mul;
 	
 	if anim:
-		if velocity.x > 0 || velocity.y > 0:
-			anim.play("animations/Run", 0.2, speed_mul * velocity.normalized())
+		if velocity.length() > 0.25:
+			anim.play("animations/Run", 0.5, speed_mul)
 		else:
 			anim.play("animations/Idle", 0.2, 1)
 	
