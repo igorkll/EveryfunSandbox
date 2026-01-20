@@ -74,7 +74,6 @@
 		"name": "colored_stone_tiles",
 		"texture": "blocks/colored_stone_tiles.png",
 		"texture_mode": "UNIFORM",
-		"material": "materials/glass.png",
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy",
 		"info": {
@@ -176,7 +175,7 @@
 		"texture": "blocks/grammophone/texture.png",
 		"mesh": "blocks/grammophone/mesh.obj",
 		"mesh_collision": 1,
-		"hide_collision": false,
+		"hide_collision": true,
 		"material": "blocks/grammophone/material.png",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",

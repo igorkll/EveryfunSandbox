@@ -69,9 +69,6 @@ var graphicSettingsPresets = [
 		"shadow": false,
 		"shadow_quality": 512,
 		"shadow_distance": 32,
-		"sdfgi": false,
-		"ssao": false,
-		"ssil": false,
 		"bias": 0.1,
 		"normalBias": 2.0
 	},
@@ -79,9 +76,6 @@ var graphicSettingsPresets = [
 		"shadow": true,
 		"shadow_quality": 2048,
 		"shadow_distance": 64,
-		"sdfgi": false,
-		"ssao": false,
-		"ssil": false,
 		"bias": 0.1,
 		"normalBias": 2.0
 	},
@@ -89,19 +83,13 @@ var graphicSettingsPresets = [
 		"shadow": true,
 		"shadow_quality": 4096,
 		"shadow_distance": 96,
-		"sdfgi": false,
-		"ssao": false,
-		"ssil": false,
 		"bias": 0.05,
 		"normalBias": 5.0
 	},
 	{
 		"shadow": true,
 		"shadow_quality": 16384,
-		"shadow_distance": 256,
-		"sdfgi": false,
-		"ssao": true,
-		"ssil": true,
+		"shadow_distance": 128,
 		"bias": 0.01,
 		"normalBias": 10.0
 	}
@@ -168,9 +156,9 @@ func setGraphicQuality(quality):
 	worldLight.shadow_enabled = graphicSettingsPreset.shadow
 	worldLight.shadow_bias = graphicSettingsPreset.bias
 	worldLight.shadow_normal_bias = graphicSettingsPreset.normalBias
-	worldEnv.environment.set_sdfgi_enabled(graphicSettingsPreset.sdfgi)
-	worldEnv.environment.set_ssao_enabled(graphicSettingsPreset.ssao)
-	worldEnv.environment.set_ssil_enabled(graphicSettingsPreset.ssil)
+	# worldEnv.environment.set_sdfgi_enabled(graphicSettingsPreset.sdfgi)
+	# worldEnv.environment.set_ssao_enabled(graphicSettingsPreset.ssao)
+	# worldEnv.environment.set_ssil_enabled(graphicSettingsPreset.ssil)
 	
 	updateGraphicParameters(quality)
 
