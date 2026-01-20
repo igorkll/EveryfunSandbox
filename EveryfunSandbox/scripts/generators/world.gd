@@ -31,7 +31,7 @@ var caveScale = 0.25
 
 var grassCutPos = 64.0
 var grassCutScale = 0.5
-
+var grassCutPow = 4
 
 
 var caveHoise
@@ -113,6 +113,7 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 					if !grassCut:
 						var grassCutPercent = worldPos.y / grassCutPos
 						var value = (grassCutHoise.get_noise_2d_single(local2dPos / grassCutScale) + 1) / 2
+						value = 1 - pow(value, grassCutPow)
 						grassCut = value < grassCutPercent
 					
 					var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
