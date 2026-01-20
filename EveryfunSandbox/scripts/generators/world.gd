@@ -5,12 +5,20 @@ var resources = []
 var terrainHeightValues = [
 	[
 		32,   # height
-		1,    # scale
-		1     # noise index
+		10,    # scale
+		0,    # noise index,
+		5     # pow
+	],
+	[
+		32,   # height
+		2,    # scale
+		1,    # noise index,
+		5     # pow
 	],
 	[
 		8,
 		1,
+		2,
 		0
 	]
 ]
@@ -25,6 +33,35 @@ var caveHoise
 var dirtHoise
 var resourcesNoises = []
 var terrainNoises = []
+
+func createMountainNoises(seed):
+	var lnoise = FastNoise2.new()
+	lnoise.period = 5000
+	lnoise.noise_type = FastNoise2.TYPE_OPEN_SIMPLEX_2
+	lnoise.fractal_type = FastNoise2.FRACTAL_RIDGED
+	lnoise.seed = seed + 10 + (5000 * 2)
+	lnoise.remap_enabled = true
+	lnoise.remap_input_min = -1.0
+	lnoise.remap_input_max = 1.0
+	lnoise.remap_output_min = 0.0
+	lnoise.remap_output_max = 1.0
+	terrainNoises.append(lnoise)
+	
+	lnoise = FastNoise2.new()
+	lnoise.period = 5000
+	lnoise.noise_type = FastNoise2.TYPE_OPEN_SIMPLEX_2
+	lnoise.fractal_type = FastNoise2.FRACTAL_RIDGED
+	lnoise.seed = seed + 20 + (5000 * 2)
+	lnoise.remap_enabled = true
+	lnoise.remap_input_min = -1.0
+	lnoise.remap_input_max = 1.0
+	lnoise.remap_output_min = 0.0
+	lnoise.remap_output_max = 1.0
+	terrainNoises.append(lnoise)
+	
+	lnoise = FastNoise2.new()
+	lnoise.seed = seed + 30 + (5000 * 2)
+	terrainNoises.append(lnoise)
 
 func _init():
 	resources = [
@@ -42,20 +79,13 @@ func _init():
 	
 	dirtHoise = FastNoise2.new()
 	dirtHoise.seed = seed + 10
-	
-	var lnoise
-	
+
 	for i in range(resources.size()):
-		lnoise = FastNoise2.new()
+		var lnoise = FastNoise2.new()
 		lnoise.seed = seed + (i * 50) + 5000
 		resourcesNoises.append(lnoise)
 		
-	lnoise = FastNoise2.new()
-	lnoise.period = 1500
-	lnoise.seed = seed + 10 + (5000 * 2)
-	
-	lnoise = FastNoise2.new()
-	lnoise.seed = seed + 10 + (5000 * 2)
+	createMountainNoises(seed)
 
 func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var size = buffer.get_size()
@@ -74,6 +104,9 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 				var heightOffset = 0
 				for terrainHeightArr in terrainHeightValues:
 					var noiseValue = (terrainNoises[terrainHeightArr[2]].get_noise_2d_single(Vector2i(worldPos.x, worldPos.z) / terrainHeightArr[1]) + 1) / 2
+					if terrainHeightArr[3] > 0:
+						noiseValue = pow(noiseValue, terrainHeightArr[3])
+					
 					var terrainHeight = heightOffset + round(noiseValue * terrainHeightArr[0])
 					heightOffset = terrainHeight
 					
