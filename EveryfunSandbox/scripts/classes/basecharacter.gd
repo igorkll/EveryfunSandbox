@@ -28,6 +28,9 @@ var push_strength = 1
 var walking_speed_mul = 1
 var velocity_drop_mul = 1
 
+var animation_speed_mul = 1
+var animation_speed_run_mul = 0.3
+
 # -------------------------------------------------
 
 var _collision: CollisionShape3D
@@ -119,10 +122,11 @@ func _physics_process(delta):
 	velocity.z *= speed_mul;
 	
 	if anim:
-		if velocity.length() > 0.25:
-			anim.play("animations/Run", 0.5, speed_mul)
+		var len = velocity.length()
+		if len > 0.25:
+			anim.play("animations/Run", 0.5, speed_mul * len * animation_speed_run_mul * animation_speed_mul)
 		else:
-			anim.play("animations/Idle", 0.2, 1)
+			anim.play("animations/Idle", 0.2, animation_speed_mul)
 	
 	if terrainUtils.isMinimalAreaLoaded(game.terrain, terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)):
 		move_and_slide()
