@@ -4,19 +4,19 @@ var resources = []
 
 var terrainHeightValues = [
 	[
-		128,   # height
-		5,    # scale
+		256,  # height
+		10,    # scale
 		0,    # noise index,
 		5     # pow
 	],
 	[
 		32,   # height
-		2,    # scale
+		5,    # scale
 		1,    # noise index,
-		5     # pow
+		3     # pow
 	],
 	[
-		8,
+		4,
 		1,
 		2,
 		0
@@ -39,25 +39,16 @@ func createMountainNoises(seed):
 	lnoise.period = 5000
 	lnoise.noise_type = FastNoise2.TYPE_OPEN_SIMPLEX_2
 	lnoise.seed = seed + 10 + (5000 * 2)
-	lnoise.remap_enabled = true
-	lnoise.remap_input_min = -1.0
-	lnoise.remap_input_max = 1.0
-	lnoise.remap_output_min = 0.0
-	lnoise.remap_output_max = 1.0
 	terrainNoises.append(lnoise)
 	
 	lnoise = FastNoise2.new()
-	lnoise.period = 5000
+	lnoise.period = 2000
 	lnoise.noise_type = FastNoise2.TYPE_OPEN_SIMPLEX_2
 	lnoise.seed = seed + 20 + (5000 * 2)
-	lnoise.remap_enabled = true
-	lnoise.remap_input_min = -1.0
-	lnoise.remap_input_max = 1.0
-	lnoise.remap_output_min = 0.0
-	lnoise.remap_output_max = 1.0
 	terrainNoises.append(lnoise)
 	
 	lnoise = FastNoise2.new()
+	lnoise.period = 32
 	lnoise.seed = seed + 30 + (5000 * 2)
 	terrainNoises.append(lnoise)
 
