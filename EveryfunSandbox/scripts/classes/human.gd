@@ -15,6 +15,7 @@ func _ready():
 	add_child(cameraContainer)
 	
 	var parentCharacter = hum.get_CharacterBody3D(false)
+	parentCharacter.position = Vector3(0, -(character_height / 2), 0)
 	initCharacter(null, null, parentCharacter)
 
 func _physics_process(delta):

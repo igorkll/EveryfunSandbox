@@ -65,6 +65,8 @@ func _process(delta):
 	
 	player.storageData.cameraYaw = currentYaw
 	player.storageData.cameraPitch = currentPitch
+	
+	# position = Vector3(0, 0, 5)
 
 func orbitalUpdate(delta=null):
 	position = Vector3(sin(orbitalValue) * orbitalOffset, orbitalHeight, cos(orbitalValue) * orbitalOffset)
