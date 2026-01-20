@@ -21,6 +21,7 @@ var musicSuppressors = []
 
 var musicMuteMultiplier = 1
 var musicMuteSpeedMultiplier = 0.25
+var minimal_loading_area = false
 
 var defaultSettings = {
 	"statistics": {

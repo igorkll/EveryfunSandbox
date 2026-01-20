@@ -49,8 +49,12 @@ func isWorldFullLoaded() -> bool:
 			currentWorldRuntimeData.fullLoadedTimer = 0
 	else:
 		currentWorldRuntimeData.erase("fullLoadedTimer")
-			
+	
+	if currentWorldRuntimeData.has("fullLoadedTimer") and currentWorldRuntimeData.fullLoadedTimer >= consts.minimal_area_load_time:
+		game.minimal_loading_area = false
+	
 	if currentWorldRuntimeData.has("fullLoadedTimer") and currentWorldRuntimeData.fullLoadedTimer >= consts.load_time_delay:
+		game.minimal_loading_area = false
 		currentWorldRuntimeData.fullLoaded = true
 		if _loadingGameMessage != null:
 			_loadingGameMessage.task_end()
@@ -124,6 +128,8 @@ func open(savename) -> bool:
 		return false
 	
 	_loadingGameMessage = game.gameMessage("Loading...", null, true)
+	
+	game.minimal_loading_area = true
 	
 	unload()
 	currentWorldName = savename

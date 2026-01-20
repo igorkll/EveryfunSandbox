@@ -1,8 +1,11 @@
 extends Node
 
-var settings_path = "user://settings.json"
-var minimal_load_time = 1
+var minimal_area_load_time = 8
+var start_loading_area = 32
+var minimal_load_time = 8
 var load_time_delay = 1
+
+var settings_path = "user://settings.json"
 var chunk_size = 16
 var multiplePressTimeout = 300
 

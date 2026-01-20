@@ -414,7 +414,9 @@ func isMinimalAreaLoaded(terrain, position):
 	var aabb = AABB(
 		position - (consts.minimum_loading_radius_for_play / 2),
 		consts.minimum_loading_radius_for_play)
-	return terrain.voxel_tool.is_area_editable(aabb)
+	
+	var voxel_tool = terrain.voxel_tool
+	return voxel_tool.is_area_editable(aabb)
 	
 func isEditable(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)

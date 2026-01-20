@@ -11,8 +11,12 @@ func _ready():
 	add_child(voxel_viewer)
 	
 func _physics_process(delta):
-	voxel_viewer.view_distance = game.view_distance
-	voxel_viewer.view_distance_vertical_ratio = game.view_distance_vertical_ratio
+	if game.minimal_loading_area:
+		voxel_viewer.view_distance = consts.start_loading_area
+		voxel_viewer.view_distance_vertical_ratio = 1
+	else:
+		voxel_viewer.view_distance = game.view_distance
+		voxel_viewer.view_distance_vertical_ratio = game.view_distance_vertical_ratio
 
 func _on_tree_exiting():
 	game.chunkloaders.erase(self)
