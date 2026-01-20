@@ -230,8 +230,7 @@ func _checkEdge(x, z):
 	return not _getVoxelWithOffset(Vector3.DOWN, Vector3(x, 0, z) * character_radius)
 
 func _setupLayer(obj):
-	funcs.set_layer_enabled(obj, 0, false)
-	funcs.set_layer_enabled(obj, 1, true)
+	funcs.set_layer(obj, 1)
 
 # ------------------------------------------------- api
 

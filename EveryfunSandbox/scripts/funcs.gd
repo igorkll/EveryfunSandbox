@@ -353,3 +353,10 @@ func set_layer_enabled(obj, layer_index: int, enabled: bool):
 			obj.layers |= layer_bit
 		else:
 			obj.layers &= ~layer_bit
+
+func set_layer(obj, layer_index: int):
+	var layer_bit = 1 << layer_index
+	if obj is Camera3D:
+		obj.cull_mask = layer_bit
+	else:
+		obj.layers = layer_bit
