@@ -7,7 +7,7 @@ func _ready():
 	pass
 
 func initHuman(hum:Humanizer, scale=1):
-	character_radius = (hum.get_max_width() / 2) * scale
+	character_radius = maxf((hum.get_max_width() / 2) * scale, consts.min_human_radius)
 	character_height = hum.get_head_height() * scale
 	
 	var parentCharacter = hum.get_CharacterBody3D(false)
