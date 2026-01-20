@@ -1,13 +1,30 @@
 extends VoxelGeneratorScript
 
-var noise = []
 var resources = []
+
+var terrainHeightValues = [
+	[
+		32,   # height
+		1,    # scale
+		1     # noise index
+	],
+	[
+		8,
+		1,
+		0
+	]
+]
 
 var dirtOffset = 3
 var dirtHeight = 16
 
-var cavePercent = 0.2
-var caveScale = 0.5
+var cavePercent = 0
+var caveScale = 0.25
+
+var caveHoise
+var dirtHoise
+var resourcesNoises = []
+var terrainNoises = []
 
 func _init():
 	resources = [
@@ -17,12 +34,28 @@ func _init():
 		[0.1, blockUtils.list_name2id["dirt"]]
 	]
 	
-	for i in range(2 + resources.size()):
-		var lnoise = FastNoise2.new()
-		lnoise.seed = 1000 + (i * 20)
-		noise.append(lnoise)
+	var seed = 1000
+	
+	caveHoise = FastNoise2.new()
+	caveHoise.seed = seed
+	caveHoise.noise_type = FastNoise2.TYPE_VALUE
+	
+	dirtHoise = FastNoise2.new()
+	dirtHoise.seed = seed + 10
+	
+	var lnoise
+	
+	for i in range(resources.size()):
+		lnoise = FastNoise2.new()
+		lnoise.seed = seed + (i * 50) + 5000
+		resourcesNoises.append(lnoise)
 		
-	noise[1].noise_type = FastNoise2.TYPE_VALUE 
+	lnoise = FastNoise2.new()
+	lnoise.period = 1500
+	lnoise.seed = seed + 10 + (5000 * 2)
+	
+	lnoise = FastNoise2.new()
+	lnoise.seed = seed + 10 + (5000 * 2)
 
 func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var size = buffer.get_size()
@@ -37,33 +70,34 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 			for iz in range(size.z):
 				var localPos = Vector3i(ix, iy, iz)
 				var worldPos = position + (localPos * scale)
-				
-				var noiseValue = (noise[0].get_noise_2d_single(Vector2i(worldPos.x, worldPos.z)) + 1) / 2
-				var terrainHeight = round(noiseValue * 15)
 
-				var caveNoiseValue = (noise[1].get_noise_3d_single(worldPos / caveScale) + 1) / 2
-				if caveNoiseValue < cavePercent:
-					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
-				elif worldPos.y == terrainHeight:
-					buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
-				elif worldPos.y < terrainHeight:
-					var dirtNoiseValue = (noise[0].get_noise_2d_single(Vector2i(worldPos.x, worldPos.z)) + 1) / 2
-					dirtNoiseValue *= dirtHeight
-					dirtNoiseValue += dirtOffset
-					var dirtPos = terrainHeight - worldPos.y
-					if dirtPos <= dirtNoiseValue:
-						buffer.set_voxel_v(id_dirt, localPos, VoxelBuffer.CHANNEL_TYPE)
-					else:
-						var finded = false
-						var index = 0
-						for resource in resources:
-							var resourceNoiseValue = (noise[2 + index].get_noise_3d_single(worldPos) + 1) / 2
-							if resourceNoiseValue < resource[0]:
-								buffer.set_voxel_v(resource[1], localPos, VoxelBuffer.CHANNEL_TYPE)
-								finded = true
-							index += 1
-								
-						if not finded:
-							buffer.set_voxel_v(id_stone, localPos, VoxelBuffer.CHANNEL_TYPE)
-				else:
-					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
+				var heightOffset = 0
+				for terrainHeightArr in terrainHeightValues:
+					var noiseValue = (terrainNoises[terrainHeightArr[2]].get_noise_2d_single(Vector2i(worldPos.x, worldPos.z) / terrainHeightArr[1]) + 1) / 2
+					var terrainHeight = heightOffset + round(noiseValue * terrainHeightArr[0])
+					heightOffset = terrainHeight
+					
+					var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
+					if caveNoiseValue < cavePercent:
+						buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
+					elif worldPos.y == terrainHeight:
+						buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
+					elif worldPos.y < terrainHeight:
+						var dirtNoiseValue = (dirtHoise.get_noise_2d_single(Vector2i(worldPos.x, worldPos.z)) + 1) / 2
+						dirtNoiseValue *= dirtHeight
+						dirtNoiseValue += dirtOffset
+						var dirtPos = terrainHeight - worldPos.y
+						if dirtPos <= dirtNoiseValue:
+							buffer.set_voxel_v(id_dirt, localPos, VoxelBuffer.CHANNEL_TYPE)
+						else:
+							var finded = false
+							var index = 0
+							for resource in resources:
+								var resourceNoiseValue = (resourcesNoises[index].get_noise_3d_single(worldPos) + 1) / 2
+								if resourceNoiseValue < resource[0]:
+									buffer.set_voxel_v(resource[1], localPos, VoxelBuffer.CHANNEL_TYPE)
+									finded = true
+								index += 1
+									
+							if not finded:
+								buffer.set_voxel_v(id_stone, localPos, VoxelBuffer.CHANNEL_TYPE)

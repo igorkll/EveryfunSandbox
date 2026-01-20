@@ -28,7 +28,7 @@ func spawn(characterName: String, position: Vector3):
 	return loadCharacter(id)
 
 func findSpawnPosition():
-	return Vector3(0, 15, 0)
+	return Vector3(0, 50, 0)
 
 func loadCharacter(id):
 	var characterInfo = saves.currentWorldData.characters[id]
