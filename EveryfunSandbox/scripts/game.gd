@@ -17,6 +17,10 @@ var transparency_material
 
 var allTerrainNodes = []
 var chunkloaders = []
+var musicSuppressors = []
+
+var musicMuteMultiplier = 1
+var musicMuteSpeedMultiplier = 0.25
 
 var defaultSettings = {
 	"statistics": {
@@ -225,10 +229,16 @@ func setMouseEnabled(mouseEnabled):
 
 func setAudioChannelVolume(bus, multiplier):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index(bus), linear_to_db(multiplier))
-	
+
+func applyMusicVolume():
+	setAudioChannelVolume("Music", settings.audio.volume.Music * musicMuteMultiplier)
+
 func applyAudioSettings():
 	for key in settings.audio.volume.keys():
-		setAudioChannelVolume(key, settings.audio.volume[key])
+		if key != "Music":
+			setAudioChannelVolume(key, settings.audio.volume[key])
+			
+	applyMusicVolume()
 		
 	var mute = muteAllExceptMusic && game.settings.game.muteOnMenu
 	game.setAudioChannelVolume("NotMusic", 0 if mute else 1)
@@ -425,6 +435,17 @@ func showAabb(aabb: AABB, parent: Node3D, offset=Vector3()):
 
 	parent.add_child(mesh_instance)
 	return mesh_instance
+	
+func isMusicSuppressedAtPosition(pos: Vector3) -> bool:
+	for suppressor in musicSuppressors:
+		if not is_instance_valid(suppressor):
+			continue
+		
+		var radius = suppressor.radius
+		if suppressor.enabled && suppressor.global_position.distance_squared_to(pos) <= radius * radius:
+			return true
+	
+	return false
 
 # ------------------------------------------------- backend
 
@@ -459,6 +480,21 @@ func _ready():
 	sceneTree.quit_on_go_back = false
 	sceneTree.auto_accept_quit = false
 	sceneTree.root.connect("close_requested", _on_close_requested)
+
+var _musicMuteMultiplier = 1
+func _process(delta):
+	var musicSuppress = isMusicSuppressedAtPosition(player.position)
+	if musicSuppress:
+		musicMuteMultiplier -= delta * musicMuteSpeedMultiplier
+		if musicMuteMultiplier < 0:
+			musicMuteMultiplier = 0
+	else:
+		musicMuteMultiplier += delta * musicMuteSpeedMultiplier
+		if musicMuteMultiplier > 1:
+			musicMuteMultiplier = 1
+			
+	if musicMuteMultiplier != _musicMuteMultiplier:
+		applyMusicVolume()
 	
 func _on_close_requested():
 	exit()

@@ -8,6 +8,7 @@ var defaultStorageData = {
 
 var effectSound = preload("res://game/main/blocks/grammophone/effect.mp3")
 
+var musicSuppressor: MusicSuppressor
 var audioPlayer: AudioStreamPlayer3D
 var audioPlayerEffect: AudioStreamPlayer3D
 var rotationCount = 0
@@ -18,6 +19,8 @@ func __updateSound():
 	audioPlayerEffect.pitch_scale = pitch
 
 func __play(path):
+	musicSuppressor.enabled = true
+		
 	audioPlayerEffect.stream = effectSound
 	audioPlayerEffect.volume_db = 5
 	audioPlayerEffect.play()
@@ -28,6 +31,8 @@ func __play(path):
 func __stop():
 	audioPlayer.stop()
 	audioPlayerEffect.stop()
+	
+	musicSuppressor.enabled = false
 	
 func __onFileSelected(path):
 	if path:
@@ -41,6 +46,9 @@ func _ready():
 	
 	var node = Node3D.new()
 	node.rotation_degrees = Vector3(0, -90, 0)
+	
+	musicSuppressor = MusicSuppressor.new()
+	node.add_child(musicSuppressor)
 	
 	audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.bus = "Grammophone"
