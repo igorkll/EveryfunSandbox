@@ -122,8 +122,12 @@ func unload() -> bool:
 	currentWorldName = null
 	currentWorldRuntimeData = null
 	return true
+	
+func _updateInitialWorldData(initialWorldData):
+	if !initialWorldData.has("seed"):
+		initialWorldData.seed = randi_range(0, 100000)
 
-func open(savename) -> bool:
+func open(savename, initialWorldData=null) -> bool:
 	if not exists(savename) || isSaving():
 		return false
 	
@@ -143,17 +147,24 @@ func open(savename) -> bool:
 	game.characters.name = "characters"
 	game.objects.add_child(game.characters)
 	
-	var terrain = preload("res://scripts/classes/terrain.gd").new()
-	terrain.name = "terrain"
-	game.objects.add_child(terrain)
-	terrain.init(getPathInSave("terrain.db"))
-	game.terrain = terrain
-	
 	var dataPath = getPathInSave("data")
 	currentWorldData = {}
 	if filesystem.isFile(dataPath):
 		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
+	
+	if !initialWorldData:
+		initialWorldData = {}
+	
+	if !currentWorldData.has("initialWorldData"):
+		currentWorldData.initialWorldData = initialWorldData
+		_updateInitialWorldData(currentWorldData.initialWorldData)
+	
+	var terrain = preload("res://scripts/classes/terrain.gd").new()
+	terrain.name = "terrain"
+	game.objects.add_child(terrain)
+	terrain.init(getPathInSave("terrain.db"))
+	game.terrain = terrain
 	
 	if currentWorldData.has("inited"):
 		game.player = characterUtils.loadCharacter(currentWorldData["hostPlayerCharacterId"])
@@ -172,11 +183,11 @@ func open(savename) -> bool:
 func exists(savename):
 	return filesystem.isDirectory(getSavePath(savename))
 
-func create(savename) -> bool:
+func create(savename, initialWorldData=null) -> bool:
 	if exists(savename):
 		return false
 	filesystem.makeDirectory(getSavePath(savename))
-	return open(savename)
+	return open(savename, initialWorldData)
 
 func isInteractiveChunkBlockLoaded(position: Vector3i):
 	return _loadedChunks.has(_getChunkPosition(position))

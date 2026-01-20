@@ -66,7 +66,7 @@ func _init():
 		[0.1, blockUtils.list_name2id["dirt"]]
 	]
 	
-	var seed = 1000
+	var seed = saves.currentWorldData.initialWorldData.seed
 	
 	caveHoise = FastNoise2.new()
 	caveHoise.seed = seed
