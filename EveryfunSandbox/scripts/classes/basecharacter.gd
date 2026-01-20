@@ -44,6 +44,8 @@ var _step_interval
 func _physics_process(delta):
 	if not inited || not saves.isWorldFullLoaded():
 		return
+		
+	var anim = self.find_child("AnimationPlayer", true, false)
 	
 	_collision.disabled = disable_collision
 	_move_acceleration = move_acceleration * walking_speed_mul
@@ -115,6 +117,12 @@ func _physics_process(delta):
 	if fly_mode:
 		velocity.y *= speed_mul;
 	velocity.z *= speed_mul;
+	
+	if anim:
+		if velocity.x > 0 || velocity.y > 0:
+			anim.play("animations/Run")
+		else:
+			anim.play("animations/Idle")
 	
 	if terrainUtils.isMinimalAreaLoaded(game.terrain, terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)):
 		move_and_slide()
