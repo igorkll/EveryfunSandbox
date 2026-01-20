@@ -4,9 +4,18 @@ class_name human
 var cameraContainer
 
 func _ready():
-	var hum := characterUtils.createHuman()
-	character_radius = hum.get_max_width() / 2
-	character_height = hum.get_head_height()
+	pass
+
+func initHuman(hum:Humanizer, scale=1):
+	character_radius = (hum.get_max_width() / 2) * scale
+	character_height = hum.get_head_height() * scale
+	
+	var parentCharacter = hum.get_CharacterBody3D(false)
+	parentCharacter.rotation_degrees = Vector3(0, 180, 0)
+	
+	for mesh in parentCharacter.get_children():
+		if mesh is MeshInstance3D:
+			mesh.scale = Vector3(scale, scale, scale)
 	
 	var eye_head_offset = -0.1
 	
@@ -14,7 +23,6 @@ func _ready():
 	cameraContainer.position = Vector3(0, (character_height / 2) + eye_head_offset, 0)
 	add_child(cameraContainer)
 	
-	var parentCharacter = hum.get_CharacterBody3D(false)
 	parentCharacter.position = Vector3(0, -(character_height / 2), 0)
 	initCharacter(null, null, parentCharacter)
 

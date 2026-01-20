@@ -5,8 +5,14 @@ var camera
 var control_lock = false
 var orbital_camera = false
 
+var characterScale = 1.25
+
 func _ready():
 	super._ready()
+	
+	var hum := characterUtils.createHuman()
+	initHuman(hum, characterScale)
+	
 	camera = preload("res://scripts/classes/playerCamera.gd").new()
 	camera.name = "camera"
 	camera.fov = 80
