@@ -186,5 +186,13 @@
 			"weight": 23,
 			"center_of_mass": [0, -0.2, 0]
 		}
+	},
+	{
+		"name": "speaker",
+		"texture": "blocks/speaker.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/speaker.gd"
 	}
 ]

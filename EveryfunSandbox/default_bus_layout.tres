@@ -1,4 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=10 format=3 uid="uid://bghwuxbmls1k8"]
+[gd_resource type="AudioBusLayout" load_steps=11 format=3 uid="uid://bghwuxbmls1k8"]
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
 resource_name = "Reverb"
@@ -18,7 +18,6 @@ pan_pullout = 0.0
 
 [sub_resource type="AudioEffectEQ10" id="AudioEffectEQ10_j3pel"]
 resource_name = "EQ10"
-band_db/31_hz = -60.0
 band_db/62_hz = -60.0
 band_db/125_hz = -60.0
 band_db/250_hz = -60.0
@@ -52,6 +51,14 @@ resource_name = "HighPassFilter"
 cutoff_hz = 384.0
 resonance = 1.0
 db = 3
+
+[sub_resource type="AudioEffectEQ" id="AudioEffectEQ_j3pel"]
+resource_name = "EQ"
+band_db/32_hz = -9.6
+band_db/100_hz = 18.9
+band_db/1000_hz = -7.4
+band_db/3200_hz = -12.2
+band_db/10000_hz = -16.4
 
 [resource]
 bus/1/name = &"NotMusic"
@@ -108,3 +115,11 @@ bus/6/effect/3/effect = SubResource("AudioEffectLowPassFilter_g28q7")
 bus/6/effect/3/enabled = true
 bus/6/effect/4/effect = SubResource("AudioEffectHighPassFilter_j3pel")
 bus/6/effect/4/enabled = true
+bus/7/name = &"Speaker"
+bus/7/solo = false
+bus/7/mute = false
+bus/7/bypass_fx = false
+bus/7/volume_db = 0.0
+bus/7/send = &"Interactive blocks"
+bus/7/effect/0/effect = SubResource("AudioEffectEQ_j3pel")
+bus/7/effect/0/enabled = true
