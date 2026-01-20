@@ -29,12 +29,16 @@ var dirtHeight = 16
 var cavePercent = 0
 var caveScale = 0.25
 
+var grassCutPos = 64.0
+var grassCutScale = 0.5
+
+
+
 var caveHoise
 var dirtHoise
+var grassCutHoise
 var resourcesNoises = []
 var terrainNoises = []
-
-var grassCutPos = 64 
 
 func createMountainNoises(seed):
 	var lnoise = FastNoise2.new()
@@ -70,6 +74,9 @@ func _init():
 	
 	dirtHoise = FastNoise2.new()
 	dirtHoise.seed = seed + 10
+	
+	grassCutHoise = FastNoise2.new()
+	grassCutHoise.seed = seed + 20
 
 	for i in range(resources.size()):
 		var lnoise = FastNoise2.new()
@@ -91,10 +98,11 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 			for iz in range(size.z):
 				var localPos = Vector3i(ix, iy, iz)
 				var worldPos = position + (localPos * scale)
+				var local2dPos = Vector2(worldPos.x, worldPos.z)
 
 				var heightOffset = 0
 				for terrainHeightArr in terrainHeightValues:
-					var noiseValue = (terrainNoises[terrainHeightArr[2]].get_noise_2d_single(Vector2(worldPos.x, worldPos.z) / terrainHeightArr[1]) + 1) / 2
+					var noiseValue = (terrainNoises[terrainHeightArr[2]].get_noise_2d_single(local2dPos / terrainHeightArr[1]) + 1) / 2
 					if terrainHeightArr[3] > 0:
 						noiseValue = pow(noiseValue, terrainHeightArr[3])
 					
@@ -102,14 +110,18 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 					heightOffset = terrainHeight
 					
 					var grassCut = worldPos.y > grassCutPos
+					if !grassCut:
+						var grassCutPercent = worldPos.y / grassCutPos
+						var value = (grassCutHoise.get_noise_2d_single(local2dPos / grassCutScale) + 1) / 2
+						grassCut = value < grassCutPercent
 					
 					var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
 					if caveNoiseValue < cavePercent:
 						buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
 					elif worldPos.y == terrainHeight && !grassCut:
 						buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
-					elif worldPos.y < terrainHeight:
-						var dirtNoiseValue = (dirtHoise.get_noise_2d_single(Vector2i(worldPos.x, worldPos.z)) + 1) / 2
+					elif worldPos.y <= terrainHeight:
+						var dirtNoiseValue = (dirtHoise.get_noise_2d_single(local2dPos) + 1) / 2
 						dirtNoiseValue *= dirtHeight
 						dirtNoiseValue += dirtOffset
 						var dirtPos = terrainHeight - worldPos.y
