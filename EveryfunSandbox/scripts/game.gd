@@ -102,33 +102,40 @@ var graphicSettingsPresets = [
 var distanceSettingsPresets = [
 	{
 		"distance": 64,
-		"lodDistance": 32
+		"lodDistance": 32,
+		"verticalRatio": 1,
 	},
 	{
 		"distance": 128,
-		"lodDistance": 64
+		"lodDistance": 64,
+		"verticalRatio": 0.5,
 	},
 	{
 		"distance": 256,
-		"lodDistance": 128
+		"lodDistance": 128,
+		"verticalRatio": 0.3,
 	},
 	{
 		"distance": 512,
-		"lodDistance": 128
+		"lodDistance": 128,
+		"verticalRatio": 0.1,
 	},
 	{
 		"distance": 1024,
-		"lodDistance": 128
+		"lodDistance": 128,
+		"verticalRatio": 0.05,
 	}
 ]
 
 var view_distance
 var lod_distance
+var view_distance_vertical_ratio
 func setRenderDistance(index):
 	var distanceSettingsPreset = distanceSettingsPresets[index]
 	
 	view_distance = distanceSettingsPreset.distance
 	lod_distance = distanceSettingsPreset.lodDistance
+	view_distance_vertical_ratio = distanceSettingsPreset.verticalRatio
 
 func getGraphicSettingsPresets(quality=null):
 	if quality == null:

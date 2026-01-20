@@ -39,7 +39,7 @@ func __onFileSelected(path):
 		__play(path)
 
 func __disk_end():
-	pass
+	musicSuppressor.enabled = false
 
 func _ready():
 	effectSound.loop = true

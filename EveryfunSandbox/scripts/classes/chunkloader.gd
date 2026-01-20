@@ -12,6 +12,7 @@ func _ready():
 	
 func _physics_process(delta):
 	voxel_viewer.view_distance = game.view_distance
+	voxel_viewer.view_distance_vertical_ratio = game.view_distance_vertical_ratio
 
 func _on_tree_exiting():
 	game.chunkloaders.erase(self)

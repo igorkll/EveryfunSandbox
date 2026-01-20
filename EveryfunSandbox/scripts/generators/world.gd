@@ -6,8 +6,8 @@ var resources = []
 var dirtOffset = 3
 var dirtHeight = 16
 
-var cavePercent = 0
-var caveScale = 0.1
+var cavePercent = 0.2
+var caveScale = 0.5
 
 func _init():
 	resources = [
