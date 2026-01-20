@@ -120,9 +120,9 @@ func _physics_process(delta):
 	
 	if anim:
 		if velocity.x > 0 || velocity.y > 0:
-			anim.play("animations/Run")
+			anim.play("animations/Run", 0.2, speed_mul * velocity.normalized())
 		else:
-			anim.play("animations/Idle")
+			anim.play("animations/Idle", 0.2, 1)
 	
 	if terrainUtils.isMinimalAreaLoaded(game.terrain, terrainUtils.getVoxelPositionFromGlobalPosition(game.terrain, position)):
 		move_and_slide()
