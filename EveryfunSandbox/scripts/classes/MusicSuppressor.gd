@@ -2,7 +2,7 @@ extends Node3D
 class_name MusicSuppressor
 
 var enabled = false
-var radius = 32
+var radius = 48
 
 func _ready():
 	game.musicSuppressors.append(self)
