@@ -113,17 +113,17 @@ var distanceSettingsPresets = [
 	},
 	{
 		"distance": 256,
-		"lodDistance": 128,
+		"lodDistance": 64,
 		"verticalRatio": 0.3,
 	},
 	{
 		"distance": 512,
-		"lodDistance": 128,
+		"lodDistance": 64,
 		"verticalRatio": 0.1,
 	},
 	{
 		"distance": 1024,
-		"lodDistance": 128,
+		"lodDistance": 64,
 		"verticalRatio": 0.05,
 	}
 ]
