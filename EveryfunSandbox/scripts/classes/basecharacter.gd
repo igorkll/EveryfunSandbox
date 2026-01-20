@@ -229,6 +229,10 @@ func _getVoxel(side):
 func _checkEdge(x, z):
 	return not _getVoxelWithOffset(Vector3.DOWN, Vector3(x, 0, z) * character_radius)
 
+func _setupLayer(obj):
+	funcs.set_layer_enabled(obj, 0, false)
+	funcs.set_layer_enabled(obj, 1, true)
+
 # ------------------------------------------------- api
 
 func initCharacter(collision: CollisionShape3D, mesh=null, parentCharacter=null):
@@ -246,13 +250,17 @@ func initCharacter(collision: CollisionShape3D, mesh=null, parentCharacter=null)
 	
 	if mesh:
 		var meshIntance = MeshInstance3D.new()
+		_setupLayer(meshIntance)
 		meshIntance.mesh = mesh
 		add_child(meshIntance)
 	
 	if parentCharacter:
-		for shape in parentCharacter.get_children():
-			if shape is CollisionShape3D:
-				shape.disabled = true
+		for obj in parentCharacter.get_children():
+			if obj is CollisionShape3D:
+				obj.disabled = true
+				
+			if obj is MeshInstance3D:
+				_setupLayer(obj)
 		add_child(parentCharacter)
 	
 	inited = true

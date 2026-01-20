@@ -340,3 +340,16 @@ func tint_texture(tex: Texture2D, tint: Color) -> Texture2D:
 
 	var new_tex := ImageTexture.create_from_image(img)
 	return new_tex
+
+func set_layer_enabled(obj, layer_index: int, enabled: bool):
+	var layer_bit = 1 << layer_index
+	if obj is Camera3D:
+		if enabled:
+			obj.cull_mask |= layer_bit
+		else:
+			obj.cull_mask &= ~layer_bit
+	else:
+		if enabled:
+			obj.layers |= layer_bit
+		else:
+			obj.layers &= ~layer_bit

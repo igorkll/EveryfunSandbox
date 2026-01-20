@@ -16,6 +16,7 @@ var shakeAnimationValue = 0
 var player
 
 func _ready():
+	funcs.set_layer_enabled(self, 1, false)
 	player = get_parent().get_parent()
 	currentYaw = player.storageData.get("cameraYaw", 0)
 	currentPitch = player.storageData.get("cameraPitch", 0)
