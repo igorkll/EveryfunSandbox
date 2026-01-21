@@ -119,6 +119,11 @@ func unload() -> bool:
 		child.queue_free()
 	
 	game.terrain = null
+	game.player = null
+	
+	menu.currentUI = 0
+	menu.waitSwitchUI = true
+	
 	currentWorldName = null
 	currentWorldRuntimeData = null
 	return true
