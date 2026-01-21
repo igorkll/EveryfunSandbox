@@ -100,6 +100,7 @@ func controlHandler():
 			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["speaker"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
 		
 	if Input.is_action_just_pressed("chat"):
+		modalUI.inputModal("Test")
 		if result:
 			if terrainUtils.isDymanic(result[0]):
 				terrainUtils.makeStatic(result[0], result[1].position)
