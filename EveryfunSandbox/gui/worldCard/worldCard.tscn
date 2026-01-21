@@ -35,11 +35,6 @@ theme_override_constants/margin_bottom = 5
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="worldName" type="Label" parent="MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "world name"
-
 [node name="worldLoad" type="TextureButton" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(60, 30)
 layout_mode = 2
@@ -47,6 +42,11 @@ size_flags_vertical = 4
 texture_normal = ExtResource("1_5nbmh")
 ignore_texture_size = true
 stretch_mode = 0
+
+[node name="worldName" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "world name"
 
 [node name="worldRename" type="TextureButton" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(23, 23)
