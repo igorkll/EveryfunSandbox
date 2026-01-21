@@ -26,8 +26,9 @@ var terrainHeightValues = [
 var dirtOffset = 3
 var dirtHeight = 16
 
-var cavePercentTop = 0.05
+var cavePercentTop = 0.1
 var cavePercent = 0.6
+var maxCavesAtHeight = -200
 var caveScale = 0.25
 
 var grassCutPos = 64.0
@@ -117,7 +118,7 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 						value = 1 - pow(value, grassCutPow)
 						grassCut = value < grassCutPercent
 						
-					var localCavePercent = remap(worldPos.y, -400, 0, cavePercent, cavePercentTop)
+					var localCavePercent = remap(worldPos.y, maxCavesAtHeight, 0, cavePercent, cavePercentTop)
 					if localCavePercent > cavePercent:
 						localCavePercent = cavePercent
 					
