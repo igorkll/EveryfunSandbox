@@ -27,6 +27,7 @@ func _ready():
 	node.rotation_degrees = Vector3(0, -90, 0)
 	
 	musicSuppressor = MusicSuppressor.new()
+	musicSuppressor.radius = 64
 	node.add_child(musicSuppressor)
 	
 	audioPlayer = AudioStreamPlayer3D.new()
@@ -35,7 +36,7 @@ func _ready():
 	audioPlayer.emission_angle_enabled = true
 	audioPlayer.emission_angle_degrees = 45
 	audioPlayer.emission_angle_filter_attenuation_db = -30
-	audioPlayer.max_db = 30
+	audioPlayer.max_db = 3
 	audioPlayer.connect("finished", __disk_end)
 	node.add_child(audioPlayer)
 	

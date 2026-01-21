@@ -211,7 +211,7 @@ func initAudioStream(audioPlayer: AudioStreamPlayer3D, settings=null):
 	audioPlayer.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_SQUARE_DISTANCE
 	audioPlayer.unit_size = settings.get("unit_size", consts.default_sound_unit_size)
 	audioPlayer.max_distance = settings.get("max_distance", consts.default_sound_max_distance)
-	audioPlayer.volume_db = settings.get("volume_db", 0)
+	audioPlayer.volume_db = settings.get("volume_db", consts.default_volume_db) + settings.get("volume_db_offset", 0)
 	audioPlayer.max_db = settings.get("max_db", 3)
 
 func playSound(sound, position: Vector3, parent=null, channel="Effects"):
