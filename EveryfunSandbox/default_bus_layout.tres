@@ -54,11 +54,12 @@ db = 3
 
 [sub_resource type="AudioEffectEQ" id="AudioEffectEQ_j3pel"]
 resource_name = "EQ"
-band_db/32_hz = -0.8
-band_db/100_hz = 4.2
-band_db/1000_hz = -0.8
-band_db/3200_hz = -1.7
-band_db/10000_hz = -7.0
+band_db/32_hz = 2.9
+band_db/100_hz = 6.2
+band_db/320_hz = 7.1
+band_db/1000_hz = -11.8
+band_db/3200_hz = -7.6
+band_db/10000_hz = -16.9
 
 [resource]
 bus/1/name = &"NotMusic"
@@ -119,7 +120,7 @@ bus/7/name = &"Speaker"
 bus/7/solo = false
 bus/7/mute = false
 bus/7/bypass_fx = false
-bus/7/volume_db = 2.3825855
+bus/7/volume_db = 0.002822876
 bus/7/send = &"Interactive blocks"
 bus/7/effect/0/effect = SubResource("AudioEffectEQ_j3pel")
 bus/7/effect/0/enabled = true
