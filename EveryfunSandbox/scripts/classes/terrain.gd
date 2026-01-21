@@ -25,6 +25,7 @@ func init(terrainPath):
 	self.view_distance = consts.start_loading_area
 	self.lod_distance = consts.start_loading_area
 	self.stream = stream
+	self.cache_generated_blocks = true
 	
 	voxel_tool = get_voxel_tool()
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
