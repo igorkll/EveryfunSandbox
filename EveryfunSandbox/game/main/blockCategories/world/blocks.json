@@ -31,5 +31,16 @@
 			"durability": 3,
 			"weight": 26
 		}
+	},
+	{
+		"name": "snow",
+		"texture": "snow.png",
+		"texture_mode": "UNIFORM",
+		"sound": "snow",
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 1,
+			"weight": 7
+		}
 	}
 ]
