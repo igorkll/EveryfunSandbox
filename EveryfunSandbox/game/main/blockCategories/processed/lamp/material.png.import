@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bntn83j7uk35p"
-path="res://.godot/imported/glow.png-26bd0f9e67e8cc02ff806027b8a96c70.ctex"
+uid="uid://bictgm7s5fiai"
+path="res://.godot/imported/material.png-81fd1325ed7157b42e62c43b5d8c8ff6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/glow.png"
-dest_files=["res://.godot/imported/glow.png-26bd0f9e67e8cc02ff806027b8a96c70.ctex"]
+source_file="res://game/main/blockCategories/processed/lamp/material.png"
+dest_files=["res://.godot/imported/material.png-81fd1325ed7157b42e62c43b5d8c8ff6.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cs3w20vh6ykhm"
-path="res://.godot/imported/grass.png-4f1b41bff45b9489bf6fc7d59f9fe2cd.ctex"
+uid="uid://br4qb1w4evatq"
+path="res://.godot/imported/colored_stone_tiles.png-3b3fc56f6b21e792a6766fcbd783e238.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/grass.png"
-dest_files=["res://.godot/imported/grass.png-4f1b41bff45b9489bf6fc7d59f9fe2cd.ctex"]
+source_file="res://game/main/blockCategories/processed/colored_stone_tiles.png"
+dest_files=["res://.godot/imported/colored_stone_tiles.png-3b3fc56f6b21e792a6766fcbd783e238.ctex"]
 
 [params]
 

@@ -1,0 +1,35 @@
+[
+	{
+		"name": "grass",
+		"texture": "grass.png",
+		"texture_mode": "UNIFORM_TOP_BOTTOM",
+		"sound": "grass",
+		"sound_placeDestroy": "grass_placeDestroy",
+		"info": {
+			"durability": 3,
+			"weight": 13
+		}
+	},
+	{
+		"name": "dirt",
+		"texture": "dirt.png",
+		"texture_mode": "UNIFORM",
+		"sound": "grass",
+		"sound_placeDestroy": "grass_placeDestroy",
+		"info": {
+			"durability": 3,
+			"weight": 13
+		}
+	},
+	{
+		"name": "stone",
+		"texture": "stone.png",
+		"texture_mode": "UNIFORM",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 3,
+			"weight": 26
+		}
+	}
+]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://br4qb1w4evatq"
-path="res://.godot/imported/colored_stone_tiles.png-21906eca139e838fcef94cb6100be1d3.ctex"
+uid="uid://deu2w6mdvx2pr"
+path="res://.godot/imported/glass.png-69057e1e6c0511497e3f29ed7d437209.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/colored_stone_tiles.png"
-dest_files=["res://.godot/imported/colored_stone_tiles.png-21906eca139e838fcef94cb6100be1d3.ctex"]
+source_file="res://game/main/blockCategories/processed/glass.png"
+dest_files=["res://.godot/imported/glass.png-69057e1e6c0511497e3f29ed7d437209.ctex"]
 
 [params]
 

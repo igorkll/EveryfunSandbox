@@ -598,9 +598,9 @@ func _addFolder(path):
 		for ambient in list:
 			ambientList.append(loadResource(path.path_join(ambient)))
 
-	blockUtils.regBlockList(path.path_join("/blocks.json"))
+	blockUtils.regBlockList(path.path_join("/blocks.json"), path)
 	
 	list = filesystem.checkExistsAndReadJson(path.path_join("/blockLists.json"))
 	if list:
 		for blockList in list:
-			blockUtils.regBlockList(path.path_join(blockList))
+			blockUtils.regBlockList(path.path_join(blockList), path)

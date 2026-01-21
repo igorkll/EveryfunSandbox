@@ -265,7 +265,12 @@ func _checkVariants(blockVariants, item):
 				currentVariant += 1
 				colorVariant += 1
 
-func _prepairItem(item, path):
+func _prepairItemProcessPath(userPath, jsonDir, baseAddonDir):
+	if userPath.begins_with("!"):
+		return baseAddonDir.path_join(userPath.substr(1))
+	return jsonDir.path_join(userPath)
+
+func _prepairItem(item, path, basepath):
 	if item.has("sound"):
 		for soundkey in _soundsTypes:
 			if not item.has(soundkey):
@@ -276,18 +281,18 @@ func _prepairItem(item, path):
 		item.sound_destroy = item.sound_placeDestroy
 		
 	if item.has("mesh"):
-		item.mesh = game.loadResource(path.path_join(item.mesh))
+		item.mesh = game.loadResource(_prepairItemProcessPath(item.mesh, path, basepath))
 		if item.mesh is PackedScene:
 			item.mesh = item.mesh.instantiate()
 	
 	if item.has("texture"):
-		item.texture = game.loadResource(path.path_join(item.texture))
+		item.texture = game.loadResource(_prepairItemProcessPath(item.texture, path, basepath))
 
 	if item.has("material"):
-		item.material = game.loadResource(path.path_join(item.material))
+		item.material = game.loadResource(_prepairItemProcessPath(item.material, path, basepath))
 	
 	if item.has("script"):
-		item.script = path.path_join(item.script)
+		item.script = _prepairItemProcessPath(item.script, path, basepath)
 		
 	if item.has("info"):
 		item.info = funcs.merge_dicts(item.info, _defaultBlockInfo)
@@ -301,7 +306,7 @@ func _prepairItem(item, path):
 	else:
 		info.center_of_mass = funcs.vecFromArr(info.center_of_mass)
 
-func regBlockList(jsonPath):
+func regBlockList(jsonPath, basepath):
 	var path = jsonPath.get_base_dir()
 	
 	var list = filesystem.checkExistsAndReadJson(jsonPath)
@@ -335,18 +340,18 @@ func regBlockList(jsonPath):
 					currentRotation += 1
 				item.rotationsCount = currentRotation
 			
-			_prepairItem(item, path)
+			_prepairItem(item, path, basepath)
 			list_id2obj.append(item)
 			
 		for rotatedBlock in rotatedBlocks:
 			rotatedBlock.id = list_id2obj.size()
 			_checkVariants(blockVariants, rotatedBlock)
-			_prepairItem(rotatedBlock, path)
+			_prepairItem(rotatedBlock, path, basepath)
 			list_id2obj.append(rotatedBlock)
 			
 		for blockVariant in blockVariants:
 			blockVariant.id = list_id2obj.size()
-			_prepairItem(blockVariant, path)
+			_prepairItem(blockVariant, path, basepath)
 			list_id2obj.append(blockVariant)
 
 func _getMaterial(block):

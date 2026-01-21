@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7aff0s3wrrva"
-path="res://.godot/imported/stone.png-b8aeec7d158d41a6e57125ee763bfa3a.ctex"
+uid="uid://8t477v7teoep"
+path="res://.godot/imported/bricks.png-66a06f4831e307dce846de3ff18f2efb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/stone.png"
-dest_files=["res://.godot/imported/stone.png-b8aeec7d158d41a6e57125ee763bfa3a.ctex"]
+source_file="res://game/main/blockCategories/processed/bricks.png"
+dest_files=["res://.godot/imported/bricks.png-66a06f4831e307dce846de3ff18f2efb.ctex"]
 
 [params]
 

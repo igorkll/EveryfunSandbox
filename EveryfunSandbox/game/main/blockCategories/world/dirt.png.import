@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://deu2w6mdvx2pr"
-path="res://.godot/imported/glass.png-b82ba359f08cd496246f048532bfdc72.ctex"
+uid="uid://d1mssjgpk2yaj"
+path="res://.godot/imported/dirt.png-22245382a50ee233b6e703da19160180.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/glass.png"
-dest_files=["res://.godot/imported/glass.png-b82ba359f08cd496246f048532bfdc72.ctex"]
+source_file="res://game/main/blockCategories/world/dirt.png"
+dest_files=["res://.godot/imported/dirt.png-22245382a50ee233b6e703da19160180.ctex"]
 
 [params]
 

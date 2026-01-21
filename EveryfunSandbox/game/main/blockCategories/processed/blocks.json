@@ -1,0 +1,102 @@
+[
+	{
+		"name": "bricks",
+		"texture": "bricks.png",
+		"texture_mode": "UNIFORM",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 4,
+			"weight": 18
+		}
+	},
+	{
+		"name": "metal",
+		"texture": "metal.png",
+		"texture_mode": "UNIFORM",
+		"material": "!materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"info": {
+			"durability": 5,
+			"weight": 78
+		}
+	},
+	{
+		"name": "polished_metal",
+		"texture": "!textures/polished_metal.png",
+		"texture_mode": "UNIFORM",
+		"material": "!materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"info": {
+			"durability": 5,
+			"weight": 78
+		}
+	},
+	{
+		"name": "colored_stone_tiles",
+		"texture": "colored_stone_tiles.png",
+		"texture_mode": "UNIFORM",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 5,
+			"weight": 26
+		}
+	},
+	{
+		"name": "glass",
+		"texture": "glass.png",
+		"texture_mode": "UNIFORM",
+		"material": "!materials/glass.png",
+		"use_alpha": true,
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy",
+		"info": {
+			"durability": 1,
+			"weight": 25
+		}
+	},
+	
+	{
+		"name": "glow",
+		"texture": "glow.png",
+		"texture_mode": "UNIFORM",
+		"material": "!materials/glow.png",
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy",
+		"lights": [
+			{
+				"type": "omni",
+				"range": 10
+			}
+		],
+		"paintable": true,
+		"info": {
+			"durability": 1,
+			"weight": 25
+		}
+	},
+	{
+		"name": "lamp",
+		"texture": "lamp/texture.png",
+		"texture_mode": "UNIFORM_SIDE",
+		"material": "lamp/material.png",
+		"sound": "glass",
+		"sound_placeDestroy": "glass_placeDestroy",
+		"lights": [
+			{
+				"type": "spot",
+				"rotation": [0, -90, 0],
+				"range": 10
+			}
+		],
+		"paintable": true,
+		"rotationMode": "360V",
+		"info": {
+			"durability": 1,
+			"weight": 25
+		}
+	}
+]
