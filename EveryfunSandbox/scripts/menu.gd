@@ -1,10 +1,12 @@
 extends Node
 
+var guiContainer
 var showTextUI
 
 var menuUI
 var gameUI
 var altMenuUI
+var altMenuUIAutoDelete = false
 
 var waitSwitchUI = false
 var toggleTimeout = 0
@@ -42,6 +44,10 @@ func switchUI(ui) -> bool:
 	
 	if altMenuUI:
 		altMenuUI.visible = false
+		
+	if altMenuUIAutoDelete && currentUI != 3 && currentUI != 4:
+		altMenuUIAutoDelete = false
+		altMenuUI.queue_free()
 	
 	match ui:
 		0: # menu
@@ -67,24 +73,33 @@ func switchUI(ui) -> bool:
 	
 	return true
 	
-func setAltUI(altMenu):
+func setAltUI(altMenu, autoDelete=false):
 	var oldVisible = false
 	if altMenuUI:
 		altMenuUI.visible = false
 		oldVisible = true
-		
+	
+	if altMenuUIAutoDelete:
+		altMenuUI.queue_free()
+	
+	altMenuUIAutoDelete = autoDelete
 	altMenuUI = altMenu
 	altMenuUI.visible = oldVisible
 	
 	var backToMenu = currentUI == 0 || currentUI == 3
 	backTo = 0 if backToMenu else 1
 	switchUI(3 if backToMenu else 4)
+	
+func openUI(altMenu):
+	setAltUI(altMenu, true)
+	guiContainer.add_child(altMenu)
 
 func showText(text):
 	game.mainNode.find_child("ui_showText_label", true, false).text = text
 	setAltUI(showTextUI)
 
 func _ready():
+	guiContainer = get_node("/root/main/gui")
 	menuUI = game.mainNode.find_child("menuUI", true, false)
 	gameUI = game.mainNode.find_child("gameUI", true, false)
 	showTextUI = game.mainNode.find_child("showTextUI", true, false)
