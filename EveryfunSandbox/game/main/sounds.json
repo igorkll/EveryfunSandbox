@@ -67,11 +67,12 @@
 		"playback_mode": 0,
 		"random_pitch": 1.2,
 		"random_volume_offset_db": 3,
-		"volume_db_offset": -10
+		"max_db": 2
 	},
 	{
 		"fork": true,
-		"name": "snow_placeDestroy"
+		"name": "snow_placeDestroy",
+		"max_db": 6
 	},
 	
 	
