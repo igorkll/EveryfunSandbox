@@ -1,5 +1,6 @@
 [
 	"/blockCategories/world/blocks.json",
 	"/blockCategories/ores/blocks.json",
-	"/blockCategories/processed/blocks.json"
+	"/blockCategories/processed/blocks.json",
+	"/blockCategories/interactive/blocks.json"
 ]
