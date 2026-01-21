@@ -90,7 +90,7 @@ func list(path):
 func remove(path) -> bool:
 	var spath = splitGodotPath(path)
 	var dir := DirAccess.open(spath[0])
-	if dir && dir.file_exists(spath[1]) && dir.remove(spath[1]) == OK:
+	if dir && (dir.file_exists(spath[1]) || dir.dir_exists(spath[1])) && dir.remove(spath[1]) == OK:
 		return true
 	deferredActions.append([0, path])
 	return false
