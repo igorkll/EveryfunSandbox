@@ -37,7 +37,8 @@
 		"texture": "snow.png",
 		"texture_mode": "UNIFORM",
 		"sound": "snow",
-		"sound_placeDestroy": "stone_placeDestroy",
+		"sound_placeDestroy": "snow_placeDestroy",
+		"material": "materials/snow.png",
 		"info": {
 			"durability": 1,
 			"weight": 7
