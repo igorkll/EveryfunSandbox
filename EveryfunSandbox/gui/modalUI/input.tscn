@@ -18,10 +18,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -320.0
-offset_top = -120.0
-offset_right = 320.0
-offset_bottom = 120.0
+offset_left = -240.0
+offset_top = -80.0
+offset_right = 240.0
+offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -33,9 +33,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+[node name="title" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 30
 text = "test"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -49,9 +49,9 @@ layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
-[node name="LineEdit" type="LineEdit" parent="Panel/VBoxContainer/MarginContainer"]
+[node name="input" type="LineEdit" parent="Panel/VBoxContainer/MarginContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 15
 text = "test"
 
 [node name="Control2" type="Control" parent="Panel/VBoxContainer"]
@@ -66,9 +66,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="cancel" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 15
 text = "cancel"
 
 [node name="Control4" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
@@ -76,9 +76,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Button2" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="confirm" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 15
 text = "confirm"
 
 [node name="Control3" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
