@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dic01u2d5ewor"
-path="res://.godot/imported/speaker.png-8e1e5012771d911ced751ae8c10bca75.ctex"
+uid="uid://dlim2ktr1qhnj"
+path="res://.godot/imported/explosive.png-d4bef4fba7b7ea53f2d55edac13cedb3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://game/main/blocks/speaker.png"
-dest_files=["res://.godot/imported/speaker.png-8e1e5012771d911ced751ae8c10bca75.ctex"]
+source_file="res://game/main/blockCategories/interactive/explosive.png"
+dest_files=["res://.godot/imported/explosive.png-d4bef4fba7b7ea53f2d55edac13cedb3.ctex"]
 
 [params]
 

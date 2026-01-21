@@ -1,0 +1,61 @@
+[
+	{
+		"name": "monitor",
+		"texture": "!textures/polished_metal.png",
+		"texture_mode": "UNIFORM",
+		"material": "!materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/monitor.gd",
+		"rotationMode": "360V"
+	},
+	{
+		"name": "explosive",
+		"texture": "explosive.png",
+		"texture_mode": "UNIFORM_TOP_BOTTOM",
+		"material": "!materials/metal.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/explosive.gd",
+		"script_data": {
+			"explosiveLevel": 5
+		}
+	},
+	{
+		"name": "nuclear_explosive",
+		"texture": "nuclear_explosive/texture.png",
+		"texture_mode": "UNIFORM",
+		"material": "nuclear_explosive/material.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/explosive.gd",
+		"script_data": {
+			"explosiveLevel": 150
+		}
+	},
+	{
+		"name": "grammophone",
+		"texture": "grammophone/texture.png",
+		"mesh": "grammophone/mesh.obj",
+		"mesh_collision": 1,
+		"hide_collision": true,
+		"material": "grammophone/material.png",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/grammophone.gd",
+		"rotationMode": "360",
+		"info": {
+			"durability": 1,
+			"weight": 23,
+			"center_of_mass": [0, -0.2, 0]
+		}
+	},
+	{
+		"name": "speaker",
+		"texture": "speaker.png",
+		"texture_mode": "UNIFORM",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/speaker.gd"
+	}
+]
