@@ -102,47 +102,47 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 				var worldPos = position + (localPos * scale)
 				var local2dPos = Vector2(worldPos.x, worldPos.z)
 
-				var heightOffset = 0
-				for terrainHeightArr in terrainHeightValues:
-					var noiseValue = (terrainNoises[terrainHeightArr[2]].get_noise_2d_single(local2dPos / terrainHeightArr[1]) + 1) / 2
-					if terrainHeightArr[3] > 0:
-						noiseValue = pow(noiseValue, terrainHeightArr[3])
+				var terrainHeight = 0.0
+				for t in terrainHeightValues:
+					var n = terrainNoises[t[2]].get_noise_2d_single(local2dPos / t[1])
+					n = (n + 1.0) * 0.5
+					if t[3] > 0:
+						n = pow(n, t[3])
+					terrainHeight += n * t[0]
+				terrainHeight = int(round(terrainHeight))
+
+				var grassCut = worldPos.y > grassCutPos
+				if !grassCut:
+					var grassCutPercent = worldPos.y / grassCutPos
+					var value = (grassCutHoise.get_noise_2d_single(local2dPos / grassCutScale) + 1) / 2
+					value = 1 - pow(value, grassCutPow)
+					grassCut = value < grassCutPercent
 					
-					var terrainHeight = heightOffset + round(noiseValue * terrainHeightArr[0])
-					heightOffset = terrainHeight
-					
-					var grassCut = worldPos.y > grassCutPos
-					if !grassCut:
-						var grassCutPercent = worldPos.y / grassCutPos
-						var value = (grassCutHoise.get_noise_2d_single(local2dPos / grassCutScale) + 1) / 2
-						value = 1 - pow(value, grassCutPow)
-						grassCut = value < grassCutPercent
-						
-					var localCavePercent = remap(worldPos.y, maxCavesAtHeight, 0, cavePercent, cavePercentTop)
-					if localCavePercent > cavePercent:
-						localCavePercent = cavePercent
-					
-					var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
-					if caveNoiseValue < localCavePercent:
-						buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
-					elif worldPos.y == terrainHeight && !grassCut:
-						buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
-					elif worldPos.y <= terrainHeight:
-						var dirtNoiseValue = (dirtHoise.get_noise_2d_single(local2dPos) + 1) / 2
-						dirtNoiseValue *= dirtHeight
-						dirtNoiseValue += dirtOffset
-						var dirtPos = terrainHeight - worldPos.y
-						if dirtPos <= dirtNoiseValue  && !grassCut:
-							buffer.set_voxel_v(id_dirt, localPos, VoxelBuffer.CHANNEL_TYPE)
-						else:
-							var finded = false
-							var index = 0
-							for resource in resources:
-								var resourceNoiseValue = (resourcesNoises[index].get_noise_3d_single(worldPos) + 1) / 2
-								if resourceNoiseValue < resource[0]:
-									buffer.set_voxel_v(resource[1], localPos, VoxelBuffer.CHANNEL_TYPE)
-									finded = true
-								index += 1
-									
-							if not finded:
-								buffer.set_voxel_v(id_stone, localPos, VoxelBuffer.CHANNEL_TYPE)
+				var localCavePercent = remap(worldPos.y, maxCavesAtHeight, 0, cavePercent, cavePercentTop)
+				if localCavePercent > cavePercent:
+					localCavePercent = cavePercent
+				
+				var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
+				if caveNoiseValue < localCavePercent:
+					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
+				elif worldPos.y == terrainHeight && !grassCut:
+					buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
+				elif worldPos.y <= terrainHeight:
+					var dirtNoiseValue = (dirtHoise.get_noise_2d_single(local2dPos) + 1) / 2
+					dirtNoiseValue *= dirtHeight
+					dirtNoiseValue += dirtOffset
+					var dirtPos = terrainHeight - worldPos.y
+					if dirtPos <= dirtNoiseValue  && !grassCut:
+						buffer.set_voxel_v(id_dirt, localPos, VoxelBuffer.CHANNEL_TYPE)
+					else:
+						var finded = false
+						var index = 0
+						for resource in resources:
+							var resourceNoiseValue = (resourcesNoises[index].get_noise_3d_single(worldPos) + 1) / 2
+							if resourceNoiseValue < resource[0]:
+								buffer.set_voxel_v(resource[1], localPos, VoxelBuffer.CHANNEL_TYPE)
+								finded = true
+							index += 1
+								
+						if not finded:
+							buffer.set_voxel_v(id_stone, localPos, VoxelBuffer.CHANNEL_TYPE)
