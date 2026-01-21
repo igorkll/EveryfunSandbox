@@ -8,13 +8,23 @@ var defaultWorldName = "default world"
 var ui_worlds_list
 
 func worldRename(worldName):
-	pass
+	if game.settings.data.selectedWorld == worldName:
+		modalUI.messageModal("error", "You can't rename the world you're in.")
+	else:
+		pass
 	
 func worldDelete(worldName):
-	pass
+	if game.settings.data.selectedWorld == worldName:
+		modalUI.messageModal("error", "you can't delete the world you're in.")
+	else:
+		saves.delete(worldName)
+		updateWorldsList()
 	
 func worldLoad(worldName):
-	changeWorld(worldName)
+	if game.settings.data.selectedWorld == worldName:
+		modalUI.messageModal("error", "you are already in this world")
+	else:
+		changeWorld(worldName)
 
 func addWorldToList(worldName):
 	var worldCard = worldCardBase.instantiate()
@@ -27,6 +37,7 @@ func addWorldToList(worldName):
 	funcs.ui_button_callback(worldCard, "worldRename", worldRename.bind(worldName))
 	funcs.ui_button_callback(worldCard, "worldDelete", worldDelete.bind(worldName))
 	funcs.ui_button_callback(worldCard, "worldLoad", worldLoad.bind(worldName))
+	worldCard.theme
 
 func updateWorldsList():
 	for child in ui_worlds_list.get_children():
@@ -57,7 +68,12 @@ func _changeWorld(worldName):
 func changeWorld(worldName):
 	saves.save(_changeWorld.bind(worldName))
 
+func generateWorldName():
+	return funcs.random_name(randi_range(consts.min_random_world_name_len, consts.max_random_world_name_len))
+
 func _ready():
+	defaultWorldName = generateWorldName()
+	
 	ui_worlds_list = game.mainNode.find_child("ui_worlds_list", true, false)
 	gui._attachButton("ui_worlds_new", _worlds_new)
 	
@@ -75,4 +91,4 @@ func _worlds_new():
 				modalUI.messageModal("error", "a world with that name already exists")
 			else:
 				changeWorld(worldName)
-	, funcs.random_name(randi_range(consts.min_random_world_name_len, consts.max_random_world_name_len)))
+	, generateWorldName())

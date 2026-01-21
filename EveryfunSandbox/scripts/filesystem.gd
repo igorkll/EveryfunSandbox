@@ -94,6 +94,9 @@ func remove(path) -> bool:
 		return true
 	deferredActions.append([0, path])
 	return false
+	
+func rename(path, newPath):
+	pass
 
 func _process(delta):
 	if deferredActions.size() > 0:

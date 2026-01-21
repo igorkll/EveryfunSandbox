@@ -199,6 +199,12 @@ func isInteractiveChunkBlockLoaded(position: Vector3i):
 	
 func list():
 	return filesystem.list(savesFolderPath)
+	
+func delete(name):
+	filesystem.remove(getSavePath(name))
+
+func rename(name, newName):
+	filesystem.rename(getSavePath(name), getSavePath(newName))
 
 func saveTerrainBackground(terrain):
 	currentWorldRuntimeData.voxelBackgroundSaveCompletionTrackers[terrain.save_modified_blocks()] = terrain
