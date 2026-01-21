@@ -105,7 +105,7 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 				var terrainHeight = 0.0
 				for t in terrainHeightValues:
 					var n = terrainNoises[t[2]].get_noise_2d_single(local2dPos / t[1])
-					n = (n + 1.0) * 0.5
+					n = (n + 1.0) / 2
 					if t[3] > 0:
 						n = pow(n, t[3])
 					terrainHeight += n * t[0]
