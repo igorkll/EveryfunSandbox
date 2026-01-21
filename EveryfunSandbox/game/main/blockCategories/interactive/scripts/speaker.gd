@@ -33,7 +33,7 @@ func _ready():
 	audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.bus = "Speaker"
 	game.initAudioStream(audioPlayer)
-	audioPlayer.max_db = 6
+	audioPlayer.max_db = 15
 	audioPlayer.volume_db = 20
 	audioPlayer.max_distance = 128
 	audioPlayer.connect("finished", __disk_end)
