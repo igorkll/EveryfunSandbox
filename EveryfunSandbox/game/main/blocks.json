@@ -190,10 +190,9 @@
 	{
 		"name": "speaker",
 		"texture": "blocks/speaker.png",
-		"texture_mode": "UNIFORM_SIDE",
+		"texture_mode": "UNIFORM",
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
-		"script": "scripts/speaker.gd",
-		"rotationMode": "360",
+		"script": "scripts/speaker.gd"
 	}
 ]

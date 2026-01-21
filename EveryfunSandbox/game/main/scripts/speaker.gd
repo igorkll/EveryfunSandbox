@@ -33,11 +33,8 @@ func _ready():
 	audioPlayer = AudioStreamPlayer3D.new()
 	audioPlayer.bus = "Speaker"
 	game.initAudioStream(audioPlayer)
-	audioPlayer.emission_angle_enabled = true
-	audioPlayer.emission_angle_degrees = 45
-	audioPlayer.emission_angle_filter_attenuation_db = -30
 	audioPlayer.max_db = 6
-	audioPlayer.volume_db = 30
+	audioPlayer.volume_db = 20
 	audioPlayer.max_distance = 128
 	audioPlayer.connect("finished", __disk_end)
 	node.add_child(audioPlayer)
