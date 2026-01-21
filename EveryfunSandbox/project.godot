@@ -151,6 +151,7 @@ jolt_physics_3d/simulation/allow_sleep=false
 
 [rendering]
 
+occlusion_culling/jitter_projection=false
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=5
