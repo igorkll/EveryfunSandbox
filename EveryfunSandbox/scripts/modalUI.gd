@@ -2,6 +2,7 @@ extends Node
 
 var inputModalScene = preload("res://gui/modalUI/input.tscn")
 var messageModalScene = preload("res://gui/modalUI/message.tscn")
+var acceptModalScene = preload("res://gui/modalUI/accept.tscn")
 
 func messageModal(title, text, callback=null):
 	var modal = messageModalScene.instantiate()
@@ -11,6 +12,22 @@ func messageModal(title, text, callback=null):
 		close()
 		if callback:
 			callback.call()
+	)
+	menu.openUI(modal)
+	
+func acceptModal(title, text, callback=null):
+	var modal = acceptModalScene.instantiate()
+	funcs.ui_set_text(modal, "title", title)
+	funcs.ui_set_text(modal, "text", text)
+	funcs.ui_button_callback(modal, "cancel", func():
+		close()
+		if callback:
+			callback.call(false)
+	)
+	funcs.ui_button_callback(modal, "accept", func():
+		close()
+		if callback:
+			callback.call(true)
 	)
 	menu.openUI(modal)
 

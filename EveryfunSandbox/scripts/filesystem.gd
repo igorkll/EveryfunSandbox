@@ -87,6 +87,37 @@ func list(path):
 	else:
 		return []
 		
+func list_sorted_by_date(path: String) -> Array:
+	var dir := DirAccess.open(path)
+	if dir == null:
+		return []
+
+	var items := []
+
+	dir.list_dir_begin()
+	var name := dir.get_next()
+	while name != "":
+		if name != "." and name != "..":
+			var full_path := path.path_join(name)
+			var time := FileAccess.get_modified_time(full_path)
+			items.append({
+				"name": name,
+				"time": time
+			})
+		name = dir.get_next()
+	dir.list_dir_end()
+
+	items.sort_custom(func(a, b):
+		return a.time > b.time
+	)
+
+	var result := []
+	for i in items:
+		result.append(i.name)
+
+	return result
+
+		
 func remove(path) -> bool:
 	var spath = splitGodotPath(path)
 	var dir := DirAccess.open(spath[0])
@@ -102,7 +133,13 @@ func remove_recursive(path):
 	remove(path)
 
 func rename(path, newPath):
-	pass
+	var spath = splitGodotPath(path)
+	var spath2 = splitGodotPath(newPath)
+	var dir := DirAccess.open(spath[0])
+	dir.rename(spath[1], spath2[1])
+	
+func moveToTrash(path):
+	OS.move_to_trash(path)
 
 func _process(delta):
 	if deferredActions.size() > 0:

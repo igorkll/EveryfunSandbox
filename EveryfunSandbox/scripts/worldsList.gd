@@ -11,14 +11,24 @@ func worldRename(worldName):
 	if game.settings.data.selectedWorld == worldName:
 		modalUI.messageModal("error", "You can't rename the world you're in.")
 	else:
-		pass
+		modalUI.inputModal("new name", func(newName):
+			if newName && newName != worldName:
+				if saves.exists(newName):
+					modalUI.messageModal("error", "a world with that name already exists")
+				else:
+					saves.rename(worldName, newName)
+					updateWorldsList()
+		, worldName)
 	
 func worldDelete(worldName):
 	if game.settings.data.selectedWorld == worldName:
 		modalUI.messageModal("error", "you can't delete the world you're in.")
 	else:
-		saves.delete(worldName)
-		updateWorldsList()
+		modalUI.acceptModal("delete the world?", "don't you feel sorry :( ?\nthis action cannot be undone!", func(accept):
+			if accept:
+				saves.delete(worldName)
+				updateWorldsList()
+		)
 	
 func worldLoad(worldName):
 	if game.settings.data.selectedWorld == worldName:

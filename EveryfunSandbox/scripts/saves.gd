@@ -198,7 +198,7 @@ func isInteractiveChunkBlockLoaded(position: Vector3i):
 	return _loadedChunks.has(_getChunkPosition(position))
 	
 func list():
-	return filesystem.list(savesFolderPath)
+	return filesystem.list_sorted_by_date(savesFolderPath)
 	
 func delete(name):
 	filesystem.remove_recursive(getSavePath(name))
