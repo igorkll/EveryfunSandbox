@@ -41,6 +41,7 @@ menu="*res://scripts/menu.gd"
 gui="*res://scripts/gui.gd"
 worldsList="*res://scripts/worldsList.gd"
 HumanizerGlobal="*res://addons/humanizer/scenes/humanizer_global.tscn"
+modalUI="*res://scripts/modalUI.gd"
 
 [display]
 
