@@ -66,4 +66,7 @@ func _ready():
 	updateWorldsList()
 
 func _worlds_new():
-	changeWorld("test5")
+	modalUI.inputModal("world name", func(worldName):
+		if worldName:
+			changeWorld(worldName)
+	, funcs.random_name(16))

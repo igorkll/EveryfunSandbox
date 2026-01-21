@@ -372,3 +372,14 @@ func ui_get_text(obj, name):
 
 func ui_button_callback(obj, name, callback):
 	ui_get_item(obj, name).pressed.connect(callback)
+
+var consonants = ["b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","z"]
+var vowels = ["a","e","i","o","u","y"]
+func random_name(length = 4) -> String:
+	var name = ""
+	for i in range(length):
+		if i % 2 == 0:
+			name += consonants[randi() % consonants.size()]
+		else:
+			name += vowels[randi() % vowels.size()]
+	return name.capitalize()
