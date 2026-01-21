@@ -360,3 +360,15 @@ func set_layer(obj, layer_index: int):
 		obj.cull_mask = layer_bit
 	else:
 		obj.layers = layer_bit
+		
+func ui_get_item(obj, name):
+	return obj.find_child(name, true, false)
+
+func ui_set_text(obj, name, text):
+	ui_get_item(obj, name).text = text
+	
+func ui_get_text(obj, name):
+	return ui_get_item(obj, name).text
+
+func ui_button_callback(obj, name, callback):
+	ui_get_item(obj, name).pressed.connect(callback)

@@ -95,7 +95,7 @@ func openUI(altMenu):
 	guiContainer.add_child(altMenu)
 
 func showText(text):
-	game.mainNode.find_child("ui_showText_label", true, false).text = text
+	showTextUI.find_child("ui_showText_label", true, false).text = text
 	setAltUI(showTextUI)
 
 func _ready():

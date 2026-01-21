@@ -180,4 +180,4 @@ func _License_pressed():
 	menu.showText(filesystem.readFile("res://gui/LICENSE.txt"))
 	
 func _EscDone_pressed():
-	menu.switchUI(menu.backTo)
+	modalUI.close()
