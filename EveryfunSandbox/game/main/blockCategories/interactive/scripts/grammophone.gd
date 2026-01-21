@@ -6,7 +6,7 @@ var defaultStorageData = {
 	rpm = 78.26
 }
 
-var effectSound = preload("res://game/main/blocks/grammophone/effect.mp3")
+var effectSound = preload("res://game/main/blockCategories/interactive/grammophone/effect.mp3")
 
 var musicSuppressor: MusicSuppressor
 var audioPlayer: AudioStreamPlayer3D
