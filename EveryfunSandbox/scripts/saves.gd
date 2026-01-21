@@ -417,7 +417,11 @@ func _checkAutosave():
 func _checkLoaded():
 	var loadersPositions = game.getChunkloadersPositions()
 	
-	var chunkLoadingDistance = floor(game.view_distance / _interactiveChunkSize)
+	var view_distance = game.view_distance
+	if view_distance > consts.max_interactive_view_distance:
+		view_distance = consts.max_interactive_view_distance
+	
+	var chunkLoadingDistance = floor(view_distance / _interactiveChunkSize)
 	if chunkLoadingDistance < 1:
 		chunkLoadingDistance = 1
 	
