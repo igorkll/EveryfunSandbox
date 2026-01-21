@@ -31,13 +31,14 @@ func addWorldToList(worldName):
 	worldCard.find_child("worldName", true, false).text = worldName
 	
 	if worldName == game.settings.data.selectedWorld:
-		pass
+		var stylebox = worldCard.get_theme_stylebox("panel", "Panel")
+		stylebox.bg_color = Color(1, 0, 0)
+		worldCard.add_theme_stylebox_override("panel", stylebox)
 	
 	ui_worlds_list.add_child(worldCard)
 	funcs.ui_button_callback(worldCard, "worldRename", worldRename.bind(worldName))
 	funcs.ui_button_callback(worldCard, "worldDelete", worldDelete.bind(worldName))
 	funcs.ui_button_callback(worldCard, "worldLoad", worldLoad.bind(worldName))
-	worldCard.theme
 
 func updateWorldsList():
 	for child in ui_worlds_list.get_children():
