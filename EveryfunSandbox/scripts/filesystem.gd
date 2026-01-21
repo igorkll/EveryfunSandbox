@@ -78,7 +78,7 @@ func list(path):
 		var folder_list = []
 		var file_name = dir.get_next()
 		while file_name != "":
-			if dir.current_is_dir() and file_name != "." and file_name != "..":
+			if file_name != "." and file_name != "..":
 				folder_list.append(file_name)
 			file_name = dir.get_next()
 		dir.list_dir_end()
@@ -95,6 +95,12 @@ func remove(path) -> bool:
 	deferredActions.append([0, path])
 	return false
 	
+func remove_recursive(path):
+	if isDirectory(path):
+		for entry in list(path):
+			remove_recursive(path.path_join(entry))
+	remove(path)
+
 func rename(path, newPath):
 	pass
 

@@ -201,7 +201,7 @@ func list():
 	return filesystem.list(savesFolderPath)
 	
 func delete(name):
-	filesystem.remove(getSavePath(name))
+	filesystem.remove_recursive(getSavePath(name))
 
 func rename(name, newName):
 	filesystem.rename(getSavePath(name), getSavePath(newName))
