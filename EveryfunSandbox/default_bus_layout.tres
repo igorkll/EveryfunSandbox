@@ -54,12 +54,12 @@ db = 3
 
 [sub_resource type="AudioEffectEQ" id="AudioEffectEQ_j3pel"]
 resource_name = "EQ"
-band_db/32_hz = 2.9
-band_db/100_hz = 6.2
-band_db/320_hz = 7.1
-band_db/1000_hz = -11.8
-band_db/3200_hz = -7.6
-band_db/10000_hz = -16.9
+band_db/32_hz = 3.5
+band_db/100_hz = 4.8
+band_db/320_hz = -5.6
+band_db/1000_hz = -29.3
+band_db/3200_hz = -45.5
+band_db/10000_hz = -60.0
 
 [resource]
 bus/1/name = &"NotMusic"
