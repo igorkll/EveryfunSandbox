@@ -26,7 +26,8 @@ var terrainHeightValues = [
 var dirtOffset = 3
 var dirtHeight = 16
 
-var cavePercent = 0.3
+var cavePercentTop = 0.05
+var cavePercent = 0.6
 var caveScale = 0.25
 
 var grassCutPos = 64.0
@@ -115,9 +116,13 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 						var value = (grassCutHoise.get_noise_2d_single(local2dPos / grassCutScale) + 1) / 2
 						value = 1 - pow(value, grassCutPow)
 						grassCut = value < grassCutPercent
+						
+					var localCavePercent = remap(worldPos.y, -400, 0, cavePercent, cavePercentTop)
+					if localCavePercent > cavePercent:
+						localCavePercent = cavePercent
 					
 					var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
-					if caveNoiseValue < cavePercent:
+					if caveNoiseValue < localCavePercent:
 						buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
 					elif worldPos.y == terrainHeight && !grassCut:
 						buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
