@@ -3,18 +3,18 @@ extends Node
 var worldCardBase = preload("res://gui/worldCard/worldCard.tscn")
 var defaultWorldName = "default world"
 
-var ui_worlds_list
+# ------------------------------------- world list
 
-func _attachWorldCardButton(worldCard, button, callback):
-	var buttonObj = worldCard.find_child(button, true, false)
-	buttonObj.pressed.connect(callback)
-	return buttonObj
+var ui_worlds_list
 
 func worldRename(worldName):
 	pass
 	
 func worldDelete(worldName):
 	pass
+	
+func worldLoad(worldName):
+	changeWorld(worldName)
 
 func addWorldToList(worldName):
 	var worldCard = worldCardBase.instantiate()
@@ -24,8 +24,9 @@ func addWorldToList(worldName):
 		pass
 	
 	ui_worlds_list.add_child(worldCard)
-	_attachWorldCardButton(worldCard, "worldRename", worldRename.bind(worldName))
-	_attachWorldCardButton(worldCard, "worldDelete", worldDelete.bind(worldName))
+	funcs.ui_button_callback(worldCard, "worldRename", worldRename.bind(worldName))
+	funcs.ui_button_callback(worldCard, "worldDelete", worldDelete.bind(worldName))
+	funcs.ui_button_callback(worldCard, "worldLoad", worldLoad.bind(worldName))
 
 func updateWorldsList():
 	for child in ui_worlds_list.get_children():
@@ -37,6 +38,8 @@ func updateWorldsList():
 	for worldName in worldList:
 		if game.settings.data.selectedWorld != worldName:
 			addWorldToList(worldName)
+			
+# -------------------------------------
 
 func loadSelectedWorld():
 	if saves.exists(game.settings.data.selectedWorld):

@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cwa28y8nnp1j8"]
+[gd_scene load_steps=5 format=3 uid="uid://cwa28y8nnp1j8"]
 
+[ext_resource type="Texture2D" uid="uid://d0sk2o2nv3vxj" path="res://gui/worldCard/load.png" id="1_5nbmh"]
 [ext_resource type="Texture2D" uid="uid://ckpv1brnqvi7f" path="res://gui/worldCard/delete.png" id="1_5upsk"]
 [ext_resource type="Texture2D" uid="uid://dq7mfyrlq7p65" path="res://gui/worldCard/rename.png" id="1_rgaaf"]
 
@@ -38,6 +39,14 @@ theme_override_constants/separation = 5
 layout_mode = 2
 size_flags_horizontal = 3
 text = "world name"
+
+[node name="worldLoad" type="TextureButton" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(60, 30)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("1_5nbmh")
+ignore_texture_size = true
+stretch_mode = 0
 
 [node name="worldRename" type="TextureButton" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(23, 23)
