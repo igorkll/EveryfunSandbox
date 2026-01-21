@@ -68,5 +68,8 @@ func _ready():
 func _worlds_new():
 	modalUI.inputModal("world name", func(worldName):
 		if worldName:
-			changeWorld(worldName)
-	, funcs.random_name(16))
+			if saves.exists(worldName):
+				modalUI.messageModal("error", "a world with that name already exists")
+			else:
+				changeWorld(worldName)
+	, funcs.random_name(randi_range(consts.min_random_world_name_len, consts.max_random_world_name_len)))
