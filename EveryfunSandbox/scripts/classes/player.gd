@@ -100,12 +100,11 @@ func controlHandler():
 			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["speaker"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
 		
 	if Input.is_action_just_pressed("chat"):
-		# if result:
-		# 	if terrainUtils.isDymanic(result[0]):
-		#		terrainUtils.makeStatic(result[0], result[1].position)
-		#	else:
-		#		terrainUtils.makeDynamic(result[0], result[1].position)
-		pass
+		if result:
+			if terrainUtils.isDymanic(result[0]):
+				terrainUtils.makeStatic(result[0], result[1].position)
+			else:
+				terrainUtils.makeDynamic(result[0], result[1].position)
 	
 	if result && terrainUtils.canUseBlock(result[0], result[1].position):
 		game.setCrosspiece("use")
