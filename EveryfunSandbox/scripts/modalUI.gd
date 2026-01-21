@@ -9,3 +9,4 @@ func _ready():
 func inputModal(title):
 	var modal = inputModalScene.instantiate()
 	guiContainer.add_child(modal)
+	menu.setAltUI(modal)

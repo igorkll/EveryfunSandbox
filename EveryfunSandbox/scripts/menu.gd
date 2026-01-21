@@ -1,8 +1,10 @@
 extends Node
 
-var menuUI
 var showTextUI
+
+var menuUI
 var gameUI
+var altMenuUI
 
 var waitSwitchUI = false
 var toggleTimeout = 0
@@ -37,14 +39,16 @@ func switchUI(ui) -> bool:
 	
 	menuUI.visible = false
 	gameUI.visible = false
-	showTextUI.visible = false
+	
+	if altMenuUI:
+		altMenuUI.visible = false
 	
 	match ui:
-		0:
+		0: # menu
 			menuUI.visible = true
 			fullLock()
 			
-		1:
+		1: # game
 			gameUI.visible = true
 			fullUnlock()
 			
@@ -52,20 +56,33 @@ func switchUI(ui) -> bool:
 			liteLock()
 			
 		3:
-			showTextUI.visible = true
+			if altMenuUI:
+				altMenuUI.visible = true
 			fullLock()
 			
 		4:
-			showTextUI.visible = true
+			if altMenuUI:
+				altMenuUI.visible = true
 			liteLock()
 	
 	return true
-			
-func showText(text):
+	
+func setAltUI(altMenu):
+	var oldVisible = false
+	if altMenuUI:
+		altMenuUI.visible = false
+		oldVisible = true
+		
+	altMenuUI = altMenu
+	altMenuUI.visible = oldVisible
+	
 	var backToMenu = currentUI == 0 || currentUI == 3
-	game.mainNode.find_child("ui_showText_label", true, false).text = text
 	backTo = 0 if backToMenu else 1
 	switchUI(3 if backToMenu else 4)
+
+func showText(text):
+	game.mainNode.find_child("ui_showText_label", true, false).text = text
+	setAltUI(showTextUI)
 
 func _ready():
 	menuUI = game.mainNode.find_child("menuUI", true, false)
