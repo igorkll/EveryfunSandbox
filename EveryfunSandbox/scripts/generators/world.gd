@@ -62,10 +62,13 @@ func createMountainNoises(seed):
 
 func _init():
 	resources = [
-		[0.02, blockUtils.list_name2id["lazuli"]],
+		[0.1, blockUtils.list_name2id["dirt"]],
+		[0.05, blockUtils.list_name2id["coal"]],
+		[0.02, blockUtils.list_name2id["iron"]],
+		[0.015, blockUtils.list_name2id["silver"]],
 		[0.01, blockUtils.list_name2id["gold"]],
-		[0.001, blockUtils.list_name2id["uranium"]],
-		[0.1, blockUtils.list_name2id["dirt"]]
+		[0.005, blockUtils.list_name2id["lazuli"]],
+		[0.001, blockUtils.list_name2id["uranium"]]
 	]
 	
 	var seed = saves.currentWorldData.initialWorldData.seed

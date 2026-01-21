@@ -1,5 +1,21 @@
 [
 	{
+		"name": "silver",
+		"texture": "silver.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
+	},
+	{
+		"name": "iron",
+		"texture": "iron.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/metal.png",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
+	},
+	{
 		"name": "gold",
 		"texture": "gold.png",
 		"texture_mode": "UNIFORM",
