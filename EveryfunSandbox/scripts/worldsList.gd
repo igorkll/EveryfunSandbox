@@ -31,8 +31,8 @@ func addWorldToList(worldName):
 	worldCard.find_child("worldName", true, false).text = worldName
 	
 	if worldName == game.settings.data.selectedWorld:
-		var stylebox = worldCard.get_theme_stylebox("panel", "Panel")
-		stylebox.bg_color = Color(1, 0, 0)
+		var stylebox = worldCard.get_theme_stylebox("panel", "Panel").duplicate(true)
+		stylebox.bg_color = Color(0.689, 0.426, 0.0, 1.0)
 		worldCard.add_theme_stylebox_override("panel", stylebox)
 	
 	ui_worlds_list.add_child(worldCard)
