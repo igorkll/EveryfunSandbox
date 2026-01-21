@@ -11,7 +11,8 @@ var minimal_load_time = 8
 var load_time_delay = 1
 
 var settings_path = "user://settings.json"
-var chunk_size = 16
+var chunk_size = 32
+var lod_count = 8
 var multiplePressTimeout = 300
 
 var minimum_loading_radius_for_play = Vector3i(8, 8, 8)
