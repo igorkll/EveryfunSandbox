@@ -1,5 +1,13 @@
 [
 	{
+		"name": "coal",
+		"texture": "coal.png",
+		"texture_mode": "UNIFORM",
+		"material": "materials/stone.png",
+		"sound": "stone",
+		"sound_placeDestroy": "stone_placeDestroy"
+	},
+	{
 		"name": "silver",
 		"texture": "silver.png",
 		"texture_mode": "UNIFORM",
