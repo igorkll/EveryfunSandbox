@@ -24,9 +24,10 @@ var player_mul_fly = 2
 
 var default_scale_on_1080 = 1.5
 
-var default_sound_unit_size = 1
-var default_sound_max_distance = 256
-var default_volume_db = 60
+var default_max_volume_db = 6
+var default_sound_unit_size = 16
+var default_sound_max_distance = 60
+var default_volume_db = 0
 
 var chance_multiplier_to_destroy_a_block_of_greater_strength = 0.8
 

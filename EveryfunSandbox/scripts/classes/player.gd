@@ -97,7 +97,7 @@ func controlHandler():
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
-			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["explosive"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
+			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["speaker"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
 		
 	if Input.is_action_just_pressed("chat"):
 		# if result:

@@ -13,12 +13,14 @@
 		],
 		"playback_mode": 0,
 		"random_pitch": 1.2,
-		"random_volume_offset_db": 3
+		"random_volume_offset_db": 3,
+		"max_db": 3
 	},
 	{
 		"fork": true,
 		"name": "grass_placeDestroy",
-		"volume_db_offset": 10
+		"volume_db": 3,
+		"max_db": 10
 	},
 	
 	
@@ -40,11 +42,13 @@
 		],
 		"playback_mode": 0,
 		"random_pitch": 1.2,
-		"random_volume_offset_db": 3
+		"random_volume_offset_db": 3,
+		"max_db": 3
 	},
 	{
 		"fork": true,
-		"name": "stone_placeDestroy"
+		"name": "stone_placeDestroy",
+		"max_db": 10
 	},
 	
 	
@@ -70,11 +74,13 @@
 		],
 		"playback_mode": 0,
 		"random_pitch": 1.2,
-		"random_volume_offset_db": 3
+		"random_volume_offset_db": 3,
+		"max_db": 3
 	},
 	{
 		"fork": true,
-		"name": "metal_placeDestroy"
+		"name": "metal_placeDestroy",
+		"max_db": 10
 	},
 	
 	
@@ -89,11 +95,14 @@
 		"playback_mode": 0,
 		"random_pitch": 1.2,
 		"random_volume_offset_db": 3,
-		"volume_db_offset": -10
+		"volume_db": -5,
+		"max_db": 1
 	},
 	{
 		"fork": true,
-		"name": "glass_placeDestroy"
+		"name": "glass_placeDestroy",
+		"volume_db": -1,
+		"max_db": 3
 	},
 	
 	
@@ -110,9 +119,11 @@
 			}
 		],
 		"playback_mode": 0,
+		"unit_size": 64,
+		"max_distance": 1000,
 		"random_pitch": 1.2,
 		"random_volume_offset_db": 3,
-		"volume_db": 100,
+		"volume_db": 10,
 		"max_db": 20
 	}
 ]
