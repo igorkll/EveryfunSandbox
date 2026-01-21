@@ -8,9 +8,9 @@ func messageModal(title, text, callback=null):
 	funcs.ui_set_text(modal, "title", title)
 	funcs.ui_set_text(modal, "text", text)
 	funcs.ui_button_callback(modal, "done", func():
+		close()
 		if callback:
 			callback.call()
-		close()
 	)
 	menu.openUI(modal)
 
@@ -19,14 +19,14 @@ func inputModal(title, callback=null, value=""):
 	funcs.ui_set_text(modal, "title", title)
 	funcs.ui_set_text(modal, "input", value)
 	funcs.ui_button_callback(modal, "cancel", func():
+		close()
 		if callback:
 			callback.call(null)
-		close()
 	)
 	funcs.ui_button_callback(modal, "confirm", func():
+		close()
 		if callback:
 			callback.call(funcs.ui_get_text(modal, "input"))
-		close()
 	)
 	menu.openUI(modal)
 
