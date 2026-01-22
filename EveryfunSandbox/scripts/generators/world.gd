@@ -134,7 +134,7 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 					localCavePercent = cavePercent
 				
 				var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
-				if caveNoiseValue < localCavePercent:
+				if caveNoiseValue < localCavePercent && lod == 0:
 					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
 				elif worldPos.y == terrainHeight && !grassCut:
 					buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
