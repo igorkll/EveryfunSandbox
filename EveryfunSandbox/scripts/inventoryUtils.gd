@@ -19,7 +19,7 @@ func getFreeSpace(inventory) -> int:
 func getUserSpace(inventory) -> int:
 	var itemCount = 0
 	if inventory.has("items"):
-		for count in inventory.values():
+		for count in inventory.items.values():
 			itemCount += count
 	return itemCount
 	

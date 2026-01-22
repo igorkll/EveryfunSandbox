@@ -104,7 +104,7 @@ func controlHandler():
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
 			inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockUtils.getTargetRotation(camera.global_transform.basis.z))
-		
+	
 	if Input.is_action_just_pressed("chat"):
 		modalUI.inputModal("Test")
 		if result:
