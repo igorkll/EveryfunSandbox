@@ -28,8 +28,8 @@ var dirtHeight = 16
 
 var cavePercentTop = 0.1
 var cavePercent = 0.6
-var maxCavesAtHeight = -200
 var caveScale = 0.25
+var maxCavesAtDepth = 200
 
 var grassCutPos = 64.0
 var grassCutScale = 0.5
@@ -107,20 +107,23 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var id_snow = blockUtils.list_name2id["snow"]
 	
 	for ix in range(size.x):
-		for iy in range(size.y):
-			for iz in range(size.z):
+		for iz in range(size.z):
+			var _localPos = Vector3i(ix, 0, iz)
+			var _world2dPos = position + (_localPos * scale)
+			var local2dPos = Vector2(_world2dPos.x, _world2dPos.z)
+			
+			var terrainHeight = 0.0
+			for t in terrainHeightValues:
+				var n = terrainNoises[t[2]].get_noise_2d_single(local2dPos / t[1])
+				n = (n + 1.0) / 2
+				if t[3] > 0:
+					n = pow(n, t[3])
+				terrainHeight += n * t[0]
+			terrainHeight = int(round(terrainHeight))
+			
+			for iy in range(size.y):
 				var localPos = Vector3i(ix, iy, iz)
 				var worldPos = position + (localPos * scale)
-				var local2dPos = Vector2(worldPos.x, worldPos.z)
-
-				var terrainHeight = 0.0
-				for t in terrainHeightValues:
-					var n = terrainNoises[t[2]].get_noise_2d_single(local2dPos / t[1])
-					n = (n + 1.0) / 2
-					if t[3] > 0:
-						n = pow(n, t[3])
-					terrainHeight += n * t[0]
-				terrainHeight = int(round(terrainHeight))
 
 				var grassCut = worldPos.y > grassCutPos
 				if !grassCut:
@@ -128,42 +131,48 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 					var value = (grassCutHoise.get_noise_2d_single(local2dPos / grassCutScale) + 1) / 2
 					value = 1 - pow(value, grassCutPow)
 					grassCut = value < grassCutPercent
-					
-				var localCavePercent = remap(worldPos.y, maxCavesAtHeight, 0, cavePercent, cavePercentTop)
-				if localCavePercent > cavePercent:
-					localCavePercent = cavePercent
 				
-				var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
-				if caveNoiseValue < localCavePercent && lod == 0:
-					buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
-				elif worldPos.y == terrainHeight && !grassCut:
-					buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
-				elif worldPos.y <= terrainHeight:
-					var blockSetted = false
+				var blockSetted = false
+				
+				if lod == 0:
+					var localCavePercent = remap(worldPos.y, terrainHeight - maxCavesAtDepth, terrainHeight, cavePercent, cavePercentTop)
+					if localCavePercent > cavePercent:
+						localCavePercent = cavePercent
 					
-					var dirtNoiseValue = (dirtHoise.get_noise_2d_single(local2dPos) + 1) / 2
-					dirtNoiseValue *= dirtHeight
-					dirtNoiseValue += dirtOffset
-					var dirtPos = terrainHeight - worldPos.y
-					if dirtPos <= dirtNoiseValue && !grassCut:
-						buffer.set_voxel_v(id_dirt, localPos, VoxelBuffer.CHANNEL_TYPE)
+					var caveNoiseValue = (caveHoise.get_noise_3d_single(worldPos / caveScale) + 1) / 2
+					if caveNoiseValue < localCavePercent:
+						buffer.set_voxel_v(0, localPos, VoxelBuffer.CHANNEL_TYPE)
 						blockSetted = true
-					elif terrainHeight >= minSnowHeight:
-						var snowPercent = remap(worldPos.y, minSnowHeight, maxSnowHeight, 0, 1)
-						var snowNoiseValue = (snowHoise.get_noise_2d_single(local2dPos) + 1) / 2
-						if snowPercent > snowNoiseValue:
-							buffer.set_voxel_v(id_snow, localPos, VoxelBuffer.CHANNEL_TYPE)
+				
+				if not blockSetted:
+					if worldPos.y == terrainHeight && !grassCut:
+						buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
+					elif worldPos.y <= terrainHeight:
+						blockSetted = false
+						
+						var dirtNoiseValue = (dirtHoise.get_noise_2d_single(local2dPos) + 1) / 2
+						dirtNoiseValue *= dirtHeight
+						dirtNoiseValue += dirtOffset
+						var dirtPos = terrainHeight - worldPos.y
+						if dirtPos <= dirtNoiseValue && !grassCut:
+							buffer.set_voxel_v(id_dirt, localPos, VoxelBuffer.CHANNEL_TYPE)
 							blockSetted = true
-					
-					if not blockSetted:
-						var finded = false
-						var index = 0
-						for resource in resources:
-							var resourceNoiseValue = (resourcesNoises[index].get_noise_3d_single(worldPos) + 1) / 2
-							if resourceNoiseValue < resource[0]:
-								buffer.set_voxel_v(resource[1], localPos, VoxelBuffer.CHANNEL_TYPE)
-								finded = true
-							index += 1
-								
-						if not finded:
-							buffer.set_voxel_v(id_stone, localPos, VoxelBuffer.CHANNEL_TYPE)
+						elif terrainHeight >= minSnowHeight:
+							var snowPercent = remap(worldPos.y, minSnowHeight, maxSnowHeight, 0, 1)
+							var snowNoiseValue = (snowHoise.get_noise_2d_single(local2dPos) + 1) / 2
+							if snowPercent > snowNoiseValue:
+								buffer.set_voxel_v(id_snow, localPos, VoxelBuffer.CHANNEL_TYPE)
+								blockSetted = true
+						
+						if not blockSetted:
+							var finded = false
+							var index = 0
+							for resource in resources:
+								var resourceNoiseValue = (resourcesNoises[index].get_noise_3d_single(worldPos) + 1) / 2
+								if resourceNoiseValue < resource[0]:
+									buffer.set_voxel_v(resource[1], localPos, VoxelBuffer.CHANNEL_TYPE)
+									finded = true
+								index += 1
+									
+							if not finded:
+								buffer.set_voxel_v(id_stone, localPos, VoxelBuffer.CHANNEL_TYPE)
