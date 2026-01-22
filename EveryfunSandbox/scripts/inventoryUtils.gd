@@ -63,3 +63,27 @@ func nonGameDestroyItems(inventory, itemName, itemCount) -> bool:
 	inventory.items[itemName] -= itemCount
 	
 	return true
+
+func transferItem(fromInventory, toInventory, itemName, itemCount) -> bool:
+	if not itemsExists(fromInventory, itemName, itemCount):
+		return false
+		
+	if not spaceExists(toInventory, itemCount):
+		return false
+		
+	if not fromInventory.has("items"):
+		fromInventory.items = {}
+		
+	if not fromInventory.items.has(itemName):
+		fromInventory.items[itemName] = 0
+		
+	if not toInventory.has("items"):
+		toInventory.items = {}
+		
+	if not toInventory.items.has(itemName):
+		toInventory.items[itemName] = 0
+		
+	fromInventory.items[itemName] -= itemCount
+	toInventory.items[itemName] += itemCount
+	
+	return true
