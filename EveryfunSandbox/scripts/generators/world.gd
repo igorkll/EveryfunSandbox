@@ -139,18 +139,23 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 				elif worldPos.y == terrainHeight && !grassCut:
 					buffer.set_voxel_v(id_grass, localPos, VoxelBuffer.CHANNEL_TYPE)
 				elif worldPos.y <= terrainHeight:
+					var blockSetted = false
+					
 					var dirtNoiseValue = (dirtHoise.get_noise_2d_single(local2dPos) + 1) / 2
 					dirtNoiseValue *= dirtHeight
 					dirtNoiseValue += dirtOffset
 					var dirtPos = terrainHeight - worldPos.y
 					if dirtPos <= dirtNoiseValue && !grassCut:
 						buffer.set_voxel_v(id_dirt, localPos, VoxelBuffer.CHANNEL_TYPE)
+						blockSetted = true
 					elif terrainHeight >= minSnowHeight:
 						var snowPercent = remap(worldPos.y, minSnowHeight, maxSnowHeight, 0, 1)
 						var snowNoiseValue = (snowHoise.get_noise_2d_single(local2dPos) + 1) / 2
 						if snowPercent > snowNoiseValue:
 							buffer.set_voxel_v(id_snow, localPos, VoxelBuffer.CHANNEL_TYPE)
-					else:
+							blockSetted = true
+					
+					if not blockSetted:
 						var finded = false
 						var index = 0
 						for resource in resources:
