@@ -22,7 +22,7 @@ func init(terrainPath):
 	self.mesh_block_size = consts.chunk_size
 	self.view_distance = consts.start_loading_area
 	self.lod_distance = consts.start_loading_area
-	self.lod_count = 1
+	self.lod_count = game.lod_count
 	self.stream = stream
 	self.cache_generated_blocks = true
 	
@@ -32,15 +32,13 @@ func init(terrainPath):
 func _process(delta):
 	var _view_distance = game.view_distance
 	var _lod_distance = game.lod_distance
-	var _lod_count = game.lod_count
 	if game.minimal_loading_area:
 		_view_distance = consts.start_loading_area
 		_lod_distance = consts.start_loading_area
-		_lod_count = 1
 	
-	if _view_distance != view_distance or _lod_distance != lod_distance or _lod_count != lod_count:
+	if _view_distance != view_distance or _lod_distance != lod_distance or game.lod_count != lod_count:
 		view_distance = _view_distance
 		lod_distance = _lod_distance
-		lod_count = _lod_count
+		lod_count = game.lod_count
 	
 	terrainUtils.applyDeferredActions(self)
