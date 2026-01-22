@@ -97,6 +97,7 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 	var id_grass = blockUtils.list_name2id["grass"]
 	var id_dirt = blockUtils.list_name2id["dirt"]
 	var id_stone = blockUtils.list_name2id["stone"]
+	var id_snow = blockUtils.list_name2id["snow"]
 	
 	for ix in range(size.x):
 		for iy in range(size.y):
