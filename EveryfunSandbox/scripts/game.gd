@@ -520,6 +520,7 @@ func _reloadGameContent():
 	_addFolder("res://game/test")
 	blockUtils.updateBlockList()
 	characterUtils.updateCharacterList()
+	inventoryUtils._prepairGameItems()
 
 func _initGui():
 	setScale(settings.gui.scale)

@@ -1,0 +1,62 @@
+extends Node
+
+var gameItems = []
+var item2block = {}
+
+func _prepairGameItems():
+	gameItems = []
+	item2block = {}
+	
+	for obj in blockUtils.list_id2obj:
+		var name = "block_" + obj.name + "_r" + str(obj.currentRotation) + "_c" + str(obj.colorVariant) + "_v" + str(obj.baseVariant)
+		gameItems.append(name)
+		item2block[name] = obj
+		
+	
+func getFreeSpace(inventory) -> int:
+	return getTotalSpace(inventory) - getUserSpace(inventory)
+
+func getUserSpace(inventory) -> int:
+	var itemCount = 0
+	if inventory.has("items"):
+		for count in inventory.values():
+			itemCount += count
+	return itemCount
+	
+func getTotalSpace(inventory) -> int:
+	return inventory.maxitems
+
+
+func getItemsCount(inventory, itemName) -> int:
+	if inventory.has("items") && inventory.items.has(itemName):
+		return inventory.items[itemName]
+	return 0
+
+func itemsExists(inventory, itemName, count):
+	return getItemsCount(inventory, itemName) >= count
+
+
+func nonGameCreateItems(inventory, itemName, itemCount) -> bool:
+	if getFreeSpace(inventory) < itemCount:
+		return false
+		
+	if not inventory.has("items"):
+		inventory.items = {}
+		
+	if not inventory.items.has(itemName):
+		inventory.items[itemName] = 0
+		
+	inventory.items[itemName] += itemCount
+		
+	return true
+
+func nonGameDestroyItems(inventory, itemName, itemCount) -> bool:
+	if not inventory.has("items"):
+		inventory.items = {}
+	
+	if not itemsExists(inventory, itemName, itemCount):
+		return false
+		
+	inventory.items[itemName] -= itemCount
+	
+	return true
