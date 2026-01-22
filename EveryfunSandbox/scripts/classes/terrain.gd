@@ -6,8 +6,6 @@ var voxel_tool
 var isMainTerrain = true
 var deferredActions = []
 
-var _loadedTime = 0
-
 func init(terrainPath):
 	filesystem.makeDirectoryForFile(terrainPath)
 	threaded_update_enabled = true
@@ -24,6 +22,7 @@ func init(terrainPath):
 	self.mesh_block_size = consts.chunk_size
 	self.view_distance = consts.start_loading_area
 	self.lod_distance = consts.start_loading_area
+	self.lod_count = 1
 	self.stream = stream
 	self.cache_generated_blocks = true
 	
@@ -31,10 +30,17 @@ func init(terrainPath):
 	voxel_tool.channel = VoxelBuffer.CHANNEL_TYPE
 
 func _process(delta):
-	_loadedTime += delta
-	if _loadedTime > consts.minimal_area_load_time and (game.view_distance != view_distance or game.lod_distance != lod_distance or game.lod_count != lod_count):
-		view_distance = game.view_distance
-		lod_distance = game.lod_distance
-		lod_count = game.lod_count
+	var _view_distance = game.view_distance
+	var _lod_distance = game.lod_distance
+	var _lod_count = game.lod_count
+	if game.minimal_loading_area:
+		_view_distance = consts.start_loading_area
+		_lod_distance = consts.start_loading_area
+		_lod_count = 1
+	
+	if _view_distance != view_distance or _lod_distance != lod_distance or _lod_count != lod_count:
+		view_distance = _view_distance
+		lod_distance = _lod_distance
+		lod_count = _lod_count
 	
 	terrainUtils.applyDeferredActions(self)

@@ -50,11 +50,7 @@ func isWorldFullLoaded() -> bool:
 	else:
 		currentWorldRuntimeData.erase("fullLoadedTimer")
 	
-	if currentWorldRuntimeData.has("fullLoadedTimer") and currentWorldRuntimeData.fullLoadedTimer >= consts.minimal_area_load_time:
-		game.minimal_loading_area = false
-	
 	if currentWorldRuntimeData.has("fullLoadedTimer") and currentWorldRuntimeData.fullLoadedTimer >= consts.load_time_delay:
-		game.minimal_loading_area = false
 		currentWorldRuntimeData.fullLoaded = true
 		if _loadingGameMessage != null:
 			_loadingGameMessage.task_end()
@@ -459,8 +455,11 @@ func _process(delta):
 	if currentWorldRuntimeData:
 		currentWorldRuntimeData.time += delta
 		currentWorldRuntimeData.autoSaveTimer += delta
+		
 		if currentWorldRuntimeData.has("fullLoadedTimer"):
 			currentWorldRuntimeData.fullLoadedTimer += delta
+			if currentWorldRuntimeData.fullLoadedTimer >= consts.minimal_area_load_time:
+				game.minimal_loading_area = false
 
 		_checkAutosave()
 	

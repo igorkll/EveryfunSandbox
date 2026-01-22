@@ -6,7 +6,7 @@ var min_random_player_name_len = 3
 var max_random_player_name_len = 9
 
 var max_interactive_view_distance = 256
-var minimal_area_load_time = 8
+var minimal_area_load_time = 30
 var start_loading_area = 32
 var minimal_load_time = 8
 var load_time_delay = 1
