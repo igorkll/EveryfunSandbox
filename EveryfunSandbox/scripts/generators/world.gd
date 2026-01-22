@@ -35,10 +35,14 @@ var grassCutPos = 64.0
 var grassCutScale = 0.5
 var grassCutPow = 4
 
+var minSnowHeight = 200
+var maxSnowHeight = 256
+
 
 var caveHoise
 var dirtHoise
 var grassCutHoise
+var snowHoise
 var resourcesNoises = []
 var terrainNoises = []
 
@@ -82,6 +86,9 @@ func _init():
 	
 	grassCutHoise = FastNoise2.new()
 	grassCutHoise.seed = seed + 20
+	
+	snowHoise = FastNoise2.new()
+	snowHoise.seed = seed + 30
 
 	for i in range(resources.size()):
 		var lnoise = FastNoise2.new()
@@ -136,8 +143,13 @@ func _generate_block(buffer: VoxelBuffer, position: Vector3i, lod: int):
 					dirtNoiseValue *= dirtHeight
 					dirtNoiseValue += dirtOffset
 					var dirtPos = terrainHeight - worldPos.y
-					if dirtPos <= dirtNoiseValue  && !grassCut:
+					if dirtPos <= dirtNoiseValue && !grassCut:
 						buffer.set_voxel_v(id_dirt, localPos, VoxelBuffer.CHANNEL_TYPE)
+					elif terrainHeight >= minSnowHeight:
+						var snowPercent = remap(worldPos.y, minSnowHeight, maxSnowHeight, 0, 1)
+						var snowNoiseValue = (snowHoise.get_noise_2d_single(local2dPos) + 1) / 2
+						if snowPercent > snowNoiseValue:
+							buffer.set_voxel_v(id_snow, localPos, VoxelBuffer.CHANNEL_TYPE)
 					else:
 						var finded = false
 						var index = 0
