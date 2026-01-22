@@ -35,9 +35,12 @@ func getItemsCount(inventory, itemName) -> int:
 func itemsExists(inventory, itemName, count):
 	return getItemsCount(inventory, itemName) >= count
 
+func spaceExists(inventory, count):
+	return getFreeSpace(inventory) >= count
+
 
 func nonGameCreateItems(inventory, itemName, itemCount) -> bool:
-	if getFreeSpace(inventory) < itemCount:
+	if not spaceExists(inventory, itemCount):
 		return false
 		
 	if not inventory.has("items"):
@@ -51,11 +54,11 @@ func nonGameCreateItems(inventory, itemName, itemCount) -> bool:
 	return true
 
 func nonGameDestroyItems(inventory, itemName, itemCount) -> bool:
-	if not inventory.has("items"):
-		inventory.items = {}
-	
 	if not itemsExists(inventory, itemName, itemCount):
 		return false
+	
+	if not inventory.has("items"):
+		inventory.items = {}
 		
 	inventory.items[itemName] -= itemCount
 	
