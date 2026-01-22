@@ -10,6 +10,12 @@ var characterScale = 1.25
 func _ready():
 	super._ready()
 	
+	if not storageData.has("inventory"):
+		storageData.inventory = {maxitems = 2000}
+		
+	if not storageData.has("selectedItem"):
+		storageData.selectedItem = "block_grass_r0_c0_v0"
+	
 	var hum := characterUtils.createHuman()
 	initHuman(hum, characterScale)
 	
@@ -97,7 +103,7 @@ func controlHandler():
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
-			terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["speaker"], blockUtils.getTargetRotation(camera.global_transform.basis.z))
+			inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockUtils.getTargetRotation(camera.global_transform.basis.z))
 		
 	if Input.is_action_just_pressed("chat"):
 		modalUI.inputModal("Test")

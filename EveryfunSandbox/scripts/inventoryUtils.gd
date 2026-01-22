@@ -1,16 +1,16 @@
 extends Node
 
-var gameItems = []
-var item2block = {}
+var list_items = []
+var list_item2block = {}
 
 func _prepairGameItems():
-	gameItems = []
-	item2block = {}
+	list_items = []
+	list_item2block = {}
 	
 	for obj in blockUtils.list_id2obj:
 		var name = "block_" + obj.name + "_r" + str(obj.currentRotation) + "_c" + str(obj.colorVariant) + "_v" + str(obj.baseVariant)
-		gameItems.append(name)
-		item2block[name] = obj
+		list_items.append(name)
+		list_item2block[name] = obj
 		
 	
 func getFreeSpace(inventory) -> int:
@@ -86,4 +86,14 @@ func transferItem(fromInventory, toInventory, itemName, itemCount) -> bool:
 	fromInventory.items[itemName] -= itemCount
 	toInventory.items[itemName] += itemCount
 	
+	return true
+
+func placeBlock(terrain, position: Vector3i, inventory, itemName, rotation=0, storageData=null) -> bool:
+	if not itemsExists(inventory, itemName, 1):
+		return false
+		
+	nonGameDestroyItems(inventory, itemName, 1)
+		
+	var obj = list_item2block[itemName]
+	terrainInteractions.placeBlock(terrain, position, obj.id, rotation, obj.baseVariant, obj.colorVariant, storageData)
 	return true
