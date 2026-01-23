@@ -16,6 +16,12 @@ func _prepairGameItems():
 func _isUnique(itemobj):
 	return typeof(itemobj) == TYPE_DICTIONARY
 
+func _uniqueSuffix():
+	var uniqueSuffix = "_unique"
+	for i in range(16):
+		uniqueSuffix += str(randi_range(0, 9))
+	return uniqueSuffix
+
 
 func getItemName(inventory, itemName):
 	if inventory.has("items") && inventory.items.has(itemName):
@@ -72,6 +78,26 @@ func nonGameCreateItems(inventory, itemName, itemCount) -> bool:
 			
 		inventory.items[itemName] += itemCount
 		
+	return true
+	
+func nonGameCreateUniqueItem(inventory, itemName, itemData=null) -> bool:
+	if not spaceExists(inventory, 1):
+		return false
+	
+	var uniqueItemName = itemName + _uniqueSuffix()
+	
+	if inventory.items.has(uniqueItemName):
+		return false
+		
+	if not inventory.has("items"):
+		inventory.items = {}
+	
+	if itemData == null:
+		itemData = {}
+	
+	itemData["_item"] = itemName
+	inventory.items[uniqueItemName] = itemData
+			
 	return true
 
 func nonGameDestroyItems(inventory, itemName, itemCount) -> bool:
