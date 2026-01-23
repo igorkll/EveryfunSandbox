@@ -149,8 +149,6 @@ func controlHandler(delta):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
 			if inventoryUtils.isBlockItem(storageData.inventory, storageData.selectedItem):
 				var blockRotation = blockUtils.getTargetRotation(camera.global_transform.basis.z)
-				# terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["container"], blockRotation)
-				# storageData.selectedItem = "block_grammophone_r2_c0_v0_unique5309745859168615"
 				inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockRotation)
 				updateSelectedItem()
 	
