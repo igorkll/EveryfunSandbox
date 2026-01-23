@@ -117,6 +117,8 @@ func _refreshInventory(invTop, invBottom, inventory, inventory2):
 	var refresh = _refreshInventory.bind(invTop, invBottom, inventory, inventory2)
 	_addAllInventoryItems(invTop, inventory, inventory2, null, refresh)
 	_addAllInventoryItems(invBottom, inventory2, inventory, null, refresh)
+	_setInventoryInfo(invTop, inventory)
+	_setInventoryInfo(invBottom, inventory2)
 
 func inventory2Gui(title, inventory, title2, inventory2):
 	var realModal = inventory2ModalScene.instantiate()
@@ -124,11 +126,7 @@ func inventory2Gui(title, inventory, title2, inventory2):
 	var invBottom = funcs.ui_get_item(realModal, "invBottom")
 	
 	funcs.ui_set_text(invTop, "title", title)
-	_setInventoryInfo(invTop, inventory)
-	
 	funcs.ui_set_text(invBottom, "title", title2)
-	_setInventoryInfo(invBottom, inventory2)
-	
 	_refreshInventory.call(invTop, invBottom, inventory, inventory2)
 	
 	menu.openUI(realModal)
