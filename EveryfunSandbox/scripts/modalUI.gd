@@ -51,6 +51,10 @@ func inputModal(title, callback=null, value=""):
 	menu.openUI(modal)
 	
 func _transfer(inventory, itemName, transferToInventory, count):
+	if count == -1:
+		count = inventoryUtils.getItemsCount(inventory, itemName) / 2
+	elif count == -2:
+		count = inventoryUtils.getItemsCount(inventory, itemName)
 	inventoryUtils.transferItem(inventory, transferToInventory, itemName, count)
 	
 func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onItemSelect=null):
@@ -66,8 +70,12 @@ func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onI
 	
 	if transferToInventory == null:
 		funcs.ui_hide(inventoryItem, "transferButton")
+		funcs.ui_hide(inventoryItem, "transferHalfButton")
+		funcs.ui_hide(inventoryItem, "transferAllButton")
 	else:
 		funcs.ui_button_callback(inventoryItem, "transferButton", _transfer.bind(inventory, itemName, transferToInventory, 1))
+		funcs.ui_button_callback(inventoryItem, "transferHalfButton", _transfer.bind(inventory, itemName, transferToInventory, -1))
+		funcs.ui_button_callback(inventoryItem, "transferAllButton", _transfer.bind(inventory, itemName, transferToInventory, -2))
 		
 	if onItemSelect == null:
 		funcs.ui_hide(inventoryItem, "selectButton")
