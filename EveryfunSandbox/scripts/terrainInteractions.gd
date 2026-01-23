@@ -23,6 +23,25 @@ func destroyBlock(terrain, position: Vector3i, attackLevel=null) -> bool:
 	blockSound(terrain, "sound_destroy", position)
 	terrainUtils.destroyBlock(terrain, position)
 	return true
+
+func _getBlockDestroyTime(terrain, position):
+	return terrainUtils.getBlockInfo(terrain, position).durability * consts.one_durability_destroy_seconds	
+
+func _updateHit(hitInfo):
+	var blockDestroyTime = _getBlockDestroyTime(hitInfo["terrain"], hitInfo["position"])
+	var percent = hitInfo["timer"] / blockDestroyTime
+	
+	if not hitInfo.has("effect"):
+		var box_mesh = BoxMesh.new()
+		box_mesh.size = Vector3(1, 1, 1)
+	
+		var effect = MeshInstance3D.new()
+		effect.mesh = box_mesh
+		effect.position = terrainUtils.getGlobalPositionFromVoxelPosition(hitInfo["terrain"], hitInfo["position"])
+		effect.material_override = StandardMaterial3D.new()
+		hitInfo["effect"] = effect
+	
+	hitInfo["effect"].material_override.albedo_color = Color(1, 1, 1, percent)
 	
 func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
 	if not hitInfo.has("timer") or hitInfo.terrain != terrain or hitInfo.position != position:
@@ -38,5 +57,19 @@ func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
 		blockSound(terrain, "sound_hit", position)
 		hitInfo["hitTimer"] = 0
 	
-	var blockDestroyTime = terrainUtils.getBlockInfo(terrain, position).durability * consts.one_durability_destroy_seconds
+	_updateHit(hitInfo)
+	
+	var blockDestroyTime = _getBlockDestroyTime(terrain, position)
 	return hitInfo["timer"] > blockDestroyTime
+	
+func hitCheck(hitInfo, delta):
+	if hitInfo.has("timer"):
+		hitInfo["timer"] -= delta
+		
+		_updateHit(hitInfo)
+		
+		if hitInfo["timer"] <= 0:
+			hitInfo["effect"].queue_free()
+			hitInfo.clean()
+	
+	
