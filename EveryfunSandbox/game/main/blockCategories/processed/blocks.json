@@ -98,5 +98,17 @@
 			"durability": 1,
 			"weight": 25
 		}
+	},
+	
+	{
+		"name": "wood_boards",
+		"texture": "wood_boards.png",
+		"texture_mode": "UNIFORM",
+		"sound": "wood",
+		"sound_placeDestroy": "wood_placeDestroy",
+		"info": {
+			"durability": 2,
+			"weight": 8
+		}
 	}
 ]
