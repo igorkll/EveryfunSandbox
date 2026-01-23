@@ -54,13 +54,13 @@ func itemToBlock(inventory, itemName):
 
 
 func getFreeSpace(inventory) -> int:
-	return getTotalSpace(inventory) - getUserSpace(inventory)
+	return getTotalSpace(inventory) - getUsedSpace(inventory)
 
-func getUserSpace(inventory) -> int:
+func getUsedSpace(inventory) -> int:
 	var itemCount = 0
 	if inventory.has("items"):
-		for itemobj in inventory.items.values():
-			itemCount += getItemsCount(inventory, itemobj)
+		for itemName in inventory.items.keys():
+			itemCount += getItemsCount(inventory, itemName)
 	return itemCount
 	
 func getTotalSpace(inventory) -> int:

@@ -79,6 +79,7 @@ func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onI
 func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null):
 	var modal = inventoryModalScene.instantiate()
 	funcs.ui_set_text(modal, "title", title)
+	funcs.ui_set_text(modal, "inventorySpace", str(inventoryUtils.getUsedSpace(inventory)) + " / " + str(inventoryUtils.getTotalSpace(inventory)))
 	
 	if inventory.has("items"):
 		var keys = inventory["items"].keys()
