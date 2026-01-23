@@ -5,7 +5,11 @@
 		"texture_mode": "UNIFORM",
 		"material": "materials/stone.png",
 		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 4,
+			"weight": 26
+		}
 	},
 	{
 		"name": "silver",
@@ -13,7 +17,11 @@
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 6,
+			"weight": 26
+		}
 	},
 	{
 		"name": "iron",
@@ -21,7 +29,11 @@
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 7,
+			"weight": 26
+		}
 	},
 	{
 		"name": "gold",
@@ -29,7 +41,11 @@
 		"texture_mode": "UNIFORM",
 		"material": "materials/metal.png",
 		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 2,
+			"weight": 26
+		}
 	},
 	{
 		"name": "lazuli",
@@ -37,7 +53,11 @@
 		"texture_mode": "UNIFORM",
 		"material": "materials/stone.png",
 		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 8,
+			"weight": 26
+		}
 	},
 	{
 		"name": "uranium",
@@ -45,6 +65,10 @@
 		"texture_mode": "UNIFORM",
 		"material": "materials/glow.png",
 		"sound": "stone",
-		"sound_placeDestroy": "stone_placeDestroy"
+		"sound_placeDestroy": "stone_placeDestroy",
+		"info": {
+			"durability": 9,
+			"weight": 26
+		}
 	}
 ]

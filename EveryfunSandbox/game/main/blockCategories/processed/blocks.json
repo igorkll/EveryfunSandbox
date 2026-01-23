@@ -41,7 +41,7 @@
 		"sound": "stone",
 		"sound_placeDestroy": "stone_placeDestroy",
 		"info": {
-			"durability": 5,
+			"durability": 4,
 			"weight": 26
 		}
 	},
