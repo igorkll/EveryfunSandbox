@@ -146,6 +146,8 @@ func controlHandler(delta):
 		terrainInteractions.hitCheck(hitInfo, delta)
 			
 	if Input.is_action_just_pressed("place"):
+		# storageData.inventory.erase("items")
+		# inventoryUtils.nonGameCreateItems(storageData.inventory, "block_container_r0_c0_v0", 10)
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
 			if inventoryUtils.isBlockItem(storageData.inventory, storageData.selectedItem):
 				var blockRotation = blockUtils.getTargetRotation(camera.global_transform.basis.z)
