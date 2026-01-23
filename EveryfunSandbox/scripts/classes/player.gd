@@ -33,7 +33,7 @@ func _physics_process(delta):
 	
 	super._physics_process(delta)
 
-func onItemSelect(itemName):
+func onItemSelect(inventory, itemName):
 	storageData.selectedItem = itemName
 
 func controlHandler():

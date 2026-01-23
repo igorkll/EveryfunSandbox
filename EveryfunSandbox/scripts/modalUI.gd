@@ -55,7 +55,11 @@ func _transfer(inventory, itemName, transferToInventory, count):
 	
 func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onItemSelect=null):
 	var inventoryItem = inventoryItemScene.instantiate()
-	funcs.ui_set_text(inventoryItem, "name", inventoryUtils.getItemUiName(inventory, itemName))
+	var uiName = inventoryUtils.getItemUiName(inventory, itemName)
+	var count = inventoryUtils.getItemsCount(inventory, itemName)
+	if count > 1:
+		uiName += " x" + str(count)
+	funcs.ui_set_text(inventoryItem, "name", uiName)
 	
 	if inventoryUtils.isUniqueItem(inventory, itemName):
 		funcs.paint_panel(inventoryItem, Color(0.746, 0.522, 0.77, 1.0))
@@ -85,7 +89,8 @@ func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null)
 				_addInventoryItem(modal, inventory, itemName, transferToInventory, onItemSelect)
 				
 		for itemName in keys:
-			_addInventoryItem(modal, inventory, itemName, transferToInventory, onItemSelect)
+			if not inventoryUtils.isUniqueItem(inventory, itemName):
+				_addInventoryItem(modal, inventory, itemName, transferToInventory, onItemSelect)
 	
 	menu.openUI(modal)
 
