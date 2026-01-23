@@ -109,7 +109,6 @@ func controlHandler():
 			inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockRotation)
 	
 	if Input.is_action_just_pressed("chat"):
-		modalUI.inputModal("Test")
 		if result:
 			if terrainUtils.isDymanic(result[0]):
 				terrainUtils.makeStatic(result[0], result[1].position)
