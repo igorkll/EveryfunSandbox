@@ -383,6 +383,9 @@ func ui_clean(obj, name):
 	var item = ui_get_item(obj, name)
 	for child in item.get_children():
 		child.queue_free()
+		
+func ui_append(obj, name, obj2):
+	ui_get_item(obj, name).add_child(obj2)
 
 var consonants = ["b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","z"]
 var vowels = ["a","e","i","o","u","y"]

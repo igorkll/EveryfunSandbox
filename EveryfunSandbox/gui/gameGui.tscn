@@ -113,7 +113,7 @@ custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
 texture = ExtResource("3_018vt")
 
-[node name="MarginContainer4" type="MarginContainer" parent="."]
+[node name="selectedItemContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5

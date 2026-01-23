@@ -17,6 +17,7 @@ func _ready():
 		
 	if not storageData.has("selectedItem"):
 		storageData.selectedItem = "block_grass_r0_c0_v0"
+	updateSelectedItem()
 	
 	var hum := characterUtils.createHuman()
 	initHuman(hum, characterScale)
@@ -41,8 +42,26 @@ func _physics_process(delta):
 	
 	super._physics_process(delta)
 
+func updateSelectedItem():
+	funcs.ui_clean(game.mainNode, "selectedItemContainer")
+	
+	
+	var inventoryItem = modalUI.inventoryItemScene.instantiate()
+	funcs.ui_set_text(inventoryItem, "name", inventoryUtils.getItemUiName(storageData.inventory, storageData.selectedItem))
+	
+	if inventoryUtils.isUniqueItem(storageData.inventory, storageData.selectedItem):
+		funcs.paint_panel(inventoryItem, consts.uniqueItemColor)
+		
+	funcs.ui_hide(inventoryItem, "transferButton")
+	funcs.ui_hide(inventoryItem, "transferHalfButton")
+	funcs.ui_hide(inventoryItem, "transferAllButton")
+	funcs.ui_hide(inventoryItem, "selectButton")
+	
+	funcs.ui_append(game.mainNode, "selectedItemContainer", inventoryItem)
+
 func onItemSelect(inventory, itemName):
 	storageData.selectedItem = itemName
+	updateSelectedItem()
 
 func controlHandler():
 	# ---------------------------------- fly

@@ -37,6 +37,8 @@ var default_volume_db = 0
 
 var chance_multiplier_to_destroy_a_block_of_greater_strength = 0.8
 
+var uniqueItemColor = Color(0.746, 0.522, 0.77, 1.0)
+
 var extfilter_audio = ["*.mp3, *.wav, *.ogg", "Audio"]
 
 var palette = [

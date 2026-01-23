@@ -69,7 +69,7 @@ func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onI
 	funcs.ui_set_text(inventoryItem, "name", uiName)
 	
 	if inventoryUtils.isUniqueItem(inventory, itemName):
-		funcs.paint_panel(inventoryItem, Color(0.746, 0.522, 0.77, 1.0))
+		funcs.paint_panel(inventoryItem, consts.uniqueItemColor)
 	
 	if transferToInventory == null:
 		funcs.ui_hide(inventoryItem, "transferButton")
