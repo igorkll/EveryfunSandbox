@@ -99,14 +99,13 @@ func controlHandler():
 	
 	if Input.is_action_just_pressed("attack"):
 		if result:
-			print(storageData.inventory)
 			inventoryUtils.destroyBlock(result[0], result[1].position, storageData.inventory)
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
 			var blockRotation = blockUtils.getTargetRotation(camera.global_transform.basis.z)
 			# terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["grammophone"], blockRotation)
-			storageData.selectedItem = "block_grammophone_r1_c0_v0_unique0697087397814584"
+			storageData.selectedItem = "block_grammophone_r2_c0_v0_unique5309745859168615"
 			inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockRotation)
 	
 	if Input.is_action_just_pressed("chat"):
