@@ -7,6 +7,8 @@ var orbital_camera = false
 
 var characterScale = 1.25
 
+var inventoryModal
+
 func _ready():
 	super._ready()
 	
@@ -26,6 +28,12 @@ func _ready():
 	cameraContainer.add_child(camera)
 
 func _physics_process(delta):
+	if Input.is_action_just_pressed("inventory"):
+		if is_instance_valid(inventoryModal) && inventoryModal.visible:
+			modalUI.close()
+		else:
+			inventoryModal = modalUI.inventoryGui("inventory", storageData.inventory, null, onItemSelect)
+			
 	if not control_lock:
 		controlHandler()
 	else:
@@ -108,7 +116,7 @@ func controlHandler():
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
 			var blockRotation = blockUtils.getTargetRotation(camera.global_transform.basis.z)
 			# terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["grammophone"], blockRotation)
-			storageData.selectedItem = "block_grammophone_r2_c0_v0_unique5309745859168615"
+			# storageData.selectedItem = "block_grammophone_r2_c0_v0_unique5309745859168615"
 			inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockRotation)
 	
 	if Input.is_action_just_pressed("chat"):
@@ -117,9 +125,6 @@ func controlHandler():
 				terrainUtils.makeStatic(result[0], result[1].position)
 			else:
 				terrainUtils.makeDynamic(result[0], result[1].position)
-				
-	if Input.is_action_just_pressed("inventory"):
-		modalUI.inventoryGui("inventory", storageData.inventory, null, onItemSelect)
 	
 	if result && terrainUtils.canUseBlock(result[0], result[1].position):
 		game.setCrosspiece("use")
