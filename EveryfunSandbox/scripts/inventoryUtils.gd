@@ -37,6 +37,12 @@ func getItemName(inventory, itemName):
 		if _isUnique(itemobj) && itemobj.has("_sourceItem"):
 			return itemobj["_sourceItem"]
 	return itemName
+	
+func getItemUiName(inventory, itemName):
+	var sourceItemName = getItemName(inventory, itemName)
+	if list_item2uiname.has(sourceItemName):
+		return list_item2uiname[sourceItemName]
+	return sourceItemName
 
 func itemToBlock(inventory, itemName):
 	var sourceItemName = getItemName(inventory, itemName)
