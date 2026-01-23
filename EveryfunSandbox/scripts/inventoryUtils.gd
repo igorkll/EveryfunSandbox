@@ -17,12 +17,15 @@ func _isUnique(itemobj):
 	return typeof(itemobj) == TYPE_DICTIONARY
 
 
-func itemToBlock(inventory, itemName):
+func getItemName(inventory, itemName):
 	if inventory.has("items") && inventory.items.has(itemName):
 		var itemobj = inventory.items[itemName]
-		if _isUnique(itemobj) && itemobj.has("_toBlock"):
-			return itemobj["_toBlock"]
-	return list_item2block[itemName]
+		if _isUnique(itemobj) && itemobj.has("_item"):
+			return itemobj["_item"]
+	return itemName
+
+func itemToBlock(inventory, itemName):
+	return list_item2block[getItemName(inventory, itemName)]
 
 	
 func getFreeSpace(inventory) -> int:
