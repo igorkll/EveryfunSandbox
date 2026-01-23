@@ -48,6 +48,11 @@ func getItemUiName(inventory, itemName):
 	if list_item2uiname.has(sourceItemName):
 		return list_item2uiname[sourceItemName]
 	return sourceItemName
+	
+func getItemUiIcon(inventory, itemName):
+	if isBlockItem(inventory, itemName):
+		return blockUtils.getBlockIcon(itemToBlock(inventory, itemName).id)
+	return null
 
 func itemToBlock(inventory, itemName):
 	var sourceItemName = getItemName(inventory, itemName)

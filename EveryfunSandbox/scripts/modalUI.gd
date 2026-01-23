@@ -68,6 +68,10 @@ func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onI
 		uiName += " x" + str(count)
 	funcs.ui_set_text(inventoryItem, "name", uiName)
 	
+	var icon = inventoryUtils.getItemUiIcon(inventory, itemName)
+	if icon:
+		funcs.ui_get_item(inventoryItem, "icon").texture_normal = icon
+	
 	if inventoryUtils.isUniqueItem(inventory, itemName):
 		funcs.paint_panel(inventoryItem, consts.uniqueItemColor)
 	

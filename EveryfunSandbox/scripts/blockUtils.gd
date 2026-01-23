@@ -7,6 +7,7 @@ var blockLibrary
 var _blockMaterials = []
 var _materialCache = {}
 var _blockColliders = {}
+var _blockIconsCache = []
 
 func getTargetRotation(globalCameraBasisZ: Vector3) -> int:
 	var dir = -globalCameraBasisZ
@@ -69,6 +70,15 @@ func getBlockCollider(blockId: int):
 	if blockId > 0:
 		return _blockColliders.get(blockId, _defaultBlockCollider)
 	return null
+	
+func getBlockIcon(blockId: int):
+	if funcs.indexExistsInArray(_blockIconsCache, blockId):
+		return _blockIconsCache[blockId]
+	
+	var obj = list_id2obj[blockId]
+	
+	funcs.arraySet(_blockIconsCache, blockId, obj.texture)
+	return _blockIconsCache[blockId]
 
 # ------------------------------------------------- backend
 

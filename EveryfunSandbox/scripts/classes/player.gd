@@ -58,6 +58,10 @@ func updateSelectedItem():
 		elif count <= 0:
 			name += " (nothing)"
 		funcs.ui_set_text(inventoryItem, "name", name)
+		
+	var icon = inventoryUtils.getItemUiIcon(storageData.inventory, storageData.selectedItem)
+	if icon:
+		funcs.ui_get_item(inventoryItem, "icon").texture_normal = icon
 	
 	if inventoryUtils.isUniqueItem(storageData.inventory, storageData.selectedItem):
 		funcs.paint_panel(inventoryItem, consts.uniqueItemColor)
