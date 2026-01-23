@@ -91,6 +91,8 @@ func _addAllInventoryItems(modal, inventory, transferToInventory=null, onItemSel
 	if inventory.has("items"):
 		var keys = inventory["items"].keys()
 		keys.sort()
+		
+		funcs.ui_clean(modal, "items")
 
 		for itemName in keys:
 			if inventoryUtils.isUniqueItem(inventory, itemName):
@@ -110,16 +112,16 @@ func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null)
 	_addAllInventoryItems(modal, inventory, transferToInventory, onItemSelect)
 	menu.openUI(modal)
 	return modal
-	
+
+func _refreshInventory(invTop, invBottom, inventory, inventory2):
+	var refresh = _refreshInventory.bind(invTop, invBottom, inventory, inventory2)
+	_addAllInventoryItems(invTop, inventory, inventory2, null, refresh)
+	_addAllInventoryItems(invBottom, inventory2, inventory, null, refresh)
+
 func inventory2Gui(title, inventory, title2, inventory2):
 	var realModal = inventory2ModalScene.instantiate()
 	var invTop = funcs.ui_get_item(realModal, "invTop")
 	var invBottom = funcs.ui_get_item(realModal, "invBottom")
-	
-	var refreshList
-	refreshList = func ():
-		_addAllInventoryItems(invTop, inventory, inventory2, null, refreshList)
-		_addAllInventoryItems(invBottom, inventory2, inventory, null, refreshList)
 	
 	funcs.ui_set_text(invTop, "title", title)
 	_setInventoryInfo(invTop, inventory)
@@ -127,7 +129,7 @@ func inventory2Gui(title, inventory, title2, inventory2):
 	funcs.ui_set_text(invBottom, "title", title2)
 	_setInventoryInfo(invBottom, inventory2)
 	
-	refreshList.call()
+	_refreshInventory.call(invTop, invBottom, inventory, inventory2)
 	
 	menu.openUI(realModal)
 	return realModal

@@ -141,6 +141,9 @@ func nonGameDestroyItems(inventory, itemName, itemCount) -> bool:
 	return true
 
 func transferItem(fromInventory, toInventory, itemName, itemCount) -> bool:
+	if itemCount <= 0:
+		return false
+	
 	if not itemsExists(fromInventory, itemName, itemCount):
 		return false
 		
