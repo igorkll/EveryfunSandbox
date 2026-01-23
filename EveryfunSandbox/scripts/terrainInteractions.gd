@@ -33,12 +33,13 @@ func _updateHit(hitInfo):
 	
 	if not hitInfo.has("effect"):
 		var box_mesh = BoxMesh.new()
-		box_mesh.size = Vector3(1, 1, 1)
+		box_mesh.size = Vector3(1.005, 1.005, 1.005)
 	
 		var effect = MeshInstance3D.new()
 		effect.mesh = box_mesh
 		effect.position = terrainUtils.getGlobalPositionFromVoxelPosition(hitInfo["terrain"], hitInfo["position"])
 		effect.material_override = StandardMaterial3D.new()
+		game.objects.add_child(effect)
 		hitInfo["effect"] = effect
 	
 	hitInfo["effect"].material_override.albedo_color = Color(1, 1, 1, percent)
@@ -60,7 +61,11 @@ func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
 	_updateHit(hitInfo)
 	
 	var blockDestroyTime = _getBlockDestroyTime(terrain, position)
-	return hitInfo["timer"] > blockDestroyTime
+	var destroyFlag = hitInfo["timer"] > blockDestroyTime
+	if destroyFlag:
+		hitInfo["effect"].queue_free()
+		hitInfo.clear()
+	return destroyFlag
 	
 func hitCheck(hitInfo, delta):
 	if hitInfo.has("timer"):
@@ -70,6 +75,6 @@ func hitCheck(hitInfo, delta):
 		
 		if hitInfo["timer"] <= 0:
 			hitInfo["effect"].queue_free()
-			hitInfo.clean()
+			hitInfo.clear()
 	
 	
