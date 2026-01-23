@@ -73,7 +73,8 @@ func getBlockCollider(blockId: int):
 	
 func getBlockIcon(blockId: int):
 	if funcs.indexExistsInArray(_blockIconsCache, blockId):
-		return _blockIconsCache[blockId]
+		if _blockIconsCache[blockId]:
+			return _blockIconsCache[blockId]
 	
 	var obj = list_id2obj[blockId]
 	
