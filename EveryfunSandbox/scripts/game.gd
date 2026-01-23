@@ -464,8 +464,8 @@ func isMusicSuppressedAtPosition(pos: Vector3) -> bool:
 
 func reloadGameContent():
 	blockUtils.unloadBlockList()
-	_addFolder("res://game/main")
-	_addFolder("res://game/test")
+	_addFolder("res://game/main", true, false)
+	_addFolder("res://game/test", true, false)
 	blockUtils.updateBlockList()
 	characterUtils.updateCharacterList()
 	inventoryUtils._prepairGameItems()
@@ -490,6 +490,9 @@ func _ready():
 	
 	loadSettings()
 	saveSettings() # update session counter
+	
+	_addFolder("res://game/main", false, true)
+	_addFolder("res://game/test", false, true)
 	
 	_initMusic()
 	_initAmbient()
@@ -560,53 +563,55 @@ func _initAmbient():
 	ambientPlayer.play()
 	ambientPlayer.connect("finished", _ambientEnd.bind(ambientPlayer))
 
-func _addFolder(path):
-	var list = filesystem.checkExistsAndReadJson(path.path_join("/misc.json"))
-	if list:
-		if list.has("the_first_music_in_the_first_played_sessions"):
-			for i in range(list["the_first_music_in_the_first_played_sessions"].size()):
-				var musicPath = list["the_first_music_in_the_first_played_sessions"][i]
-				list["the_first_music_in_the_first_played_sessions"][i] = path.path_join(musicPath)
-		miscData = funcs.merge_dicts(miscData, list)
-	
-	list = filesystem.checkExistsAndReadJson(path.path_join("/sounds.json"))
-	if list:
-		processForks(list)
-		for sound in list:
-			var audioStreamRandomizer = AudioStreamRandomizer.new()
-			
-			for listItem in sound.list:
-				var weight = 1.0
-				if listItem.has("weight"):
-					weight = listItem.weight
-				audioStreamRandomizer.add_stream(-1, loadResource(path.path_join(listItem.path)), weight)
-			
-			if sound.has("random_pitch"):
-				audioStreamRandomizer.random_pitch = sound.random_pitch
+func _addFolder(path, loadBlocks, loadOther):
+	if loadOther:
+		var list = filesystem.checkExistsAndReadJson(path.path_join("/misc.json"))
+		if list:
+			if list.has("the_first_music_in_the_first_played_sessions"):
+				for i in range(list["the_first_music_in_the_first_played_sessions"].size()):
+					var musicPath = list["the_first_music_in_the_first_played_sessions"][i]
+					list["the_first_music_in_the_first_played_sessions"][i] = path.path_join(musicPath)
+			miscData = funcs.merge_dicts(miscData, list)
+		
+		list = filesystem.checkExistsAndReadJson(path.path_join("/sounds.json"))
+		if list:
+			processForks(list)
+			for sound in list:
+				var audioStreamRandomizer = AudioStreamRandomizer.new()
 				
-			if sound.has("random_volume_offset_db"):
-				audioStreamRandomizer.random_volume_offset_db = sound.random_volume_offset_db
+				for listItem in sound.list:
+					var weight = 1.0
+					if listItem.has("weight"):
+						weight = listItem.weight
+					audioStreamRandomizer.add_stream(-1, loadResource(path.path_join(listItem.path)), weight)
 				
-			if sound.has("playback_mode"):
-				audioStreamRandomizer.playback_mode = sound.playback_mode
-			
-			sound.stream = audioStreamRandomizer
-			
-			soundList[sound.name] = sound
-			
-	list = filesystem.checkExistsAndReadJson(path.path_join("/music.json"))
-	if list:
-		for music in list:
-			musicList.append(loadResource(path.path_join(music)))
-			
-	list = filesystem.checkExistsAndReadJson(path.path_join("/ambient.json"))
-	if list:
-		for ambient in list:
-			ambientList.append(loadResource(path.path_join(ambient)))
+				if sound.has("random_pitch"):
+					audioStreamRandomizer.random_pitch = sound.random_pitch
+					
+				if sound.has("random_volume_offset_db"):
+					audioStreamRandomizer.random_volume_offset_db = sound.random_volume_offset_db
+					
+				if sound.has("playback_mode"):
+					audioStreamRandomizer.playback_mode = sound.playback_mode
+				
+				sound.stream = audioStreamRandomizer
+				
+				soundList[sound.name] = sound
+				
+		list = filesystem.checkExistsAndReadJson(path.path_join("/music.json"))
+		if list:
+			for music in list:
+				musicList.append(loadResource(path.path_join(music)))
+				
+		list = filesystem.checkExistsAndReadJson(path.path_join("/ambient.json"))
+		if list:
+			for ambient in list:
+				ambientList.append(loadResource(path.path_join(ambient)))
 
-	blockUtils.regBlockList(path.path_join("/blocks.json"), path)
-	
-	list = filesystem.checkExistsAndReadJson(path.path_join("/blockLists.json"))
-	if list:
-		for blockList in list:
-			blockUtils.regBlockList(path.path_join(blockList), path)
+	if loadBlocks:
+		blockUtils.regBlockList(path.path_join("/blocks.json"), path)
+		
+		var list = filesystem.checkExistsAndReadJson(path.path_join("/blockLists.json"))
+		if list:
+			for blockList in list:
+				blockUtils.regBlockList(path.path_join(blockList), path)
