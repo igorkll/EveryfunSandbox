@@ -61,14 +61,16 @@ func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onI
 		funcs.paint_panel(modal, Color(0.731, 0.271, 0.72, 1.0))
 	
 	if transferToInventory == null:
-		funcs.ui_hide(modal, "transferButton")
+		funcs.ui_hide(inventoryItem, "transferButton")
 	else:
-		funcs.ui_button_callback(modal, "transferButton", _transfer.bind(inventory, itemName, transferToInventory, 1))
+		funcs.ui_button_callback(inventoryItem, "transferButton", _transfer.bind(inventory, itemName, transferToInventory, 1))
 		
 	if onItemSelect == null:
-		funcs.ui_hide(modal, "selectButton")
+		funcs.ui_hide(inventoryItem, "selectButton")
 	else:
-		funcs.ui_button_callback(modal, "selectButton", onItemSelect.bind(inventory, itemName))
+		funcs.ui_button_callback(inventoryItem, "selectButton", onItemSelect.bind(inventory, itemName))
+		
+	funcs.ui_get_item(modal, "items").add_child(inventoryItem)
 
 func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null):
 	var modal = inventoryModalScene.instantiate()
