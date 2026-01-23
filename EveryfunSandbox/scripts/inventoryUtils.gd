@@ -161,7 +161,9 @@ func transferItem(fromInventory, toInventory, itemName, itemCount) -> bool:
 		fromInventory.items[itemName] -= itemCount
 		if fromInventory.items[itemName] <= 0:
 			fromInventory.items.erase(itemName)
-		
+			
+		if not toInventory.items.has(itemName):
+			toInventory.items[itemName] = 0
 		toInventory.items[itemName] += itemCount
 	
 	return true
