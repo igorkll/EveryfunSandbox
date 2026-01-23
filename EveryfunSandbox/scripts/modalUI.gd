@@ -5,6 +5,8 @@ var messageModalScene = preload("res://gui/modalUI/message.tscn")
 var acceptModalScene = preload("res://gui/modalUI/accept.tscn")
 var inventoryModalScene = preload("res://gui/modalUI/inventory.tscn")
 
+var inventoryItemScene = preload("res://gui/inventoryItem/inventoryItem.tscn")
+
 func messageModal(title, text, callback=null):
 	var modal = messageModalScene.instantiate()
 	funcs.ui_set_text(modal, "title", title)
@@ -48,9 +50,20 @@ func inputModal(title, callback=null, value=""):
 	)
 	menu.openUI(modal)
 	
-func inventoryGui(title, callback, inventory, transferToInventory):
+func _addInventoryItem(modal):
+	var inventoryItem = inventoryItemScene.instantiate()
+	pass
+
+func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null):
 	var modal = inventoryModalScene.instantiate()
 	funcs.ui_set_text(modal, "title", title)
+	
+	if inventory.has("items"):
+		var keys = inventory["items"].keys()
+		keys.sort()
+		for itemName in keys:
+			if inventoryUtils.isUniqueItem(inventory, itemName):
+				_addInventoryItem(modal)
 	
 
 func textModal(text="test"):
