@@ -91,11 +91,12 @@ func nonGameCreateItems(inventory, itemName, itemCount) -> bool:
 		
 	return true
 	
-func nonGameCreateUniqueItem(inventory, itemName, itemData=null) -> bool:
+func nonGameCreateUniqueItem(inventory, itemName, itemData=null, uniqueItemName=null) -> bool:
 	if not spaceExists(inventory, 1):
 		return false
 	
-	var uniqueItemName = itemName + _uniqueSuffix()
+	if uniqueItemName == null:
+		uniqueItemName = itemName + _uniqueSuffix()
 	
 	if inventory.items.has(uniqueItemName):
 		return false
@@ -163,6 +164,7 @@ func placeBlock(terrain, position: Vector3i, inventory, itemName, rotation=0, st
 	var blockobj = itemToBlock(inventory, itemName)
 	if storageData == null && isUniqueItem(inventory, itemName):
 		storageData = getUniqueItemData(inventory, itemName)
+		storageData["_uniqueItem"] = itemName
 		storageData.erase("_sourceItem")
 	
 	nonGameDestroyItems(inventory, itemName, 1)
@@ -178,7 +180,10 @@ func destroyBlock(terrain, position: Vector3i, inventory, attackLevel=null) -> b
 	var destroyed = terrainInteractions.destroyBlock(terrain, position, attackLevel)
 	if destroyed:
 		if blockData.has("_uniqueItem"):
-			nonGameCreateUniqueItem(inventory, itemName, blockData)
+			if typeof(blockData["_uniqueItem"]) == TYPE_STRING:
+				nonGameCreateUniqueItem(inventory, itemName, blockData, blockData["_uniqueItem"])
+			else:
+				nonGameCreateUniqueItem(inventory, itemName, blockData)
 		else:
 			nonGameCreateItems(inventory, itemName, 1)
 	return destroyed

@@ -3,6 +3,7 @@ extends baseblock
 var sinDestortion = 0.5
 
 var defaultStorageData = {
+	_uniqueItem = true,
 	rpm = 78.26
 }
 
