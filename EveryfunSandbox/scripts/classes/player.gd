@@ -45,9 +45,18 @@ func _physics_process(delta):
 func updateSelectedItem():
 	funcs.ui_clean(game.mainNode, "selectedItemContainer")
 	
-	
 	var inventoryItem = modalUI.inventoryItemScene.instantiate()
-	funcs.ui_set_text(inventoryItem, "name", inventoryUtils.getItemUiName(storageData.inventory, storageData.selectedItem))
+	
+	if inventoryUtils.isItemUnknown(storageData.inventory, storageData.selectedItem):
+		funcs.ui_set_text(inventoryItem, "name", "unknown item")
+	else:
+		var name = inventoryUtils.getItemUiName(storageData.inventory, storageData.selectedItem)
+		var count = inventoryUtils.getItemsCount(storageData.inventory, storageData.selectedItem)
+		if count > 1:
+			name += " x" + str(count)
+		elif count <= 0:
+			name += " (nothing)"
+		funcs.ui_set_text(inventoryItem, "name", name)
 	
 	if inventoryUtils.isUniqueItem(storageData.inventory, storageData.selectedItem):
 		funcs.paint_panel(inventoryItem, consts.uniqueItemColor)
@@ -130,6 +139,7 @@ func controlHandler():
 	if Input.is_action_just_pressed("attack"):
 		if result:
 			inventoryUtils.destroyBlock(result[0], result[1].position, storageData.inventory)
+			updateSelectedItem()
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
@@ -138,6 +148,7 @@ func controlHandler():
 				# terrainInteractions.placeBlock(result[0], result[1].previous_position, blockUtils.list_name2id["container"], blockRotation)
 				# storageData.selectedItem = "block_grammophone_r2_c0_v0_unique5309745859168615"
 				inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockRotation)
+				updateSelectedItem()
 	
 	if Input.is_action_just_pressed("chat"):
 		if result:

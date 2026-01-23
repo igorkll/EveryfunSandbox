@@ -30,6 +30,11 @@ func _uniqueSuffix():
 
 
 
+func isItemUnknown(inventory, itemName):
+	var sourceItemName = getItemName(inventory, itemName)
+	if list_item2uiname.has(sourceItemName):
+		return false
+	return true
 
 func getItemName(inventory, itemName):
 	if inventory.has("items") && inventory.items.has(itemName):
