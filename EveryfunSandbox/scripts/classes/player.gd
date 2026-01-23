@@ -8,6 +8,7 @@ var orbital_camera = false
 var characterScale = 1.25
 
 var inventoryModal
+var hitInfo = {}
 
 func _ready():
 	super._ready()
@@ -36,7 +37,7 @@ func _physics_process(delta):
 			inventoryModal = modalUI.inventoryGui("inventory", storageData.inventory, null, onItemSelect)
 			
 	if not control_lock:
-		controlHandler()
+		controlHandler(delta)
 	else:
 		game.setCrosspiece("normal")
 	
@@ -72,7 +73,7 @@ func onItemSelect(inventory, itemName):
 	storageData.selectedItem = itemName
 	updateSelectedItem()
 
-func controlHandler():
+func controlHandler(delta):
 	# ---------------------------------- fly
 	
 	if saves.currentWorldData.debug.allowFly:
@@ -136,10 +137,11 @@ func controlHandler():
 	
 	var result = raycast(camera)
 	
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_pressed("attack"):
 		if result:
-			inventoryUtils.destroyBlock(result[0], result[1].position, storageData.inventory)
-			updateSelectedItem()
+			if terrainInteractions.hitBlock(result[0], result[1].position, hitInfo, delta):
+				inventoryUtils.destroyBlock(result[0], result[1].position, storageData.inventory)
+				updateSelectedItem()
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):

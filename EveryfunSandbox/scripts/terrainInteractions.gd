@@ -23,3 +23,16 @@ func destroyBlock(terrain, position: Vector3i, attackLevel=null) -> bool:
 	blockSound(terrain, "sound_destroy", position)
 	terrainUtils.destroyBlock(terrain, position)
 	return true
+	
+func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
+	blockSound(terrain, "sound_hit", position)
+	
+	if not hitInfo.has("timer") or hitInfo.terrain != terrain or hitInfo.position != position:
+		hitInfo["timer"] = 0
+		hitInfo["terrain"] = terrain
+		hitInfo["position"] = position
+	
+	hitInfo["timer"] += delta
+	
+	var blockDestroyTime = terrainUtils.getBlockInfo(terrain, position).durability * consts.one_durability_destroy_seconds
+	return hitInfo["timer"] > blockDestroyTime

@@ -200,6 +200,12 @@ func getBlockObj(terrain, position: Vector3i):
 func getBlockId(terrain, position: Vector3i):
 	terrain = getTerrain(terrain)
 	return terrain.voxel_tool.get_voxel(position)
+		
+func getBlockInfo(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
+	var blockObj = getBlockObj(terrain, position)
+	if blockObj:
+		return blockObj.info
 	
 func setBlockId(terrain, position: Vector3i, blockId: int):
 	terrain = getTerrain(terrain)
