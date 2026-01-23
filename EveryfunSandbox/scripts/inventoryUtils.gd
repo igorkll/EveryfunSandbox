@@ -2,15 +2,18 @@ extends Node
 
 var list_items = []
 var list_item2block = {}
+var list_blockid2item = {}
 
 func _prepairGameItems():
 	list_items = []
 	list_item2block = {}
+	list_blockid2item = {}
 	
 	for obj in blockUtils.list_id2obj:
 		var name = "block_" + obj.name + "_r" + str(obj.currentRotation) + "_c" + str(obj.colorVariant) + "_v" + str(obj.baseVariant)
 		list_items.append(name)
 		list_item2block[name] = obj
+		list_blockid2item[obj.id] = name
 
 # уникальные предметы могут содержать какие то данные прямо внутри себя (это таблица)
 func _isUnique(itemobj):
@@ -23,17 +26,21 @@ func _uniqueSuffix():
 	return uniqueSuffix
 
 
+
+
 func getItemName(inventory, itemName):
 	if inventory.has("items") && inventory.items.has(itemName):
 		var itemobj = inventory.items[itemName]
-		if _isUnique(itemobj) && itemobj.has("_item"):
-			return itemobj["_item"]
+		if _isUnique(itemobj) && itemobj.has("_sourceItem"):
+			return itemobj["_sourceItem"]
 	return itemName
 
 func itemToBlock(inventory, itemName):
 	return list_item2block[getItemName(inventory, itemName)]
 
-	
+
+
+
 func getFreeSpace(inventory) -> int:
 	return getTotalSpace(inventory) - getUserSpace(inventory)
 
@@ -46,6 +53,8 @@ func getUserSpace(inventory) -> int:
 	
 func getTotalSpace(inventory) -> int:
 	return inventory.maxitems
+
+
 
 
 func getItemsCount(inventory, itemName) -> int:
@@ -61,6 +70,8 @@ func itemsExists(inventory, itemName, count):
 
 func spaceExists(inventory, count):
 	return getFreeSpace(inventory) >= count
+
+
 
 
 func nonGameCreateItems(inventory, itemName, itemCount) -> bool:
@@ -95,7 +106,7 @@ func nonGameCreateUniqueItem(inventory, itemName, itemData=null) -> bool:
 	if itemData == null:
 		itemData = {}
 	
-	itemData["_item"] = itemName
+	itemData["_sourceItem"] = itemName
 	inventory.items[uniqueItemName] = itemData
 			
 	return true
@@ -142,6 +153,9 @@ func transferItem(fromInventory, toInventory, itemName, itemCount) -> bool:
 	
 	return true
 
+
+
+
 func placeBlock(terrain, position: Vector3i, inventory, itemName, rotation=0, storageData=null) -> bool:
 	if not itemsExists(inventory, itemName, 1):
 		return false
@@ -149,10 +163,27 @@ func placeBlock(terrain, position: Vector3i, inventory, itemName, rotation=0, st
 	var blockobj = itemToBlock(inventory, itemName)
 	if storageData == null && isUniqueItem(inventory, itemName):
 		storageData = getUniqueItemData(inventory, itemName)
+		storageData.erase("_sourceItem")
 	
 	nonGameDestroyItems(inventory, itemName, 1)
 	terrainInteractions.placeBlock(terrain, position, blockobj.id, rotation, blockobj.baseVariant, blockobj.colorVariant, storageData)
 	return true
+
+# автоматически создает уникальный предмет если то нужно блоку
+func destroyBlock(terrain, position: Vector3i, inventory, attackLevel=null) -> bool:
+	var blockId = terrainUtils.getBlockId(terrain, position)
+	var blockData = terrainUtils.getBlockStorageData(terrain, position)
+	var itemName = list_blockid2item[blockId]
+	
+	var destroyed = terrainInteractions.destroyBlock(terrain, position, attackLevel)
+	if destroyed:
+		if blockData.has("_uniqueItem"):
+			nonGameCreateUniqueItem(inventory, itemName, blockData)
+		else:
+			nonGameCreateItems(inventory, itemName, 1)
+	return destroyed
+
+
 
 
 func isUniqueItem(inventory, itemName):

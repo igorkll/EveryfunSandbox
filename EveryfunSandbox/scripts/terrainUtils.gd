@@ -568,6 +568,15 @@ func teleportVoxel(terrain, position: Vector3i, newTerrain, newPosition: Vector3
 		attachBlockChild(newTerrain, newPosition, child)
 	
 	loadBlock(newTerrain, newPosition, voxelId, null, false)
+	
+func getBlockStorageData(terrain, position: Vector3i):
+	terrain = getTerrain(terrain)
+	
+	var voxelId = getBlockId(terrain, position)
+	var _blockData = _getLoadBlockData(terrain, position, voxelId, null)
+	var voxelStorageData = _blockData[1]
+	
+	return voxelStorageData
 
 func convertTerrainPositions(terrain, position: Vector3i, newTerrain):
 	terrain = getTerrain(terrain)

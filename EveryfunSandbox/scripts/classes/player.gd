@@ -99,7 +99,7 @@ func controlHandler():
 	
 	if Input.is_action_just_pressed("attack"):
 		if result:
-			terrainInteractions.destroyBlock(result[0], result[1].position)
+			inventoryUtils.destroyBlock(result[0], result[1].position, storageData.inventory)
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
