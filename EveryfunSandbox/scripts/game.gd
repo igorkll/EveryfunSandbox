@@ -462,6 +462,14 @@ func isMusicSuppressedAtPosition(pos: Vector3) -> bool:
 	
 	return false
 
+func reloadGameContent():
+	blockUtils.unloadBlockList()
+	_addFolder("res://game/main")
+	_addFolder("res://game/test")
+	blockUtils.updateBlockList()
+	characterUtils.updateCharacterList()
+	inventoryUtils._prepairGameItems()
+
 # ------------------------------------------------- backend
 
 func _ready():
@@ -482,8 +490,6 @@ func _ready():
 	
 	loadSettings()
 	saveSettings() # update session counter
-	
-	_reloadGameContent()
 	
 	_initMusic()
 	_initAmbient()
@@ -513,14 +519,6 @@ func _process(delta):
 	
 func _on_close_requested():
 	exit()
-	
-func _reloadGameContent():
-	blockUtils.unloadBlockList()
-	_addFolder("res://game/main")
-	_addFolder("res://game/test")
-	blockUtils.updateBlockList()
-	characterUtils.updateCharacterList()
-	inventoryUtils._prepairGameItems()
 
 func _initGui():
 	setScale(settings.gui.scale)

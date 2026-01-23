@@ -2,6 +2,7 @@ extends Node
 
 var list_id2obj = []
 var list_name2id = {}
+var maxBlockId = -1
 var blockLibrary
 
 var _blockMaterials = []
@@ -317,6 +318,17 @@ func _prepairItem(item, path, basepath):
 	else:
 		info.center_of_mass = funcs.vecFromArr(info.center_of_mass)
 
+func getRemappedBlockId(item):
+	var namestr = item.name + "_r" + str(item.currentRotation) + "_c" + str(item.colorVariant) + "_v" + str(item.baseVariant)
+	if not saves.currentWorldData.remapBlocks.has(namestr):
+		saves.currentWorldData.remapBlocks[namestr] = saves.currentWorldData.remapCounter
+		saves.currentWorldData.remapCounter += 1
+
+	var id = saves.currentWorldData.remapBlocks[namestr]
+	if id > maxBlockId:
+		maxBlockId = id	
+	return id
+
 func regBlockList(jsonPath, basepath):
 	var path = jsonPath.get_base_dir()
 	
@@ -327,16 +339,15 @@ func regBlockList(jsonPath, basepath):
 		var blockVariants = []
 		var rotatedBlocks = []
 		for item in list:
-			item.id = list_id2obj.size()
-			item.baseId = item.id
-			if item.has("name"):
-				list_name2id[item.name] = item.id
-			
 			item.rotationsCount = 1
 			item.currentRotation = 0
 			item.rotated = [item]
 			
 			_checkVariants(blockVariants, item)
+			
+			item.id = getRemappedBlockId(item)
+			item.baseId = item.id
+			list_name2id[item.name] = item.id
 			
 			if item.has("rotationMode"):
 				var rotationMode = _rotationModes[item.rotationMode]
@@ -352,18 +363,18 @@ func regBlockList(jsonPath, basepath):
 				item.rotationsCount = currentRotation
 			
 			_prepairItem(item, path, basepath)
-			list_id2obj.append(item)
+			funcs.arraySet(list_id2obj, item.id, item)
 			
 		for rotatedBlock in rotatedBlocks:
-			rotatedBlock.id = list_id2obj.size()
+			rotatedBlock.id = getRemappedBlockId(rotatedBlock)
 			_checkVariants(blockVariants, rotatedBlock)
 			_prepairItem(rotatedBlock, path, basepath)
-			list_id2obj.append(rotatedBlock)
+			funcs.arraySet(list_id2obj, rotatedBlock.id, rotatedBlock)
 			
 		for blockVariant in blockVariants:
-			blockVariant.id = list_id2obj.size()
+			blockVariant.id = getRemappedBlockId(blockVariant)
 			_prepairItem(blockVariant, path, basepath)
-			list_id2obj.append(blockVariant)
+			funcs.arraySet(list_id2obj, blockVariant.id, blockVariant)
 
 func _getMaterial(block):
 	block.use_alpha = block.get("use_alpha", false)
@@ -394,8 +405,13 @@ func _getMaterial(block):
 func _genLibrary():
 	blockLibrary = VoxelBlockyLibrary.new()
 	
-	var index = 0
-	for block in list_id2obj:
+	for id in range(maxBlockId + 1):
+		if list_id2obj[id] == null:
+			list_id2obj[id] = list_id2obj[list_name2id["air"]]
+	
+	for index in range(maxBlockId + 1):
+		var block = list_id2obj[index]
+		
 		var blockModel
 		if block.has("mesh"):
 			var material = _getMaterial(block)

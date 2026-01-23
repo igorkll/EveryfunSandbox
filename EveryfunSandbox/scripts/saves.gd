@@ -16,6 +16,8 @@ var defaultWorldRuntimeData = {
 }
 
 var defaultWorldData = {
+	"remapBlocks": {},
+	"remapCounter": 0,
 	"objectData": {},
 	"interactiveVoxels": {},
 	"voxelsMetadata": {},
@@ -153,6 +155,8 @@ func open(savename, initialWorldData=null) -> bool:
 	if filesystem.isFile(dataPath):
 		currentWorldData = filesystem.readObj(dataPath)
 	currentWorldData = funcs.merge_dicts(currentWorldData, defaultWorldData)
+	
+	game.reloadGameContent()
 	
 	if !initialWorldData:
 		initialWorldData = {}
