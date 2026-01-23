@@ -344,7 +344,7 @@ func callBlock(terrain, position: Vector3i, method, ...args) -> bool:
 				result = true
 	return result
 
-func useBlock(terrain, position: Vector3i) -> bool:
+func useBlock(terrain, position: Vector3i, usedPlayer=null) -> bool:
 	terrain = getTerrain(terrain)
 	if not canUseBlock(terrain, position):
 		return false
@@ -353,6 +353,7 @@ func useBlock(terrain, position: Vector3i) -> bool:
 	
 	var script = getBlockScript(terrain, position)
 	if script != null && script.has_method("_use"):
+		script.lastUsedPlayer = usedPlayer
 		script.call("_use")
 		
 	checkUnloadTempScript(terrain, position)

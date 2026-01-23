@@ -22,6 +22,8 @@ var voxelBaseBlockItem: Dictionary
 var voxelBlockId: int
 var voxelBlockItem: Dictionary
 
+var lastUsedPlayer
+
 func destroy():
 	terrainUtils.destroyBlock(voxelTerrain, voxelPosition)
 
