@@ -3,17 +3,20 @@ extends Node
 var list_items = []
 var list_item2block = {}
 var list_blockid2item = {}
+var list_item2uiname = {}
 
 func _prepairGameItems():
 	list_items = []
 	list_item2block = {}
 	list_blockid2item = {}
+	list_item2uiname = {}
 	
 	for obj in blockUtils.list_id2obj:
 		var name = "block_" + obj.name + "_r" + str(obj.currentRotation) + "_c" + str(obj.colorVariant) + "_v" + str(obj.baseVariant)
 		list_items.append(name)
 		list_item2block[name] = obj
 		list_blockid2item[obj.id] = name
+		list_item2uiname[name] = obj.name
 
 # уникальные предметы могут содержать какие то данные прямо внутри себя (это таблица)
 func _isUnique(itemobj):
