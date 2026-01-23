@@ -46,7 +46,8 @@ func _updateHit(hitInfo):
 	hitInfo["effect"].material_override.albedo_color = Color(1, 1, 1, percent)
 	
 func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
-	if hitInfo.has("timer") and hitInfo.terrain != terrain or hitInfo.position != position:
+	if hitInfo.has("timer") and (hitInfo.terrain != terrain or hitInfo.position != position):
+		hitInfo["effect"].queue_free()
 		hitInfo.clear()
 		
 	if not hitInfo.has("timer"):
