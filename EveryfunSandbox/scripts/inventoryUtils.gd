@@ -98,11 +98,11 @@ func nonGameCreateUniqueItem(inventory, itemName, itemData=null, uniqueItemName=
 	if uniqueItemName == null:
 		uniqueItemName = itemName + _uniqueSuffix()
 	
-	if inventory.items.has(uniqueItemName):
-		return false
-		
 	if not inventory.has("items"):
 		inventory.items = {}
+	
+	if inventory.items.has(uniqueItemName):
+		return false
 	
 	if itemData == null:
 		itemData = {}
