@@ -51,14 +51,16 @@ func inputModal(title, callback=null, value=""):
 	)
 	menu.openUI(modal)
 	
-func _transfer(inventory, itemName, transferToInventory, count):
+func _transfer(inventory, itemName, transferToInventory, count, refreshList=null):
 	if count == -1:
 		count = inventoryUtils.getItemsCount(inventory, itemName) / 2
 	elif count == -2:
 		count = inventoryUtils.getItemsCount(inventory, itemName)
 	inventoryUtils.transferItem(inventory, transferToInventory, itemName, count)
+	if refreshList != null:
+		refreshList.call()
 	
-func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onItemSelect=null):
+func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onItemSelect=null, refreshList=null):
 	var inventoryItem = inventoryItemScene.instantiate()
 	var uiName = inventoryUtils.getItemUiName(inventory, itemName)
 	var count = inventoryUtils.getItemsCount(inventory, itemName)
@@ -74,9 +76,9 @@ func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onI
 		funcs.ui_hide(inventoryItem, "transferHalfButton")
 		funcs.ui_hide(inventoryItem, "transferAllButton")
 	else:
-		funcs.ui_button_callback(inventoryItem, "transferButton", _transfer.bind(inventory, itemName, transferToInventory, 1))
-		funcs.ui_button_callback(inventoryItem, "transferHalfButton", _transfer.bind(inventory, itemName, transferToInventory, -1))
-		funcs.ui_button_callback(inventoryItem, "transferAllButton", _transfer.bind(inventory, itemName, transferToInventory, -2))
+		funcs.ui_button_callback(inventoryItem, "transferButton", _transfer.bind(inventory, itemName, transferToInventory, 1, refreshList))
+		funcs.ui_button_callback(inventoryItem, "transferHalfButton", _transfer.bind(inventory, itemName, transferToInventory, -1, refreshList))
+		funcs.ui_button_callback(inventoryItem, "transferAllButton", _transfer.bind(inventory, itemName, transferToInventory, -2, refreshList))
 		
 	if onItemSelect == null:
 		funcs.ui_hide(inventoryItem, "selectButton")
@@ -85,18 +87,18 @@ func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onI
 		
 	funcs.ui_get_item(modal, "items").add_child(inventoryItem)
 
-func _addAllInventoryItems(modal, inventory, transferToInventory=null, onItemSelect=null):
+func _addAllInventoryItems(modal, inventory, transferToInventory=null, onItemSelect=null, refreshList=null):
 	if inventory.has("items"):
 		var keys = inventory["items"].keys()
 		keys.sort()
 
 		for itemName in keys:
 			if inventoryUtils.isUniqueItem(inventory, itemName):
-				_addInventoryItem(modal, inventory, itemName, transferToInventory, onItemSelect)
+				_addInventoryItem(modal, inventory, itemName, transferToInventory, onItemSelect, refreshList)
 				
 		for itemName in keys:
 			if not inventoryUtils.isUniqueItem(inventory, itemName):
-				_addInventoryItem(modal, inventory, itemName, transferToInventory, onItemSelect)
+				_addInventoryItem(modal, inventory, itemName, transferToInventory, onItemSelect, refreshList)
 
 func _setInventoryInfo(modal, inventory):
 	funcs.ui_set_text(modal, "inventorySpace", str(inventoryUtils.getUsedSpace(inventory)) + " / " + str(inventoryUtils.getTotalSpace(inventory)))
@@ -114,13 +116,18 @@ func inventory2Gui(title, inventory, title2, inventory2):
 	var invTop = funcs.ui_get_item(realModal, "invTop")
 	var invBottom = funcs.ui_get_item(realModal, "invBottom")
 	
+	var refreshList
+	refreshList = func ():
+		_addAllInventoryItems(invTop, inventory, inventory2, null, refreshList)
+		_addAllInventoryItems(invBottom, inventory2, inventory, null, refreshList)
+	
 	funcs.ui_set_text(invTop, "title", title)
 	_setInventoryInfo(invTop, inventory)
-	_addAllInventoryItems(invTop, inventory, inventory2)
 	
 	funcs.ui_set_text(invBottom, "title", title2)
 	_setInventoryInfo(invBottom, inventory2)
-	_addAllInventoryItems(invBottom, inventory2, inventory)
+	
+	refreshList.call()
 	
 	menu.openUI(realModal)
 	return realModal
