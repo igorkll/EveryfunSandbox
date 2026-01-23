@@ -38,15 +38,16 @@ func worldLoad(worldName):
 
 func addWorldToList(worldName):
 	var worldCard = worldCardBase.instantiate()
-	worldCard.find_child("worldName", true, false).text = worldName
+	funcs.ui_set_text(worldCard, "worldName", worldName)
 	
 	if worldName == game.settings.data.selectedWorld:
 		funcs.paint_panel(worldCard, Color(0.689, 0.426, 0.0, 1.0))
 	
-	ui_worlds_list.add_child(worldCard)
 	funcs.ui_button_callback(worldCard, "worldRename", worldRename.bind(worldName))
 	funcs.ui_button_callback(worldCard, "worldDelete", worldDelete.bind(worldName))
 	funcs.ui_button_callback(worldCard, "worldLoad", worldLoad.bind(worldName))
+	
+	ui_worlds_list.add_child(worldCard)
 
 func updateWorldsList():
 	for child in ui_worlds_list.get_children():

@@ -50,9 +50,25 @@ func inputModal(title, callback=null, value=""):
 	)
 	menu.openUI(modal)
 	
-func _addInventoryItem(modal):
+func _transfer(inventory, itemName, transferToInventory, count):
+	inventoryUtils.transferItem(inventory, transferToInventory, itemName, count)
+	
+func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onItemSelect=null):
 	var inventoryItem = inventoryItemScene.instantiate()
-	pass
+	funcs.ui_set_text(inventoryItem, "name", itemName)
+	
+	if inventoryUtils.isUniqueItem(inventory, itemName):
+		funcs.paint_panel(modal, Color(0.731, 0.271, 0.72, 1.0))
+	
+	if transferToInventory == null:
+		funcs.ui_hide(modal, "transferButton")
+	else:
+		funcs.ui_button_callback(modal, "transferButton", _transfer.bind(inventory, itemName, transferToInventory, 1))
+		
+	if onItemSelect == null:
+		funcs.ui_hide(modal, "selectButton")
+	else:
+		funcs.ui_button_callback(modal, "selectButton", _transfer.bind(inventory, itemName, transferToInventory, 1))
 
 func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null):
 	var modal = inventoryModalScene.instantiate()
@@ -61,9 +77,13 @@ func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null)
 	if inventory.has("items"):
 		var keys = inventory["items"].keys()
 		keys.sort()
+
 		for itemName in keys:
 			if inventoryUtils.isUniqueItem(inventory, itemName):
-				_addInventoryItem(modal)
+				_addInventoryItem(modal, inventory, itemName)
+				
+		for itemName in keys:
+			_addInventoryItem(modal, inventory, itemName)
 	
 
 func textModal(text="test"):

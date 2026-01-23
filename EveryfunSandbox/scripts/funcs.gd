@@ -372,6 +372,12 @@ func ui_get_text(obj, name):
 
 func ui_button_callback(obj, name, callback):
 	ui_get_item(obj, name).pressed.connect(callback)
+	
+func ui_hide(obj, name):
+	ui_get_item(obj, name).hide()
+	
+func ui_show(obj, name):
+	ui_get_item(obj, name).show()
 
 var consonants = ["b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","z"]
 var vowels = ["a","e","i","o","u","y"]
