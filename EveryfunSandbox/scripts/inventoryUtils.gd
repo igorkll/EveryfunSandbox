@@ -36,7 +36,10 @@ func getItemName(inventory, itemName):
 	return itemName
 
 func itemToBlock(inventory, itemName):
-	return list_item2block[getItemName(inventory, itemName)]
+	var sourceItemName = getItemName(inventory, itemName)
+	if list_item2block.has(sourceItemName):	
+		return list_item2block[sourceItemName]
+	return null
 
 
 
@@ -195,8 +198,23 @@ func isUniqueItem(inventory, itemName):
 	if inventory.has("items") && inventory.items.has(itemName):
 		return _isUnique(inventory.items[itemName])
 	return false
+	
+func isBlockItem(inventory, itemName):
+	var sourceItemName = getItemName(inventory, itemName)
+	return list_item2block.has(sourceItemName)
 
 func getUniqueItemData(inventory, itemName):
 	if isUniqueItem(inventory, itemName):
 		return inventory.items[itemName]
 	return null
+
+func makeUniqueItem(inventory, itemName, itemData=null):
+	if isUniqueItem(inventory, itemName):
+		return false
+		
+	if not itemsExists(inventory, itemName, 1):
+		return false
+	
+	nonGameDestroyItems(inventory, itemName, 1)
+	nonGameCreateUniqueItem(inventory, itemName, itemData)
+	return true
