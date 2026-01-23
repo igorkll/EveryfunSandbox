@@ -32,7 +32,10 @@ func _physics_process(delta):
 		game.setCrosspiece("normal")
 	
 	super._physics_process(delta)
-	
+
+func onItemSelect(itemName):
+	storageData.selectedItem = itemName
+
 func controlHandler():
 	# ---------------------------------- fly
 	
@@ -114,6 +117,9 @@ func controlHandler():
 				terrainUtils.makeStatic(result[0], result[1].position)
 			else:
 				terrainUtils.makeDynamic(result[0], result[1].position)
+				
+	if Input.is_action_just_pressed("inventory"):
+		modalUI.inventoryGui("inventory", storageData.inventory, null, onItemSelect)
 	
 	if result && terrainUtils.canUseBlock(result[0], result[1].position):
 		game.setCrosspiece("use")

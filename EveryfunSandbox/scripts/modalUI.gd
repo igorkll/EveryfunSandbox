@@ -85,6 +85,7 @@ func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null)
 		for itemName in keys:
 			_addInventoryItem(modal, inventory, itemName)
 	
+	menu.openUI(modal)
 
 func textModal(text="test"):
 	menu.showText(text)
