@@ -116,9 +116,22 @@ func transferItem(fromInventory, toInventory, itemName, itemCount) -> bool:
 func placeBlock(terrain, position: Vector3i, inventory, itemName, rotation=0, storageData=null) -> bool:
 	if not itemsExists(inventory, itemName, 1):
 		return false
-		
-	nonGameDestroyItems(inventory, itemName, 1)
 	
-	var obj = itemToBlock(inventory, itemName)
-	terrainInteractions.placeBlock(terrain, position, obj.id, rotation, obj.baseVariant, obj.colorVariant, storageData)
+	var blockobj = itemToBlock(inventory, itemName)
+	if storageData == null && isUniqueItem(inventory, itemName):
+		storageData = getUniqueItemData(inventory, itemName)
+	
+	nonGameDestroyItems(inventory, itemName, 1)
+	terrainInteractions.placeBlock(terrain, position, blockobj.id, rotation, blockobj.baseVariant, blockobj.colorVariant, storageData)
 	return true
+
+
+func isUniqueItem(inventory, itemName):
+	if inventory.has("items") && inventory.items.has(itemName):
+		return _isUnique(inventory.items[itemName])
+	return false
+
+func getUniqueItemData(inventory, itemName):
+	if isUniqueItem(inventory, itemName):
+		return inventory.items[itemName]
+	return null
