@@ -142,6 +142,8 @@ func controlHandler(delta):
 			if terrainInteractions.hitBlock(result[0], result[1].position, hitInfo, delta):
 				inventoryUtils.destroyBlock(result[0], result[1].position, storageData.inventory)
 				updateSelectedItem()
+	else:
+		terrainInteractions.hitCheck(hitInfo, delta)
 			
 	if Input.is_action_just_pressed("place"):
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):

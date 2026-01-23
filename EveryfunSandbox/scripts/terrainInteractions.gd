@@ -39,13 +39,17 @@ func _updateHit(hitInfo):
 		effect.mesh = box_mesh
 		effect.position = terrainUtils.getGlobalPositionFromVoxelPosition(hitInfo["terrain"], hitInfo["position"])
 		effect.material_override = StandardMaterial3D.new()
+		effect.material_override.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		game.objects.add_child(effect)
 		hitInfo["effect"] = effect
 	
 	hitInfo["effect"].material_override.albedo_color = Color(1, 1, 1, percent)
 	
 func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
-	if not hitInfo.has("timer") or hitInfo.terrain != terrain or hitInfo.position != position:
+	if hitInfo.has("timer") and hitInfo.terrain != terrain or hitInfo.position != position:
+		hitInfo.clear()
+		
+	if not hitInfo.has("timer"):
 		hitInfo["timer"] = 0
 		hitInfo["hitTimer"] = 0
 		hitInfo["terrain"] = terrain
