@@ -11,7 +11,19 @@ func _prepairGameItems():
 		var name = "block_" + obj.name + "_r" + str(obj.currentRotation) + "_c" + str(obj.colorVariant) + "_v" + str(obj.baseVariant)
 		list_items.append(name)
 		list_item2block[name] = obj
-		
+
+# уникальные предметы могут содержать какие то данные прямо внутри себя (это таблица)
+func _isUnique(itemobj):
+	return typeof(itemobj) == TYPE_DICTIONARY
+
+
+func itemToBlock(inventory, itemName):
+	if inventory.has("items") && inventory.items.has(itemName):
+		var itemobj = inventory.items[itemName]
+		if _isUnique(itemobj) && itemobj.has("_toBlock"):
+			return itemobj["_toBlock"]
+	return list_item2block[itemName]
+
 	
 func getFreeSpace(inventory) -> int:
 	return getTotalSpace(inventory) - getUserSpace(inventory)
@@ -19,8 +31,8 @@ func getFreeSpace(inventory) -> int:
 func getUserSpace(inventory) -> int:
 	var itemCount = 0
 	if inventory.has("items"):
-		for count in inventory.items.values():
-			itemCount += count
+		for itemobj in inventory.items.values():
+			itemCount += getItemsCount(inventory, itemobj)
 	return itemCount
 	
 func getTotalSpace(inventory) -> int:
@@ -29,7 +41,10 @@ func getTotalSpace(inventory) -> int:
 
 func getItemsCount(inventory, itemName) -> int:
 	if inventory.has("items") && inventory.items.has(itemName):
-		return inventory.items[itemName]
+		var itemobj = inventory.items[itemName]
+		if _isUnique(itemobj):
+			return 1
+		return itemobj
 	return 0
 
 func itemsExists(inventory, itemName, count):
@@ -45,11 +60,14 @@ func nonGameCreateItems(inventory, itemName, itemCount) -> bool:
 		
 	if not inventory.has("items"):
 		inventory.items = {}
-		
+	
 	if not inventory.items.has(itemName):
-		inventory.items[itemName] = 0
-		
-	inventory.items[itemName] += itemCount
+		inventory.items[itemName] = itemCount
+	else:
+		if _isUnique(inventory.items[itemName]):
+			return false
+			
+		inventory.items[itemName] += itemCount
 		
 	return true
 
@@ -59,8 +77,13 @@ func nonGameDestroyItems(inventory, itemName, itemCount) -> bool:
 	
 	if not inventory.has("items"):
 		inventory.items = {}
-		
-	inventory.items[itemName] -= itemCount
+	
+	if _isUnique(inventory.items[itemName]):
+		inventory.items.erase(itemName)
+	else:
+		inventory.items[itemName] -= itemCount
+		if inventory.items[itemName] <= 0:
+			inventory.items.erase(itemName)
 	
 	return true
 
@@ -74,17 +97,19 @@ func transferItem(fromInventory, toInventory, itemName, itemCount) -> bool:
 	if not fromInventory.has("items"):
 		fromInventory.items = {}
 		
-	if not fromInventory.items.has(itemName):
-		fromInventory.items[itemName] = 0
-		
 	if not toInventory.has("items"):
 		toInventory.items = {}
+	
+	if _isUnique(fromInventory.items[itemName]):
+		var itemobj = fromInventory.items[itemName]
+		fromInventory.items.erase(itemName)
+		toInventory.items[itemName] = itemobj
+	else:
+		fromInventory.items[itemName] -= itemCount
+		if fromInventory.items[itemName] <= 0:
+			fromInventory.items.erase(itemName)
 		
-	if not toInventory.items.has(itemName):
-		toInventory.items[itemName] = 0
-		
-	fromInventory.items[itemName] -= itemCount
-	toInventory.items[itemName] += itemCount
+		toInventory.items[itemName] += itemCount
 	
 	return true
 
@@ -93,7 +118,7 @@ func placeBlock(terrain, position: Vector3i, inventory, itemName, rotation=0, st
 		return false
 		
 	nonGameDestroyItems(inventory, itemName, 1)
-		
-	var obj = list_item2block[itemName]
+	
+	var obj = itemToBlock(inventory, itemName)
 	terrainInteractions.placeBlock(terrain, position, obj.id, rotation, obj.baseVariant, obj.colorVariant, storageData)
 	return true
