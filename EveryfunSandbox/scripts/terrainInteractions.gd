@@ -77,7 +77,7 @@ func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
 		hitInfo["effect"].queue_free()
 		hitInfo.clear()
 		if terrainUtils.isIndestructible(terrain, position):
-			game.playSound(game.soundList["explosion"], terrainUtils.getGlobalPositionFromVoxelPosition(terrain, position))
+			game.playSound(game.soundList["indestructible"], terrainUtils.getGlobalPositionFromVoxelPosition(terrain, position))
 			return false
 	return destroyFlag
 	

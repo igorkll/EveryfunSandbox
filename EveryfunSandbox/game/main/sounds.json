@@ -175,5 +175,14 @@
 		"random_volume_offset_db": 3,
 		"volume_db": 10,
 		"max_db": 20
+	},
+	
+	{
+		"name": "indestructible",
+		"list": [
+			{
+				"path": "sounds/indestructible.wav",
+			}
+		]
 	}
 ]
