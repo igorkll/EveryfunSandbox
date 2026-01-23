@@ -57,5 +57,16 @@
 		"sound": "metal",
 		"sound_placeDestroy": "metal_placeDestroy",
 		"script": "scripts/speaker.gd"
+	},
+	{
+		"name": "container",
+		"texture": "container.png",
+		"texture_mode": "UNIFORM",
+		"sound": "metal",
+		"sound_placeDestroy": "metal_placeDestroy",
+		"script": "scripts/container.gd",
+		"script_data": {
+			"maxitems": 100
+		}
 	}
 ]
