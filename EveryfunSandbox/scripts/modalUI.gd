@@ -4,6 +4,7 @@ var inputModalScene = preload("res://gui/modalUI/input.tscn")
 var messageModalScene = preload("res://gui/modalUI/message.tscn")
 var acceptModalScene = preload("res://gui/modalUI/accept.tscn")
 var inventoryModalScene = preload("res://gui/modalUI/inventory.tscn")
+var inventory2ModalScene = preload("res://gui/modalUI/inventory2.tscn")
 
 var inventoryItemScene = preload("res://gui/inventoryItem/inventoryItem.tscn")
 
@@ -84,11 +85,7 @@ func _addInventoryItem(modal, inventory, itemName, transferToInventory=null, onI
 		
 	funcs.ui_get_item(modal, "items").add_child(inventoryItem)
 
-func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null):
-	var modal = inventoryModalScene.instantiate()
-	funcs.ui_set_text(modal, "title", title)
-	funcs.ui_set_text(modal, "inventorySpace", str(inventoryUtils.getUsedSpace(inventory)) + " / " + str(inventoryUtils.getTotalSpace(inventory)))
-	
+func _addAllInventoryItems(modal, inventory, transferToInventory=null, onItemSelect=null):
 	if inventory.has("items"):
 		var keys = inventory["items"].keys()
 		keys.sort()
@@ -100,9 +97,33 @@ func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null)
 		for itemName in keys:
 			if not inventoryUtils.isUniqueItem(inventory, itemName):
 				_addInventoryItem(modal, inventory, itemName, transferToInventory, onItemSelect)
-	
+
+func _setInventoryInfo(modal, inventory):
+	funcs.ui_set_text(modal, "inventorySpace", str(inventoryUtils.getUsedSpace(inventory)) + " / " + str(inventoryUtils.getTotalSpace(inventory)))
+
+func inventoryGui(title, inventory, transferToInventory=null, onItemSelect=null):
+	var modal = inventoryModalScene.instantiate()
+	funcs.ui_set_text(modal, "title", title)
+	_setInventoryInfo(modal, inventory)
+	_addAllInventoryItems(modal, inventory, transferToInventory, onItemSelect)
 	menu.openUI(modal)
 	return modal
+	
+func inventory2Gui(title, inventory, title2, inventory2):
+	var realModal = inventory2ModalScene.instantiate()
+	var invTop = funcs.ui_get_item(realModal, "invTop")
+	var invBottom = funcs.ui_get_item(realModal, "invBottom")
+	
+	funcs.ui_set_text(invTop, "title", title)
+	_setInventoryInfo(invTop, inventory)
+	_addAllInventoryItems(invTop, inventory, inventory2)
+	
+	funcs.ui_set_text(invBottom, "title", title2)
+	_setInventoryInfo(invBottom, inventory2)
+	_addAllInventoryItems(invBottom, inventory2, inventory)
+	
+	menu.openUI(realModal)
+	return realModal
 
 func textModal(text="test"):
 	menu.showText(text)
