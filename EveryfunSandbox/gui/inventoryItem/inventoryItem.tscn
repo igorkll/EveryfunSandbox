@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3 uid="uid://bpkf6bapx3t8l"]
+
+[ext_resource type="Texture2D" uid="uid://bq5ymhpo3h7qe" path="res://gui/inventoryItem/item.png" id="1_5lrii"]
+[ext_resource type="Texture2D" uid="uid://dooognpk5n7ur" path="res://gui/inventoryItem/transfer.png" id="2_5lrii"]
+[ext_resource type="Texture2D" uid="uid://bqfqb3dwpmlyy" path="res://gui/inventoryItem/select.png" id="2_aacxh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5upsk"]
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="WorldCard" type="Panel"]
+custom_minimum_size = Vector2(0, 50)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5upsk")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="icon" type="TextureButton" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("1_5lrii")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="name" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "world name"
+
+[node name="selectButton" type="TextureButton" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(90, 27)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("2_aacxh")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="transferButton" type="TextureButton" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(90, 27)
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("2_5lrii")
+ignore_texture_size = true
+stretch_mode = 0

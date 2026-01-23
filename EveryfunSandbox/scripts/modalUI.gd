@@ -3,6 +3,7 @@ extends Node
 var inputModalScene = preload("res://gui/modalUI/input.tscn")
 var messageModalScene = preload("res://gui/modalUI/message.tscn")
 var acceptModalScene = preload("res://gui/modalUI/accept.tscn")
+var inventoryModalScene = preload("res://gui/modalUI/inventory.tscn")
 
 func messageModal(title, text, callback=null):
 	var modal = messageModalScene.instantiate()
@@ -46,6 +47,11 @@ func inputModal(title, callback=null, value=""):
 			callback.call(funcs.ui_get_text(modal, "input"))
 	)
 	menu.openUI(modal)
+	
+func inventoryGui(title, callback, inventory, transferToInventory):
+	var modal = inventoryModalScene.instantiate()
+	funcs.ui_set_text(modal, "title", title)
+	
 
 func textModal(text="test"):
 	menu.showText(text)

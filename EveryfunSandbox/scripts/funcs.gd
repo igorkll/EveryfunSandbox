@@ -383,3 +383,8 @@ func random_name(length = 4) -> String:
 		else:
 			name += vowels[randi() % vowels.size()]
 	return name.capitalize()
+
+func paint_panel(panel, color):
+	var stylebox = panel.get_theme_stylebox("panel", "Panel").duplicate(true)
+	stylebox.bg_color = color
+	panel.add_theme_stylebox_override("panel", stylebox)
