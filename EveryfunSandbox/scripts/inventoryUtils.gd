@@ -58,6 +58,13 @@ func itemToBlock(inventory, itemName):
 
 
 
+func isEmpty(inventory) -> bool:
+	if inventory.has("items"):
+		for itemName in inventory.items.keys():
+			if getItemsCount(inventory, itemName) > 0:
+				return false
+	return true
+	
 func getFreeSpace(inventory) -> int:
 	return getTotalSpace(inventory) - getUsedSpace(inventory)
 

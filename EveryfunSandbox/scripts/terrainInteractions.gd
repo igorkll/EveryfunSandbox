@@ -17,6 +17,9 @@ func placeBlock(terrain, position: Vector3i, blockId: int, rotation=0, variant=0
 	terrainUtils.placeBlock(terrain, position, blockId, rotation, variant, color, storageData)
 
 func destroyBlock(terrain, position: Vector3i, attackLevel=null) -> bool:
+	if terrainUtils.isIndestructible(terrain, position):
+		return false
+	
 	if attackLevel != null && not attackCheck(terrain.voxel_tool.get_voxel(position), attackLevel):
 		return false
 	
@@ -43,7 +46,10 @@ func _updateHit(hitInfo):
 		game.objects.add_child(effect)
 		hitInfo["effect"] = effect
 	
-	hitInfo["effect"].material_override.albedo_color = Color(1, 1, 1, percent)
+	if terrainUtils.isIndestructible(hitInfo["terrain"], hitInfo["position"]):
+		hitInfo["effect"].material_override.albedo_color = Color(1, 0, 0, percent)
+	else:
+		hitInfo["effect"].material_override.albedo_color = Color(1, 1, 1, percent)
 	
 func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
 	if hitInfo.has("timer") and (hitInfo.terrain != terrain or hitInfo.position != position):
@@ -70,6 +76,9 @@ func hitBlock(terrain, position: Vector3i, hitInfo, delta) -> bool:
 	if destroyFlag:
 		hitInfo["effect"].queue_free()
 		hitInfo.clear()
+		if terrainUtils.isIndestructible(terrain, position):
+			game.playSound(game.soundList["explosion"], terrainUtils.getGlobalPositionFromVoxelPosition(terrain, position))
+			return false
 	return destroyFlag
 	
 func hitCheck(hitInfo, delta):

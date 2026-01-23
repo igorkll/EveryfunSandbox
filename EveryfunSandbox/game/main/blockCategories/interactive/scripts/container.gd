@@ -4,6 +4,9 @@ func _requestDefaultStorageData():
 	return {
 		inventory = {}
 	}
+	
+func _process(delta):
+	storageData._indestructible = not inventoryUtils.isEmpty(storageData.inventory)
 
 func _use():
 	storageData.inventory.maxitems = scriptData.get("maxitems", 2000)

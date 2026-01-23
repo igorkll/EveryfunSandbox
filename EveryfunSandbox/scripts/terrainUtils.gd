@@ -206,6 +206,11 @@ func getBlockInfo(terrain, position: Vector3i):
 	var blockObj = getBlockObj(terrain, position)
 	if blockObj:
 		return blockObj.info
+		
+func isIndestructible(terrain, position: Vector3i):
+	var info = getBlockInfo(terrain, position)
+	var storageData = getBlockStorageData(terrain, position)
+	return info.get("indestructible", false) || storageData.get("_indestructible", false)
 	
 func setBlockId(terrain, position: Vector3i, blockId: int):
 	terrain = getTerrain(terrain)
