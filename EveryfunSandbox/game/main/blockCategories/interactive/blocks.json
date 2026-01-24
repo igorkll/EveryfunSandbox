@@ -1,5 +1,15 @@
 [
 	{
+		"name": "crafting_table",
+		"title": "crafting table",
+		"description": "allows you to do various things that you will need during the game",
+		"texture": "crafting_table.png",
+		"texture_mode": "UNIFORM_TOP_BOTTOM",
+		"sound": "wood",
+		"sound_placeDestroy": "wood_placeDestroy",
+		"script": "scripts/crafting_table.gd"
+	},
+	{
 		"name": "monitor",
 		"texture": "!textures/polished_metal.png",
 		"texture_mode": "UNIFORM",
@@ -11,6 +21,7 @@
 	},
 	{
 		"name": "explosive",
+		"description": "if you have a strong desire to blow something up",
 		"texture": "explosive.png",
 		"texture_mode": "UNIFORM_TOP_BOTTOM",
 		"material": "!materials/metal.png",
@@ -23,6 +34,8 @@
 	},
 	{
 		"name": "nuclear_explosive",
+		"title": "nuclear explosive",
+		"description": "just be careful with this shit...",
 		"texture": "nuclear_explosive/texture.png",
 		"texture_mode": "UNIFORM",
 		"material": "nuclear_explosive/material.png",
@@ -35,6 +48,7 @@
 	},
 	{
 		"name": "grammophone",
+		"description": "it can play your music from disks",
 		"texture": "grammophone/texture.png",
 		"mesh": "grammophone/mesh.obj",
 		"mesh_collision": 1,
@@ -60,6 +74,7 @@
 	},
 	{
 		"name": "container",
+		"description": "use it to store items",
 		"texture": "container.png",
 		"texture_mode": "UNIFORM",
 		"sound": "wood",

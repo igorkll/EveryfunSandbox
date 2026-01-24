@@ -16,7 +16,10 @@ func _prepairGameItems():
 		list_items.append(name)
 		list_item2block[name] = obj
 		list_blockid2item[obj.id] = name
-		list_item2uiname[name] = obj.name
+		if obj.has("title"):
+			list_item2uiname[name] = obj.title
+		else:
+			list_item2uiname[name] = obj.name
 
 # уникальные предметы могут содержать какие то данные прямо внутри себя (это таблица)
 func _isUnique(itemobj):
