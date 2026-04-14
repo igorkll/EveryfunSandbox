@@ -32,7 +32,13 @@ void fragment() {
 	        col.a += texture(SCREEN_TEXTURE, SCREEN_UV + calcOffset(x, y, blur_size_px, SCREEN_PIXEL_SIZE, rgbShiftA)).a;
         }
     }
+	
     col /= float((blur_steps * 2 + 1) * (blur_steps * 2 + 1));
+	
+	float border_blacking = min((1.0 - ((abs(UV.x - 0.5) * 2.0) + (abs(UV.y - 0.5) * 2.0))) + 0.8, 1);
+	col.r *= border_blacking;
+	col.g *= border_blacking;
+	col.b *= border_blacking;
 	
 	vec4 currentColor;
 	if (processAnimation) {
