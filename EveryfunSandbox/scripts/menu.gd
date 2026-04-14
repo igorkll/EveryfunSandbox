@@ -109,13 +109,18 @@ func _process(delta):
 	if not saves.isWorldFullLoaded() && (currentUI == 1 or currentUI == 0):
 		switchUI(0)
 	elif Input.is_action_just_pressed("menu") && toggleTimeout <= 0:
-		if currentUI != 2:
-			if currentUI == 3:
-				switchUI(0)
-			elif currentUI == 1:
-				switchUI(0)
-			else:
-				switchUI(1)
+		if game.player.chatOpened:
+			game.player.chatOpened = false
+			game.player.ui_chat_panel.visible = false
+			menu.switchUI(1)
+		else:
+			if currentUI != 2:
+				if currentUI == 3:
+					switchUI(0)
+				elif currentUI == 1:
+					switchUI(0)
+				else:
+					switchUI(1)
 	
 	if waitSwitchUI && switchUI(currentUI):
 		waitSwitchUI = false

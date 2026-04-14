@@ -39,18 +39,19 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("inventory"):
 		if is_instance_valid(inventoryModal) && inventoryModal.visible:
 			modalUI.close()
-		else:
+		elif menu.currentUI == 1:
 			inventoryModal = modalUI.inventoryGui("inventory", storageData.inventory, null, onItemSelect)
 			
 	if Input.is_action_just_pressed("chat"):
-		chatOpened = not chatOpened
-		ui_chat_panel.visible = chatOpened
-		
-		if chatOpened:
-			menu.liteLock()
-		else:
-			menu.fullUnlock()
+		if chatOpened or menu.currentUI == 1:
+			chatOpened = not chatOpened
+			ui_chat_panel.visible = chatOpened
 			
+			if chatOpened:
+				menu.switchUI(2)
+			else:
+				menu.switchUI(1)
+				
 	if not control_lock:
 		controlHandler(delta)
 	else:
