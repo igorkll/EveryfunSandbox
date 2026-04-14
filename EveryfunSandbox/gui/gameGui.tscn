@@ -90,6 +90,15 @@ text = "position:"
 [node name="ui_debug_position" type="Label" parent="MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
 layout_mode = 2
 
+[node name="Label3" type="Label" parent="MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "velocity:"
+
+[node name="ui_debug_velocity" type="Label" parent="MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
+layout_mode = 2
+
 [node name="gameUI" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15

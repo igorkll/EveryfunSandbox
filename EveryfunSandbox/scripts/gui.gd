@@ -104,6 +104,7 @@ func _attachToggleOption(valuePath, optionName, callback):
 var ui_debug_panel
 var ui_debug_fps
 var ui_debug_position
+var ui_debug_velocity
 
 func _ready():
 	_Continue_game = _attachButton("ui_Continue_game", _Continue_game_pressed)
@@ -151,6 +152,7 @@ func _process(delta):
 		ui_debug_panel.visible = saves.currentWorldData.debug.debugInfo
 		ui_debug_fps.text = str(Engine.get_frames_per_second())
 		ui_debug_position.text = str(funcs.round_to(game.player.position.x, 1)) + " " + str(funcs.round_to(game.player.position.y, 1)) + " " + str(funcs.round_to(game.player.position.z, 1))
+		ui_debug_velocity.text =  str(funcs.round_to(game.player.velocity.x, 1)) + " " + str(funcs.round_to(game.player.velocity.y, 1)) + " " + str(funcs.round_to(game.player.velocity.z, 1))
 	else:
 		ui_debug_panel.visible = false
 
