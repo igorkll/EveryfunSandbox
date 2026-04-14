@@ -6,7 +6,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yodrc"]
 shader = ExtResource("1_qq510")
-shader_parameter/color = Vector4(0.4, 0.3, 0.3, 1)
+shader_parameter/color = Vector4(0.6, 0.6, 0.6, 1)
 shader_parameter/progressColor = Vector4(0.2, 0.2, 0.8, 1)
 shader_parameter/timeout = 0.0
 shader_parameter/processAnimation = false
@@ -98,6 +98,29 @@ text = "velocity:"
 
 [node name="ui_debug_velocity" type="Label" parent="MarginContainer3/ui_debug_panel/MarginContainer/GridContainer"]
 layout_mode = 2
+
+[node name="ui_chat_panel" type="Panel" parent="MarginContainer3"]
+material = SubResource("ShaderMaterial_yodrc")
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer3/ui_chat_panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer3/ui_chat_panel/MarginContainer"]
+layout_mode = 2
+columns = 2
 
 [node name="gameUI" type="Control" parent="."]
 layout_mode = 1
