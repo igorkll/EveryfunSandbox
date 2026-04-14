@@ -45,12 +45,13 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("chat"):
 		if chatOpened or menu.currentUI == 1:
 			chatOpened = not chatOpened
-			ui_chat_panel.visible = chatOpened
 			
 			if chatOpened:
 				menu.switchUI(2)
 			else:
 				menu.switchUI(1)
+				
+	ui_chat_panel.visible = chatOpened
 				
 	if not control_lock:
 		controlHandler(delta)

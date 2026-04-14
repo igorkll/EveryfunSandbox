@@ -135,6 +135,7 @@ editable = false
 
 [node name="LineEdit" type="LineEdit" parent="MarginContainer3/ui_chat_panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
+keep_editing_on_text_submit = true
 
 [node name="gameUI" type="Control" parent="."]
 layout_mode = 1

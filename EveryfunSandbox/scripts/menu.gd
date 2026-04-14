@@ -111,7 +111,6 @@ func _process(delta):
 	elif Input.is_action_just_pressed("menu") && toggleTimeout <= 0:
 		if game.player.chatOpened:
 			game.player.chatOpened = false
-			game.player.ui_chat_panel.visible = false
 			menu.switchUI(1)
 		else:
 			if currentUI != 2:
