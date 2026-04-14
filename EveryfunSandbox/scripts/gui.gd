@@ -142,6 +142,7 @@ func _ready():
 	ui_debug_panel = game.mainNode.find_child("ui_debug_panel", true, false)
 	ui_debug_fps = game.mainNode.find_child("ui_debug_fps", true, false)
 	ui_debug_position = game.mainNode.find_child("ui_debug_position", true, false)
+	ui_debug_velocity = game.mainNode.find_child("ui_debug_velocity", true, false)
 
 func _process(delta):
 	var worldLoaded = saves.isWorldFullLoaded()
