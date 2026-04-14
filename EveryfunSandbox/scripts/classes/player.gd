@@ -9,6 +9,9 @@ var characterScale = 1.25
 
 var inventoryModal
 var hitInfo = {}
+var chatOpened = false
+
+var ui_chat_panel
 
 func _ready():
 	super._ready()
@@ -28,6 +31,9 @@ func _ready():
 	camera.fov = 80
 	camera.add_child(chunkloader.new())
 	cameraContainer.add_child(camera)
+	
+	ui_chat_panel = game.mainNode.find_child("ui_chat_panel", true, false)
+	ui_chat_panel.visible = false
 
 func _physics_process(delta):
 	if Input.is_action_just_pressed("inventory"):
@@ -35,6 +41,15 @@ func _physics_process(delta):
 			modalUI.close()
 		else:
 			inventoryModal = modalUI.inventoryGui("inventory", storageData.inventory, null, onItemSelect)
+			
+	if Input.is_action_just_pressed("chat"):
+		chatOpened = not chatOpened
+		ui_chat_panel.visible = chatOpened
+		
+		if chatOpened:
+			menu.liteLock()
+		else:
+			menu.fullUnlock()
 			
 	if not control_lock:
 		controlHandler(delta)
@@ -158,12 +173,12 @@ func controlHandler(delta):
 				inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockRotation)
 				updateSelectedItem()
 	
-	if Input.is_action_just_pressed("chat"):
-		if result:
-			if terrainUtils.isDymanic(result[0]):
-				terrainUtils.makeStatic(result[0], result[1].position)
-			else:
-				terrainUtils.makeDynamic(result[0], result[1].position)
+	# if Input.is_action_just_pressed("chat"):
+	# 	if result:
+	#		if terrainUtils.isDymanic(result[0]):
+	#			terrainUtils.makeStatic(result[0], result[1].position)
+	#		else:
+	#			terrainUtils.makeDynamic(result[0], result[1].position)
 	
 	if result && terrainUtils.canUseBlock(result[0], result[1].position):
 		game.setCrosspiece("use")

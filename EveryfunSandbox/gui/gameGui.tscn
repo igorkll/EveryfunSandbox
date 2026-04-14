@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://cnx2vnovtfcjx"]
+[gd_scene load_steps=7 format=3 uid="uid://cnx2vnovtfcjx"]
 
 [ext_resource type="Shader" uid="uid://bouu1iwjpmhdo" path="res://gui/panel.gdshader" id="1_qq510"]
 [ext_resource type="Shader" uid="uid://bs7pggfyfqvhq" path="res://shaders/crosspiece.gdshader" id="2_5upv5"]
 [ext_resource type="Texture2D" uid="uid://du7nm0bvtfk18" path="res://gui/crosspiece/normal.png" id="3_018vt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yodrc"]
+shader = ExtResource("1_qq510")
+shader_parameter/color = Vector4(0.6, 0.6, 0.6, 1)
+shader_parameter/progressColor = Vector4(0.2, 0.2, 0.8, 1)
+shader_parameter/timeout = 0.0
+shader_parameter/processAnimation = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qq510"]
 shader = ExtResource("1_qq510")
 shader_parameter/color = Vector4(0.6, 0.6, 0.6, 1)
 shader_parameter/progressColor = Vector4(0.2, 0.2, 0.8, 1)
@@ -100,7 +107,7 @@ text = "velocity:"
 layout_mode = 2
 
 [node name="ui_chat_panel" type="Panel" parent="MarginContainer3"]
-material = SubResource("ShaderMaterial_yodrc")
+material = SubResource("ShaderMaterial_qq510")
 custom_minimum_size = Vector2(400, 300)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -118,9 +125,16 @@ theme_override_constants/margin_top = 15
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer3/ui_chat_panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer3/ui_chat_panel/MarginContainer"]
 layout_mode = 2
-columns = 2
+
+[node name="TextEdit" type="TextEdit" parent="MarginContainer3/ui_chat_panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+editable = false
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer3/ui_chat_panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
 
 [node name="gameUI" type="Control" parent="."]
 layout_mode = 1
