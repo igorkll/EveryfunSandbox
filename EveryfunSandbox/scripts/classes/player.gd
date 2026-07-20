@@ -168,19 +168,19 @@ func controlHandler(delta):
 			
 	if Input.is_action_just_pressed("place"):
 		# storageData.inventory.erase("items")
-		# inventoryUtils.nonGameCreateItems(storageData.inventory, "block_crafting_table_r0_c0_v0", 10)
+		# inventoryUtils.nonGameCreateItems(storageData.inventory, "block_monitor_r0_c0_v0", 10)
 		if result and terrainUtils.isCellFree(result[0], result[1].previous_position):
 			if inventoryUtils.isBlockItem(storageData.inventory, storageData.selectedItem):
 				var blockRotation = blockUtils.getTargetRotation(camera.global_transform.basis.z)
 				inventoryUtils.placeBlock(result[0], result[1].previous_position, storageData.inventory, storageData.selectedItem, blockRotation)
 				updateSelectedItem()
 	
-	# if Input.is_action_just_pressed("chat"):
-	# 	if result:
-	#		if terrainUtils.isDymanic(result[0]):
-	#			terrainUtils.makeStatic(result[0], result[1].position)
-	#		else:
-	#			terrainUtils.makeDynamic(result[0], result[1].position)
+	if Input.is_action_just_pressed("voice"):
+		if result:
+			if terrainUtils.isDymanic(result[0]):
+				terrainUtils.makeStatic(result[0], result[1].position)
+			else:
+				terrainUtils.makeDynamic(result[0], result[1].position)
 	
 	if result && terrainUtils.canUseBlock(result[0], result[1].position):
 		game.setCrosspiece("use")
